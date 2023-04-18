@@ -1,5 +1,5 @@
 {
-  "name": "edu_chum",
+  "name": "demo",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -8,12 +8,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@element-plus/icons-vue": "^2.1.0",
     "animate.css": "^4.1.1",
     "axios": "^1.3.4",
     "bootstrap": "^5.2.3",
     "element-plus": "^2.3.2",
     "hover.css": "^2.3.2",
     "vue": "^3.2.47",
+    "vue-router": "^4.1.6",
     "vuex": "^4.1.0"
   },
   "devDependencies": {
