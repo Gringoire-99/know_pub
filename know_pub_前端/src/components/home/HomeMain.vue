@@ -2,7 +2,28 @@
     <div>
         <el-row :gutter="10">
             <el-col :lg="18" :md="18" :sm="24" :xl="18" :xs="24">
-                <main-list/>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-title d-flex align-items-center">
+                            <el-space :size="30">
+                                <router-link :to="{path:'/home-main/main-followed'}">
+                                    <button :autofocus="true" class="btn">关注</button>
+                                </router-link>
+                                <router-link :to="{path:'/home-main/main-recommended'}">
+                                    <button :autofocus="true" class="btn">推荐</button>
+                                </router-link>
+                                <router-link :to="{path:'/home-main/main-hot-topics'}">
+                                    <button :autofocus="true" class="btn">热榜</button>
+                                </router-link>
+                                <router-link :to="{path:'/home-main/main-videos'}">
+                                    <button :autofocus="true" class="btn">视频</button>
+                                </router-link>
+                            </el-space>
+                        </div>
+                        <router-view></router-view>
+                    </div>
+
+                </div>
             </el-col>
             <el-col :span="6" class="d-none d-lg-inline ">
                 <main-secondary></main-secondary>
@@ -12,7 +33,7 @@
 </template>
 
 <script>
-import MainList from "@/components/home/MainList.vue";
+import MainList from "@/components/home/main/MainRecommended.vue";
 import MainSecondary from "@/components/home/MainSecondary.vue";
 
 /**
@@ -20,7 +41,28 @@ import MainSecondary from "@/components/home/MainSecondary.vue";
  */
 export default {
     name: "home-main",
-    components: {MainSecondary, MainList}
+    components: {MainSecondary, MainList},
+    methods: {
+        getView() {
+            console.log("获取视图")
+        }
+    }
 }
 </script>
+<style>
+.card-body .btn:focus {
+    color: #0095da;
+}
+
+.card-body .btn {
+    border: none;
+    font-size: 19px;
+
+}
+
+.main {
+    /*  底边*/
+    border-top: 1px solid #ebebeb;
+}
+</style>
 

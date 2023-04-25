@@ -58,7 +58,7 @@
 import axios from "axios";
 
 export default {
-    name: "Messages",
+    name: "messages",
     data() {
         return {
             iconSize: 23,

@@ -1,12 +1,12 @@
 <template>
-    <el-card>
+    <div style="font-size: 19px">
         <!--                  TODO 帖子：用户发布的内容会显示在这里-->
-        主要内容
+        推荐内容
 
-    </el-card>
+    </div>
 </template>
 <script>
 export default {
-    name: 'main-list'
+    name: 'main-recommended',
 }
 </script>
