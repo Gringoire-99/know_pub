@@ -35,20 +35,14 @@ function mockSetUp() {
     let messages = []
     Mock.mock(/.*messages.*/, o => {
         let param = o.url.match(/.*pageSize=(\d+).*pageIndex=(\d+).*/)
-        let pageSize = param[1]
-        let pageIndex = param[2]
-
+        let pageSize = parseInt(param[1])
+        let pageIndex = parseInt(param[2])
+        console.log(pageSize, pageIndex)
         for (let i = pageIndex; i < pageIndex + pageSize; i++) {
-            let msg = Mock.mock({
-                "content|1": [
-                    '消息1',
-                    '消息2',
-                    '消息3',
-                    '消息4',
-                    '消息5',
-                ]['content'],
+            let msg = {
+                content: `${Mock.mock('@cname')}给你发了一条消息`,
                 id: Mock.mock('@guid')
-            })
+            }
             messages.push(msg)
         }
         return messages

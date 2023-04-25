@@ -4,7 +4,7 @@
             <el-col :lg="18" :md="18" :sm="24" :xl="18" :xs="24">
                 <main-list/>
             </el-col>
-            <el-col :span="6" class="d-none d-lgf-inline ">
+            <el-col :span="6" class="d-none d-lg-inline ">
                 <main-secondary></main-secondary>
             </el-col>
         </el-row>
