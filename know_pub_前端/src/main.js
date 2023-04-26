@@ -32,8 +32,34 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 }
 
 function mockSetUp() {
-    let messages = []
+    Mock.mock(/.*recommended-posts.*/, o => {
+        let posts = []
+        let pageSize = 5
+        for (let i = 0; i < pageSize; i++) {
+            let post = {
+                id: Mock.mock('@guid'),
+                topic: Mock.mock('@ctitle(20,40)'),
+                content: {
+                    text: Mock.mock('@cparagraph(1,3)'),
+                    images: [Mock.mock('@image("200x100")'), Mock.mock('@image("100x100")'), Mock.mock('@image("100x100")')]
+                },
+                likes: Mock.mock('@integer(0,100)'),
+                dislikes: Mock.mock('@integer(0,100)'),
+                author: {
+                    id: Mock.mock('@guid'),
+                    name: Mock.mock('@cname'),
+                    avatar: Mock.mock('@image("100x100")'),
+                    desc: Mock.mock('@cparagraph(1,3)'),
+                },
+                publish_time: Mock.mock('@datetime'),
+                update_time: Mock.mock('@datetime'),
+            }
+            posts.push(post)
+        }
+        return posts
+    })
     Mock.mock(/.*messages.*/, o => {
+        let messages = []
         let param = o.url.match(/.*pageSize=(\d+).*pageIndex=(\d+).*/)
         let pageSize = parseInt(param[1])
         let pageIndex = parseInt(param[2])

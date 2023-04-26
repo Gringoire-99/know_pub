@@ -1,12 +1,29 @@
 <template>
-    <div style="font-size: 19px">
+    <div class="w-100">
         <!--                  TODO 帖子：用户发布的内容会显示在这里-->
-        推荐内容
+
+        <post v-for="post in posts" :post="post"></post>
 
     </div>
 </template>
 <script>
+import Post from "@/components/home/main/post/Post.vue";
+import axios from "axios";
+
 export default {
     name: 'main-recommended',
+    components: {Post},
+    data() {
+        return {
+            posts: []
+        }
+    },
+    created() {
+        axios.get('http://localhost:8080/recommended-posts', {}).then(response => {
+            this.posts = response.data
+        }, reason => {
+            console.log(reason)
+        })
+    }
 }
 </script>

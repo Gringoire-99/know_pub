@@ -9,12 +9,12 @@
                     :text-color="menuStyle.textColor"
                     mode="horizontal"
                 >
-                    <el-menu-item index="home-main" v-on:select="">知道吧icon
+                    <el-menu-item index="/home-main" v-on:select="">知道吧icon
                         <el-icon>
                             <edit></edit>
                         </el-icon>
                     </el-menu-item>
-                    <el-menu-item index="home-main" v-on:select="">首页
+                    <el-menu-item index="/home-main" v-on:select="">首页
                     </el-menu-item>
                     <el-sub-menu index="2">
                         <template #title>发现</template>
