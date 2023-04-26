@@ -2,25 +2,28 @@
     <div>
         <el-row :gutter="10">
             <el-col :lg="18" :md="18" :sm="24" :xl="18" :xs="24">
-                <div class="card">
+                <div class="card w-100">
                     <div class="card-body">
                         <div class="card-title d-flex align-items-center">
                             <el-space :size="30">
                                 <router-link :to="{path:'/home-main/main-followed'}">
-                                    <button :autofocus="true" class="btn">关注</button>
+                                    <button class="btn">关注</button>
                                 </router-link>
                                 <router-link :to="{path:'/home-main/main-recommended'}">
                                     <button :autofocus="true" class="btn">推荐</button>
                                 </router-link>
                                 <router-link :to="{path:'/home-main/main-hot-topics'}">
-                                    <button :autofocus="true" class="btn">热榜</button>
+                                    <button class="btn">热榜</button>
                                 </router-link>
                                 <router-link :to="{path:'/home-main/main-videos'}">
-                                    <button :autofocus="true" class="btn">视频</button>
+                                    <button class="btn">视频</button>
                                 </router-link>
                             </el-space>
                         </div>
-                        <router-view></router-view>
+                        <div class="w-100">
+
+                            <router-view></router-view>
+                        </div>
                     </div>
 
                 </div>
