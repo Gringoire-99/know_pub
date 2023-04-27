@@ -1,12 +1,10 @@
 <template>
     <div>
         热榜
-        <post-editor></post-editor>
     </div>
 </template>
 
 <script>
-// import PostEditor from "@/components/post-editor/PostEditor.vue";
 import PostEditor from "@/components/post-editor/PostEditor.vue";
 
 export default {
