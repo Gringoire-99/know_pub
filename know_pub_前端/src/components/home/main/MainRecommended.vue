@@ -2,7 +2,7 @@
     <div class="w-100">
         <!--                  TODO 帖子：用户发布的内容会显示在这里-->
 
-        <post v-for="post in posts" :post="post"></post>
+        <post v-for="post in posts" :post="post" class="post"></post>
 
     </div>
 </template>
@@ -27,3 +27,8 @@ export default {
     }
 }
 </script>
+<style scoped>
+:deep(.post) {
+    margin-bottom: 10px;
+}
+</style>

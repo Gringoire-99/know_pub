@@ -40,8 +40,12 @@ function mockSetUp() {
                 id: Mock.mock('@guid'),
                 topic: Mock.mock('@ctitle(20,40)'),
                 content: {
-                    text: Mock.mock('@cparagraph(1,3)'),
-                    images: [Mock.mock('@image("200x100")'), Mock.mock('@image("100x100")'), Mock.mock('@image("100x100")')]
+                    text: Mock.mock('@cparagraph(6,20)'),
+                    images: Mock.mock({
+                        "images|0-3": [
+                            Mock.mock('@image("200x100")')
+                        ]
+                    })['images']
                 },
                 likes: Mock.mock('@integer(0,100)'),
                 dislikes: Mock.mock('@integer(0,100)'),
@@ -56,6 +60,7 @@ function mockSetUp() {
             }
             posts.push(post)
         }
+        console.log(posts)
         return posts
     })
     Mock.mock(/.*messages.*/, o => {
@@ -74,7 +79,6 @@ function mockSetUp() {
         return messages
     })
 }
-
 app.config.globalProperties.$mockSetUp = mockSetUp
 
 app.mount('#app')

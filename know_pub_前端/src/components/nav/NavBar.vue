@@ -179,6 +179,9 @@ export default {
 }
 </script>
 <style scoped>
+.navBar {
+    background-color: #ffffff;
+}
 
 .userInfo .el-button {
     height: 50px;

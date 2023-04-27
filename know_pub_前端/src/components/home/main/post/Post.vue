@@ -9,20 +9,34 @@
     <div class="card">
         <div class="card-body">
             <div class="card-title">
-                <div class="topic p-2 ">{{ post.topic }}</div>
-                <div class="intro">
-                    <el-image :src="post.content.images[0]">
-
+                <div class="topic">{{ post.topic }}</div>
+                <div v-show="!isCollapse" class="intro d-flex  w-100">
+                    <el-image v-if="post.content.images.length>0" :src="post.content.images[0]" alt=""
+                              class="img-fluid col-3">
+                        <template #error>
+                            <div class="image-slot">
+                                <el-icon>
+                                    <Picture/>
+                                </el-icon>
+                            </div>
+                        </template>
                     </el-image>
+                    <div class="text d-inline ">
+                        <span class="">{{ post.content.text.slice(0, 80) }}</span>
+                        <span class="full-text-btn">...阅读全文</span>
+                        <el-icon class="d-inline">
+                            <arrow-down/>
+                        </el-icon>
+                    </div>
                 </div>
-                <div v-show="isCollapse" class="full-text intro">
+                <div v-show="isCollapse" class="full-text">
                     <div class="p-2 authorInfo">
                         <el-image :src="post.author.avatar">
                             <template #error>
                                 <div class="image-slot">
-                                    <el-icon>
-                                        <picture-filled></picture-filled>
-                                    </el-icon>
+                                    <el-image>
+                                        <Picture></Picture>
+                                    </el-image>
                                 </div>
                             </template>
                         </el-image>
@@ -35,7 +49,8 @@
 </template>
 
 <script>
-import {PictureFilled} from "@element-plus/icons-vue";
+import {ArrowDown, Picture} from "@element-plus/icons-vue";
+import Mock from "mockjs";
 
 /**
  * post：某个主题的一个回答，
@@ -48,7 +63,7 @@ export default {
     //组件名
     name: "post",
     //依赖的组件
-    components: {PictureFilled},
+    components: {Picture, ArrowDown},
     //数据
     data() {
         return {
@@ -58,27 +73,26 @@ export default {
     }, //绑定父组件的属性
     props: {
         post: {
-            id: '',
-            // 所归属的主题
-            topic: '',
-            // 回答内容，是复杂类型，包括文字，图片，视频...
+            id: Mock.mock('@guid'),
+            topic: Mock.mock('@ctitle(20,40)'),
             content: {
-                text: '',
-                image: [],
+                text: Mock.mock('@cparagraph(6,20)'),
+                images: Mock.mock({
+                    "images|0-3": [
+                        Mock.mock('@image("200x100")')
+                    ]
+                })['images']
             },
-            likes: '',
-            dislikes: '',
-            // 线性结构的comments,需要传给comments组件
-            comments: [],
+            likes: Mock.mock('@integer(0,100)'),
+            dislikes: Mock.mock('@integer(0,100)'),
             author: {
-                id: '',
-                name: '',
-                desc: '',
-                avatar: ''
+                id: Mock.mock('@guid'),
+                name: Mock.mock('@cname'),
+                avatar: Mock.mock('@image("100x100")'),
+                desc: Mock.mock('@cparagraph(1,3)'),
             },
-            publish_time: '',
-            update_time: ''
-
+            publish_time: Mock.mock('@datetime'),
+            update_time: Mock.mock('@datetime'),
         }
     },
     //方法
@@ -103,16 +117,55 @@ export default {
 </script>
 
 <style scoped>
+.full-text-btn {
+    color: #0470bd;
+    cursor: pointer;
+}
+
 .authorInfo .el-image {
     width: 24px;
     height: 24px;
+    /*    圆角*/
+
+}
+
+.image-slot {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--el-fill-color-light);
+    color: var(--el-text-color-secondary);
+    font-size: 30px;
+    height: 100%;
+    width: 100%;
+}
+
+.image-slot .el-icon {
+    font-size: 30px;
 }
 
 .topic {
     /*换行*/
     word-wrap: anywhere;
-    font-size: 30px;
+    font-size: 26px;
     font-weight: 600;
     color: #333;
+    margin-bottom: 10px;
 }
+
+.intro .el-image {
+    border-radius: 5px;
+    margin-right: 20px;
+    width: 200px;
+    height: 100px;
+}
+
+.intro .text .el-icon {
+    font-size: 20px;
+    color: #0470bd;
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+
 </style>

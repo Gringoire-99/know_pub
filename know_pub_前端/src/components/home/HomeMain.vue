@@ -49,6 +49,10 @@ export default {
         getView() {
             console.log("获取视图")
         }
+    },
+    created() {
+        //     router-view 默认为推荐页面
+        this.$router.push({path: '/home-main/main-recommended'})
     }
 }
 </script>

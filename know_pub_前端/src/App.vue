@@ -1,7 +1,9 @@
 <template>
     <el-container class="w-100 h-100">
         <el-header>
-            <home-navbar/>
+            <el-affix :offset="0.1">
+                <home-navbar/>
+            </el-affix>
         </el-header>
         <el-main class="main">
             <el-row :gutter="10" class="main_content">

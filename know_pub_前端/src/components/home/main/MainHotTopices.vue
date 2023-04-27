@@ -1,15 +1,19 @@
 <template>
     <div>
         热榜
+        <post-editor></post-editor>
     </div>
 </template>
 
 <script>
+// import PostEditor from "@/components/post-editor/PostEditor.vue";
+import PostEditor from "@/components/post-editor/PostEditor.vue";
+
 export default {
     //组件名
     name: "main-hot-topic",
     //依赖的组件
-    components: {},
+    components: {PostEditor},
     //数据
     data() {
         return {}
