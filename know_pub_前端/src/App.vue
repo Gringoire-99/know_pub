@@ -9,7 +9,7 @@
             <el-row :gutter="10" class="main_content">
                 <el-col :span="3" class="d-none d-lg-inline ">
                 </el-col>
-                <el-col :lg="18" :md="18" :sm="24" :xl="18" :xs="24">
+                <el-col :lg="18" :md="18" :sm="24" :xl="24" :xs="24">
                     <router-view></router-view>
                 </el-col>
 

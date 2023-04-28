@@ -10,47 +10,113 @@
         <div class="card-body">
             <div class="card-title">
                 <div class="topic">{{ post.topic }}</div>
-                <div v-show="!isCollapse" class="intro d-flex  w-100">
-                    <el-image v-if="post.content.images.length>0" :src="post.content.images[0]" alt=""
-                              class="img-fluid col-3">
+
+            </div>
+            <div v-show="!isCollapse" class="intro d-flex  w-100">
+                <el-image v-if="post.content.images.length>0" :src="post.content.images[0]" alt=""
+                          class="img-fluid col-3">
+                    <template #error>
+                        <div class="image-slot">
+                            <el-icon>
+                                <Picture/>
+                            </el-icon>
+                        </div>
+                    </template>
+                </el-image>
+                <div class="text d-inline ">
+                    <span class="">{{ post.content.text.slice(0, 80) }}</span>
+                    <span class="full-text-btn">...阅读全文</span>
+                    <el-icon class="d-inline">
+                        <arrow-down/>
+                    </el-icon>
+                </div>
+            </div>
+            <div v-show="isCollapse" class="full-text">
+                <div class="p-2 authorInfo">
+                    <el-image :src="post.author.avatar">
                         <template #error>
                             <div class="image-slot">
-                                <el-icon>
-                                    <Picture/>
-                                </el-icon>
+                                <el-image>
+                                    <Picture></Picture>
+                                </el-image>
                             </div>
                         </template>
                     </el-image>
-                    <div class="text d-inline ">
-                        <span class="">{{ post.content.text.slice(0, 80) }}</span>
-                        <span class="full-text-btn">...阅读全文</span>
-                        <el-icon class="d-inline">
-                            <arrow-down/>
-                        </el-icon>
-                    </div>
                 </div>
-                <div v-show="isCollapse" class="full-text">
-                    <div class="p-2 authorInfo">
-                        <el-image :src="post.author.avatar">
-                            <template #error>
-                                <div class="image-slot">
-                                    <el-image>
-                                        <Picture></Picture>
-                                    </el-image>
-                                </div>
-                            </template>
-                        </el-image>
-                    </div>
-                </div>
+            </div>
+            <div class="card-footer d-flex align-items-center">
+                <el-button class="agree-btn" type="primary">
+                    <el-icon>
+                        <caret-top></caret-top>
+                    </el-icon>
+                    赞同
+                    {{ post.likes }}
+                </el-button>
+                <el-button class="disagree-btn" type="primary">
+                    <el-icon>
+                        <caret-bottom></caret-bottom>
+                    </el-icon>
+                </el-button>
+                <div class="etc d-flex align-items-center justify-content-center">
+                    <el-button class="comments-btn">
+                        <div class="d-flex justify-content-center align-items-center">
 
+                            <el-icon>
+                                <ChatDotRound/>
+                            </el-icon>
+                            {{ post.comments.length > 0 ? `${post.comments.length}条评论` : "添加评论" }}
+
+                        </div>
+
+                    </el-button>
+                    <el-button class="share-btn">
+                        <div class="d-flex justify-content-center align-items-center">
+
+                            <el-icon>
+                                <share></share>
+                            </el-icon>
+                            分享
+
+                        </div>
+
+                    </el-button>
+                    <el-popover placement="bottom" popper-class="popover" trigger="click">
+                        <template #reference>
+                            <el-button class="more-btn">
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <el-icon class="more">
+                                        <MoreFilled/>
+                                    </el-icon>
+                                </div>
+
+                            </el-button>
+                        </template>
+                        <ul class="list-group">
+                            <li class="list-group-item">不喜欢</li>
+                            <li class="list-group-item">举报</li>
+                            <li class="list-group-item">屏蔽这个作者</li>
+                        </ul>
+                    </el-popover>
+
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import {ArrowDown, Picture} from "@element-plus/icons-vue";
+import {
+    ArrowDown,
+    ArrowUpBold,
+    CaretBottom,
+    CaretTop,
+    Collection,
+    Comment,
+    Picture,
+    Share, StarFilled
+} from "@element-plus/icons-vue";
 import Mock from "mockjs";
+import Comments from "@/components/home/main/post/Comments.vue";
 
 /**
  * post：某个主题的一个回答，
@@ -63,7 +129,10 @@ export default {
     //组件名
     name: "post",
     //依赖的组件
-    components: {Picture, ArrowDown},
+    components: {
+        StarFilled,
+        Collection, Share, Comment, Comments, CaretBottom, CaretTop, ArrowUpBold, Picture, ArrowDown
+    },
     //数据
     data() {
         return {
@@ -117,6 +186,73 @@ export default {
 </script>
 
 <style scoped>
+
+.list-group .el-popover.el-popper {
+    padding: 0
+}
+
+.list-group {
+    padding: 0;
+    margin: 0;
+    border: none;
+}
+
+.list-group-item {
+    border: none;
+}
+
+.list-group-item:hover {
+    background: #f5f5f5;
+}
+
+.card-footer .etc .el-button {
+    border: none;
+    background: white;
+    font-size: 16px;
+    margin-left: 5px;
+}
+
+.card-footer .etc .el-button:hover {
+    color: #040f1c;
+}
+
+.card-footer .el-button .el-icon {
+    font-size: 20px;
+    margin-bottom: 2px;
+    margin-right: 3px;
+}
+
+.disagree-btn {
+    width: 35px;
+    border: none;
+    background: rgba(5, 109, 232, .1);
+    color: #056de8;
+    margin-left: 5px;
+}
+
+.disagree-btn .el-icon {
+    font-size: 20px;
+}
+
+.agree-btn .el-icon {
+    font-size: 20px;
+}
+
+.agree-btn {
+    padding-left: 10px;
+    border: none;
+    background: rgba(5, 109, 232, .1);
+    color: #056de8;
+}
+
+.card-footer {
+    margin-top: 15px;
+    padding: 0;
+    border: none;
+    background-color: white;
+
+}
+
 .full-text-btn {
     color: #0470bd;
     cursor: pointer;

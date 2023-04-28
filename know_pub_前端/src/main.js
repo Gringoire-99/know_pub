@@ -57,6 +57,13 @@ function mockSetUp() {
                 },
                 publish_time: Mock.mock('@datetime'),
                 update_time: Mock.mock('@datetime'),
+                comments: Mock.mock({
+                    "comments|0-3": [
+                        {
+                            id: Mock.mock('@guid'),
+                            content: Mock.mock('@cparagraph(1,3)'),
+                        }]
+                })['comments'],
             }
             posts.push(post)
         }
@@ -79,6 +86,7 @@ function mockSetUp() {
         return messages
     })
 }
+
 app.config.globalProperties.$mockSetUp = mockSetUp
 
 app.mount('#app')
