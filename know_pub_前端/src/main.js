@@ -10,6 +10,7 @@ import zhCn from 'element-plus/es/locale/lang/zh-cn'
 import Router from "@/router";
 import Mock from "mockjs/dist/mock";
 import {store} from "../store";
+import http from "@/http/http";
 
 const app = createApp(App)
 
@@ -94,6 +95,7 @@ function mockSetUp() {
     })
 }
 
+app.config.globalProperties.$http = http
 app.config.globalProperties.$mockSetUp = mockSetUp
 app.use(store)
 app.mount('#app')

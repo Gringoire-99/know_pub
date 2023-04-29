@@ -25,10 +25,21 @@
 
 <script>
 import HomeNavbar from "@/components/nav/NavBar.vue";
+import http from "@/http/http";
+
 function checkLoginState() {
     // TODO 检查登录状态
     return true
 }
+
+function getUserInfo() {
+    http.get('/user/info').then(response => {
+        return response.data
+    })
+    // TODO 获取用户信息
+    return {}
+}
+
 export default {
     //组件名
     name: "app",
@@ -60,6 +71,9 @@ export default {
     beforeCreate() {
         this.$mockSetUp()
         this.$store.commit('LOGIN_STATE', checkLoginState())
+        if (this.$store.state.isLogin) {
+            // this.$store.commit('SET_USER', this.$mockUser())
+        }
     }
 }
 </script>

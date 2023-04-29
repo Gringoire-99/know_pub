@@ -19,7 +19,7 @@ export default {
         }
     },
     created() {
-        axios.get('http://localhost:8080/recommended-posts', {}).then(response => {
+        axios.get('/api/recommended-posts', {}).then(response => {
             this.posts = response.data
         }, reason => {
             console.log(reason)

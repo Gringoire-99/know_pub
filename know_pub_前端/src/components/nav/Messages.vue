@@ -74,7 +74,7 @@ export default {
             // 休眠5秒，再启动
 
             setTimeout(() => {
-                axios.get('http://localhost:8080/messages', {
+                axios.get('/messages', {
                     params: {
                         pageSize: this.pageSize,
                         pageIndex: this.pageIndex
