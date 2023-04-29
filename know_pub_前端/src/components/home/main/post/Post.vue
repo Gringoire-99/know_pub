@@ -8,11 +8,12 @@
 
     <div class="card">
         <div class="card-body">
+            <!--            主题名-->
             <div class="card-title">
                 <div class="topic">{{ post.topic }}</div>
-
             </div>
-            <div v-show="!isCollapse" class="intro d-flex  w-100">
+            <!--            简短介绍-未展开时显示-->
+            <div v-if="isCollapseFullText" class="intro d-flex w-100">
                 <el-image v-if="post.content.images.length>0" :src="post.content.images[0]" alt=""
                           class="img-fluid col-3">
                     <template #error>
@@ -24,14 +25,15 @@
                     </template>
                 </el-image>
                 <div class="text d-inline ">
-                    <span class="">{{ post.content.text.slice(0, 80) }}</span>
-                    <span class="full-text-btn">...阅读全文</span>
+                    <span class="intro-text" v-on:click="collapseFullText">{{ post.content.text.slice(0, 80) }}</span>
+                    <span class="full-text-btn" v-on:click="collapseFullText">...阅读全文</span>
                     <el-icon class="d-inline">
                         <arrow-down/>
                     </el-icon>
                 </div>
             </div>
-            <div v-show="isCollapse" class="full-text">
+            <!--            正文-->
+            <div v-if="!isCollapseFullText" class="full-text">
                 <div class="p-2 authorInfo">
                     <el-image :src="post.author.avatar">
                         <template #error>
@@ -44,6 +46,7 @@
                     </el-image>
                 </div>
             </div>
+            <!--            操作栏-->
             <div class="card-footer d-flex align-items-center">
                 <el-button class="agree-btn" type="primary">
                     <el-icon>
@@ -58,16 +61,13 @@
                     </el-icon>
                 </el-button>
                 <div class="etc d-flex align-items-center justify-content-center">
-                    <el-button class="comments-btn">
+                    <el-button class="comments-btn" v-on:click="collapseComments">
                         <div class="d-flex justify-content-center align-items-center">
-
                             <el-icon>
                                 <ChatDotRound/>
                             </el-icon>
                             {{ post.comments.length > 0 ? `${post.comments.length}条评论` : "添加评论" }}
-
                         </div>
-
                     </el-button>
                     <el-button class="share-btn">
                         <div class="d-flex justify-content-center align-items-center">
@@ -76,11 +76,9 @@
                                 <share></share>
                             </el-icon>
                             分享
-
                         </div>
-
                     </el-button>
-                    <el-popover placement="bottom" popper-class="popover" trigger="click">
+                    <el-popover placement="bottom" popper-class="popover" trigger="hover">
                         <template #reference>
                             <el-button class="more-btn">
                                 <div class="d-flex justify-content-center align-items-center">
@@ -100,6 +98,11 @@
 
                 </div>
             </div>
+            <!--            评论栏-->
+            <div v-if="!isCollapseComments" class="card-footer d-flex align-items-center">
+                <post-comment></post-comment>
+                <comments :comments="post.comments" :is-complete="false"></comments>
+            </div>
         </div>
     </div>
 </template>
@@ -116,7 +119,9 @@ import {
     Share, StarFilled
 } from "@element-plus/icons-vue";
 import Mock from "mockjs";
+
 import Comments from "@/components/home/main/post/Comments.vue";
+import PostComment from "@/components/home/main/post/PostComment.vue";
 
 /**
  * post：某个主题的一个回答，
@@ -130,13 +135,15 @@ export default {
     name: "post",
     //依赖的组件
     components: {
+        PostComment,
         StarFilled,
         Collection, Share, Comment, Comments, CaretBottom, CaretTop, ArrowUpBold, Picture, ArrowDown
     },
     //数据
     data() {
         return {
-            isCollapse: false,
+            isCollapseFullText: true,
+            isCollapseComments: true,
 
         }
     }, //绑定父组件的属性
@@ -165,7 +172,14 @@ export default {
         }
     },
     //方法
-    methods: {},
+    methods: {
+        collapseFullText() {
+            this.isCollapseFullText = !this.isCollapseFullText;
+        },
+        collapseComments() {
+            this.isCollapseComments = !this.isCollapseComments;
+        }
+    },
     //挂载时执行
     mounted() {
     },
@@ -303,5 +317,12 @@ export default {
     margin-left: 5px;
 }
 
+.intro .text .el-icon:hover, .intro .text .full-text-btn:hover {
+    color: #0052d6;
+}
 
+.intro .text:hover {
+    color: rgba(91, 88, 88, 0.86);
+    cursor: pointer;
+}
 </style>

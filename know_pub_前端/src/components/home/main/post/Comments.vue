@@ -32,7 +32,20 @@ export default {
     computed: {}
     ,
     //绑定父组件的属性
-    props: {}
+    props: {
+        // 评论列表
+        comments: {
+            type: Array,
+            default: () => [],
+            required: true
+        },
+        // 是否是完整的评论列表
+        isComplete: {
+            type: Boolean,
+            default: false,
+            required: true
+        }
+    }
 }
 </script>
 

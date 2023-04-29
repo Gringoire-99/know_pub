@@ -25,7 +25,10 @@
 
 <script>
 import HomeNavbar from "@/components/nav/NavBar.vue";
-
+function checkLoginState() {
+    // TODO 检查登录状态
+    return true
+}
 export default {
     //组件名
     name: "app",
@@ -42,7 +45,6 @@ export default {
     },
     //创建时执行
     created() {
-        this.$mockSetUp()
     },
     //侦听器
     watch: {
@@ -54,7 +56,11 @@ export default {
     computed: {}
     ,
     //绑定父组件的属性
-    props: {}
+    props: {},
+    beforeCreate() {
+        this.$mockSetUp()
+        this.$store.commit('LOGIN_STATE', checkLoginState())
+    }
 }
 </script>
 

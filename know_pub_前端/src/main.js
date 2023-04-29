@@ -9,6 +9,7 @@ import ElementPlus, {ElNotification} from 'element-plus'
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
 import Router from "@/router";
 import Mock from "mockjs/dist/mock";
+import {store} from "../store";
 
 const app = createApp(App)
 
@@ -30,6 +31,7 @@ app.config.globalProperties.$popUp = popUp
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
     app.component(key, component)
 }
+
 
 function mockSetUp() {
     Mock.mock(/.*recommended-posts.*/, o => {
@@ -58,10 +60,15 @@ function mockSetUp() {
                 publish_time: Mock.mock('@datetime'),
                 update_time: Mock.mock('@datetime'),
                 comments: Mock.mock({
-                    "comments|0-3": [
+                    "comments|0-30": [
                         {
                             id: Mock.mock('@guid'),
                             content: Mock.mock('@cparagraph(1,3)'),
+                            rootTopicId: Mock.mock('@guid'),
+                            parentId: Mock.mock('@guid'),
+                            likes: Mock.mock('@integer(0,100)'),
+                            publish_time: Mock.mock('@datetime'),
+                            avatar: Mock.mock('@image("100x100")'),
                         }]
                 })['comments'],
             }
@@ -88,5 +95,5 @@ function mockSetUp() {
 }
 
 app.config.globalProperties.$mockSetUp = mockSetUp
-
+app.use(store)
 app.mount('#app')
