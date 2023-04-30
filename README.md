@@ -1,4 +1,5 @@
-# 一个类似知乎的知识分享论坛（vue+springboot）
+# KnowPub (一个类似知乎的知识分享论坛)（vue+springboot）
+![image](https://github.com/Gringoire-99/know_pub/blob/master/know_pub_%E5%89%8D%E7%AB%AF/src/assets/login/logo.png)
 （页面和主要业务参考知乎）
    
 答辩时间：5.23左右  
