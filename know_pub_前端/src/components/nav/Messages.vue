@@ -55,7 +55,7 @@
 
 <script>
 
-import axios from "axios";
+import http from "@/utils/http/http";
 
 export default {
     name: "messages",
@@ -74,7 +74,7 @@ export default {
             // 休眠5秒，再启动
 
             setTimeout(() => {
-                axios.get('/messages', {
+                http.get('/messages', {
                     params: {
                         pageSize: this.pageSize,
                         pageIndex: this.pageIndex
@@ -82,7 +82,8 @@ export default {
                 }).then(
                     resolve => {
                         if (resolve.status === 200) {
-                            this.messages = this.messages.concat(resolve.data)
+                            // 连接两个数组
+                            this.messages.push(...resolve.data)
                             this.isLoading = false
                         } else {
                             alert("failed")
@@ -100,7 +101,6 @@ export default {
             let distance = 100
             const {scrollTop, clientHeight, scrollHeight} = e.target
             if (scrollTop + clientHeight + distance > scrollHeight) {
-                console.log(scrollTop, clientHeight, scrollHeight)
                 this.pageIndex += this.pageSize
             }
 

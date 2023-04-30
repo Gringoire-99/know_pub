@@ -6,16 +6,16 @@
                     <div class="card-body">
                         <div class="card-title d-flex align-items-center">
                             <el-space :size="30">
-                                <router-link :to="{path:'/home-main/main-followed'}">
+                                <router-link :to="{path:'/main-followed'}">
                                     <button class="btn">关注</button>
                                 </router-link>
-                                <router-link :to="{path:'/home-main/main-recommended'}">
+                                <router-link :to="{path:'/main-recommended'}">
                                     <button :autofocus="true" class="btn">推荐</button>
                                 </router-link>
-                                <router-link :to="{path:'/home-main/main-hot-topics'}">
+                                <router-link :to="{path:'/main-hot-topics'}">
                                     <button class="btn">热榜</button>
                                 </router-link>
-                                <router-link :to="{path:'/home-main/main-videos'}">
+                                <router-link :to="{path:'/main-videos'}">
                                     <button class="btn">视频</button>
                                 </router-link>
                             </el-space>
@@ -52,7 +52,7 @@ export default {
     },
     created() {
         //     router-view 默认为推荐页面
-        this.$router.push({path: '/home-main/main-recommended'})
+        this.$router.push({path: '/main-recommended'})
     }
 }
 </script>

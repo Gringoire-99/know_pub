@@ -78,6 +78,15 @@
                             分享
                         </div>
                     </el-button>
+                    <el-button class="collection-btn">
+                        <div class="d-flex justify-content-center align-items-center">
+
+                            <el-icon>
+                                <star-filled></star-filled>
+                            </el-icon>
+                            收藏
+                        </div>
+                    </el-button>
                     <el-popover placement="bottom" popper-class="popover" trigger="hover">
                         <template #reference>
                             <el-button class="more-btn">
@@ -116,7 +125,8 @@ import {
     Collection,
     Comment,
     Picture,
-    Share, StarFilled
+    Share,
+    StarFilled
 } from "@element-plus/icons-vue";
 import Mock from "mockjs";
 

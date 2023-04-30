@@ -1,15 +1,33 @@
 <template>
-    <router-view></router-view>
-</template>
+    <el-container class="w-100 h-100">
+        <el-header>
+            <el-affix :offset="0.1">
+                <home-navbar/>
+            </el-affix>
+        </el-header>
+        <el-main class="main">
+            <el-row :gutter="10" class="main_content">
+                <el-col :span="3" class="d-none d-lg-inline ">
+                </el-col>
+                <el-col :lg="18" :md="18" :sm="24" :xl="24" :xs="24">
+                    <router-view></router-view>
+                </el-col>
 
+                <el-col :span="1" class="d-none d-lg-inline ">
+                </el-col>
+            </el-row>
+
+        </el-main>
+
+    </el-container>
+
+</template>
 <script>
 import HomeNavbar from "@/components/nav/NavBar.vue";
-import http from "@/utils/http/http";
-
 
 export default {
     //组件名
-    name: "app",
+    name: "",
     //依赖的组件
     components: {HomeNavbar},
     //数据
@@ -17,35 +35,12 @@ export default {
         return {}
     },
     //方法
-    methods: {
-        getUserInfo() {
-            http.get("/user/info", {
-                params: {
-                    userId: this.$store.state.userInfo.id
-                }
-            }).then(response => {
-                if (response.data.code === 200) {
-                    this.$store.commit("setUserInfo", response.data.userInfo)
-                }
-            }, reason => {
-                console.log(reason)
-            })
-        }
-
-    },
+    methods: {},
     //挂载时执行
     mounted() {
     },
     //创建时执行
     created() {
-        //     从本地存储中获取用户id
-        let userId = localStorage.getItem("userId")
-        if (userId) {
-            this.$store.commit("setUserId", userId)
-            this.getUserInfo()
-        } else {
-            // this.$router.push("/login")
-        }
     },
     //侦听器
     watch: {
@@ -57,14 +52,9 @@ export default {
     computed: {}
     ,
     //绑定父组件的属性
-    props: {},
-    beforeCreate() {
-        this.$mockSetUp()
-
-    }
+    props: {}
 }
 </script>
-
 <style scoped>
 
 .home-navbar {
