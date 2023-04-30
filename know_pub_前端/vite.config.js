@@ -11,15 +11,15 @@ export default defineConfig({
             '@': fileURLToPath(new URL('./src', import.meta.url))
         }
     },
-    devServer: {
-        port: 8081,
-        proxy: {
-            //带有/apit标签的请求向目的主机发生请求
-            '^/api': {
-                target: 'http://localhost:8080/',
-                //将/api/替换为空字符串
-                pathRewrite: {'/api': ''}
-            }
-        }
-    },
+    // devServer: {
+    //     port: 8081,
+    //     proxy: {
+    //         //带有/apit标签的请求向目的主机发生请求
+    //         '^/api': {
+    //             target: 'http://localhost:8080/',
+    //             //将/api/替换为空字符串
+    //             pathRewrite: {'/api': ''}
+    //         }
+    //     }
+    // },
 })

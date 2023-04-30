@@ -1,5 +1,5 @@
 <template>
-    <router-view></router-view>
+        <router-view></router-view>
 </template>
 
 <script>
@@ -44,7 +44,7 @@ export default {
             this.$store.commit("setUserId", userId)
             this.getUserInfo()
         } else {
-            // this.$router.push("/login")
+                this.$router.push("/login")
         }
     },
     //侦听器
@@ -112,4 +112,3 @@ body::-webkit-scrollbar-track {
 body::-webkit-scrollbar-button {
 }
 </style>
-

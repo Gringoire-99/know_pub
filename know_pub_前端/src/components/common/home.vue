@@ -12,7 +12,6 @@
                 <el-col :lg="18" :md="18" :sm="24" :xl="24" :xs="24">
                     <router-view></router-view>
                 </el-col>
-
                 <el-col :span="1" class="d-none d-lg-inline ">
                 </el-col>
             </el-row>
@@ -41,6 +40,7 @@ export default {
     },
     //创建时执行
     created() {
+        this.$router.push({path: '/main-recommended'})
     },
     //侦听器
     watch: {

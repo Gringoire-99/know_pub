@@ -1,11 +1,12 @@
 <template>
-    <router-view></router-view>
+    <div class="root w-100 h-100">
+        <router-view></router-view>
+    </div>
 </template>
-
 <script>
 export default {
     //组件名
-    name: "",
+    name: "root",
     //依赖的组件
     components: {},
     //数据

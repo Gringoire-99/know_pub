@@ -65,7 +65,7 @@
                 </el-button>
 
             </el-col>
-            <el-col :lg="4" :md="4" :sm="9" :xl="4" :xs="10" class="userInfo">
+            <el-col :lg="4" :md="4" :sm="9" :xl="4" :xs="10" class="userInfo d-flex justify-content-center">
                 <el-popover :width="400" placement="bottom" trigger="click">
                     <template #reference>
                         <el-button>
