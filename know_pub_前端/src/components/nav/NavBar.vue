@@ -95,10 +95,44 @@
                         </el-button>
                     </template>
                 </el-popover>
-                <el-button>
-                    <el-avatar :src="'https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png'"
-                               alt="" shape="square"/>
-                </el-button>
+                <el-popover
+                    placement="bottom"
+                    trigger="click"
+                >
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <el-icon>
+                                <HomeFilled></HomeFilled>
+                            </el-icon>
+                            我的主页
+                        </li>
+                        <li class="list-group-item">
+                            <el-icon>
+                                <HomeFilled></HomeFilled>
+                            </el-icon>
+                            我的主页
+                        </li>
+                        <li class="list-group-item">
+                            <el-icon>
+                                <HomeFilled></HomeFilled>
+                            </el-icon>
+                            我的主页
+                        </li>
+                        <li class="list-group-item">
+                            <el-icon>
+                                <HomeFilled></HomeFilled>
+                            </el-icon>
+                            我的主页
+                        </li>
+                    </ul>
+                    <template #reference>
+                        <el-button>
+                            <el-avatar :src="this.$store.state.userInfo.avatar"
+                                       alt="" shape="square"/>
+                        </el-button>
+                    </template>
+                </el-popover>
+
             </el-col>
         </el-row>
 
@@ -106,14 +140,14 @@
 </template>
 
 <script>
-import {Burger, Message, Search} from "@element-plus/icons-vue";
+import {Burger, HomeFilled, Message, Search} from "@element-plus/icons-vue";
 import Messages from "@/components/nav/Messages.vue";
 
 export default {
     //组件名
     name: "home-navbar",
     //依赖的组件
-    components: {Messages, Message, Search, Burger},
+    components: {HomeFilled, Messages, Message, Search, Burger},
     //数据
     data() {
         return {
@@ -179,6 +213,22 @@ export default {
 }
 </script>
 <style scoped>
+
+.list-group {
+    padding: 0;
+    margin: 0;
+    border: none;
+}
+
+.list-group-item {
+    border: none;
+}
+
+.list-group-item:hover {
+    background: #f5f5f5;
+}
+
+
 .navBar {
     background-color: #ffffff;
 }

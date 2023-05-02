@@ -18,7 +18,7 @@ const mutations = {
 }
 const state = {
     userId: '',
-    isLogin: true,
+    isLogin: false,
     userInfo: {
         name: '',
         avatar: '',

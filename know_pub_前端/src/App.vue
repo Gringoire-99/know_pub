@@ -1,11 +1,11 @@
 <template>
-        <router-view></router-view>
+    <router-view></router-view>
 </template>
 
 <script>
 import HomeNavbar from "@/components/nav/NavBar.vue";
 import http from "@/utils/http/http";
-
+import Mock from "mockjs";
 
 export default {
     //组件名
@@ -21,13 +21,15 @@ export default {
         getUserInfo() {
             http.get("/user/info", {
                 params: {
-                    userId: this.$store.state.userInfo.id
+                    userId: this.$store.state.userId
                 }
             }).then(response => {
-                if (response.data.code === 200) {
-                    this.$store.commit("setUserInfo", response.data.userInfo)
+                if (response.status === 200) {
+                    this.$store.commit("SET_USER_ID", response.data)
+                    this.$store.commit("LOGIN_STATE", true)
                 }
             }, reason => {
+                this.$store.commit("LOGIN_STATE", false)
                 console.log(reason)
             })
         }
@@ -38,13 +40,17 @@ export default {
     },
     //创建时执行
     created() {
+        localStorage.setItem("userId", '1')
+        this.$cookies.set("token", Mock.mock('guid'))
+
         //     从本地存储中获取用户id
         let userId = localStorage.getItem("userId")
         if (userId) {
-            this.$store.commit("setUserId", userId)
+            this.$store.commit("SET_USER_ID", userId)
             this.getUserInfo()
         } else {
-                this.$router.push("/login")
+            this.$store.commit("LOGIN_STATE", false)
+            this.$popUp('登录以查看更多内容', '', 'info', 2000)
         }
     },
     //侦听器
@@ -60,6 +66,7 @@ export default {
     props: {},
     beforeCreate() {
         this.$mockSetUp()
+        // 测试数据
 
     }
 }

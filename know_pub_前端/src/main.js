@@ -16,11 +16,12 @@ import mockSetUp from "@/utils/mock/mock-setup";
 const app = createApp(App)
 
 
-function popUp(message, title, type) {
+function popUp(message, title, type, duration) {
     ElNotification({
         title,
         message,
-        type: type,
+        type,
+        duration
     })
 }
 

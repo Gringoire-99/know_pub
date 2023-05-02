@@ -41,15 +41,14 @@ function mockSetUp() {
             }
             posts.push(post)
         }
-        console.log(posts)
         return posts
     })
     Mock.mock(/.*messages.*/, o => {
+        console.log(o.url)
         let messages = []
         let param = o.url.match(/.*pageSize=(\d+).*pageIndex=(\d+).*/)
         let pageSize = parseInt(param[1])
         let pageIndex = parseInt(param[2])
-        console.log(pageSize, pageIndex)
         for (let i = pageIndex; i < pageIndex + pageSize; i++) {
             let msg = {
                 content: `${Mock.mock('@cname')}给你发了一条消息`,
@@ -58,6 +57,15 @@ function mockSetUp() {
             messages.push(msg)
         }
         return messages
+    })
+    Mock.mock(/.*user\/info.*/, o => {
+        let param = o.url.match(/.*userId=(.+)&?/)
+        let userId = param[1]
+        return {
+            userId,
+            name: Mock.mock('@cname'),
+            avatar: Mock.mock('@image("100x100")'),
+        }
     })
 }
 

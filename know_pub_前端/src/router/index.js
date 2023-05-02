@@ -4,16 +4,16 @@ import mainRecommended from "@/components/home/main/MainRecommended.vue";
 import mainFollowed from "@/components/home/main/MainFollowed.vue";
 import mainHotTopices from "@/components/home/main/MainHotTopices.vue";
 import mainVideos from "@/components/home/main/MainVideos.vue";
-import login from "@/components/common/login.vue";
-import root from "@/components/common/root.vue";
-import home from "@/components/common/home.vue";
+import root from "@/components/common/Root.vue";
+import home from "@/components/common/Home.vue";
 import NotFound from "@/components/common/NotFound.vue";
+import loginPage from "@/components/common/LoginPage.vue";
 
 const routes = [
     {
         path: '/', component: root
         , children: [
-            {name: 'login', path: '/login', component: login},
+            {name: 'login-page', path: '/login', component: loginPage},
             {
                 name: 'home', path: '/home', component: home, children: [
                     {
