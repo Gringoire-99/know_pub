@@ -59,7 +59,6 @@ export default {
 
 .home-navbar {
     overflow: hidden;
-    white-space: nowrap;
 }
 
 .el-header {

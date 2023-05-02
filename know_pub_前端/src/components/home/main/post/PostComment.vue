@@ -3,22 +3,24 @@
         <img v-show="isLogin" :src="userInfo.avatar" alt="" class="avatar"/>
         <div class="input-comment ">
 
-            <textarea ref="textarea" v-model="comment" placeholder="评论千万条，友善第一条" v-on:focusin="displayFooter">
+            <textarea ref="textarea" v-model="comment" placeholder="评论千万条，友善第一条" v-on:focusin="displayFooter"
+                      v-on:focusout="displayFooter">
             </textarea>
-            <div v-if="isShowFooter" class="comment-footer w-100 d-flex align-items-center">
+            <div v-if="isShowFooter" class="comment-footer w-100 d-flex align-items-center mb-1">
 
                 <img alt="" class="icon" src="../../../../assets/common/image.svg">
                 <img alt="" class="icon" src="../../../../assets/common/voice.svg">
                 <el-popover
                     placement="bottom"
                     trigger="click"
+                    width="370px"
                 >
                     <template #reference>
                         <!--                      preventDefault  防止textarea失焦-->
                         <img alt="" class="icon" src="../../../../assets/common/emoji.svg"
                              v-on:mousedown="preventDefault">
                     </template>
-                    <VuemojiPicker @emojiClick="handleEmojiClick" v-on:mousedown="preventDefault"/>
+                    <VuemojiPicker class="d-block" @emojiClick="handleEmojiClick" v-on:mousedown="preventDefault"/>
                 </el-popover>
                 <button class="">发布</button>
 
@@ -30,6 +32,7 @@
 <script>
 import {VuemojiPicker} from 'vuemoji-picker'
 import {Picture} from "@element-plus/icons-vue";
+import {teal} from "mockjs/src/mock/random/color_dict";
 
 export default {
 
@@ -50,11 +53,19 @@ export default {
     methods: {
         handleEmojiClick(emoji) {
             let textarea = this.$refs.textarea
-            textarea.setRangeText(emoji.unicode, textarea.selectionStart, textarea.selectionEnd, 'end')
+            // 在光标位置插入
+            let text = this.comment
+            let start = textarea.selectionStart
+            this.comment = text.slice(0, start) + emoji.unicode + text.slice(start);
+            // 重新设置光标位置,因为comment是响应式的，所以需要在下一次渲染后设置,文本重置之前设置光标位置是无效的
+            this.$nextTick(() => {
+                textarea.selectionStart = textarea.selectionEnd = start + emoji.unicode.length
+                textarea.focus()
+            })
 
         },
         displayFooter() {
-            this.isShowFooter = true
+            this.isShowFooter = !this.isShowFooter
         },
         preventDefault(e) {
             e.preventDefault()
@@ -85,12 +96,13 @@ export default {
 <style scoped>
 textarea {
     width: 100%;
+    height: auto;
     border: none;
     outline: none;
     resize: none;
     border-radius: 2px;
     box-shadow: none;
-    overflow-y: scroll;
+    overflow: scroll;
     overflow-x: hidden;
 }
 

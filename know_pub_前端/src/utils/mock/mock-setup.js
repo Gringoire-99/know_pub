@@ -26,18 +26,7 @@ function mockSetUp() {
                 },
                 publish_time: Mock.mock('@datetime'),
                 update_time: Mock.mock('@datetime'),
-                comments: Mock.mock({
-                    "comments|0-30": [
-                        {
-                            id: Mock.mock('@guid'),
-                            content: Mock.mock('@cparagraph(1,3)'),
-                            rootTopicId: Mock.mock('@guid'),
-                            parentId: Mock.mock('@guid'),
-                            likes: Mock.mock('@integer(0,100)'),
-                            publish_time: Mock.mock('@datetime'),
-                            avatar: Mock.mock('@image("100x100")'),
-                        }]
-                })['comments'],
+                comment_number: Mock.mock('@integer(0,100)'),
             }
             posts.push(post)
         }
@@ -64,6 +53,25 @@ function mockSetUp() {
             name: Mock.mock('@cname'),
             avatar: '/src/assets/icon_small.png',
         }
+    })
+    Mock.mock(/.*comments.*/, o => {
+        let param = o.url.match(/.*pageSize=(\d+).*pageIndex=(\d+).*/)
+        let pageSize = parseInt(param[1])
+        let pageIndex = parseInt(param[2])
+        let comments = []
+        for (let i = pageIndex; i < pageIndex + pageSize; i++) {
+            let comment = {
+                id: Mock.mock('@guid'),
+                content: Mock.mock('@cparagraph(1,3)'),
+                rootTopicId: Mock.mock('@guid'),
+                parentId: Mock.mock('@guid'),
+                likes: Mock.mock('@integer(0,100)'),
+                publish_time: Mock.mock('@datetime'),
+                avatar: Mock.mock('@image("100x100")'),
+            }
+            comments.push(comment)
+        }
+        return comments
     })
 }
 

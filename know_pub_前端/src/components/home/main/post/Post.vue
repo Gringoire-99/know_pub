@@ -66,7 +66,7 @@
                             <el-icon>
                                 <ChatDotRound/>
                             </el-icon>
-                            {{ post.comments.length > 0 ? `${post.comments.length}条评论` : "添加评论" }}
+                            {{ post.comment_number > 0 ? `${post.comment_number}条评论` : "添加评论" }}
                         </div>
                     </el-button>
                     <el-button class="share-btn">
@@ -110,7 +110,7 @@
             <!--            评论栏-->
             <div v-if="!isCollapseComments" class="card-footer d-flex align-items-center">
                 <post-comment></post-comment>
-                <comments :comments="post.comments" :is-complete="false"></comments>
+                <comments :is-complete="false" :post-id="post.id"></comments>
             </div>
         </div>
     </div>
@@ -179,6 +179,7 @@ export default {
             },
             publish_time: Mock.mock('@datetime'),
             update_time: Mock.mock('@datetime'),
+            comment_number: Mock.mock('@integer(0,100)'),
         }
     },
     //方法
