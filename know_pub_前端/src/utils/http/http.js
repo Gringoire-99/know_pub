@@ -12,7 +12,6 @@ const http = axios.create({
 function setInterceptorToken() {
     http.interceptors.request.use(config => {
         config.headers['token'] = app.config.globalProperties.$cookies.get('token') // 请求头带上token
-        console.log("token: " + config.headers['token'])
         return config
     }, error => {
         return Promise.reject(error)

@@ -44,7 +44,6 @@ function mockSetUp() {
         return posts
     })
     Mock.mock(/.*messages.*/, o => {
-        console.log(o.url)
         let messages = []
         let param = o.url.match(/.*pageSize=(\d+).*pageIndex=(\d+).*/)
         let pageSize = parseInt(param[1])
@@ -62,9 +61,8 @@ function mockSetUp() {
         let param = o.url.match(/.*userId=(.+)&?/)
         let userId = param[1]
         return {
-            userId,
             name: Mock.mock('@cname'),
-            avatar: Mock.mock('@image("100x100")'),
+            avatar: '/src/assets/icon_small.png',
         }
     })
 }

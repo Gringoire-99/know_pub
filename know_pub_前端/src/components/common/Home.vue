@@ -73,33 +73,5 @@ body {
     overflow-x: hidden;
 }
 
-/* 滚动条整体 */
-body::-webkit-scrollbar {
-    width: 5px;
-}
-
-/* 两个滚动条交接处 -- x轴和y轴 */
-body::-webkit-scrollbar-corner {
-    background-color: transparent;
-}
-
-/* 滚动条滑块 */
-body::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    -webkit-box-shadow: inset 0 0 5px rgb(7, 123, 255);
-    background: #0794ff;
-
-}
-
-/* 滚动条轨道 */
-body::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 5px rgba(215, 160, 160, 0.2);
-    border-radius: 10px;
-    background: #ededed;
-}
-
-/* 滚动条两端按钮 */
-body::-webkit-scrollbar-button {
-}
 </style>
 

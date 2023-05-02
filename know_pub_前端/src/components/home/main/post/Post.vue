@@ -87,7 +87,7 @@
                             收藏
                         </div>
                     </el-button>
-                    <el-popover placement="bottom" popper-class="popover" trigger="hover">
+                    <el-popover placement="bottom" popper-class="popover" trigger="click">
                         <template #reference>
                             <el-button class="more-btn">
                                 <div class="d-flex justify-content-center align-items-center">

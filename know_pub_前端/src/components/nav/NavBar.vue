@@ -1,7 +1,7 @@
 <template xmlns="http://www.w3.org/1999/html">
     <div>
-        <el-row :class={darkTheme:darkTheme} :gutter="2" class="navBar align-items-center">
-            <el-col :lg="10" :md="10" :sm="5" :xl="10" :xs="2">
+        <div :class={darkTheme:darkTheme} class="row-cols-3 navBar d-flex align-items-center">
+            <div class="d-flex col-3 align-items-center">
                 <el-menu
                     :active-text-color="menuStyle.activeTextColor"
                     :background-color="menuStyle.backgroundColor"
@@ -31,9 +31,9 @@
                     <el-menu-item disabled index="3">Info</el-menu-item>
                     <el-menu-item @click="getDarkTheme">黑暗模式</el-menu-item>
                 </el-menu>
-            </el-col>
-            <el-col :lg="10" :md="10" :sm="10" :xl="10" :xs="12" class="search">
-                <div class=" d-none d-md-flex justify-content-center">
+            </div>
+            <div class="col-7 searchBar d-flex align-items-center justify-content-center">
+                <div class="d-flex justify-content-center w-75">
                     <el-autocomplete
                         v-model="keyword"
                         :fetch-suggestions="querySearch"
@@ -64,8 +64,8 @@
                     </el-icon>
                 </el-button>
 
-            </el-col>
-            <el-col :lg="4" :md="4" :sm="9" :xl="4" :xs="10" class="userInfo d-flex justify-content-center">
+            </div>
+            <div class="col-2 userInfo d-flex justify-content-center">
                 <el-popover :width="400" placement="bottom" trigger="click">
                     <template #reference>
                         <el-button>
@@ -99,30 +99,32 @@
                     placement="bottom"
                     trigger="click"
                 >
-                    <ul class="list-group">
+                    <ul class="list-group d-flex  align-content-center">
                         <li class="list-group-item">
                             <el-icon>
-                                <HomeFilled></HomeFilled>
+                                <UserFilled/>
                             </el-icon>
-                            我的主页
+                            <span>我的主页</span>
+
                         </li>
                         <li class="list-group-item">
                             <el-icon>
-                                <HomeFilled></HomeFilled>
+                                <BellFilled/>
                             </el-icon>
-                            我的主页
+                            <span>消息</span>
+
                         </li>
                         <li class="list-group-item">
                             <el-icon>
-                                <HomeFilled></HomeFilled>
+                                <Comment/>
                             </el-icon>
-                            我的主页
+                            <span>私信</span>
                         </li>
                         <li class="list-group-item">
                             <el-icon>
-                                <HomeFilled></HomeFilled>
+                                <SwitchButton/>
                             </el-icon>
-                            我的主页
+                            <span>退出</span>
                         </li>
                     </ul>
                     <template #reference>
@@ -133,8 +135,8 @@
                     </template>
                 </el-popover>
 
-            </el-col>
-        </el-row>
+            </div>
+        </div>
 
     </div>
 </template>
@@ -221,7 +223,14 @@ export default {
 }
 
 .list-group-item {
+    display: flex !important;
+    align-items: center;
     border: none;
+    cursor: pointer;
+}
+
+.list-group-item span {
+    margin-left: 2px;
 }
 
 .list-group-item:hover {
@@ -330,5 +339,12 @@ export default {
     width: 70px;
     margin-left: 10px;
 
+}
+
+/*search在手机屏幕不可见*/
+@media screen and (max-width: 768px) {
+    .searchBar * {
+        display: none;
+    }
 }
 </style>

@@ -20,6 +20,7 @@ export default {
     },
     //创建时执行
     created() {
+        this.$router.push('/home')
     },
     //侦听器
     watch: {

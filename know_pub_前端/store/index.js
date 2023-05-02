@@ -9,7 +9,7 @@ const mutations = {
         state.isLogin = flag;
     },
     SET_USER(state, user) {
-        state.user = user;
+        state.userInfo = user;
     },
     SET_USER_ID(state, userId) {
         state.userId = userId;

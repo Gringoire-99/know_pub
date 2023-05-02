@@ -25,9 +25,9 @@ export default {
                 }
             }).then(response => {
                 if (response.status === 200) {
-                    this.$store.commit("SET_USER_ID", response.data)
+                    this.$store.commit("SET_USER", response.data)
                     this.$store.commit("LOGIN_STATE", true)
-                }
+                } else alert("get user info failed")
             }, reason => {
                 this.$store.commit("LOGIN_STATE", false)
                 console.log(reason)
@@ -40,8 +40,8 @@ export default {
     },
     //创建时执行
     created() {
-        localStorage.setItem("userId", '1')
-        this.$cookies.set("token", Mock.mock('guid'))
+        // localStorage.setItem("userId", '1')
+        // this.$cookies.set("token", Mock.mock('@guid'))
 
         //     从本地存储中获取用户id
         let userId = localStorage.getItem("userId")
@@ -90,18 +90,20 @@ body {
     overflow-x: hidden;
 }
 
+</style>
+<style>
 /* 滚动条整体 */
-body::-webkit-scrollbar {
+*::-webkit-scrollbar {
     width: 5px;
 }
 
 /* 两个滚动条交接处 -- x轴和y轴 */
-body::-webkit-scrollbar-corner {
+*::-webkit-scrollbar-corner {
     background-color: transparent;
 }
 
 /* 滚动条滑块 */
-body::-webkit-scrollbar-thumb {
+*::-webkit-scrollbar-thumb {
     border-radius: 10px;
     -webkit-box-shadow: inset 0 0 5px rgb(7, 123, 255);
     background: #0794ff;
@@ -109,7 +111,7 @@ body::-webkit-scrollbar-thumb {
 }
 
 /* 滚动条轨道 */
-body::-webkit-scrollbar-track {
+*::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 5px rgba(215, 160, 160, 0.2);
     border-radius: 10px;
     background: #ededed;
