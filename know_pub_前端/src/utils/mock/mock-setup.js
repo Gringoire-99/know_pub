@@ -76,7 +76,9 @@ function mockSetUp() {
         // 根评论
         for (let i = pageIndex; i < pageIndex + pageSize; i++) {
             let comment = {
+                // 这个评论的id
                 id: Mock.mock('@guid'),
+
                 name: Mock.mock('@cname'),
                 content: Mock.mock('@cparagraph(1,3)'),
                 // 帖子id:从属于哪个帖子
@@ -86,8 +88,10 @@ function mockSetUp() {
                 // 被回复评论的id，如果是根评论则为和postId相同，
                 replyToId: postId,
                 replyToName: Mock.mock('@cname'),
-                likeCount: Mock.mock('@integer(0,100)'),
+                likeCount: Mock.mock('@integer(0,300)'),
                 publishTime: Mock.mock('@datetime'),
+                // 发布者id
+                publisherId: Mock.mock('@guid'),
                 avatar: Mock.mock('@image("100x100")'),
 
             }
@@ -102,6 +106,7 @@ function mockSetUp() {
                 let subComment = {
                     id: Mock.mock('@guid'),
                     content: Mock.mock('@cparagraph(1,3)'),
+                    name: Mock.mock('@cname'),
                     // 帖子id:从属于哪个帖子
                     postId,
                     // 根评论id:从属于哪个根评论,如果是根评论则为和postId相同
@@ -111,6 +116,7 @@ function mockSetUp() {
                     replyToName: Mock.mock('@cname'),
                     likeCount: Mock.mock('@integer(0,100)'),
                     publishTime: Mock.mock('@datetime'),
+                    publisherId: Mock.mock('@guid'),
                     avatar: Mock.mock('@image("100x100")'),
                 }
                 subComments.push(subComment)
