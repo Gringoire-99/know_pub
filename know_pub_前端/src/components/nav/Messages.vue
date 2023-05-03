@@ -10,7 +10,7 @@
                     </template>
                     <ul class="infinite-list" @scroll="loadMessages">
                         <li v-for="msg in messages" :key="msg.id" class="infinite-list-item hvr-glow ">{{
-                                msg.content
+                            msg.content
                             }}
                         </li>
                         <li v-loading="isLoading" class="infinite-list-item loading-item"
@@ -73,26 +73,24 @@ export default {
             this.isLoading = true
             // 休眠5秒，再启动
 
-            setTimeout(() => {
-                http.get('/messages', {
-                    params: {
-                        pageSize: this.pageSize,
-                        pageIndex: this.pageIndex
-                    }
-                }).then(
-                    resolve => {
-                        if (resolve.status === 200) {
-                            // 连接两个数组
-                            this.messages.push(...resolve.data)
-                            this.isLoading = false
-                        } else {
-                            alert("failed")
-                        }
-                    }, reason => {
+            http.get('/messages', {
+                params: {
+                    pageSize: this.pageSize,
+                    pageIndex: this.pageIndex
+                }
+            }).then(
+                resolve => {
+                    if (resolve.status === 200) {
+                        // 连接两个数组
+                        this.messages.push(...resolve.data)
+                        this.isLoading = false
+                    } else {
                         alert("failed")
                     }
-                )
-            }, 3000)
+                }, reason => {
+                    alert("failed")
+                }
+            )
 
         },
 
@@ -155,7 +153,6 @@ export default {
 .infinite-list .infinite-list-item + .list-item {
     margin-top: 10px;
 }
-
 
 
 /* 滚动条两端按钮 */
