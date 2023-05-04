@@ -1,4 +1,5 @@
 <template>
+  <!--    TODO 待抽取-->
     <div v-if="total>0" class="root">
         <div class="comment-header d-flex align-items-center w-100">
             <div class="comment_count">{{ total }}条评论</div>
@@ -22,7 +23,7 @@
             </div>
         </div>
     </div>
-    <!--    TODO 骨架屏-->
+  <!--    TODO 骨架屏-->
     <div v-if="!isLoading&&total===0" class="d-flex justify-content-center align-items-center">
         还没有评论，快来抢沙发吧~
     </div>
@@ -101,36 +102,39 @@ export default {
             return Array.from(rootComments.values())
 
         },
-        sortByLikeCount(array) {
-
-            // 先对根评论排序
-            array.sort((a, b) => {
-                return b.rootComment.likeCount - a.rootComment.likeCount
-            })
-            //  再对子评论排序
-            array.forEach(item => {
-                item.childComments.sort((a, b) => {
-                    return b.likeCount - a.likeCount
-                })
-            })
-
-        },
-        sortByPublishTime(array) {
-            array.sort((a, b) => {
-                return Date.parse(b.rootComment.publishTime) - Date.parse(a.rootComment.publishTime)
-            })
-            array.forEach(item => {
-                item.childComments.sort((a, b) => {
-                    return new Date(b.publishTime) - new Date(a.publishTime)
-                })
-            })
-        },
-        sortByChildCommentCount(array) {
-            array.sort((a, b) => {
-                return b.childComments.length - a.childComments.length
-            })
-
-        },
+        getComments(isMerge = true) {
+            if (this.isLoading) return
+            console.log("get Comments");
+            this.isLoading = true
+            http.get('/comments', {
+                params: {
+                    postId: this.postId,
+                    pageSize: this.pageSize,
+                    pageIndex: this.pageIndex,
+                    orderBy: this.orderBy
+                }
+            }).then(
+                resolve => {
+                    if (resolve.status === 200) {
+                        // 连接两个数组
+                        console.log(resolve.data.data.comments.length);
+                        if (isMerge) {
+                            this.comments.push(...resolve.data.data.comments)
+                            this.pageIndex += this.pageSize
+                        } else {
+                            this.comments = resolve.data.data.comments
+                            this.pageIndex = this.pageSize
+                        }
+                        this.total = resolve.data.data.total
+                        this.isLoading = false
+                    } else {
+                        alert("failed")
+                    }
+                }, reason => {
+                    alert("failed")
+                }
+            )
+        }
 
 
     },
@@ -139,29 +143,7 @@ export default {
     },
     //创建时执行
     created() {
-        this.isLoading = true
-        http.get('/comments', {
-            params: {
-                postId: this.postId,
-                pageSize: this.pageSize,
-                pageIndex: this.pageIndex,
-                orderBy: this.orderBy
-            }
-        }).then(
-            resolve => {
-                if (resolve.status === 200) {
-
-                    // 连接两个数组
-                    this.comments.push(...resolve.data.data.comments)
-                    this.total = resolve.data.data.total
-                    this.isLoading = false
-                } else {
-                    alert("failed")
-                }
-            }, reason => {
-                alert("failed")
-            }
-        )
+        this.getComments(false)
     },
 
 
@@ -174,27 +156,17 @@ export default {
             },
             deep: true
         },
-
+        orderBy(newValue, oldValue) {
+            this.getComments(false)
+            return newValue
+        },
 
     }
     ,
     //计算属性
     computed: {
         rootComments() {
-            let comments = this.filterRootComments(this.comments)
-            let orderBy = this.orderBy
-            switch (orderBy) {
-                case this.ORDER_BY.PUBLISH_TIME:
-                    this.sortByPublishTime(comments)
-                    break
-                case this.ORDER_BY.LIKE_COUNT:
-                    this.sortByLikeCount(comments)
-                    break
-                case this.ORDER_BY.COMMENT_COUNT:
-                    this.sortByChildCommentCount(comments)
-                    break
-            }
-            return comments
+            return this.filterRootComments(this.comments)
         }
     }
     ,

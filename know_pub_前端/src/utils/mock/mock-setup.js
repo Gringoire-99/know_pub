@@ -65,10 +65,21 @@ function mockSetUp() {
             avatar: '/src/assets/icon_small.png',
         }
     })
+
+    /**
+     *
+     * @type {*[]}
+     * 后端
+     * 1.根据帖子id查询根评论
+     * 2.根据每个根评论id查询子评论（最多4个）
+     *
+     */
+
     Mock.mock(/.*comments.*/, o => {
         let param = getParams(o.url)
-        let pageSize = param['pageSize']
-        let pageIndex = param['pageIndex']
+        // 转换为数值
+        let pageIndex = parseInt(param['pageIndex'])
+        let pageSize = parseInt(param['pageSize'])
         let postId = param['postId']
         let result = {
             code: 200,
@@ -99,6 +110,7 @@ function mockSetUp() {
                 // 发布者id
                 publisherId: Mock.mock('@guid'),
                 avatar: Mock.mock('@image("100x100")'),
+                childCount: Mock.mock('@integer(0,5)'),
             }
             comments.push(comment)
         }

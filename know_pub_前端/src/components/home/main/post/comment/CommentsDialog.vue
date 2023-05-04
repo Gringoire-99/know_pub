@@ -1,5 +1,5 @@
 <template>
-    <el-dialog v-model="dialogVisible" :align-center="true" width="75%">
+    <el-dialog v-model="dialogVisible" :align-center="true" :draggable="true" width="75%">
         <div class="d-flex flex-column">
             <div v-if="total>0" class="comment-dialog root border-0">
                 <div class="comment-header d-flex align-items-center w-100">
@@ -16,7 +16,8 @@
                     </el-radio-group>
                 </div>
                 <div class="comments dialog-comments d-flex flex-column  w-100 align-items-center"
-                     @scroll="loadComments">
+                     v-infinite-scroll="getComments" :infinite-scroll-disabled="isLoading" infinite-scroll-delay="1000"
+                >
                     <root-comment v-for="rootComment in rootComments" :key="rootComment.rootComment.id"
                                   :comments="rootComment"></root-comment>
 
@@ -95,70 +96,54 @@ export default {
             return Array.from(rootComments.values())
 
         },
-        sortByLikeCount(array) {
+        getComments(isMerge = true) {
+            if (this.isLoading) return
+            this.isLoading = true
+            http.get('/comments', {
+                params: {
+                    postId: this.postId,
+                    pageSize: this.pageSize,
+                    pageIndex: this.pageIndex,
+                    orderBy: this.orderBy
+                }
+            }).then(
+                resolve => {
+                    if (resolve.status === 200) {
+                        // 连接两个数组
+                        console.log(resolve.data.data.comments.length);
+                        if (isMerge) {
+                            this.comments.push(...resolve.data.data.comments)
+                            this.pageIndex += this.pageSize
+                        } else {
+                            this.comments = resolve.data.data.comments
+                            this.pageIndex = this.pageSize
+                        }
+                        this.total = resolve.data.data.total
+                        this.isLoading = false
+                    } else {
+                        alert("failed")
+                    }
+                }, reason => {
+                    alert("failed")
+                }
+            )
+        }
 
-            // 先对根评论排序
-            array.sort((a, b) => {
-                return b.rootComment.likeCount - a.rootComment.likeCount
-            })
-            //  再对子评论排序
-            array.forEach(item => {
-                item.childComments.sort((a, b) => {
-                    return b.likeCount - a.likeCount
-                })
-            })
-
-        },
-        sortByPublishTime(array) {
-            array.sort((a, b) => {
-                return Date.parse(b.rootComment.publishTime) - Date.parse(a.rootComment.publishTime)
-            })
-            array.forEach(item => {
-                item.childComments.sort((a, b) => {
-                    return new Date(b.publishTime) - new Date(a.publishTime)
-                })
-            })
-        },
-        sortByChildCommentCount(array) {
-            array.sort((a, b) => {
-                return b.childComments.length - a.childComments.length
-            })
-
-        },
     },
     //挂载时执行
     mounted() {
     },
     //创建时执行
     created() {
-        console.log("created");
-        http.get('/comments', {
-            params: {
-                postId: this.postId,
-                pageSize: this.pageSize,
-                pageIndex: this.pageIndex,
-                orderBy: this.orderBy
-            }
-        }).then(
-            resolve => {
-                if (resolve.status === 200) {
-                    // 连接两个数组
-
-                    this.comments.push(...resolve.data.data.comments)
-                    this.total = resolve.data.data.total
-                    this.isLoading = false
-
-                } else {
-                    alert("failed")
-                }
-            }, reason => {
-                alert("failed")
-            }
-        )
+        this.getComments(false)
 
     },
     //侦听器
     watch: {
+        orderBy(newValue, oldValue) {
+            this.getComments(false)
+            return newValue
+        },
         dialogVisible(newValue, oldValue) {
             if (!newValue) this.$emit('closeDialog')
             return newValue
@@ -180,20 +165,7 @@ export default {
     //计算属性
     computed: {
         rootComments() {
-            let comments = this.filterRootComments(this.comments)
-            let orderBy = this.orderBy
-            switch (orderBy) {
-                case this.ORDER_BY.PUBLISH_TIME:
-                    this.sortByPublishTime(comments)
-                    break
-                case this.ORDER_BY.LIKE_COUNT:
-                    this.sortByLikeCount(comments)
-                    break
-                case this.ORDER_BY.COMMENT_COUNT:
-                    this.sortByChildCommentCount(comments)
-                    break
-            }
-            return comments
+            return this.filterRootComments(this.comments)
         }
     }
     ,

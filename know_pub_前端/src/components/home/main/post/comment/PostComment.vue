@@ -1,10 +1,12 @@
 <template>
-    <div class="d-flex align-items-start  w-100">
+    <div class="d-flex align-items-start w-100">
         <img v-show="isLogin&&isShowAvatar" :src="userInfo.avatar" alt="" class="avatar"/>
         <div class="input-comment ">
 
-            <textarea ref="textarea" v-model="comment" placeholder="评论千万条，友善第一条" v-on:focusin="displayFooter"
-                      v-on:focusout="displayFooter">
+            <textarea ref="textarea" v-model="comment" :placeholder="placeholder" v-on:focusin="displayFooter"
+                      v-on:focusout="displayFooter"
+
+            >
             </textarea>
             <div v-if="isShowFooter" class="comment-footer w-100 d-flex align-items-center mb-1">
 
@@ -92,12 +94,18 @@ export default {
         isShowAvatar: {
             type: Boolean,
             default: true
+        },
+        placeholder: {
+            type: String,
+            default: '评论千万条，友善第一条'
         }
+
     }
 }
 </script>
 
 <style scoped>
+
 textarea {
     width: 100%;
     border: none;
@@ -144,4 +152,5 @@ textarea {
     margin-right: 10px;
     cursor: pointer;
 }
+
 </style>
