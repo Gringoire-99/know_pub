@@ -1,6 +1,6 @@
 <template>
     <div class="d-flex align-items-start  w-100">
-        <img v-show="isLogin" :src="userInfo.avatar" alt="" class="avatar"/>
+        <img v-show="isLogin&&isShowAvatar" :src="userInfo.avatar" alt="" class="avatar"/>
         <div class="input-comment ">
 
             <textarea ref="textarea" v-model="comment" placeholder="评论千万条，友善第一条" v-on:focusin="displayFooter"
@@ -8,8 +8,8 @@
             </textarea>
             <div v-if="isShowFooter" class="comment-footer w-100 d-flex align-items-center mb-1">
 
-                <img alt="" class="icon" src="../../../../assets/common/image.svg">
-                <img alt="" class="icon" src="../../../../assets/common/voice.svg">
+                <img alt="" class="icon" src="../../../../../assets/common/image.svg">
+                <img alt="" class="icon" src="../../../../../assets/common/voice.svg">
                 <el-popover
                     placement="bottom"
                     trigger="click"
@@ -17,7 +17,7 @@
                 >
                     <template #reference>
                         <!--                      preventDefault  防止textarea失焦-->
-                        <img alt="" class="icon" src="../../../../assets/common/emoji.svg"
+                        <img alt="" class="icon" src="../../../../../assets/common/emoji.svg"
                              v-on:mousedown="preventDefault">
                     </template>
                     <VuemojiPicker class="d-block" @emojiClick="handleEmojiClick" v-on:mousedown="preventDefault"/>
@@ -32,7 +32,6 @@
 <script>
 import {VuemojiPicker} from 'vuemoji-picker'
 import {Picture} from "@element-plus/icons-vue";
-import {teal} from "mockjs/src/mock/random/color_dict";
 
 export default {
 
@@ -89,21 +88,23 @@ export default {
     computed: {}
     ,
     //绑定父组件的属性
-    props: {}
+    props: {
+        isShowAvatar: {
+            type: Boolean,
+            default: true
+        }
+    }
 }
 </script>
 
 <style scoped>
 textarea {
     width: 100%;
-    height: auto;
     border: none;
     outline: none;
-    resize: none;
     border-radius: 2px;
     box-shadow: none;
-    overflow: scroll;
-    overflow-x: hidden;
+    min-height: 52px;
 }
 
 .comment-footer button {
@@ -134,8 +135,6 @@ textarea {
     border-radius: 2px;
     width: 100%;
     overflow-y: hidden;
-    overflow-x: hidden;
-    min-height: 50px;
     padding: 5px 10px 0px;
 }
 

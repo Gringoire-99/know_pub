@@ -42,7 +42,7 @@
     </div>
     <div v-if="comments.childComments.length>0"
          class="child_comments w-100">
-        <div v-for="childComment in comments.childComments" :key="childComment.id"
+        <div v-for="childComment in tempChildComments" :key="childComment.id"
              class="d-flex justify-content-start align-items-start w-100">
             <div class="avatar me-2 ">
                 <el-avatar :src="childComment.avatar" shape="square" size="small"></el-avatar>
@@ -70,7 +70,8 @@
                         <div class="d-flex align-items-center ms-2">
                             <el-icon :size="17">
                                 <svg class="icon" height="200" p-id="12871" t="1683120992681"
-                                     version="1.1" viewBox="0 0 1024 1024" width="200" xmlns="http://www.w3.org/2000/svg">
+                                     version="1.1" viewBox="0 0 1024 1024" width="200"
+                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
                                         d="M292 417.7c-17.6 0.9-43.4 1.3-82.6 1.3-26.8 0-42.1 18.2-42.1 42.7 0 24.5-0.1 363-0.1 388s8.2 38.2 37.9 38.2l86.9 0.1V417.7zM519.7 188.7c9.4 11.2 22.7 44.1 21.6 79.1-0.6 19.6-4.7 33.3-16.2 62.1l-4 10.1c-12.8 31.8-24.9 61.9-2.9 94.5 13.4 19.8 35.3 31.1 60 31.1h220.4c10.6 0 14.4 6.8 15.7 12.5L735 819.6c-1.6 0.3-3.3 0.6-4.7 0.8l-327.3-0.3V447.5c56.4-47.1 80.2-124.5 94.7-187.2 3.2-14 5.4-27.2 7.3-38.8 1.8-10.6 4.1-24.6 6.4-31.5 1.7-0.5 4.5-1 8.3-1.3m6.7-68.3H525c-88.6 2.7-78.3 58.8-93.5 124.6-13.3 57.9-34.1 120.7-74.9 152.6-11.3 4.5-16.6 8.2-21.5 11.1V888l397.1 0.2c3.4 0 25-1.9 38.7-10.1 23.7-14.5 27.7-32.5 27.7-32.5L882.8 483c-0.2-29.7-21-85.3-84.2-85.3H578.3c-8.1 0-5-5.5 9.9-42.7 12.7-31.9 20.1-54 21-85.3 1.9-67.4-32.3-149.3-82.8-149.3z"
                                         fill="" p-id="12872"></path>
@@ -78,42 +79,60 @@
                             </el-icon>
                             <span>{{ comments.rootComment.likeCount }}</span>
                         </div>
-
-
                     </div>
                 </div>
             </div>
         </div>
         <div class="showMore mt-4 mb-4">
-            <el-button>{{ ch }}</el-button>
+            <!--            -2>4 有大于4个折叠元素（>4） -2>0有折叠元素(4-1)-->
+            <el-button
+                v-show="comments.childComments.length>TEMP_DISPLAY_NUMBER&&tempChildComments.length<=TEMP_DISPLAY_NUMBER"
+                v-on:click="unfold">
+                {{
+                    (comments.childComments.length > NUMBER_ON_HIDE)
+                        ? `查看全部${comments.childComments.length}条评论}` : `展开其他${comments.childComments.length - TEMP_DISPLAY_NUMBER}条评论`
+                }}
+            </el-button>
         </div>
     </div>
 
 </template>
 
 <script>
-import {Calendar, Comment} from "@element-plus/icons-vue";
+import {Comment} from "@element-plus/icons-vue";
 
 export default {
     //组件名
     name: "root-comment",
     //依赖的组件
-    components: {Calendar, Comment},
+    components: {Comment},
     //数据
     data() {
         return {
-            pageSize:
-
+            // 根评论的最大显示数量，超过的部分通过点击展开
+            TEMP_DISPLAY_NUMBER: 2,
+            // 根评论的最大隐藏数量，超过的部分通过popover展示
+            NUMBER_ON_HIDE: 4,
+            tempChildComments: []
         }
     },
     //方法
-    methods: {},
+    methods: {
+        unfold() {
+            if (this.comments.childComments.length > this.NUMBER_ON_HIDE) {
+                //     TODO popover
+            } else {
+                this.tempChildComments.push(...this.comments.childComments.slice(this.TEMP_DISPLAY_NUMBER))
+            }
+        }
+    },
     //挂载时执行
     mounted() {
     },
     //创建时执行
     created() {
-        console.log(this.comments)
+        // 每个RootComment最只展示两个子评论，其余的子评论通过点击展开，子评论过多时通过
+        this.tempChildComments = this.comments.childComments.slice(0, this.TEMP_DISPLAY_NUMBER)
     },
     //侦听器
     watch: {

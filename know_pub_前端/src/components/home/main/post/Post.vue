@@ -122,7 +122,7 @@
             <div v-if="!isCollapseComments" class="card-footer">
                 <post-comment></post-comment>
                 <!--                嵌入在回复的comments不是完整的，只会展示10条评论 -->
-                <comments :is-complete="false" :post-id="post.id" class="d-block"></comments>
+                <comments :post-id="post.id"></comments>
             </div>
         </div>
     </div>
@@ -142,8 +142,8 @@ import {
 } from "@element-plus/icons-vue";
 import Mock from "mockjs";
 
-import Comments from "@/components/home/main/post/Comments.vue";
-import PostComment from "@/components/home/main/post/PostComment.vue";
+import Comments from "@/components/home/main/post/comment/Comments.vue";
+import PostComment from "@/components/home/main/post/comment/PostComment.vue";
 
 /**
  * post：某个主题的一个回答，
@@ -210,10 +210,7 @@ export default {
     created() {
     },
     //侦听器
-    watch: {
-        // 每当 question 改变时，这个函数就会执行
-        // question(newQuestion, oldQuestion) {}
-    }
+    watch: {}
     ,
     //计算属性
     computed: {}

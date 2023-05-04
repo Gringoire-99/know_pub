@@ -37,7 +37,7 @@ function mockSetUp() {
                 },
                 publishTime: Mock.mock('@datetime'),
                 updateTime: Mock.mock('@datetime'),
-                commentNumber: Mock.mock('@integer(0,100)'),
+                commentNumber: Mock.mock('@integer(100,200)'),
             }
             posts.push(post)
         }
@@ -55,7 +55,6 @@ function mockSetUp() {
             }
             messages.push(msg)
         }
-        console.log(messages)
         return messages
     })
     Mock.mock(/.*user\/info.*/, o => {
@@ -71,6 +70,13 @@ function mockSetUp() {
         let pageSize = param['pageSize']
         let pageIndex = param['pageIndex']
         let postId = param['postId']
+        let result = {
+            code: 200,
+            data: {
+                comments: [],
+                total: Mock.mock('@integer(100,200)')
+            }
+        }
 
         let comments = []
         // 根评论
@@ -93,7 +99,6 @@ function mockSetUp() {
                 // 发布者id
                 publisherId: Mock.mock('@guid'),
                 avatar: Mock.mock('@image("100x100")'),
-
             }
             comments.push(comment)
         }
@@ -101,8 +106,10 @@ function mockSetUp() {
         // 子评论
         let subComments = []
         comments.forEach(comment => {
-            // 生成5个子评论
-            for (let i = 0; i < 5; i++) {
+            // 生成0到6个子评论
+            // 随机数
+            let random = Mock.mock('@integer(0,5)')
+            for (let i = 0; i < random; i++) {
                 let subComment = {
                     id: Mock.mock('@guid'),
                     content: Mock.mock('@cparagraph(1,3)'),
@@ -114,7 +121,7 @@ function mockSetUp() {
                     // 被回复评论的id，如果是根评论则为和postId相同，
                     replyToId: comment.id,
                     replyToName: Mock.mock('@cname'),
-                    likeCount: Mock.mock('@integer(0,100)'),
+                    likeCount: Mock.mock('@integer(202,300)'),
                     publishTime: Mock.mock('@datetime'),
                     publisherId: Mock.mock('@guid'),
                     avatar: Mock.mock('@image("100x100")'),
@@ -123,7 +130,8 @@ function mockSetUp() {
             }
         })
         comments = comments.concat(subComments)
-        return comments
+        result.data.comments = comments
+        return result
     })
 }
 

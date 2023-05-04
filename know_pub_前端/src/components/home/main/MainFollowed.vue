@@ -5,11 +5,13 @@
 </template>
 
 <script>
+import PostComment from "@/components/home/main/post/comment/PostComment.vue";
+
 export default {
     //组件名
     name: "main-followed",
     //依赖的组件
-    components: {},
+    components: {PostComment},
     //数据
     data() {
         return {}
