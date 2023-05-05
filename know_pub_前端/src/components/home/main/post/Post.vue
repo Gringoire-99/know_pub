@@ -1,12 +1,5 @@
 <template>
-    <!--    TODO
-            1. 关于用户的一个小卡片，展示基础用户信息，hover时展示用户的明信片postcard
-            2. 主要内容，复杂类型，支持文本，图片，视频等多媒体
-            3. 评论，无限滚动列表，可回复，每个回复最多
-    -->
-
-
-    <div class="card">
+    <div class="root card">
         <div class="card-body">
             <!--            主题名-->
             <div class="card-title">
@@ -34,17 +27,7 @@
             </div>
             <!--            正文-->
             <div v-if="!isCollapseFullText" class="full-text">
-                <div class="p-2 authorInfo">
-                    <el-image :src="post.author.avatar">
-                        <template #error>
-                            <div class="image-slot">
-                                <el-image>
-                                    <Picture></Picture>
-                                </el-image>
-                            </div>
-                        </template>
-                    </el-image>
-                </div>
+                <post-body :post="post" @collapseFullText="isCollapseFullText=true"></post-body>
             </div>
             <!--            操作栏-->
             <div class="card-footer d-flex align-items-center">
@@ -121,7 +104,6 @@
             <!--            评论栏-->
             <div v-if="!isCollapseComments" class="card-footer">
                 <post-comment></post-comment>
-                <!--                嵌入在回复的comments不是完整的，只会展示10条评论 -->
                 <comments :post-id="post.id"></comments>
             </div>
         </div>
@@ -130,7 +112,7 @@
 
 <script>
 import {
-    ArrowDown,
+    ArrowDown, ArrowUp,
     ArrowUpBold,
     CaretBottom,
     CaretTop,
@@ -144,6 +126,7 @@ import Mock from "mockjs";
 
 import Comments from "@/components/home/main/post/comment/Comments.vue";
 import PostComment from "@/components/home/main/post/comment/PostComment.vue";
+import PostBody from "@/components/home/main/post/PostBody.vue";
 
 /**
  * post：某个主题的一个回答，
@@ -157,6 +140,8 @@ export default {
     name: "post",
     //依赖的组件
     components: {
+        PostBody,
+        ArrowUp,
         PostComment,
         StarFilled,
         Collection, Share, Comment, Comments, CaretBottom, CaretTop, ArrowUpBold, Picture, ArrowDown
@@ -221,6 +206,7 @@ export default {
 
 <style scoped>
 
+
 .list-group .el-popover.el-popper {
     padding: 0
 }
@@ -246,9 +232,6 @@ export default {
     margin-left: 5px;
 }
 
-.card-footer .etc .el-button:hover {
-    color: #040f1c;
-}
 
 .card-footer .el-button .el-icon {
     font-size: 20px;
@@ -348,5 +331,10 @@ export default {
 .intro .text:hover {
     color: rgba(91, 88, 88, 0.86);
     cursor: pointer;
+}
+
+.root {
+    border: none;
+    border-bottom: 1px solid #ebebeb;
 }
 </style>

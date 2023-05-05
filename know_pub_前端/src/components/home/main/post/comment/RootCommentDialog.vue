@@ -1,27 +1,26 @@
 <template>
-    <el-dialog v-model="dialogVisible" :align-center="true" :draggable="true" width="75%">
-        <div class="header fw-bold mb-3 mt-3">评论回复</div>
-        <div class="d-flex flex-column">
-            <div v-if="total>0" class="root border-0">
-                <comment :comment="rootComment"></comment>
-                <div class="divider w-100"></div>
-                <div class="">{{ `${total}条回复` }}</div>
-                <div v-infinite-scroll="getComments" :infinite-scroll-disabled="isLoading"
-                     class="comments dialog-comments pe-2" infinite-scroll-delay="1000">
-                    <comment v-for="childComment in comments" :key="childComment.id" :comment="childComment"
-                    ></comment>
-                    <el-skeleton v-show="isLoading" :rows="5" animated/>
-                </div>
-            </div>
-
-
-            <!--    TODO 骨架屏-->
-            <div v-if="total===0&&!isLoading" class="d-flex justify-content-center align-items-center">
-                还没有评论，快来抢沙发吧~
+    <div class="header fw-bold mb-3 mt-3">评论回复</div>
+    <div class="d-flex flex-column">
+        <div v-if="total>0" class="root border-0">
+            <comment :comment="rootComment"></comment>
+            <div class="divider w-100"></div>
+            <div class="">{{ `${total}条回复` }}</div>
+            <div v-infinite-scroll="getComments" :infinite-scroll-disabled="isLoading"
+                 class="comments dialog-comments pe-2"
+                 infinite-scroll-distance="10">
+                <comment v-for="childComment in comments" :key="childComment.id" :comment="childComment"
+                ></comment>
+                <el-skeleton v-show="isLoading" :rows="10" animated/>
             </div>
         </div>
-        <post-comment></post-comment>
-    </el-dialog>
+
+
+        <!--    TODO 骨架屏-->
+        <div v-if="total===0&&!isLoading" class="d-flex justify-content-center align-items-center">
+            还没有评论，快来抢沙发吧~
+        </div>
+    </div>
+    <post-comment></post-comment>
 </template>
 
 <script>
@@ -41,7 +40,6 @@ export default {
             pageSize: 5,
             pageIndex: 0,
             isLoading: false,
-            dialogVisible: true,
             // 默认按照点赞数排序
             ORDER_BY: {
                 PUBLISH_TIME: "publishTime",
@@ -99,29 +97,14 @@ export default {
 
     },
     //侦听器
-    watch: {
-        dialogVisible(newValue, oldValue) {
-            if (!newValue) this.$emit('closeDialog')
-            return newValue
-        },
-        visible: {
-            handler(newValue, oldValue) {
-                this.dialogVisible = newValue
-                return newValue
-            },
-            deep: true
-        },
-    }
+    watch: {}
     ,
     //计算属性
     computed: {}
     ,
     //绑定父组件的属性
     props: {
-        visible: {
-            type: Boolean,
-            default: false
-        },
+
         rootComment: {
             type: Object,
             require: true

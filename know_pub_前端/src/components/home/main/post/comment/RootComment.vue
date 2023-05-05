@@ -20,8 +20,11 @@
             </el-button>
         </div>
         <div v-if="isLoadingRCD">
-            <root-comment-dialog :root-comment="comments.rootComment" :visible="dialogVisible"
-                                 @closeDialog="dialogVisible=false"></root-comment-dialog>
+            <el-dialog v-model="dialogVisible" :align-center="true" :draggable="true" width="75%">
+
+                <root-comment-dialog :root-comment="comments.rootComment"></root-comment-dialog>
+            </el-dialog>
+
         </div>
     </div>
 

@@ -1,5 +1,4 @@
 <template>
-    <el-dialog v-model="dialogVisible" :align-center="true" :draggable="true" width="75%">
         <div class="d-flex flex-column">
             <div v-if="total>0" class="root border-0">
                 <div class="comment-header d-flex align-items-center w-100">
@@ -16,7 +15,7 @@
                     </el-radio-group>
                 </div>
                 <div class="comments dialog-comments d-flex flex-column  w-100 align-items-center"
-                     v-infinite-scroll="getComments" :infinite-scroll-disabled="isLoading" infinite-scroll-delay="1000"
+                     v-infinite-scroll="getComments" :infinite-scroll-disabled="isLoading"
                 >
                     <root-comment v-for="rootComment in rootComments" :key="rootComment.rootComment.id"
                                   :comments="rootComment"></root-comment>
@@ -29,7 +28,6 @@
             </div>
         </div>
         <post-comment></post-comment>
-    </el-dialog>
 </template>
 
 <script>
@@ -48,7 +46,6 @@ export default {
             pageSize: 5,
             pageIndex: 0,
             isLoading: false,
-            dialogVisible: true,
             // 默认按照点赞数排序
             ORDER_BY: {
                 PUBLISH_TIME: "publishTime",
@@ -142,18 +139,6 @@ export default {
             this.getComments(false, newValue, true)
             return newValue
         },
-        dialogVisible(newValue, oldValue) {
-            if (!newValue) this.$emit('closeDialog')
-            return newValue
-        },
-        visible: {
-            handler(newValue, oldValue) {
-                console.log("watch v")
-                this.dialogVisible = newValue
-                return newValue
-            },
-            deep: true
-        },
         comments: {
             handler(newValue, oldValue) {
                 this.filterRootComments(newValue)
@@ -175,10 +160,6 @@ export default {
         postId: {
             type: String,
             require: true
-        },
-        visible: {
-            type: Boolean,
-            default: false
         },
 
     }

@@ -56,7 +56,7 @@ export default {
     }
 }
 </script>
-<style>
+<style scoped>
 .card-body .btn:focus {
     color: #0095da;
 }
@@ -67,9 +67,9 @@ export default {
 
 }
 
-.main {
-    /*  底边*/
-    border-top: 1px solid #ebebeb;
+
+.card-title {
+    border-bottom: 1px solid #ebebeb;
+    padding-bottom: 10px;
 }
 </style>
-

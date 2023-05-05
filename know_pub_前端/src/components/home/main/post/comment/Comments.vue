@@ -29,8 +29,11 @@
     </div>
     <el-skeleton v-if="isLoading" :rows="5" animated/>
     <div v-if="isLoadDialog">
-        <comments-dialog :post-id="postId" :visible="dialogVisible"
-                         @closeDialog="dialogVisible=false"></comments-dialog>
+        <el-dialog v-model="dialogVisible" :align-center="true" :draggable="true" width="75%">
+
+            <comments-dialog :post-id="postId"></comments-dialog>
+        </el-dialog>
+
     </div>
 </template>
 
