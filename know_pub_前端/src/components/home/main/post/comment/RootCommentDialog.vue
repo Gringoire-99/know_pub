@@ -1,41 +1,152 @@
 <template>
-    <div>
+    <el-dialog v-model="dialogVisible" :align-center="true" :draggable="true" width="75%">
+        <div class="header fw-bold mb-3 mt-3">评论回复</div>
+        <div class="d-flex flex-column">
+            <div v-if="total>0" class="root border-0">
+                <comment :comment="rootComment"></comment>
+                <div class="divider w-100"></div>
+                <div class="">{{ `${total}条回复` }}</div>
+                <div v-infinite-scroll="getComments" :infinite-scroll-disabled="isLoading"
+                     class="comments dialog-comments pe-2" infinite-scroll-delay="1000">
+                    <comment v-for="childComment in comments" :key="childComment.id" :comment="childComment"
+                    ></comment>
+                    <el-skeleton v-show="isLoading" :rows="5" animated/>
+                </div>
+            </div>
 
-    </div>
+
+            <!--    TODO 骨架屏-->
+            <div v-if="total===0&&!isLoading" class="d-flex justify-content-center align-items-center">
+                还没有评论，快来抢沙发吧~
+            </div>
+        </div>
+        <post-comment></post-comment>
+    </el-dialog>
 </template>
 
 <script>
+
+import PostComment from "@/components/home/main/post/comment/PostComment.vue";
+import http from "@/utils/http/http";
+import Comment from "@/components/home/main/post/comment/Comment.vue";
+
 export default {
     //组件名
     name: "root-comment-dialog",
     //依赖的组件
-    components: {},
+    components: {Comment, PostComment},
     //数据
     data() {
-        return {}
+        return {
+            pageSize: 5,
+            pageIndex: 0,
+            isLoading: false,
+            dialogVisible: true,
+            // 默认按照点赞数排序
+            ORDER_BY: {
+                PUBLISH_TIME: "publishTime",
+                LIKE_COUNT: "likeCount",
+                // 最热：根评论的点赞数+子评论最多
+                COMMENT_COUNT: "commentCount",
+            },
+            orderBy: "likeCount",
+            comments: [],
+            total: 0,
+
+        }
     },
     //方法
-    methods: {},
+    methods: {
+        getComments(isMerge = true, orderBy = "likeCount", useParams = false) {
+            if (this.isLoading) return
+            this.isLoading = true
+            let order = useParams ? orderBy : this.orderBy
+            http.get('/comments/child-comments', {
+                params: {
+                    id: this.rootComment.id,
+                    pageSize: this.pageSize,
+                    pageIndex: this.pageIndex,
+                    orderBy: order
+                }
+            }).then(
+                resolve => {
+                    if (resolve.status === 200) {
+                        // 连接两个数组
+                        if (isMerge) {
+                            this.comments.push(...resolve.data.data.comments)
+                            this.pageIndex += this.pageSize
+                        } else {
+                            this.comments = resolve.data.data.comments
+                            this.pageIndex = this.pageSize
+                        }
+                        this.total = resolve.data.data.total
+                        this.isLoading = false
+                    } else {
+                        alert("failed")
+                    }
+                }, reason => {
+                    alert("failed")
+                }
+            )
+        }
+    },
     //挂载时执行
     mounted() {
     },
     //创建时执行
     created() {
+        this.getComments(false, this.orderBy, true)
+
     },
     //侦听器
     watch: {
-        // 每当 question 改变时，这个函数就会执行
-        // question(newQuestion, oldQuestion) {}
+        dialogVisible(newValue, oldValue) {
+            if (!newValue) this.$emit('closeDialog')
+            return newValue
+        },
+        visible: {
+            handler(newValue, oldValue) {
+                this.dialogVisible = newValue
+                return newValue
+            },
+            deep: true
+        },
     }
     ,
     //计算属性
     computed: {}
     ,
     //绑定父组件的属性
-    props: {}
+    props: {
+        visible: {
+            type: Boolean,
+            default: false
+        },
+        rootComment: {
+            type: Object,
+            require: true
+        }
+    }
 }
 </script>
 
 <style scoped>
+.divider {
+    height: 20px;
+    background: rgba(217, 219, 225, 0.36);
+}
+
+.root {
+    margin-top: 10px;
+    border: 1px solid #ebebeb;
+    border-radius: 3px;
+    padding: 10px 0px;
+}
+
+:deep(.dialog-comments) {
+    height: 330px;
+}
+</style>
+<style>
 
 </style>

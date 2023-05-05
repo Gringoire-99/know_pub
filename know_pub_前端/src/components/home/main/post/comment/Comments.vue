@@ -28,8 +28,10 @@
         还没有评论，快来抢沙发吧~
     </div>
     <el-skeleton v-if="isLoading" :rows="5" animated/>
-    <comments-dialog v-model:visible="dialogVisible" :post-id="postId"
-                     @closeDialog="dialogVisible=false"></comments-dialog>
+    <div v-if="isLoadDialog">
+        <comments-dialog :post-id="postId" :visible="dialogVisible"
+                         @closeDialog="dialogVisible=false"></comments-dialog>
+    </div>
 </template>
 
 <script>
@@ -61,8 +63,9 @@ export default {
             },
             orderBy: "likeCount",
             comments: [],
+            total: 0,
             dialogVisible: false,
-            total: 0
+            isLoadDialog: false
 
 
         }
@@ -74,6 +77,7 @@ export default {
         },
         openCommentsDialog() {
             this.dialogVisible = true
+            this.isLoadDialog = true
         },
         filterRootComments(comments) {
             // 筛选出根评论
@@ -104,7 +108,6 @@ export default {
         },
         getComments(isMerge = true) {
             if (this.isLoading) return
-            console.log("get Comments");
             this.isLoading = true
             http.get('/comments', {
                 params: {
@@ -183,10 +186,7 @@ export default {
 </script>
 
 <style scoped>
-.comments-dialog {
-    overflow: scroll;
-    overflow-y: hidden;
-}
+
 
 .root {
     margin-top: 10px;
@@ -219,4 +219,19 @@ export default {
     margin-left: auto !important;
 }
 
+</style>
+<style>
+.el-dialog__body {
+    padding-top: 0;
+}
+
+.el-dialog__header {
+    padding-top: 0;
+}
+
+.dialog-comments {
+    height: 450px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
 </style>

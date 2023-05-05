@@ -110,7 +110,9 @@ function mockSetUp() {
                 // 发布者id
                 publisherId: Mock.mock('@guid'),
                 avatar: Mock.mock('@image("100x100")'),
+                //对子回复的统计， 小于四时，后端直接查询子评论拼接到根评论，大于四时，需要打开dialog查看
                 childCount: Mock.mock('@integer(0,5)'),
+                isRootComment: true
             }
             comments.push(comment)
         }
@@ -120,7 +122,7 @@ function mockSetUp() {
         comments.forEach(comment => {
             // 生成0到6个子评论
             // 随机数
-            let random = Mock.mock('@integer(0,5)')
+            let random = Mock.mock('@integer(3,7)')
             for (let i = 0; i < random; i++) {
                 let subComment = {
                     id: Mock.mock('@guid'),
@@ -137,11 +139,48 @@ function mockSetUp() {
                     publishTime: Mock.mock('@datetime'),
                     publisherId: Mock.mock('@guid'),
                     avatar: Mock.mock('@image("100x100")'),
+                    isRootComment: false
                 }
                 subComments.push(subComment)
             }
         })
         comments = comments.concat(subComments)
+        result.data.comments = comments
+        return result
+    })
+    Mock.mock(/.*comments\/child-comments.*/, o => {
+        let params = getParams(o.url)
+        let id = params['id']
+        let pageIndex = parseInt(params['pageIndex'])
+        let pageSize = parseInt(params['pageSize'])
+        let result = {
+            code: 200,
+            data: {
+                comments: [],
+                total: Mock.mock('@integer(100,200)')
+            }
+        }
+        let comments = []
+        for (let i = pageIndex; i < pageIndex + pageSize; i++) {
+            let comment = {
+                id: Mock.mock('@guid'),
+                content: Mock.mock('@cparagraph(1,3)'),
+                name: Mock.mock('@cname'),
+                // 帖子id:从属于哪个帖子
+                postId: Mock.mock('@guid'),
+                // 根评论id:从属于哪个根评论,如果是根评论则为和postId相同
+                rootCommentId: id,
+                // 被回复评论的id，如果是根评论则为和postId相同，
+                replyToId: Mock.mock('@guid'),
+                replyToName: Mock.mock('@cname'),
+                likeCount: Mock.mock('@integer(202,300)'),
+                publishTime: Mock.mock('@datetime'),
+                publisherId: Mock.mock('@guid'),
+                avatar: Mock.mock('@image("100x100")'),
+                isRootComment: false
+            }
+            comments.push(comment)
+        }
         result.data.comments = comments
         return result
     })

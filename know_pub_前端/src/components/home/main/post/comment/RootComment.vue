@@ -15,9 +15,13 @@
                 v-on:click="unfold">
                 {{
                     (comments.childComments.length > NUMBER_ON_HIDE)
-                        ? `查看全部${comments.childComments.length}条评论}` : `展开其他${comments.childComments.length - TEMP_DISPLAY_NUMBER}条评论`
+                        ? `查看全部${comments.childComments.length}条评论` : `展开其他${comments.childComments.length - TEMP_DISPLAY_NUMBER}条评论`
                 }}
             </el-button>
+        </div>
+        <div v-if="isLoadingRCD">
+            <root-comment-dialog :root-comment="comments.rootComment" :visible="dialogVisible"
+                                 @closeDialog="dialogVisible=false"></root-comment-dialog>
         </div>
     </div>
 
@@ -26,12 +30,13 @@
 <script>
 import PostComment from "@/components/home/main/post/comment/PostComment.vue";
 import Comment from "@/components/home/main/post/comment/Comment.vue";
+import RootCommentDialog from "@/components/home/main/post/comment/RootCommentDialog.vue";
 
 export default {
     //组件名
     name: "root-comment",
     //依赖的组件
-    components: {PostComment, Comment},
+    components: {RootCommentDialog, PostComment, Comment},
     //数据
     data() {
         return {
@@ -40,7 +45,9 @@ export default {
             // 根评论的最大隐藏数量，超过的部分通过popover展示
             NUMBER_ON_HIDE: 4,
             tempChildComments: [],
-            isOpenPostComment: false
+            isOpenPostComment: false,
+            isLoadingRCD: false,
+            dialogVisible: false
         }
     },
     //方法
@@ -50,7 +57,8 @@ export default {
         },
         unfold() {
             if (this.comments.childComments.length > this.NUMBER_ON_HIDE) {
-                //     TODO popover
+                this.isLoadingRCD = true
+                this.dialogVisible = true
             } else {
                 this.tempChildComments.push(...this.comments.childComments.slice(this.TEMP_DISPLAY_NUMBER))
             }
@@ -86,7 +94,6 @@ export default {
 </script>
 
 <style scoped>
-
 
 
 .child_comments {

@@ -1,7 +1,7 @@
 <template>
     <el-dialog v-model="dialogVisible" :align-center="true" :draggable="true" width="75%">
         <div class="d-flex flex-column">
-            <div v-if="total>0" class="comment-dialog root border-0">
+            <div v-if="total>0" class="root border-0">
                 <div class="comment-header d-flex align-items-center w-100">
                     <div class="comment_count">{{ total }}条评论</div>
                     <el-radio-group v-model="orderBy" class="order" size="small">
@@ -24,8 +24,7 @@
                     <el-skeleton v-show="isLoading" :rows="5" animated/>
                 </div>
             </div>
-            <!--    TODO 骨架屏-->
-            <div v-else class="d-flex justify-content-center align-items-center">
+            <div v-if="total===0&&!isLoading" class="d-flex justify-content-center align-items-center">
                 还没有评论，快来抢沙发吧~
             </div>
         </div>
@@ -49,8 +48,7 @@ export default {
             pageSize: 5,
             pageIndex: 0,
             isLoading: false,
-            isShow: true,
-            dialogVisible: false,
+            dialogVisible: true,
             // 默认按照点赞数排序
             ORDER_BY: {
                 PUBLISH_TIME: "publishTime",
@@ -96,21 +94,21 @@ export default {
             return Array.from(rootComments.values())
 
         },
-        getComments(isMerge = true) {
+        getComments(isMerge = true, orderBy = "likeCount", useParams = false) {
             if (this.isLoading) return
             this.isLoading = true
+            let order = useParams ? orderBy : this.orderBy
             http.get('/comments', {
                 params: {
                     postId: this.postId,
                     pageSize: this.pageSize,
                     pageIndex: this.pageIndex,
-                    orderBy: this.orderBy
+                    orderBy: order
                 }
             }).then(
                 resolve => {
                     if (resolve.status === 200) {
                         // 连接两个数组
-                        console.log(resolve.data.data.comments.length);
                         if (isMerge) {
                             this.comments.push(...resolve.data.data.comments)
                             this.pageIndex += this.pageSize
@@ -141,17 +139,20 @@ export default {
     //侦听器
     watch: {
         orderBy(newValue, oldValue) {
-            this.getComments(false)
+            this.getComments(false, newValue, true)
             return newValue
         },
         dialogVisible(newValue, oldValue) {
             if (!newValue) this.$emit('closeDialog')
             return newValue
         },
-        visible(newValue, oldValue) {
-            console.log(newValue, oldValue)
-            this.dialogVisible = newValue
-            return newValue
+        visible: {
+            handler(newValue, oldValue) {
+                console.log("watch v")
+                this.dialogVisible = newValue
+                return newValue
+            },
+            deep: true
         },
         comments: {
             handler(newValue, oldValue) {
@@ -185,10 +186,6 @@ export default {
 </script>
 
 <style scoped>
-.comments-dialog {
-    overflow: scroll;
-    overflow-y: hidden;
-}
 
 .root {
     margin-top: 10px;
@@ -222,18 +219,5 @@ export default {
 }
 
 </style>
-<style>
-.el-dialog__body {
-    padding-top: 0;
-}
 
-.el-dialog__header {
-    padding-top: 0;
-}
 
-.dialog-comments {
-    height: 450px;
-    overflow-x: hidden;
-    overflow-y: scroll;
-}
-</style>
