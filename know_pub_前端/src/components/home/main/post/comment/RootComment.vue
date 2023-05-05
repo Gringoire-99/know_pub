@@ -21,7 +21,6 @@
         </div>
         <div v-if="isLoadingRCD">
             <el-dialog v-model="dialogVisible" :align-center="true" :draggable="true" width="75%">
-
                 <root-comment-dialog :root-comment="comments.rootComment"></root-comment-dialog>
             </el-dialog>
 

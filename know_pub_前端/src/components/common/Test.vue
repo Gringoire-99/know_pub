@@ -1,14 +1,18 @@
 <template>
-    <div class="root w-100 h-100">
-        <router-view></router-view>
+    <div class="root d-flex align-items-center justify-content-center w-100">
+        <post-card :id="'1'"></post-card>
     </div>
 </template>
+
 <script>
+import PostBody from "@/components/home/main/post/PostBody.vue";
+import PostCard from "@/components/user/PostCard.vue";
+
 export default {
     //组件名
-    name: "root",
+    name: "test",
     //依赖的组件
-    components: {},
+    components: {PostCard, PostBody},
     //数据
     data() {
         return {}
@@ -36,5 +40,7 @@ export default {
 </script>
 
 <style scoped>
-
+.root {
+    height: 100vh;
+}
 </style>

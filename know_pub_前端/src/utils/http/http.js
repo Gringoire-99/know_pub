@@ -1,11 +1,10 @@
 import axios from "axios";
-import {nextTick} from "vue";
 import app from "@/main";
 
 const http = axios.create({
     baseURL: "http://localhost:8080/api",
     headers: {
-        "Content-type": "application/json"
+        // "Content-type": "application/json"
     }
 });
 
@@ -19,11 +18,11 @@ function setInterceptorToken() {
 }
 
 http.setInterceptorToken = setInterceptorToken
-nextTick(() => {
-    setInterceptorToken()
-}).then(r => {
-}, reason => {
-    alert("failed in http.js")
-})
+// nextTick(() => {
+//     setInterceptorToken()
+// }).then(r => {
+// }, reason => {
+//     alert("failed in http.js")
+// })
 
 export default http;

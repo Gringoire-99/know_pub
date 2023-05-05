@@ -92,6 +92,9 @@ body {
 
 </style>
 <style>
+.el-avatar, .el-image {
+    cursor: pointer;
+}
 /* 滚动条整体 */
 *::-webkit-scrollbar {
     width: 5px;

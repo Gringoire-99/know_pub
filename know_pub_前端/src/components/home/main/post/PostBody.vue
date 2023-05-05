@@ -1,20 +1,38 @@
 <template>
     <div class="d-flex align-items-start flex-column">
+
         <div class="authorInfo ps-0 pe-0 d-flex align-items-center w-100">
-            <el-image :src="post.author.avatar">
-                <template #error>
-                    <div class="image-slot">
-                        <el-image>
-                            <Picture></Picture>
+            <el-popover
+                placement="bottom"
+                trigger="hover"
+                width="430"
+            >
+                <div v-if="isLoadingPostCard" class="post-card">
+                    <post-card :id="post.author.id"></post-card>
+                </div>
+                <template #reference>
+                    <div class="d-flex align-items-center" style="cursor: pointer"
+                         v-on:mouseover="isLoadingPostCard=true">
+                        <el-image :src="post.author.avatar">
+                            <template #error>
+                                <div class="image-slot">
+                                    <el-image>
+                                        <Picture></Picture>
+                                    </el-image>
+                                </div>
+                            </template>
                         </el-image>
+                        <span class="ms-2 me-2">{{ post.author.name }},</span>
+                        <span class="fw-lighter fst-normal fs-6"
+                              style="font-size: 15px">{{
+                                post.author.desc.length > 10 ? post.author.desc.substring(0, 10) + "..." : post.author.desc
+                            }}</span>
                     </div>
+
                 </template>
-            </el-image>
-            <span class="ms-2 me-2">{{ post.author.name }},</span>
-            <span class="fw-lighter fst-normal fs-6"
-                  style="font-size: 15px">{{
-                    post.author.desc.length > 10 ? post.author.desc.substring(0, 10) + "..." : post.author.desc
-                }}</span>
+            </el-popover>
+
+
             <div class="hideFullText ms-auto d-flex align-items-center" @click="collapseFullText">收起回复
                 <el-icon>
                     <arrow-up></arrow-up>
@@ -31,15 +49,18 @@
 
 <script>
 import post from "./Post.vue";
+import PostCard from "@/components/user/PostCard.vue";
 
 export default {
     //组件名
     name: "post-body",
     //依赖的组件
-    components: {},
+    components: {PostCard},
     //数据
     data() {
-        return {}
+        return {
+            isLoadingPostCard: false
+        }
     },
     //方法
     methods: {
@@ -61,11 +82,7 @@ export default {
     }
     ,
     //计算属性
-    computed: {
-        post() {
-            return post
-        }
-    }
+    computed: {}
     ,
     //绑定父组件的属性
     props: {

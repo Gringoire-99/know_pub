@@ -40,7 +40,6 @@ export default {
     },
     //创建时执行
     created() {
-        this.$router.push({path: '/main-recommended'})
     },
     //侦听器
     watch: {

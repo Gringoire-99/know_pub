@@ -1,9 +1,6 @@
 <template>
     <div class="w-100">
-        <!--                  TODO 帖子：用户发布的内容会显示在这里-->
-
         <post v-for="post in posts" :post="post" class="post"></post>
-
     </div>
 </template>
 <script>

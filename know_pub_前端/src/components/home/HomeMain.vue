@@ -10,7 +10,7 @@
                                     <button class="btn">关注</button>
                                 </router-link>
                                 <router-link :to="{path:'/main-recommended'}">
-                                    <button :autofocus="true" class="btn">推荐</button>
+                                    <button class="btn">推荐</button>
                                 </router-link>
                                 <router-link :to="{path:'/main-hot-topics'}">
                                     <button class="btn">热榜</button>
@@ -21,11 +21,9 @@
                             </el-space>
                         </div>
                         <div class="w-100">
-
                             <router-view></router-view>
                         </div>
                     </div>
-
                 </div>
             </el-col>
             <el-col :span="6" class="d-none d-lg-inline ">
@@ -39,9 +37,6 @@
 import MainList from "@/components/home/main/MainRecommended.vue";
 import MainSecondary from "@/components/home/MainSecondary.vue";
 
-/**
- * 主界面的主要内容区域，用于展示帖子，和次要信息
- */
 export default {
     name: "home-main",
     components: {MainSecondary, MainList},
@@ -52,7 +47,6 @@ export default {
     },
     created() {
         //     router-view 默认为推荐页面
-        this.$router.push({path: '/main-recommended'})
     }
 }
 </script>

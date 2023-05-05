@@ -4,20 +4,27 @@
     <title>Test</title>
 </head>
 <body>
-<div style="height: 50px;width: 50px">
-    <div class="h-25 w-25" style=";overflow: scroll">
-        这个属性定义溢出元素内容区的内容会如何处理。如果值为
-        scroll，不论是否需要，用户代理都会提供一种滚动机制。因此，有可能即使元素框中可以放下所有内容也会出现滚动条。默认值是
-        visible
+<div class="w-100 d-flex align-items-center justify-content-center">
+    <div class="root d-flex flex-column align-items-start">
+        <div class="header d-flex ">
+            <div class="padding"></div>
+        </div>
+        <div class="body">
+
+        </div>
     </div>
-    <div> comment</div>
 </div>
+
 </body>
+
 <style>
 
-    img {
-        width: 100px;
-        height: 100px;
+    .root {
+        border: 1px solid #dcdfe6;
+        border-radius: 2px;
+        width: 200px;
+        height: 150px;
     }
+
 </style>
 </html>

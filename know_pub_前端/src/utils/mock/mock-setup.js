@@ -184,6 +184,24 @@ function mockSetUp() {
         result.data.comments = comments
         return result
     })
+    Mock.mock(/user\/post-card/, o => {
+        let param = getParams(o.url)
+        let userId = param['id']
+        return {
+            code: 200,
+            data: {
+                userInfo: {
+                    id: userId,
+                    name: Mock.mock('@cname'),
+                    avatar: Mock.mock('@image("100x100")'),
+                    description: Mock.mock('@cparagraph(1,3)'),
+                    postCount: Mock.mock('@integer(0,100)'),
+                    articleCount: Mock.mock('@integer(0,100)'),
+                    followerCount: Mock.mock('@integer(0,100)'),
+                },
+            }
+        }
+    })
 }
 
 export default mockSetUp

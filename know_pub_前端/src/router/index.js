@@ -8,6 +8,7 @@ import root from "@/components/common/Root.vue";
 import home from "@/components/common/Home.vue";
 import NotFound from "@/components/common/NotFound.vue";
 import loginPage from "@/components/common/LoginPage.vue";
+import test from "@/components/common/Test.vue";
 
 const routes = [
     {
@@ -26,6 +27,7 @@ const routes = [
                     }
                 ]
             },
+            {path: 'test', name: 'test', component: test},
             {path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound},
         ]
     },

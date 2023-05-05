@@ -1,14 +1,44 @@
 <template>
     <div class="d-flex justify-content-start align-items-start w-100 mb-3">
         <div class="avatar me-2">
-            <el-avatar :src="comment.avatar" shape="square" size="small"></el-avatar>
+            <el-popover
+                placement="bottom"
+                trigger="hover"
+                width="430"
+            >
+                <post-card :id="comment.publisherId"></post-card>
+                <template #reference>
+                    <el-avatar :src="comment.avatar" shape="square" size="small"></el-avatar>
+                </template>
+            </el-popover>
         </div>
         <div class="d-flex flex-column w-100">
             <div class="d-flex align-items-center justify-content-start">
-                <span class="fw-bold d-flex align-items-center reply">{{ comment.name }}
-                    <span v-if="isShowReplyTo" class="d-flex align-items-center"><el-icon><DArrowRight/></el-icon>{{
-                            comment.replyToName
-                        }}</span>
+                <span class="fw-bold d-flex align-items-center reply">
+                     <el-popover
+                         placement="bottom"
+                         trigger="hover"
+                         width="430"
+                     >
+                         <post-card :id="comment.publisherId"></post-card>
+                        <template #reference>
+                            <span style="cursor: pointer">{{ comment.name }}</span>
+                        </template>
+                    </el-popover>
+                    <span v-if="isShowReplyTo" class="d-flex align-items-center">
+                        <el-icon><DArrowRight/></el-icon>
+                        <el-popover
+                            placement="bottom"
+                            trigger="hover"
+                            width="430"
+                        >
+                         <post-card :id="comment.replyToId"></post-card>
+                        <template #reference>
+                            <span style="cursor: pointer">{{ comment.replyToName }}</span>
+                        </template>
+                    </el-popover>
+
+                    </span>
                 </span>
 
                 <el-icon class="more">
@@ -50,12 +80,13 @@
 <script>
 import PostComment from "@/components/home/main/post/comment/PostComment.vue";
 import {ArrowRightBold, ChatDotRound, DArrowRight, MoreFilled} from "@element-plus/icons-vue";
+import PostCard from "@/components/user/PostCard.vue";
 
 export default {
     //组件名
     name: "comment",
     //依赖的组件
-    components: {DArrowRight, ArrowRightBold, MoreFilled, ChatDotRound, PostComment},
+    components: {PostCard, DArrowRight, ArrowRightBold, MoreFilled, ChatDotRound, PostComment},
     //数据
     data() {
         return {

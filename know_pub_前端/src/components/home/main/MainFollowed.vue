@@ -1,6 +1,6 @@
 <template>
     <div>
-        关注者
+        关注者.从关注列表中抽取id,根据关注的id获取关注的人发的帖子
     </div>
 </template>
 

@@ -1,7 +1,6 @@
 <template>
     <div class="header fw-bold mb-3 mt-3">评论回复</div>
-    <div class="d-flex flex-column">
-        <div v-if="total>0" class="root border-0">
+        <div class="root border-0">
             <comment :comment="rootComment"></comment>
             <div class="divider w-100"></div>
             <div class="">{{ `${total}条回复` }}</div>
@@ -12,14 +11,11 @@
                 ></comment>
                 <el-skeleton v-show="isLoading" :rows="10" animated/>
             </div>
+            <div v-if="total===0" class="d-flex justify-content-center align-items-center">
+                还没有评论，快来抢沙发吧~
+            </div>
         </div>
 
-
-        <!--    TODO 骨架屏-->
-        <div v-if="total===0&&!isLoading" class="d-flex justify-content-center align-items-center">
-            还没有评论，快来抢沙发吧~
-        </div>
-    </div>
     <post-comment></post-comment>
 </template>
 
