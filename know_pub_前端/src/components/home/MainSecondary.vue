@@ -1,12 +1,16 @@
 <template>
-    <el-card>
-        次要内容
-    </el-card>
+    <div class="root d-flex flex-column ">
+        <sed-write></sed-write>
+    </div>
 </template>
 
 <script>
+
+import SedWrite from "@/components/secondary/SedWrite.vue";
+
 export default {
-    name: "main-secondary"
+    name: "main-secondary",
+    components: {SedWrite,}
 }
 </script>
 

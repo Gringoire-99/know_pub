@@ -1,6 +1,6 @@
 <template>
         <div class="d-flex flex-column">
-            <div v-if="total>0" class="root border-0">
+            <div class="root border-0">
                 <div class="comment-header d-flex align-items-center w-100">
                     <div class="comment_count">{{ total }}条评论</div>
                     <el-radio-group v-model="orderBy" class="order" size="small">
@@ -173,6 +173,7 @@ export default {
     border: 1px solid #ebebeb;
     border-radius: 3px;
     padding: 10px 20px;
+
 }
 
 .comment-header {

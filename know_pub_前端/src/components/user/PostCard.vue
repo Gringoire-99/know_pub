@@ -31,24 +31,14 @@
             <div class="mt-4 d-flex align-items-center justify-content-center flex-fill">
                 <el-button class="bg-primary text-white flex-fill">
                     <el-icon class="">
-                        <svg class="icon" height="200" p-id="2617" t="1683278043463"
-                             version="1.1" viewBox="0 0 1024 1024" width="200" xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M1024 438.857143H585.142857V0H438.857143v438.857143H0v146.285714h438.857143v438.857143h146.285714V585.142857h438.857143z"
-                                p-id="2618"></path>
-                        </svg>
+                        <Plus></Plus>
                     </el-icon>
                     <span class="fs-6">关注它</span>
 
                 </el-button>
                 <el-button class=" flex-fill">
                     <el-icon :size="15">
-                        <svg class="icon" height="200" p-id="4103" t="1683278246405"
-                             version="1.1" viewBox="0 0 1024 1024" width="200" xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M821.333333 800H547.584l-86.464 96.074667a32 32 0 1 1-47.573333-42.816l96-106.666667A32 32 0 0 1 533.333333 736h288a53.333333 53.333333 0 0 0 53.333334-53.333333V234.666667a53.333333 53.333333 0 0 0-53.333334-53.333334H202.666667a53.333333 53.333333 0 0 0-53.333334 53.333334v448a53.333333 53.333333 0 0 0 53.333334 53.333333h138.666666a32 32 0 0 1 0 64H202.666667c-64.8 0-117.333333-52.533333-117.333334-117.333333V234.666667c0-64.8 52.533333-117.333333 117.333334-117.333334h618.666666c64.8 0 117.333333 52.533333 117.333334 117.333334v448c0 64.8-52.533333 117.333333-117.333334 117.333333zM704 341.333333a32 32 0 0 1 0 64H320a32 32 0 0 1 0-64h384zM512 512a32 32 0 0 1 0 64H320a32 32 0 0 1 0-64h192z"
-                                fill="#000000" p-id="4104"></path>
-                        </svg>
+                        <Message></Message>
                     </el-icon>
                     <span class="fs-6">发私信</span>
 
@@ -64,13 +54,13 @@
 
 <script>
 import http from "@/utils/http/http";
-import {Plus} from "@element-plus/icons-vue";
+import {Message, Plus} from "@element-plus/icons-vue";
 
 export default {
     //组件名
     name: "post-card",
     //依赖的组件
-    components: {Plus},
+    components: {Message, Plus},
     //数据
     data() {
         return {

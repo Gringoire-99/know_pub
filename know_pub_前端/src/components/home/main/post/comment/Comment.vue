@@ -1,6 +1,6 @@
 <template>
     <div class="d-flex justify-content-start align-items-start w-100 mb-3">
-        <div class="avatar me-2">
+        <div class="avatar me-2 pointer">
             <el-popover
                 placement="bottom"
                 trigger="hover"
@@ -22,7 +22,7 @@
                      >
                          <post-card :id="comment.publisherId"></post-card>
                         <template #reference>
-                            <span style="cursor: pointer">{{ comment.name }}</span>
+                            <span class="pointer">{{ comment.name }}</span>
                         </template>
                     </el-popover>
                     <span v-if="isShowReplyTo" class="d-flex align-items-center">
@@ -34,7 +34,7 @@
                         >
                          <post-card :id="comment.replyToId"></post-card>
                         <template #reference>
-                            <span style="cursor: pointer">{{ comment.replyToName }}</span>
+                            <span class="pointer">{{ comment.replyToName }}</span>
                         </template>
                     </el-popover>
 

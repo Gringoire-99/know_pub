@@ -5,17 +5,8 @@
                 <home-navbar/>
             </el-affix>
         </el-header>
-        <el-main class="main">
-            <el-row :gutter="10" class="main_content">
-                <el-col :span="3" class="d-none d-lg-inline ">
-                </el-col>
-                <el-col :lg="18" :md="18" :sm="24" :xl="24" :xs="24">
-                    <router-view></router-view>
-                </el-col>
-                <el-col :span="1" class="d-none d-lg-inline ">
-                </el-col>
-            </el-row>
-
+        <el-main class="main d-flex">
+            <router-view></router-view>
         </el-main>
 
     </el-container>
@@ -56,8 +47,9 @@ export default {
 </script>
 <style scoped>
 
-.home-navbar {
-    overflow: hidden;
+.main {
+    padding-left: 180px;
+    padding-right: 150px;
 }
 
 .el-header {

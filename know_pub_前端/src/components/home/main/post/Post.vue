@@ -89,7 +89,7 @@
                             <li class="list-group-item">屏蔽这个作者</li>
                         </ul>
                     </el-popover>
-                    <el-button v-show="!isCollapseComments" class="hideComments" v-on:click="collapseComments">
+                    <el-button v-show="!isCollapseComments" class="hideComments" @click="collapseComments">
                         <div class=" d-flex justify-content-center align-items-center">
                             收起
                             <el-icon>
@@ -117,7 +117,7 @@ import {
     CaretBottom,
     CaretTop,
     Collection,
-    Comment,
+    Comment, MoreFilled,
     Picture,
     Share,
     StarFilled
@@ -140,6 +140,7 @@ export default {
     name: "post",
     //依赖的组件
     components: {
+        MoreFilled,
         PostBody,
         ArrowUp,
         PostComment,

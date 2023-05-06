@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-row :gutter="10">
-            <el-col :lg="18" :md="18" :sm="24" :xl="18" :xs="24">
+            <el-col :lg="17" :md="17" :sm="24" :xl="24" :xs="24">
                 <div class="card w-100">
                     <div class="card-body">
                         <div class="card-title d-flex align-items-center">
@@ -26,7 +26,7 @@
                     </div>
                 </div>
             </el-col>
-            <el-col :span="6" class="d-none d-lg-inline ">
+            <el-col :span="7" class="d-none d-lg-inline ">
                 <main-secondary></main-secondary>
             </el-col>
         </el-row>
@@ -53,6 +53,12 @@ export default {
 <style scoped>
 .card-body .btn:focus {
     color: #0095da;
+}
+
+.card {
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    border-radius: 1px;
+    border: 1px solid #ebebeb;
 }
 
 .card-body .btn {

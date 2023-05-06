@@ -92,9 +92,16 @@ body {
 
 </style>
 <style>
-.el-avatar, .el-image {
+.fs-sed {
+    font-size: 12px;
+    font-weight: lighter;
+}
+
+.pointer {
     cursor: pointer;
 }
+
+
 /* 滚动条整体 */
 *::-webkit-scrollbar {
     width: 5px;

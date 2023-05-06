@@ -11,7 +11,7 @@
                     <post-card :id="post.author.id"></post-card>
                 </div>
                 <template #reference>
-                    <div class="d-flex align-items-center" style="cursor: pointer"
+                    <div class="d-flex align-items-center pointer"
                          v-on:mouseover="isLoadingPostCard=true">
                         <el-image :src="post.author.avatar">
                             <template #error>
@@ -24,7 +24,7 @@
                         </el-image>
                         <span class="ms-2 me-2">{{ post.author.name }},</span>
                         <span class="fw-lighter fst-normal fs-6"
-                              style="font-size: 15px">{{
+                        >{{
                                 post.author.desc.length > 10 ? post.author.desc.substring(0, 10) + "..." : post.author.desc
                             }}</span>
                     </div>
