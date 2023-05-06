@@ -50,6 +50,7 @@ export default {
 .main {
     padding-left: 180px;
     padding-right: 150px;
+    padding-top: 7px;
 }
 
 .el-header {

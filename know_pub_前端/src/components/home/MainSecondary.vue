@@ -1,16 +1,22 @@
 <template>
-    <div class="root d-flex flex-column ">
+    <div class="root d-flex flex-column w-100">
         <sed-write></sed-write>
+        <sed-recommended-users></sed-recommended-users>
+        <sed-menu></sed-menu>
+        <sed-nav></sed-nav>
     </div>
 </template>
 
 <script>
 
-import SedWrite from "@/components/secondary/SedWrite.vue";
+import SedWrite from "@/components/home/secondary/SedWrite.vue";
+import SedRecommendedUsers from "@/components/home/secondary/SedRecommendedUsers.vue";
+import SedMenu from "@/components/home/secondary/SedMenu.vue";
+import SedNav from "@/components/home/secondary/SedNav.vue";
 
 export default {
     name: "main-secondary",
-    components: {SedWrite,}
+    components: {SedNav, SedMenu, SedRecommendedUsers, SedWrite,}
 }
 </script>
 

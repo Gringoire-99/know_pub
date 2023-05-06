@@ -202,6 +202,29 @@ function mockSetUp() {
             }
         }
     })
+    Mock.mock(/.*user\/recommended-users.*/, o => {
+        let param = getParams(o.url)
+        let pageSize = parseInt(param['pageSize'])
+        let result = {
+            code: 200,
+            data: {
+                users: [],
+                total: Mock.mock('@integer(100,200)')
+            }
+        }
+        let users = []
+        for (let i = 0; i < pageSize; i++) {
+            let user = {
+                id: Mock.mock('@guid'),
+                name: Mock.mock('@cname'),
+                avatar: Mock.mock('@image("100x100")'),
+                reason: Mock.mock('@cparagraph(1,3)'),
+            }
+            users.push(user)
+        }
+        result.data.users = users
+        return result
+    })
 }
 
 export default mockSetUp

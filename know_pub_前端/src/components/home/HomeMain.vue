@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="w-100">
         <el-row :gutter="10">
             <el-col :lg="17" :md="17" :sm="24" :xl="24" :xs="24">
                 <div class="card w-100">

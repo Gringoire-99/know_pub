@@ -298,38 +298,7 @@ export default {
     cursor: pointer;
 }
 
-/* Underline From Center */
-.el-menu-item {
-    display: inline-block;
-    vertical-align: middle;
-    -webkit-transform: perspective(1px) translateZ(0);
-    transform: perspective(1px) translateZ(0);
-    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
-    position: relative;
-    overflow: hidden;
-}
 
-.el-menu-item:before {
-    content: "";
-    position: absolute;
-    z-index: -1;
-    left: 51%;
-    right: 51%;
-    bottom: 0;
-    background: #0095da;
-    height: 4px;
-    -webkit-transition-property: left, right;
-    transition-property: left, right;
-    -webkit-transition-duration: 0.3s;
-    transition-duration: 0.1s;
-    -webkit-transition-timing-function: ease-out;
-    transition-timing-function: ease-out;
-}
-
-.el-menu-item:hover:before, .el-menu-item:focus:before, .el-menu-item:active:before {
-    left: 0;
-    right: 0;
-}
 
 .publishButton {
     /*    圆边按钮*/

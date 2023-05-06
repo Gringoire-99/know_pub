@@ -8,32 +8,32 @@
             <span class="fs-sed pointer ms-auto">草稿箱</span>
         </div>
         <div class="operations d-flex  mt-4">
-            <div class="d-flex flex-column flex-fill align-items-center justify-content-center pointer ms-1 me-1">
-                <div class="blue circle d-flex align-items-center justify-content-center">
+            <div class="menu">
+                <div class="blue circle menu-content">
                     <el-icon>
                         <answer></answer>
                     </el-icon>
                 </div>
                 <span class="fs-sed mt-2">回答问题</span>
             </div>
-            <div class="d-flex flex-column flex-fill align-items-center justify-content-center pointer ms-1 me-1">
-                <div class="orange circle d-flex align-items-center justify-content-center">
+            <div class="menu">
+                <div class="orange circle menu-content">
                     <el-icon class="fs-4">
                         <videos></videos>
                     </el-icon>
                 </div>
                 <span class="fs-sed mt-2">发视频</span>
             </div>
-            <div class="d-flex flex-column flex-fill align-items-center justify-content-center pointer ms-1 me-1">
-                <div class="green circle d-flex align-items-center justify-content-center">
+            <div class="menu">
+                <div class="green circle menu-content">
                     <el-icon>
                         <pen></pen>
                     </el-icon>
                 </div>
                 <span class="fs-sed mt-2">写文章</span>
             </div>
-            <div class="d-flex flex-column flex-fill align-items-center justify-content-center pointer ms-1 me-1">
-                <div class="yellow circle d-flex align-items-center justify-content-center fs-4">
+            <div class="menu">
+                <div class="yellow circle menu-content fs-4">
                     <el-icon>
                         <idea></idea>
                     </el-icon>
@@ -46,7 +46,7 @@
                 <div class="mb-1">发布你的第一篇文章</div>
                 <div class="fs-sed">回答问题，发布文章，开始创作<br>快来成为KP创作者吧！</div>
             </div>
-            <img class="" src="../../assets/icon_small.png"/>
+            <img class="" src="../../../assets/icon_small.png"/>
         </div>
         <div class="w-100 align-self-center mt-3    ">
             <el-button class="w-100" type="primary">
@@ -108,5 +108,22 @@ export default {
 .desc img {
     width: 55px;
     height: 55px;
+}
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    align-items: center;
+    justify-content: center;
+    margin: 0 10px;
+    cursor: pointer;
+}
+
+.menu-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 </style>
