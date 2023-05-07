@@ -101,13 +101,15 @@
                     trigger="click"
                 >
                     <ul class="list-group d-flex  align-content-center">
-                        <li class="list-group-item">
-                            <el-icon>
-                                <UserFilled/>
-                            </el-icon>
-                            <span>我的主页</span>
+                        <router-link :to="`/home-user/${$store.state.userId}`">
+                            <li class="list-group-item">
+                                <el-icon>
+                                    <UserFilled/>
+                                </el-icon>
+                                <span>我的主页</span>
+                            </li>
+                        </router-link>
 
-                        </li>
                         <li class="list-group-item">
                             <el-icon>
                                 <BellFilled/>

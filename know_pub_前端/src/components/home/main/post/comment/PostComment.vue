@@ -9,18 +9,29 @@
             >
             </textarea>
             <div v-if="isShowFooter" class="comment-footer w-100 d-flex align-items-center mb-1">
-
-                <img alt="" class="icon" src="../../../../../assets/common/image.svg">
-                <img alt="" class="icon" src="../../../../../assets/common/voice.svg">
+                <div class="icon">
+                    <el-icon>
+                        <select-picture></select-picture>
+                    </el-icon>
+                </div>
+                <div class="icon">
+                    <el-icon>
+                        <voice></voice>
+                    </el-icon>
+                </div>
                 <el-popover
                     placement="bottom"
                     trigger="click"
                     width="370px"
                 >
                     <template #reference>
+                        <div>
+                            <el-icon class="icon" @mousedown="preventDefault">
+                                <emoji></emoji>
+                            </el-icon>
+                        </div>
                         <!--                      preventDefault  防止textarea失焦-->
-                        <img alt="" class="icon" src="../../../../../assets/common/emoji.svg"
-                             v-on:mousedown="preventDefault">
+
                     </template>
                     <VuemojiPicker class="d-block" @emojiClick="handleEmojiClick" v-on:mousedown="preventDefault"/>
                 </el-popover>
@@ -34,13 +45,16 @@
 <script>
 import {VuemojiPicker} from 'vuemoji-picker'
 import {Picture} from "@element-plus/icons-vue";
+import SelectPicture from "@/components/icons/SelectPicture.vue";
+import Voice from "@/components/icons/Voice.vue";
+import Emoji from "@/components/icons/emoji.vue";
 
 export default {
 
     //组件名
     name: "post-comment",
     //依赖的组件
-    components: {Picture, VuemojiPicker},
+    components: {Emoji, Voice, SelectPicture, VuemojiPicker},
     //数据
     data() {
         return {
@@ -147,8 +161,7 @@ textarea {
 }
 
 .icon {
-    width: 20px;
-    height: 20px;
+    font-size: 30px;
     margin-right: 10px;
     cursor: pointer;
 }

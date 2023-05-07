@@ -12,13 +12,48 @@ function getParams(url) {
 }
 
 function mockSetUp() {
+    Mock.mock(/.*user\/info-detail.*/, o => {
+        let param = getParams(o.url)
+        let userId = param['id']
+        return {
+            code: 200,
+            data: {
+                id: userId,
+                name: Mock.mock('@cname'),
+                avatar: Mock.mock('@image("100x100")'),
+                // 回答数
+                postCount: Mock.mock('@integer(0,100)'),
+                // 文章数
+                articleCount: Mock.mock('@integer(0,100)'),
+                // 被关注数
+                followerCount: Mock.mock('@integer(0,100)'),
+                // 提问数
+                questionCount: Mock.mock('@integer(0,100)'),
+                collectionCount: Mock.mock('@integer(0,100)'),
+                followCount: Mock.mock('@integer(0,100)'),
+                videoCount: Mock.mock('@integer(0,100)'),
+                followedTopicCount: Mock.mock('@integer(0,100)'),
+                followedQuestionCount: Mock.mock('@integer(0,100)'),
+                // 个人简介
+                industry: Mock.mock('@cword(2,4)'),
+                gender: Mock.mock('@cword(2,4)'),
+                location: Mock.mock('@cword(2,4)'),
+                school: Mock.mock('@cword(2,4)'),
+                jobHistory: Mock.mock('@cword(2,4)'),
+                description: Mock.mock('@cparagraph(1,3)'),
+                resume: Mock.mock('@cparagraph(1,3)'),
+                authentication: Mock.mock('@cword(2,4)'),
+                backgroundImg: Mock.mock('@image("1000x400")'),
+            }
+        }
+    })
     Mock.mock(/.*recommended-posts.*/, o => {
         let posts = []
         let pageSize = 5
         for (let i = 0; i < pageSize; i++) {
             let post = {
                 id: Mock.mock('@guid'),
-                topic: Mock.mock('@ctitle(20,40)'),
+                question: Mock.mock('@ctitle(20,40)'),
                 content: {
                     text: Mock.mock('@cparagraph(6,20)'),
                     images: Mock.mock({
@@ -225,6 +260,7 @@ function mockSetUp() {
         result.data.users = users
         return result
     })
+
 }
 
 export default mockSetUp

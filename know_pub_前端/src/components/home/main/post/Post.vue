@@ -1,9 +1,9 @@
 <template>
     <div class="root card">
         <div class="card-body">
-            <!--            主题名-->
+            <!--            问题名-->
             <div class="card-title">
-                <div class="topic">{{ post.topic }}</div>
+                <div class="question">{{ post.question }}</div>
             </div>
             <!--            简短介绍-未展开时显示-->
             <div v-if="isCollapseFullText" class="intro d-flex w-100">
@@ -158,7 +158,7 @@ export default {
     props: {
         post: {
             id: Mock.mock('@guid'),
-            topic: Mock.mock('@ctitle(20,40)'),
+            question: Mock.mock('@ctitle(20,40)'),
             content: {
                 text: Mock.mock('@cparagraph(6,20)'),
                 images: Mock.mock({
@@ -302,7 +302,7 @@ export default {
     font-size: 30px;
 }
 
-.topic {
+.question {
     /*换行*/
     word-wrap: anywhere;
     font-size: 26px;

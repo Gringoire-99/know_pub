@@ -1,9 +1,14 @@
 <template>
     <div class="root d-flex flex-column w-100">
-        <div class="mb-4">
-            <el-carousel :interval="8000" arrow="never" class="w-100" height="100px">
-                <el-carousel-item v-for="item in 3">
-                    <img alt="" class="w-100 h-100" src="http://dummyimage.com/300x200">
+        <div class="mb-1">
+            <el-carousel :interval="8000" arrow="never" class="w-100" height="130px">
+                <el-carousel-item>
+                    <img alt="" class="w-100 h-100" src="../../../assets/ad/welcome.png">
+
+                </el-carousel-item>
+                <el-carousel-item>
+                    <img alt="" class="w-100 h-100" src="../../../assets/ad/welcome2.png">
+
                 </el-carousel-item>
             </el-carousel>
         </div>
@@ -122,7 +127,8 @@ span {
 }
 
 .menu {
-    margin-bottom: 15px;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 .menu-content {
@@ -130,5 +136,9 @@ span {
     flex-direction: column;
     justify-content: center;
     flex: 1 1 auto;
+}
+
+.menu:hover {
+    background-color: #f5f5f5;
 }
 </style>

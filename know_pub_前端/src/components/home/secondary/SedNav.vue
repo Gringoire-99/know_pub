@@ -2,15 +2,9 @@
     <div class="root">
         <div class="li">
             <el-icon>
-                <star-filled></star-filled>
+                <user-filled></user-filled>
             </el-icon>
-            <span>我的收藏</span>
-        </div>
-        <div class="li">
-            <el-icon>
-                <question></question>
-            </el-icon>
-            <span>我的关注的主题</span>
+            <span>我的主页</span>
         </div>
         <div class="li">
             <el-icon>
@@ -20,34 +14,26 @@
         </div>
         <div class="li">
             <el-icon>
-                <star-filled></star-filled>
+                <heart-filled></heart-filled>
             </el-icon>
-            <span>我的收藏</span>
+            <span>我的关注</span>
         </div>
-        <div class="li">
-            <el-icon>
-                <star-filled></star-filled>
-            </el-icon>
-            <span>我的收藏</span>
-        </div>
-        <div class="li">
-            <el-icon>
-                <star-filled></star-filled>
-            </el-icon>
-            <span>我的收藏</span>
-        </div>
+
+
     </div>
 </template>
 
 <script>
-import {StarFilled} from "@element-plus/icons-vue";
+import {ChromeFilled, StarFilled, UserFilled} from "@element-plus/icons-vue";
 import Question from "@/components/icons/Question.vue";
+import Topic from "@/components/icons/Topic.vue";
+import HeartFilled from "@/components/icons/HeartFilled.vue";
 
 export default {
     //组件名
     name: "sed-nav",
     //依赖的组件
-    components: {Question, StarFilled},
+    components: {HeartFilled, ChromeFilled, UserFilled, Topic, Question, StarFilled},
     //数据
     data() {
         return {}
@@ -80,22 +66,27 @@ export default {
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
     border-radius: 1px;
     border: 1px solid #ebebeb;
-    padding: 20px;
     display: flex;
     flex-direction: column;
 }
 
 .li .el-icon {
-    font-size: 25px;
+    font-size: 15px;
     margin-right: 10px;
     color: rgba(141, 142, 143, 0.98);
+
 }
 
 .li {
+    padding: 20px;
     display: flex;
     align-items: center;
-    font-size: 20px;
+    cursor: pointer;
+    font-size: 15px;
     color: rgba(141, 142, 143, 0.98);
 }
 
+.li:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
 </style>

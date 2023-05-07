@@ -9,6 +9,7 @@ import home from "@/components/common/Home.vue";
 import NotFound from "@/components/common/NotFound.vue";
 import loginPage from "@/components/common/LoginPage.vue";
 import test from "@/components/common/Test.vue";
+import homeUser from "@/components/user/HomeUser.vue";
 
 const routes = [
     {
@@ -24,7 +25,8 @@ const routes = [
                             {name: 'main-hot-topics', path: '/main-hot-topics', component: mainHotTopices},
                             {name: 'main-videos', path: '/main-videos', component: mainVideos},
                         ]
-                    }
+                    },
+                    {name: 'home-user', path: '/home-user/:id', component: homeUser}
                 ]
             },
             {path: 'test', name: 'test', component: test},
