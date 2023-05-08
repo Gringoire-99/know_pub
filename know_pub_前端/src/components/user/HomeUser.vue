@@ -1,20 +1,29 @@
 <template>
-    <div class="root d-flex flex-column h-100">
-        <div class="header d-flex flex-column flex-fill">
-            <div class="background-img w-100 h-100 flex-fill">
-                1
+    <div class="root d-flex flex-column flex-fill">
+        <div class="header d-flex flex-column flex-fill w-100">
+            <div :style="userInfo.backgroundImg!==''?`background:url('${userInfo.backgroundImg}')`:`background:#')`"
+                 class="background-img w-100 h-100 flex-fill">
+
             </div>
             <div class="d-flex">
                 <div class="avatar d-flex align-items-end">
-                    <img :src="userInfo.avatar"/>
+                    <div class="img">
+                        <el-image :src="userInfo.avatar" alt="" class="h-100 w-100">
+                        </el-image>
+                    </div>
                 </div>
-                <div>
-                    <p class="mb-0 mt-1">{{ userInfo.name }}</p>
-                    <p class="desc">
-                        {{
-                            userInfo.description.length > 10 ? userInfo.description.substring(0, 10) + "..." : userInfo.description
-                        }}</p>
-
+                <div class="detail d-flex flex-column ms-4 mt-2">
+                    <span>
+                        <span class="fw-bold fs-5">{{ userInfo.name }}</span>
+                        <span
+                            class="ms-2 fs-6 fw-light">{{ userInfo.description.length > 10 ? userInfo.description.substring(0, 10) + '...' : userInfo.description }}</span>
+                    </span>
+                    <div class="info-short">
+                        <el-icon>
+                            <gender></gender>
+                        </el-icon>
+                        <span>{{ userInfo.gender }}</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -24,12 +33,13 @@
 <script>
 import http from "@/utils/http/http";
 import Mock from "mockjs";
+import Gender from "@/components/icons/Gender.vue";
 
 export default {
     //组件名
     name: "home-user",
     //依赖的组件
-    components: {},
+    components: {Gender},
     //数据
     data() {
         return {
@@ -100,13 +110,36 @@ export default {
 </script>
 
 <style scoped>
+.info-short span {
+    font-size: 15px;
+}
+
 .background-img {
     height: 200px !important;
     display: flex;
     justify-content: center;
     align-content: start;
     overflow: hidden;
-    background: #dcdfe6;
+    background: #6f7073 !important;
+    background-position: center !important;
+    overflow: clip;
+}
+
+.header {
+    box-shadow: 0 0 10px #ccc;
+    padding-bottom: 20px;
+}
+
+.avatar {
+    height: 100px;
+}
+
+.img {
+    width: 160px;
+    height: 160px;
+    border: 3px solid #ffffff;
+    border-radius: 3px;
+    margin-left: 20px;
 }
 
 </style>

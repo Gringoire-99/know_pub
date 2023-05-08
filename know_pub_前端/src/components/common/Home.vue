@@ -5,7 +5,7 @@
                 <home-navbar/>
             </el-affix>
         </el-header>
-        <el-main class="main d-flex">
+        <el-main class="main d-flex ">
             <router-view></router-view>
         </el-main>
 

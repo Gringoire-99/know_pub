@@ -20,11 +20,11 @@
                     <root-comment v-for="rootComment in rootComments" :key="rootComment.rootComment.id"
                                   :comments="rootComment"></root-comment>
 
-                    <el-skeleton v-show="isLoading" :rows="5" animated/>
+                    <el-skeleton v-show="isLoading" :rows="5" animated throttle/>
                 </div>
             </div>
             <div v-if="total===0&&!isLoading" class="d-flex justify-content-center align-items-center">
-                还没有评论，快来抢沙发吧~
+                <el-empty description="还没有评论，快来抢沙发吧~"/>
             </div>
         </div>
         <post-comment></post-comment>

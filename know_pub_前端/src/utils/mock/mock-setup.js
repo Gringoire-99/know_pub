@@ -20,7 +20,7 @@ function mockSetUp() {
             data: {
                 id: userId,
                 name: Mock.mock('@cname'),
-                avatar: Mock.mock('@image("100x100")'),
+                avatar: Mock.mock('@image("160x160")'),
                 // 回答数
                 postCount: Mock.mock('@integer(0,100)'),
                 // 文章数

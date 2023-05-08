@@ -23,17 +23,16 @@
             </div>
         </div>
     </div>
-  <!--    TODO 骨架屏-->
+
     <div v-if="!isLoading&&total===0" class="d-flex justify-content-center align-items-center">
-        还没有评论，快来抢沙发吧~
+        <el-empty description="还没有评论，快来抢沙发吧~"/>
     </div>
-    <el-skeleton v-if="isLoading" :rows="5" animated/>
+    <el-skeleton v-if="isLoading" :rows="5" animated throttle/>
+
     <div v-if="isLoadDialog">
         <el-dialog v-model="dialogVisible" :align-center="true" :draggable="true" width="75%">
-
             <comments-dialog :post-id="postId"></comments-dialog>
         </el-dialog>
-
     </div>
 </template>
 
@@ -196,6 +195,8 @@ export default {
     border: 1px solid #ebebeb;
     border-radius: 3px;
     padding: 10px 20px;
+
+
 }
 
 .comment-header {
@@ -216,6 +217,7 @@ export default {
 
 .comments {
     padding: 20px 10px;
+
 }
 
 .order {
