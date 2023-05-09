@@ -5,35 +5,30 @@
 </head>
 <body>
 <div class="w-100 d-flex align-items-center justify-content-center">
-    <div class="root d-flex flex-column align-items-start">
-        <div class="header d-flex ">
-            <div class="padding"></div>
-        </div>
-        <div class="body">
-
-        </div>
-    </div>
+   <span class="text">k</span>
 </div>
 
 </body>
 
 <style>
 
-    .root {
-        border: 1px solid #dcdfe6;
-        border-radius: 2px;
-        width: 200px;
-        height: 150px;
-        background: blue;
-        transition: background-color 1s;
+
+    .text {
+        font-size: 100px;
+        font-weight: 700;
+        color: #0095da;
+        text-shadow: 0 0 10px #0095da;
     }
 
-    .root:hover {
-        background-color: #056de8;
-    }
-
-    .root:not(:hover) {
-        background-color: blue;
+    .text:before {
+        content: "";
+        position: absolute;
+        z-index: -1;
+        left: 51%;
+        right: 51%;
+        bottom: 0;
+        background: #2098D1;
+        height: 4px;
     }
 
 </style>

@@ -117,8 +117,6 @@ export default {
 
 .root {
     margin-top: 10px;
-    border: 1px solid #ebebeb;
-    border-radius: 3px;
     padding: 10px 0px;
 }
 

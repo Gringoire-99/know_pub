@@ -5,18 +5,13 @@
                 <div class="card w-100">
                     <div class="card-body">
                         <div class="card-title d-flex align-items-center">
-                                <router-link :to="{path:'/main-followed'}">
-                                    <button class="btn">关注</button>
-                                </router-link>
-                                <router-link :to="{path:'/main-recommended'}">
-                                    <button class="btn">推荐</button>
-                                </router-link>
-                                <router-link :to="{path:'/main-hot-topics'}">
-                                    <button class="btn">热榜</button>
-                                </router-link>
-                                <router-link :to="{path:'/main-videos'}">
-                                    <button class="btn">视频</button>
-                                </router-link>
+                            <router-link v-for="(tab,index) in tabs" :key="index" :to="{path:`${tab.path}`}"
+                            >
+                                <button :class="{'selected':(index===currentTabIndex)}" class="btn"
+                                        @click="onTabChange(index)">{{ tab.name }}
+                                </button>
+                            </router-link>
+
                         </div>
                         <div class="w-100">
                             <router-view></router-view>
@@ -37,14 +32,23 @@ import MainSecondary from "@/components/home/MainSecondary.vue";
 
 export default {
     name: "home-main",
-    components: {MainSecondary, MainList},
+    components: {MainSecondary, MainList}, data() {
+        return {
+            currentTabIndex: 0,
+            tabs: {
+                'main-recommended': {name: '推荐', path: '/main-recommended'},
+                'main-followed': {name: '关注', path: '/main-followed',},
+                'main-hot-topics': {name: '热榜', path: '/main-hot-topics'},
+                'main-videos': {name: '视频', path: '/main-videos'}
+            }
+        }
+    },
     methods: {
-        getView() {
-            console.log("获取视图")
+        onTabChange(index) {
+            this.currentTabIndex = index
         }
     },
     created() {
-        //     router-view 默认为推荐页面
     }
 }
 </script>
@@ -65,11 +69,15 @@ export default {
 
 }
 
+.selected {
+    color: #008cff !important;
+}
 
 .card-title {
     border-bottom: 1px solid #ebebeb;
     padding-bottom: 10px;
 }
+
 @media screen and (max-width: 600px) {
     .card-title {
         justify-content: center;
