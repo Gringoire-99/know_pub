@@ -43,7 +43,7 @@ function mockSetUp() {
                 description: Mock.mock('@cparagraph(1,3)'),
                 resume: Mock.mock('@cparagraph(1,3)'),
                 authentication: Mock.mock('@cword(2,4)'),
-                backgroundImg: Mock.mock('@image("1000x400")'),
+                backgroundImg: Mock.mock('@image("2000x400")'),
             }
         }
     })

@@ -5,7 +5,6 @@
                 <div class="card w-100">
                     <div class="card-body">
                         <div class="card-title d-flex align-items-center">
-                            <el-space :size="30">
                                 <router-link :to="{path:'/main-followed'}">
                                     <button class="btn">关注</button>
                                 </router-link>
@@ -18,7 +17,6 @@
                                 <router-link :to="{path:'/main-videos'}">
                                     <button class="btn">视频</button>
                                 </router-link>
-                            </el-space>
                         </div>
                         <div class="w-100">
                             <router-view></router-view>
@@ -71,5 +69,10 @@ export default {
 .card-title {
     border-bottom: 1px solid #ebebeb;
     padding-bottom: 10px;
+}
+@media screen and (max-width: 600px) {
+    .card-title {
+        justify-content: center;
+    }
 }
 </style>

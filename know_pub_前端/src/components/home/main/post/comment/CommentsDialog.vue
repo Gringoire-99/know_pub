@@ -1,16 +1,16 @@
 <template>
-        <div class="d-flex flex-column">
-            <div class="root border-0">
-                <div class="comment-header d-flex align-items-center w-100">
-                    <div class="comment_count">{{ total }}条评论</div>
-                    <el-radio-group v-model="orderBy" class="order" size="small">
-                        <el-radio-button :label="ORDER_BY.LIKE_COUNT" @click="changeOrderBy(ORDER_BY.LIKE_COUNT)">默认
-                        </el-radio-button>
-                        <el-radio-button :label="ORDER_BY.PUBLISH_TIME" @click="changeOrderBy(ORDER_BY.PUBLISH_TIME)">
-                            最新
-                        </el-radio-button>
-                        <el-radio-button :label="ORDER_BY.COMMENT_COUNT" @click="changeOrderBy(ORDER_BY.COMMENT_COUNT)">
-                            最热
+    <div class="root d-flex flex-column">
+        <div class="body border-0">
+            <div class="comment-header d-flex align-items-center w-100">
+                <div class="comment_count">{{ total }}条评论</div>
+                <el-radio-group v-model="orderBy" class="order" size="small">
+                    <el-radio-button :label="ORDER_BY.LIKE_COUNT" @click="changeOrderBy(ORDER_BY.LIKE_COUNT)">默认
+                    </el-radio-button>
+                    <el-radio-button :label="ORDER_BY.PUBLISH_TIME" @click="changeOrderBy(ORDER_BY.PUBLISH_TIME)">
+                        最新
+                    </el-radio-button>
+                    <el-radio-button :label="ORDER_BY.COMMENT_COUNT" @click="changeOrderBy(ORDER_BY.COMMENT_COUNT)">
+                        最热
                         </el-radio-button>
                     </el-radio-group>
                 </div>
@@ -20,7 +20,7 @@
                     <root-comment v-for="rootComment in rootComments" :key="rootComment.rootComment.id"
                                   :comments="rootComment"></root-comment>
 
-                    <el-skeleton v-show="isLoading" :rows="5" animated throttle/>
+                    <el-skeleton v-show="isLoading" :rows="5" :throttle="0.5" animated/>
                 </div>
             </div>
             <div v-if="total===0&&!isLoading" class="d-flex justify-content-center align-items-center">
@@ -168,7 +168,7 @@ export default {
 
 <style scoped>
 
-.root {
+.body {
     margin-top: 10px;
     border: 1px solid #ebebeb;
     border-radius: 3px;
@@ -200,6 +200,11 @@ export default {
     margin-left: auto !important;
 }
 
+@media screen and (max-width: 768px) {
+    .root {
+        width: 100%;
+    }
+}
 </style>
 
 

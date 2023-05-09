@@ -73,7 +73,8 @@ export default {
 .root {
     height: 125vh;
     background: url("../../assets/login/login_bg.png") no-repeat scroll center;
-    background-size: 100% 100%;
+    background-size: cover;
 }
+
 
 </style>

@@ -1,8 +1,8 @@
 <template>
     <div class="root d-flex flex-column flex-fill">
         <div class="header d-flex flex-column flex-fill w-100">
-            <div :style="userInfo.backgroundImg!==''?`background:url('${userInfo.backgroundImg}')`:`background:#')`"
-                 class="background-img w-100 h-100 flex-fill">
+            <div class="background-img">
+                <img :src="userInfo.backgroundImg" alt="用户背景图"/>
 
             </div>
             <div class="d-flex">
@@ -115,14 +115,18 @@ export default {
 }
 
 .background-img {
-    height: 200px !important;
+    height: 200px;
     display: flex;
     justify-content: center;
     align-content: start;
+    background: #6f7073 center;
     overflow: hidden;
-    background: #6f7073 !important;
-    background-position: center !important;
-    overflow: clip;
+}
+
+.background-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .header {

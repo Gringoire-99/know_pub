@@ -7,17 +7,10 @@
             </div>
             <!--            简短介绍-未展开时显示-->
             <div v-if="isCollapseFullText" class="intro d-flex w-100">
-                <el-image v-if="post.content.images.length>0" :src="post.content.images[0]" alt=""
-                          class="img-fluid col-3">
-                    <template #error>
-                        <div class="image-slot">
-                            <el-icon>
-                                <Picture/>
-                            </el-icon>
-                        </div>
-                    </template>
-                </el-image>
-                <div class="text d-inline ">
+                <img v-if="post.content.images.length>0" :src="post.content.images[0]" alt="介绍图片"
+                     class="img-fluid col-3 intro-img">
+
+                <div class="text">
                     <span class="intro-text" v-on:click="collapseFullText">{{ post.content.text.slice(0, 80) }}</span>
                     <span class="full-text-btn" v-on:click="collapseFullText">...阅读全文</span>
                     <el-icon class="d-inline">
@@ -35,7 +28,7 @@
                     <el-icon>
                         <caret-top></caret-top>
                     </el-icon>
-                    赞同
+                    <span>赞同</span>
                     {{ post.likeCount }}
                 </el-button>
                 <el-button class="disagree-btn" type="primary">
@@ -49,9 +42,12 @@
                             <el-icon>
                                 <ChatDotRound/>
                             </el-icon>
-                            {{
-                                isCollapseComments ? post.commentNumber > 0 ? `${post.commentNumber}条评论` : "添加评论" : '收起评论'
-                            }}
+                            <span>
+                               {{
+                                    isCollapseComments ? post.commentNumber > 0 ? `${post.commentNumber}条评论` : "添加评论" : '收起评论'
+                                }}
+                            </span>
+
                         </div>
                     </el-button>
                     <el-button class="share-btn">
@@ -60,7 +56,7 @@
                             <el-icon>
                                 <share></share>
                             </el-icon>
-                            分享
+                            <span>分享</span>
                         </div>
                     </el-button>
                     <el-button class="collection-btn">
@@ -69,7 +65,7 @@
                             <el-icon>
                                 <star-filled></star-filled>
                             </el-icon>
-                            收藏
+                            <span>收藏</span>
                         </div>
                     </el-button>
                     <el-popover placement="bottom" popper-class="popover" trigger="click">
@@ -204,9 +200,7 @@ export default {
 
 }
 </script>
-
 <style scoped>
-
 
 .list-group .el-popover.el-popper {
     padding: 0
@@ -280,42 +274,26 @@ export default {
     cursor: pointer;
 }
 
-.authorInfo .el-image {
-    width: 24px;
-    height: 24px;
-    /*    圆角*/
-
-}
-
-.image-slot {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: var(--el-fill-color-light);
-    color: var(--el-text-color-secondary);
-    font-size: 30px;
-    height: 100%;
-    width: 100%;
-}
-
-.image-slot .el-icon {
-    font-size: 30px;
-}
 
 .question {
     /*换行*/
     word-wrap: anywhere;
-    font-size: 26px;
-    font-weight: 600;
-    color: #333;
+    font-size: 1.3rem;
     margin-bottom: 10px;
+    font-weight: bold;
 }
 
-.intro .el-image {
+.intro-img {
+    transition: all 0.5s;
+}
+
+.intro > img {
     border-radius: 5px;
     margin-right: 20px;
-    width: 200px;
-    height: 100px;
+    min-width: 200px;
+    min-height: 100px;
+    max-height: 130px;
+    object-fit: cover;
 }
 
 .intro .text .el-icon {
@@ -334,8 +312,38 @@ export default {
     cursor: pointer;
 }
 
+@media screen and (max-width: 500px) {
+    .intro-img {
+        flex: 1 1 auto;
+        margin: 0 !important;
+    }
+
+    .intro {
+        flex-wrap: wrap;
+    }
+
+    .card-footer span {
+        display: none;
+    }
+
+    .card-footer .el-button {
+        margin-left: 5px;
+        margin-right: 5px;
+        padding-right: 5px;
+        padding-left: 5px;
+    }
+
+    .root, .card-body, .card-footer {
+        padding: 0 !important;
+    }
+
+}
+
 .root {
+    overflow: hidden;
     border: none;
     border-bottom: 1px solid #ebebeb;
 }
+
+
 </style>

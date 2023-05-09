@@ -21,7 +21,7 @@
                                     <img :src="user.avatar" alt="" class="avatar"/>
                                     <div class="ms-1">
                                         <div>{{ user.name }}</div>
-                                        <div>「{{ user.reason.substring(0, 5) }}」</div>
+                                        <div class="reason">「{{ user.reason.substring(0, 5) }}」</div>
                                     </div>
                                 </div>
 
@@ -122,5 +122,10 @@ export default {
     height: 50px;
     border-radius: 2px;
     border: 1px solid #ebebeb;
+}
+
+.reason {
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 </style>

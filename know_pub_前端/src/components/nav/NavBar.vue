@@ -1,145 +1,153 @@
-<template xmlns="http://www.w3.org/1999/html">
-    <div>
-<!--        TODO 重写-->
-        <div :class={darkTheme:darkTheme} class="row-cols-3 navBar d-flex align-items-center">
-            <div class="d-flex col-3 align-items-center">
-                <el-menu
-                    :active-text-color="menuStyle.activeTextColor"
-                    :background-color="menuStyle.backgroundColor"
-                    :router="true"
-                    :text-color="menuStyle.textColor"
-                    mode="horizontal"
-                >
-                    <el-menu-item index="/home-main" v-on:select="">知道吧icon
-                        <el-icon>
-                            <edit></edit>
-                        </el-icon>
-                    </el-menu-item>
-                    <el-menu-item index="/home-main" v-on:select="">首页
-                    </el-menu-item>
-                    <el-sub-menu index="2">
-                        <template #title>发现</template>
-                        <el-menu-item index="hot-spots">头条</el-menu-item>
-                        <el-menu-item index="2-2">1</el-menu-item>
-                        <el-menu-item index="2-3">item three</el-menu-item>
-                        <el-sub-menu index="2-4">
-                            <template #title>item four</template>
-                            <el-menu-item index="2-4-1">item one</el-menu-item>
-                            <el-menu-item index="2-4-2">item two</el-menu-item>
-                            <el-menu-item index="2-4-3">item three</el-menu-item>
-                        </el-sub-menu>
-                    </el-sub-menu>
-                    <el-menu-item disabled index="3">Info</el-menu-item>
-                    <el-menu-item @click="getDarkTheme">黑暗模式</el-menu-item>
-                </el-menu>
-            </div>
-            <div class="col-7 searchBar d-flex align-items-center justify-content-center">
-                <div class="d-flex justify-content-center w-75">
-                    <el-autocomplete
-                        v-model="keyword"
-                        :fetch-suggestions="querySearch"
-                        :popper-append-to-body='false'
-                        class="search-input w-75"
-                        clearable
-                        placeholder="想知道什么？"
-                        @select="handleSearchSelect"
-                    >
-                        <template #suffix>
-                            <el-icon>
-                                <Search/>
-                            </el-icon>
-                        </template>
-                        <template #default="{ item }">
-                            <div class="value">{{ item.value }}</div>
-                            <span class="link">{{ item.link }}</span>
-                        </template>
-                    </el-autocomplete>
-                    <el-button class="publishButton d-flex" type="primary">
-                        发布
-                    </el-button>
-                </div>
+<template>
+    <div class="w-100 navbar fixed-top">
+        <div class="nav-collapse">
 
-                <el-button circle class="d-inline d-md-none">
-                    <el-icon>
-                        <search></search>
-                    </el-icon>
-                </el-button>
-
-            </div>
-            <div class="col-2 userInfo d-flex justify-content-center">
-                <el-popover :width="400" placement="bottom" trigger="click">
-                    <template #reference>
-                        <el-button>
-                            <div>
-                                <el-icon>
-                                    <Bell/>
-                                </el-icon>
-                                <br>
-                                <span>消息</span>
-                            </div>
-                        </el-button>
-                    </template>
-                    <messages></messages>
-                </el-popover>
-                <el-popover :width="400" placement="bottom" trigger="click">
-                    <template #reference>
-                        <el-button class="">
-                            <div>
-                                <el-badge type="danger" value="1">
-                                    <el-icon>
-                                        <message/>
-                                    </el-icon>
-                                </el-badge>
-                                <br>
-                                <span>私信</span>
-                            </div>
-                        </el-button>
-                    </template>
-                </el-popover>
-                <el-popover
-                    placement="bottom"
-                    trigger="click"
-                >
-                    <ul class="list-group d-flex  align-content-center">
-                        <router-link :to="`/home-user/${$store.state.userId}`">
-                            <li class="list-group-item">
-                                <el-icon>
-                                    <UserFilled/>
-                                </el-icon>
-                                <span>我的主页</span>
-                            </li>
-                        </router-link>
-
-                        <li class="list-group-item">
-                            <el-icon>
-                                <BellFilled/>
-                            </el-icon>
-                            <span>消息</span>
-
-                        </li>
-                        <li class="list-group-item">
-                            <el-icon>
-                                <Comment/>
-                            </el-icon>
-                            <span>私信</span>
-                        </li>
-                        <li class="list-group-item">
-                            <el-icon>
-                                <SwitchButton/>
-                            </el-icon>
-                            <span>退出</span>
-                        </li>
-                    </ul>
-                    <template #reference>
-                        <el-button>
-                            <el-avatar :src="this.$store.state.userInfo.avatar"
-                                       alt="" shape="square"/>
-                        </el-button>
-                    </template>
-                </el-popover>
-
-            </div>
         </div>
+        <div class="nav-item">
+            <img alt="logo" src="../../assets/common/logo_full.png">
+        </div>
+        <div class="nav-item menu">
+            <span>主页</span>
+        </div>
+        <!--        <div :class={darkTheme:darkTheme} class="row-cols-3 navBar d-flex align-items-center">-->
+        <!--            <div class="d-flex col-3 align-items-center">-->
+        <!--                <el-menu-->
+        <!--                    :active-text-color="menuStyle.activeTextColor"-->
+        <!--                    :background-color="menuStyle.backgroundColor"-->
+        <!--                    :router="true"-->
+        <!--                    :text-color="menuStyle.textColor"-->
+        <!--                    mode="horizontal"-->
+        <!--                >-->
+        <!--                    <el-menu-item index="/home-main" v-on:select="">知道吧icon-->
+        <!--                        <el-icon>-->
+        <!--                            <edit></edit>-->
+        <!--                        </el-icon>-->
+        <!--                    </el-menu-item>-->
+        <!--                    <el-menu-item index="/home-main" v-on:select="">首页-->
+        <!--                    </el-menu-item>-->
+        <!--                    <el-sub-menu index="2">-->
+        <!--                        <template #title>发现</template>-->
+        <!--                        <el-menu-item index="hot-spots">头条</el-menu-item>-->
+        <!--                        <el-menu-item index="2-2">1</el-menu-item>-->
+        <!--                        <el-menu-item index="2-3">item three</el-menu-item>-->
+        <!--                        <el-sub-menu index="2-4">-->
+        <!--                            <template #title>item four</template>-->
+        <!--                            <el-menu-item index="2-4-1">item one</el-menu-item>-->
+        <!--                            <el-menu-item index="2-4-2">item two</el-menu-item>-->
+        <!--                            <el-menu-item index="2-4-3">item three</el-menu-item>-->
+        <!--                        </el-sub-menu>-->
+        <!--                    </el-sub-menu>-->
+        <!--                    <el-menu-item disabled index="3">Info</el-menu-item>-->
+        <!--                    <el-menu-item @click="getDarkTheme">黑暗模式</el-menu-item>-->
+        <!--                </el-menu>-->
+        <!--            </div>-->
+        <!--            <div class="col-7 searchBar d-flex align-items-center justify-content-center">-->
+        <!--                <div class="d-flex justify-content-center w-75">-->
+        <!--                    <el-autocomplete-->
+        <!--                        v-model="keyword"-->
+        <!--                        :fetch-suggestions="querySearch"-->
+        <!--                        :popper-append-to-body='false'-->
+        <!--                        class="search-input w-75"-->
+        <!--                        clearable-->
+        <!--                        placeholder="想知道什么？"-->
+        <!--                        @select="handleSearchSelect"-->
+        <!--                    >-->
+        <!--                        <template #suffix>-->
+        <!--                            <el-icon>-->
+        <!--                                <Search/>-->
+        <!--                            </el-icon>-->
+        <!--                        </template>-->
+        <!--                        <template #default="{ item }">-->
+        <!--                            <div class="value">{{ item.value }}</div>-->
+        <!--                            <span class="link">{{ item.link }}</span>-->
+        <!--                        </template>-->
+        <!--                    </el-autocomplete>-->
+        <!--                    <el-button class="publishButton d-flex" type="primary">-->
+        <!--                        发布-->
+        <!--                    </el-button>-->
+        <!--                </div>-->
+
+        <!--                <el-button circle class="d-inline d-md-none">-->
+        <!--                    <el-icon>-->
+        <!--                        <search></search>-->
+        <!--                    </el-icon>-->
+        <!--                </el-button>-->
+
+        <!--            </div>-->
+        <!--            <div class="col-2 userInfo d-flex justify-content-center">-->
+        <!--                <el-popover :width="400" placement="bottom" trigger="click">-->
+        <!--                    <template #reference>-->
+        <!--                        <el-button>-->
+        <!--                            <div>-->
+        <!--                                <el-icon>-->
+        <!--                                    <Bell/>-->
+        <!--                                </el-icon>-->
+        <!--                                <br>-->
+        <!--                                <span>消息</span>-->
+        <!--                            </div>-->
+        <!--                        </el-button>-->
+        <!--                    </template>-->
+        <!--                    <messages></messages>-->
+        <!--                </el-popover>-->
+        <!--                <el-popover :width="400" placement="bottom" trigger="click">-->
+        <!--                    <template #reference>-->
+        <!--                        <el-button class="">-->
+        <!--                            <div>-->
+        <!--                                <el-badge type="danger" value="1">-->
+        <!--                                    <el-icon>-->
+        <!--                                        <message/>-->
+        <!--                                    </el-icon>-->
+        <!--                                </el-badge>-->
+        <!--                                <br>-->
+        <!--                                <span>私信</span>-->
+        <!--                            </div>-->
+        <!--                        </el-button>-->
+        <!--                    </template>-->
+        <!--                </el-popover>-->
+        <!--                <el-popover-->
+        <!--                    placement="bottom"-->
+        <!--                    trigger="click"-->
+        <!--                >-->
+        <!--                    <ul class="list-group d-flex  align-content-center">-->
+        <!--                        <router-link :to="`/home-user/${$store.state.userId}`">-->
+        <!--                            <li class="list-group-item">-->
+        <!--                                <el-icon>-->
+        <!--                                    <UserFilled/>-->
+        <!--                                </el-icon>-->
+        <!--                                <span>我的主页</span>-->
+        <!--                            </li>-->
+        <!--                        </router-link>-->
+
+        <!--                        <li class="list-group-item">-->
+        <!--                            <el-icon>-->
+        <!--                                <BellFilled/>-->
+        <!--                            </el-icon>-->
+        <!--                            <span>消息</span>-->
+
+        <!--                        </li>-->
+        <!--                        <li class="list-group-item">-->
+        <!--                            <el-icon>-->
+        <!--                                <Comment/>-->
+        <!--                            </el-icon>-->
+        <!--                            <span>私信</span>-->
+        <!--                        </li>-->
+        <!--                        <li class="list-group-item">-->
+        <!--                            <el-icon>-->
+        <!--                                <SwitchButton/>-->
+        <!--                            </el-icon>-->
+        <!--                            <span>退出</span>-->
+        <!--                        </li>-->
+        <!--                    </ul>-->
+        <!--                    <template #reference>-->
+        <!--                        <div class="avatar">-->
+        <!--                            <el-avatar :src="this.$store.state.userInfo.avatar"-->
+        <!--                                       alt="" shape="square"/>-->
+        <!--                        </div>-->
+        <!--                    </template>-->
+        <!--                </el-popover>-->
+
+        <!--            </div>-->
+        <!--        </div>-->
 
     </div>
 </template>
@@ -218,105 +226,160 @@ export default {
 }
 </script>
 <style scoped>
-
-.list-group {
-    padding: 0;
-    margin: 0;
-    border: none;
-}
-
-.list-group-item {
-    display: flex !important;
+.navbar {
+    display: flex;
+    justify-content: start;
     align-items: center;
-    border: none;
-    cursor: pointer;
-}
-
-.list-group-item span {
-    margin-left: 2px;
-}
-
-.list-group-item:hover {
-    background: #f5f5f5;
-}
-
-
-.navBar {
     background-color: #ffffff;
+    height: 60px;
+    box-shadow: 0 0 10px #b9b4b4;
+    padding-left: 50px;
+    padding-right: 50px;
+    width: 100%;
 }
 
-.userInfo .el-button {
-    height: 50px;
-    border: none;
-    margin-left: 0;
-}
-
-.darkTheme.navBar {
-    color: white;
-    background-color: #012357;
-}
-
-:deep(.el-sub-menu__title) {
-    margin: 0;
-    padding: 0;
-}
-
-.darkTheme .el-col .publishButton {
-    background-color: #dcdfe6;
-    color: #0776c7;
-}
-
-.darkTheme :deep(.el-autocomplete .el-input__wrapper) {
-    background-color: rgba(39, 72, 119, 0.35);
-}
-
-.darkTheme :deep(.userInfo .el-button ) {
-    background-color: #012357;
-    color: white;
-}
-
-:deep(.navBar) {
-    border-bottom: 1px solid #dcdfe6;
-}
-
-:deep(.el-menu) {
-    border: none;
-}
-
-.userInfo .el-icon {
-    font-size: 22px;
-}
-
-
-:deep(.el-autocomplete .el-input__wrapper) {
-    /*    圆角搜索框*/
-    border-radius: 20px;
-    border: 1px solid #dcdfe6;
-    background-color: #f5f7fa;
-    height: 40px;
-}
-
-.el-icon {
+.nav-item {
+    margin-left: 10px;
+    margin-right: 10px;
     cursor: pointer;
 }
 
-
-
-.publishButton {
-    /*    圆边按钮*/
-    border-radius: 20px;
-    background-color: #0278ff;
-    color: #FFFFFF;
-    height: 40px;
-    width: 70px;
-    margin-left: 10px;
-
+.nav-item span {
+    font-weight: lighter;
+    color: #696969;
 }
 
-/*search在手机屏幕不可见*/
-@media screen and (max-width: 768px) {
-    .searchBar * {
+.nav-item:hover span {
+    color: #0095da;
+}
+
+img[alt="logo"] {
+    height: 40px;
+}
+
+/*手机适配*/
+@media screen and (max-width: 648px) {
+    .navbar {
+        justify-content: center;
+    }
+
+    .menu {
         display: none;
     }
+
 }
+
+
+/*.list-group {*/
+/*    padding: 0;*/
+/*    margin: 0;*/
+/*    border: none;*/
+/*}*/
+
+/*.list-group-item {*/
+/*    display: flex !important;*/
+/*    align-items: center;*/
+/*    border: none;*/
+/*    cursor: pointer;*/
+/*}*/
+
+/*.list-group-item span {*/
+/*    margin-left: 2px;*/
+/*}*/
+
+/*.list-group-item:hover {*/
+/*    background: #f5f5f5;*/
+/*}*/
+
+
+/*.navBar {*/
+/*    background-color: #ffffff;*/
+/*}*/
+
+/*.userInfo .el-button {*/
+/*    height: 50px;*/
+/*    border: none;*/
+/*    margin-left: 0;*/
+/*}*/
+
+/*.darkTheme.navBar {*/
+/*    color: white;*/
+/*    background-color: #012357;*/
+/*}*/
+
+/*:deep(.el-sub-menu__title) {*/
+/*    margin: 0;*/
+/*    padding: 0;*/
+/*}*/
+
+/*.darkTheme .el-col .publishButton {*/
+/*    background-color: #dcdfe6;*/
+/*    color: #0776c7;*/
+/*}*/
+
+/*.darkTheme :deep(.el-autocomplete .el-input__wrapper) {*/
+/*    background-color: rgba(39, 72, 119, 0.35);*/
+/*}*/
+
+/*.darkTheme :deep(.userInfo .el-button ) {*/
+/*    background-color: #012357;*/
+/*    color: white;*/
+/*}*/
+
+/*:deep(.navBar) {*/
+/*    border-bottom: 1px solid #dcdfe6;*/
+/*}*/
+
+/*:deep(.el-menu) {*/
+/*    border: none;*/
+/*}*/
+
+/*.userInfo .el-icon {*/
+/*    font-size: 22px;*/
+/*}*/
+
+
+/*:deep(.el-autocomplete .el-input__wrapper) {*/
+/*    !*    圆角搜索框*!*/
+/*    border-radius: 20px;*/
+/*    border: 1px solid #dcdfe6;*/
+/*    background-color: #f5f7fa;*/
+/*    height: 40px;*/
+/*}*/
+
+/*.el-icon {*/
+/*    cursor: pointer;*/
+/*}*/
+
+
+/*.publishButton {*/
+/*    !*    圆边按钮*!*/
+/*    border-radius: 20px;*/
+/*    background-color: #0278ff;*/
+/*    color: #FFFFFF;*/
+/*    height: 40px;*/
+/*    width: 70px;*/
+/*    margin-left: 10px;*/
+
+/*}*/
+
+/*!*search在手机屏幕不可见*!*/
+/*@media screen and (max-width: 768px) {*/
+/*    .searchBar * {*/
+/*        display: none;*/
+/*    }*/
+/*}*/
+/*.root{*/
+/*    !*position: fixed;*!*/
+/*    !*top: 0px;*!*/
+/*}*/
+/*.avatar .el-avatar{*/
+/*    background: white;*/
+/*    transition: all 0.5s;*/
+/*    border: 1px solid rgba(1, 35, 87, 0.2);*/
+/*}*/
+/*.avatar .el-avatar:hover{*/
+/*    transform: translate(-10px, 20px) scale(1.8,1.8);*/
+/*    border-radius: 50%;*/
+/*}*/
 </style>

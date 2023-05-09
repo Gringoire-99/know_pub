@@ -25,6 +25,9 @@ export default {
 }
 </script>
 <style scoped>
+div {
+}
+
 :deep(.post) {
     margin-bottom: 10px;
 }

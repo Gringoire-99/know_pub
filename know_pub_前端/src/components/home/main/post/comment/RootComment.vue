@@ -106,4 +106,11 @@ export default {
     padding-right: 33px;
 }
 
+@media screen and (max-width: 500px) {
+    .child_comments {
+        margin-left: 20px;
+        padding-right: 10px;
+    }
+}
+
 </style>

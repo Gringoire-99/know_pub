@@ -25,7 +25,7 @@
                         <span class="ms-2 me-2">{{ post.author.name }},</span>
                         <span class="fw-lighter fst-normal fs-6"
                         >{{
-                                post.author.desc.length > 10 ? post.author.desc.substring(0, 10) + "..." : post.author.desc
+                                post.author.desc.length > 8 ? post.author.desc.substring(0, 8) + "..." : post.author.desc
                             }}</span>
                     </div>
 

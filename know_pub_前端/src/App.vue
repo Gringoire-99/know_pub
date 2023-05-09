@@ -5,7 +5,6 @@
 <script>
 import HomeNavbar from "@/components/nav/NavBar.vue";
 import http from "@/utils/http/http";
-import Mock from "mockjs";
 
 export default {
     //组件名
@@ -73,17 +72,6 @@ export default {
 </script>
 
 <style scoped>
-
-.home-navbar {
-    overflow: hidden;
-    white-space: nowrap;
-}
-
-.el-header {
-    padding-right: 0;
-    padding-left: 0;
-}
-
 </style>
 <style>
 body {

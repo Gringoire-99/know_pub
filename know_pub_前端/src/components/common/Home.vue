@@ -1,10 +1,6 @@
 <template>
     <el-container class="w-100 h-100">
-        <el-header>
-            <el-affix :offset="0.1">
-                <home-navbar/>
-            </el-affix>
-        </el-header>
+        <home-navbar/>
         <el-main class="main d-flex ">
             <router-view></router-view>
         </el-main>
@@ -48,21 +44,26 @@ export default {
 <style scoped>
 
 .main {
-    padding-left: 180px;
-    padding-right: 150px;
-    padding-top: 7px;
+    padding-top: 70px;
+    overflow-x: hidden;
 }
 
-.el-header {
-    padding-right: 0;
-    padding-left: 0;
+@media screen and (min-width: 1200px) {
+    .el-main {
+        margin-left: 120px;
+        margin-right: 140px;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .el-main {
+        padding: 60px 0 0;
+    }
 }
 
 </style>
 <style>
-body {
-    overflow-x: hidden;
-}
+
 
 </style>
 

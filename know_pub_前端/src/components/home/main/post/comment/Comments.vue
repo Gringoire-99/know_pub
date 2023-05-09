@@ -27,7 +27,7 @@
     <div v-if="!isLoading&&total===0" class="d-flex justify-content-center align-items-center">
         <el-empty description="还没有评论，快来抢沙发吧~"/>
     </div>
-    <el-skeleton v-if="isLoading" :rows="5" animated throttle/>
+    <el-skeleton v-if="isLoading" :rows="5" :throttle="0.5" animated/>
 
     <div v-if="isLoadDialog">
         <el-dialog v-model="dialogVisible" :align-center="true" :draggable="true" width="75%">
@@ -188,15 +188,22 @@ export default {
 </script>
 
 <style scoped>
+@media screen and (max-width: 768px) {
+    .root {
+        padding: 0 !important;
+    }
+}
 
+.el-radio-group {
+    flex-wrap: nowrap;
+}
 
 .root {
     margin-top: 10px;
     border: 1px solid #ebebeb;
     border-radius: 3px;
     padding: 10px 20px;
-
-
+    transition: height 2s;
 }
 
 .comment-header {

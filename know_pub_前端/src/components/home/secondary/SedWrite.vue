@@ -90,19 +90,43 @@ export default {
 }
 
 .blue {
-    background: rgba(133, 200, 250, 0.19);
+    transition-property: background-color, transform;
+    transition-duration: 0.5s, 0.5s;
+    background-color: rgba(133, 200, 250, 0.19);
+}
+
+.blue:hover {
+    background-color: rgba(133, 200, 250, 0.5);
 }
 
 .orange {
-    background: rgba(255, 153, 0, 0.11);
+    transition-property: background-color, transform;
+    transition-duration: 0.5s, 0.5s;
+    background-color: rgba(255, 153, 0, 0.11);
+}
+
+.orange:hover {
+    background-color: rgba(232, 195, 138, 0.5);
 }
 
 .yellow {
-    background: rgba(255, 204, 0, 0.15);
+    transition-property: background-color, transform;
+    transition-duration: 0.5s, 0.5s;
+    background-color: rgba(255, 204, 0, 0.11);
+}
+
+.yellow:hover {
+    background-color: rgba(239, 215, 119, 0.5);
 }
 
 .green {
-    background: rgba(0, 204, 153, 0.11);
+    transition-property: background-color, transform;
+    transition-duration: 0.5s, 0.5s;
+    background-color: rgba(0, 204, 153, 0.11);
+}
+
+.green:hover {
+    background-color: rgba(139, 248, 221, 0.48);
 }
 
 .desc img {
@@ -125,5 +149,13 @@ export default {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+}
+
+.menu-content:hover {
+    transform: scale(1.3, 1.3);
+}
+
+.menu-content:not(:hover) {
+    transform: scale(1, 1);
 }
 </style>

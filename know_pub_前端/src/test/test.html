@@ -24,6 +24,16 @@
         border-radius: 2px;
         width: 200px;
         height: 150px;
+        background: blue;
+        transition: background-color 1s;
+    }
+
+    .root:hover {
+        background-color: #056de8;
+    }
+
+    .root:not(:hover) {
+        background-color: blue;
     }
 
 </style>
