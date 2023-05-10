@@ -1,35 +1,32 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Test</title>
+
 </head>
 <body>
-<div class="w-100 d-flex align-items-center justify-content-center">
-   <span class="text">k</span>
+<div class="wrapper">
+    <span>11111111</span>
+    <div class="grid">
+        <div>11111111111111111111</div>
+    </div>
+
+
 </div>
-
 </body>
-
 <style>
-
-
-    .text {
-        font-size: 100px;
-        font-weight: 700;
-        color: #0095da;
-        text-shadow: 0 0 10px #0095da;
+    .grid {
+        display: grid;
+        grid-template-rows: 0fr;
+        transition: .3s;
+        overflow: hidden;
     }
 
-    .text:before {
-        content: "";
-        position: absolute;
-        z-index: -1;
-        left: 51%;
-        right: 51%;
-        bottom: 0;
-        background: #2098D1;
-        height: 4px;
+    .grid > div {
+        min-height: 0;
     }
 
+    .wrapper:hover .grid {
+        grid-template-rows: 1fr;
+    }
 </style>
 </html>

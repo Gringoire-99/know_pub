@@ -5,7 +5,7 @@
     <div v-if="comments.childComments.length>0"
          class="child_comments w-100">
         <div v-for="(comment,index) in tempChildComments" :key="index">
-            <comment :comment="comment"></comment>
+                <comment :comment="comment"></comment>
         </div>
 
         <div class="showMore mt-4 mb-4">

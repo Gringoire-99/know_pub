@@ -96,8 +96,20 @@ function mockSetUp() {
         let param = getParams(o.url)
         let userId = param['userId']
         return {
-            name: Mock.mock('@cname'),
-            avatar: '/src/assets/icon_small.png',
+            code: 200,
+            data: {
+                id: userId,
+                name: Mock.mock('@cname'),
+                avatar: Mock.mock('@image("100x100")'),
+                description: Mock.mock('@cparagraph(1,3)'),
+                postCount: Mock.mock('@integer(0,100)'),
+                articleCount: Mock.mock('@integer(0,100)'),
+                followerCount: Mock.mock('@integer(0,100)'),
+                followCount: Mock.mock('@integer(0,100)'),
+                koinCount: Mock.mock('@integer(0,100)'),
+                experienceCount: Mock.mock('@integer(0,100)'),
+
+            }
         }
     })
 

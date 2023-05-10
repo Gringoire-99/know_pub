@@ -5,6 +5,7 @@
             <div class="card-title">
                 <div class="question">{{ post.question }}</div>
             </div>
+
             <!--            简短介绍-未展开时显示-->
             <div v-if="isCollapseFullText" class="intro d-flex w-100">
                 <img v-if="post.content.images.length>0" :src="post.content.images[0]" alt="介绍图片"
@@ -22,6 +23,7 @@
             <div v-if="!isCollapseFullText" class="full-text">
                 <post-body :post="post" @collapseFullText="isCollapseFullText=true"></post-body>
             </div>
+
             <!--            操作栏-->
             <div class="card-footer d-flex align-items-center">
                 <el-button class="agree-btn" type="primary">
@@ -242,11 +244,7 @@ export default {
     margin-left: 5px;
 }
 
-.disagree-btn .el-icon {
-    font-size: 20px;
-}
-
-.agree-btn .el-icon {
+.card-footer > .el-button .el-icon {
     font-size: 20px;
 }
 
@@ -345,5 +343,9 @@ export default {
     border-bottom: 1px solid #ebebeb;
 }
 
+.grid {
+    display: grid;
+    transition: grid-template-rows 0.5s;
+}
 
 </style>

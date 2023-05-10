@@ -24,8 +24,9 @@ export default {
                 }
             }).then(response => {
                 if (response.status === 200) {
-                    this.$store.commit("SET_USER", response.data)
+                    this.$store.commit("SET_USER", response.data.data)
                     this.$store.commit("LOGIN_STATE", true)
+
                 } else alert("get user info failed")
             }, reason => {
                 this.$store.commit("LOGIN_STATE", false)
@@ -45,6 +46,7 @@ export default {
         //     从本地存储中获取用户id
         let userId = localStorage.getItem("userId")
         if (userId) {
+            console.log("设置user");
             this.$store.commit("SET_USER_ID", userId)
             this.getUserInfo()
         } else {
@@ -85,6 +87,18 @@ body {
     font-weight: lighter;
 }
 
+.text-white {
+    color: white;
+}
+
+.text-pink {
+    color: #ff4d7a;
+}
+
+.text-gold {
+    color: #ff0000;
+}
+
 .pointer {
     cursor: pointer;
 }
@@ -117,5 +131,13 @@ body {
 
 /* 滚动条两端按钮 */
 body::-webkit-scrollbar-button {
+}
+
+.fs-xsm {
+    font-size: 5px;
+}
+
+.text-gray {
+    color: #8c8c8c;
 }
 </style>

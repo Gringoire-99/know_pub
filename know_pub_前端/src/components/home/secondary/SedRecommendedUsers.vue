@@ -78,7 +78,6 @@ export default {
         }).then(response => {
             if (response.data.code === 200) {
                 this.users = response.data.data.users
-                console.log(this.users)
             }
         }, reason => {
             alert("failed in getting recommended users")

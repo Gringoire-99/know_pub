@@ -22,6 +22,10 @@ const state = {
     userInfo: {
         name: '',
         avatar: '',
+        description: '',
+        postCount: 0,
+        articleCount: 0,
+        followerCount: 0,
     }
 }
 export const store = Vuex.createStore({
