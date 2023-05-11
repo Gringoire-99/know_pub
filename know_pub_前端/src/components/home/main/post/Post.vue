@@ -2,6 +2,8 @@
     <div class="root card">
         <div class="card-body">
             <!--            问题名-->
+            <div v-if="action" class="fw-xsm text-gray d-flex"><span>{{ action.name }}了该回答</span><span
+                class="ms-auto">{{ action.time }}</span></div>
             <div class="card-title">
                 <div class="question">{{ post.question }}</div>
             </div>
@@ -176,6 +178,9 @@ export default {
             publishTime: Mock.mock('@datetime'),
             updateTime: Mock.mock('@datetime'),
             commentNumber: Mock.mock('@integer(0,100)'),
+        },
+        action: {
+            type: Object,
         }
     },
     //方法

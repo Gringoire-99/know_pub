@@ -12,6 +12,53 @@ function getParams(url) {
 }
 
 function mockSetUp() {
+    Mock.mock(/.*user\/dynamics.*/, o => {
+        /**
+         * 动态：userId+postId+动作
+         * 后端根据动态的postId查出对应post
+         * 组成{post+动作}的数组
+         *
+         * */
+        let param = getParams(o.url)
+        let userId = param['userId']
+        let pageIndex = parseInt(param['pageIndex'])
+        let pageSize = parseInt(param['pageSize'])
+        let dynamics = []
+        for (let i = pageIndex; i < pageSize + pageIndex; i++) {
+            let dynamic = {
+                action: {name: '赞同', time: Mock.mock('@datetime')},
+                post: {
+                    id: Mock.mock('@guid'),
+                    question: Mock.mock('@ctitle(20,40)'),
+                    content: {
+                        text: Mock.mock('@cparagraph(6,20)'),
+                        images: Mock.mock({
+                            "images|0-3": [
+                                Mock.mock('@image("200x100")')
+                            ]
+                        })['images']
+                    },
+                    likeCount: Mock.mock('@integer(0,100)'),
+                    dislikeCount: Mock.mock('@integer(0,100)'),
+                    author: {
+                        id: Mock.mock('@guid'),
+                        name: Mock.mock('@cname'),
+                        avatar: Mock.mock('@image("100x100")'),
+                        desc: Mock.mock('@cparagraph(1,3)'),
+                    },
+                    publishTime: Mock.mock('@datetime'),
+                    updateTime: Mock.mock('@datetime'),
+                    commentNumber: Mock.mock('@integer(100,200)'),
+                }
+            }
+            dynamics.push(dynamic)
+        }
+        return {
+            code: 200,
+            data: dynamics
+        }
+
+    })
     Mock.mock(/.*user\/info-detail.*/, o => {
         let param = getParams(o.url)
         let userId = param['id']
@@ -81,8 +128,8 @@ function mockSetUp() {
     Mock.mock(/.*messages.*/, o => {
         let messages = []
         let param = getParams(o.url)
-        let pageSize = param['pageSize']
-        let pageIndex = param['pageIndex']
+        let pageIndex = parseInt(param['pageIndex'])
+        let pageSize = parseInt(param['pageSize'])
         for (let i = 0; i < 20; i++) {
             let msg = {
                 content: `${Mock.mock('@cname')}给你发了一条消息`,

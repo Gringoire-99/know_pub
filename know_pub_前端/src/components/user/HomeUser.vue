@@ -69,7 +69,7 @@
         </div>
         <div class="d-flex">
             <user-detail class="main"></user-detail>
-            <user-secondary class="secondary"></user-secondary>
+            <user-secondary :userInfo="userInfo" class="secondary"></user-secondary>
         </div>
     </div>
 </template>
@@ -249,7 +249,7 @@ export default {
 }
 
 .main {
-    flex-grow: 5;
+    flex-grow: 3;
     margin-right: 15px;
 }
 
