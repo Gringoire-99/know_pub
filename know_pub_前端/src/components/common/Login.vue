@@ -1,12 +1,12 @@
 <template>
     <div class="login d-flex row-cols-2">
         <div class="qr col-5 pt-5 d-flex flex-column justify-content-center align-items-center">
-            <div class="p-1 fw-bold fs-6 mt-3">打开知道吧APP</div>
+            <div class="p-1 fw-bold fs-6 mt-3">打开知道吧this</div>
             <div class="p-1 fw-light fs-6">在[首页]左上角打开扫一扫</div>
             <img alt="" class="qrcode mt-4 mb-2" src="../../assets/login/qr_login.png"/>
             <div class="p-2 fw-bold fs-6 mt-4 mb-4">其他扫码方式：微信</div>
             <div class="d-inline">
-                <el-button>下载知道吧app</el-button>
+                <el-button>下载知道吧this</el-button>
                 <el-button>开通机构号</el-button>
                 <el-button>无障碍模式</el-button>
             </div>
@@ -251,12 +251,25 @@ export default {
         }
     },
     //方法
-    methods: {},
-    //挂载时执行
-    mounted() {
+    methods: {
+        logout() {
+            this.$store.commit("SET_USER_ID", null)
+            this.$store.commit("LOGIN_STATE", false)
+            this.$store.commit("SET_USER", null)
+            localStorage.removeItem("userId")
+            this.$cookies.remove("userId")
+            this.$popUp('退出登录', '', 'info', 2000)
+
+        },
     },
     //创建时执行
     created() {
+        let isLogout = this.$route.query['isLogout']
+        if (isLogout) {
+            //     清除登录信息
+
+            this.logout()
+        }
     },
     //侦听器
     watch: {
@@ -375,6 +388,7 @@ export default {
     width: 1000px;
     padding-top: 20px;
     padding-bottom: 20px;
+    height: fit-content;
 }
 
 .login:hover {

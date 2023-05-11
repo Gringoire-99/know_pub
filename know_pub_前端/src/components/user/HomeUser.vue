@@ -16,33 +16,81 @@
                     <span>
                         <span class="fw-bold fs-5">{{ userInfo.name }}</span>
                         <span
-                            class="ms-2 fs-6 fw-light">{{ userInfo.description.length > 10 ? userInfo.description.substring(0, 10) + '...' : userInfo.description }}</span>
+                            class="ms-2 fs-6 fw-light">{{
+                                userInfo.description.length > 10 ? userInfo.description.substring(0, 10) + '...' : userInfo.description
+                            }}</span>
                     </span>
-                    <div class="info-short">
-                        <el-icon>
-                            <gender></gender>
-                        </el-icon>
-                        <span>{{ userInfo.gender }}</span>
+
+                    <div class="d-flex flex-column">
+                        <div v-if="isCollapseFullInfo" class="info-short d-flex flex-column">
+                            <div class="">
+                                <div v-show="userInfo.gender!==''">
+                                    <el-icon>
+                                        <gender></gender>
+                                    </el-icon>
+                                    <span>
+                                {{ userInfo.gender }}
+                            </span>
+                                </div>
+                                <div v-show="userInfo.jobHistory!==''">
+                                    <el-icon>
+                                        <job></job>
+                                    </el-icon>
+                                    <span>
+                                {{ userInfo.jobHistory }}
+                            </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div v-else class="info-full ">
+                            <span class="fw-bold">性别</span><span>{{ userInfo.gender }}</span>
+                            <span class="fw-bold">一句话介绍</span><span>{{ userInfo.description }}</span>
+                            <span class="fw-bold">居住地</span><span>{{ userInfo.location }}</span>
+                            <span class="fw-bold">所在行业</span><span>{{ userInfo.industry }}</span>
+                            <span class="fw-bold">职业经历</span><span>{{ userInfo.jobHistory }}</span>
+                            <span class="fw-bold">教育经历</span><span>{{ userInfo.school }}</span>
+                            <span class="fw-bold">个人认证</span><span>{{ userInfo.authentication }}</span>
+                        </div>
+                        <div class="check-detail text-blue pointer" @click="isCollapseFullInfo=!isCollapseFullInfo">
+                            <el-icon v-if="isCollapseFullInfo">
+                                <arrow-down-bold></arrow-down-bold>
+                            </el-icon>
+                            <el-icon v-else>
+                                <arrow-up-bold></arrow-up-bold>
+                            </el-icon>
+                            <span>{{ isCollapseFullInfo ? '查看详细信息' : '收起' }}</span>
+                        </div>
                     </div>
+
                 </div>
+                <button class="ms-auto align-self-end me-3 edit">编辑资料</button>
             </div>
+
+        </div>
+        <div class="d-flex">
+            <user-detail class="main"></user-detail>
+            <user-secondary class="secondary"></user-secondary>
         </div>
     </div>
 </template>
 
 <script>
 import http from "@/utils/http/http";
-import Mock from "mockjs";
 import Gender from "@/components/icons/Gender.vue";
+import Job from "@/components/icons/Job.vue";
+import {ArrowDownBold, ArrowUpBold} from "@element-plus/icons-vue";
+import UserDetail from "@/components/user/UserDetail.vue";
+import UserSecondary from "@/components/user/UserSecondary.vue";
 
 export default {
     //组件名
     name: "home-user",
     //依赖的组件
-    components: {Gender},
+    components: {UserSecondary, UserDetail, ArrowUpBold, ArrowDownBold, Job, Gender},
     //数据
     data() {
         return {
+            isCollapseFullInfo: true,
             id: '',
             userInfo: {
                 id: "",
@@ -71,7 +119,8 @@ export default {
                 resume: '',
                 authentication: '',
                 backgroundImg: '',
-            }
+            },
+
         }
     },
     //方法
@@ -110,6 +159,10 @@ export default {
 </script>
 
 <style scoped>
+.header {
+    margin-bottom: 15px;
+}
+
 .info-short span {
     font-size: 15px;
 }
@@ -130,7 +183,7 @@ export default {
 }
 
 .header {
-    box-shadow: 0 0 10px #ccc;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 3px 0px;
     padding-bottom: 20px;
 }
 
@@ -146,4 +199,61 @@ export default {
     margin-left: 20px;
 }
 
+.info-short > div > div {
+    display: flex;
+    align-content: center;
+    flex-wrap: wrap;
+}
+
+.el-icon {
+    align-self: center !important;
+}
+
+/*.info-short{*/
+/*    min-height: 70px;*/
+/*    position: absolute;*/
+/*    transition: all 0.3s;*/
+/*}*/
+
+/*.info-full{*/
+/*    min-height: 70px;*/
+/*    position: absolute;*/
+/*    opacity: 0;*/
+/*    transition: all 0.3s;*/
+/*}*/
+
+/*.switchOpacity.info-short{*/
+/*    opacity: 0;*/
+/*}*/
+/*.switchOpacity.info-full{*/
+/*    opacity: 1;*/
+/*}*/
+/*.check-detail{*/
+/*    position: absolute;*/
+/*    */
+/*}*/
+.info-full {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-column-gap: 20px;
+    margin-top: 10px;
+    font-size: 15px;
+}
+
+.edit {
+    border: 1px solid #0794ff;
+    border-radius: 2px;
+    padding: 10px 20px;
+    color: #0095da;
+    background-color: white;
+}
+
+.main {
+    flex-grow: 5;
+    margin-right: 15px;
+}
+
+.secondary {
+    flex-grow: 1;
+}
 </style>

@@ -36,11 +36,11 @@ function mockSetUp() {
                 followedQuestionCount: Mock.mock('@integer(0,100)'),
                 // 个人简介
                 industry: Mock.mock('@cword(2,4)'),
-                gender: Mock.mock('@cword(2,4)'),
+                gender: Mock.mock('@cword(1)'),
                 location: Mock.mock('@cword(2,4)'),
                 school: Mock.mock('@cword(2,4)'),
                 jobHistory: Mock.mock('@cword(2,4)'),
-                description: Mock.mock('@cparagraph(1,3)'),
+                description: Mock.mock('@cword(2,4)'),
                 resume: Mock.mock('@cparagraph(1,3)'),
                 authentication: Mock.mock('@cword(2,4)'),
                 backgroundImg: Mock.mock('@image("2000x400")'),

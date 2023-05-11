@@ -3,9 +3,10 @@
 </template>
 
 <script>
+
 import HomeNavbar from "@/components/nav/NavBar.vue";
 import http from "@/utils/http/http";
-
+import Mock from "mockjs";
 export default {
     //组件名
     name: "app",
@@ -30,23 +31,20 @@ export default {
                 } else alert("get user info failed")
             }, reason => {
                 this.$store.commit("LOGIN_STATE", false)
-                console.log(reason)
+                alert("failed in app.vue")
             })
-        }
+        },
 
-    },
-    //挂载时执行
-    mounted() {
+
     },
     //创建时执行
     created() {
-        // localStorage.setItem("userId", '1')
-        // this.$cookies.set("token", Mock.mock('@guid'))
+        localStorage.setItem("userId", '1')
+        this.$cookies.set("token", Mock.mock('@guid'))
 
         //     从本地存储中获取用户id
         let userId = localStorage.getItem("userId")
         if (userId) {
-            console.log("设置user");
             this.$store.commit("SET_USER_ID", userId)
             this.getUserInfo()
         } else {
@@ -67,9 +65,9 @@ export default {
     props: {},
     beforeCreate() {
         this.$mockSetUp()
-        // 测试数据
 
     }
+
 }
 </script>
 
@@ -95,8 +93,12 @@ body {
     color: #ff4d7a;
 }
 
-.text-gold {
+.text-red {
     color: #ff0000;
+}
+
+.text-blue {
+    color: #0794ff;
 }
 
 .pointer {

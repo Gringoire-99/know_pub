@@ -1,18 +1,37 @@
 <template>
-    <div class="root d-flex align-items-center justify-content-center w-100">
-        <post-card :id="'1'"></post-card>
+    <div class="info-short d-flex flex-column">
+        <div class="">
+            <el-icon>
+                <gender></gender>
+            </el-icon>
+            <div>
+                性别
+                <!--                                {{ userInfo.gender }}-->
+            </div>
+        </div>
+        <div class="">
+            <el-icon>
+                <job></job>
+            </el-icon>
+            <div>
+                职业
+                <!--                                {{ userInfo.jobHistory }}-->
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
 import PostBody from "@/components/home/main/post/PostBody.vue";
 import PostCard from "@/components/user/PostCard.vue";
+import Job from "@/components/icons/Job.vue";
+import Gender from "@/components/icons/Gender.vue";
 
 export default {
     //组件名
     name: "test",
     //依赖的组件
-    components: {PostCard, PostBody},
+    components: {Gender, Job, PostCard, PostBody},
     //数据
     data() {
         return {}
@@ -40,7 +59,9 @@ export default {
 </script>
 
 <style scoped>
-.root {
-    height: 100vh;
+.info-short > div {
+    display: flex;
+    align-content: center;
+    flex-wrap: wrap;
 }
 </style>
