@@ -59,7 +59,8 @@ export default {
     //数据
     data() {
         return {
-            isLoadingPostCard: false
+            isLoadingPostCard: false,
+            isAnswerPattern:false
         }
     },
     //方法
@@ -74,6 +75,9 @@ export default {
     },
     //创建时执行
     created() {
+        if (this.pattern === 'answer'){
+
+        }
     },
     //侦听器
     watch: {
@@ -89,6 +93,10 @@ export default {
         post: {
             type: Object,
             require: true
+        },
+        pattern:{
+            type:String,
+            default:"post"
         }
     }
 }

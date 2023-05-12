@@ -130,7 +130,7 @@ export default {
     },
     //创建时执行
     created() {
-        this.id = this.$route.params.id
+        this.id = this.$route.params.userId
         http.get('/user/info-detail/', {
             params: {
                 id: this.id

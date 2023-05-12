@@ -13,6 +13,7 @@ import homeUser from "@/components/user/HomeUser.vue";
 import homeMember from "@/components/home/member/HomeMember.vue";
 import homeHot from "@/components/home/hot/HomeHot.vue";
 import homeDiscover from "@/components/home/discover/HomeDiscover.vue";
+import homeQuestion from "@/components/home/question/HomeQuestion.vue";
 
 const routes = [
     {
@@ -34,10 +35,11 @@ const routes = [
                             {name: 'main-videos', path: '/main-videos', component: mainVideos},
                         ]
                     },
-                    {name: 'home-user', path: '/home-user/:id', component: homeUser},
+                    {name: 'home-user', path: '/home-user/:userId', component: homeUser},
                     {name: 'home-member', path: '/home-member', component: homeMember},
                     {name: 'home-hot', path: '/home-hot', component: homeHot},
                     {name: 'home-discover', path: '/home-discover', component: homeDiscover},
+                    {name:'home-question',path: '/home-question/:questionId',component: homeQuestion}
                 ]
             },
             {path: 'test', name: 'test', component: test},

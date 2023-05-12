@@ -9,7 +9,7 @@
                  infinite-scroll-distance="10">
                 <comment v-for="childComment in comments" :key="childComment.id" :comment="childComment"
                 ></comment>
-                <el-skeleton v-show="isLoading" :rows="10" :throttle="0.5" animated/>
+                <el-skeleton  :rows="3" :throttle="0.5" animated/>
             </div>
             <div v-if="total===0&&!isLoading" class="d-flex justify-content-center align-items-center">
                 <el-empty description="还没有评论，快来抢沙发吧~"/>

@@ -11,23 +11,24 @@
                     </el-radio-button>
                     <el-radio-button :label="ORDER_BY.COMMENT_COUNT" @click="changeOrderBy(ORDER_BY.COMMENT_COUNT)">
                         最热
-                        </el-radio-button>
-                    </el-radio-group>
-                </div>
-                <div class="comments dialog-comments d-flex flex-column  w-100 align-items-center"
-                     v-infinite-scroll="getComments" :infinite-scroll-disabled="isLoading"
-                >
-                    <root-comment v-for="rootComment in rootComments" :key="rootComment.rootComment.id"
-                                  :comments="rootComment"></root-comment>
+                    </el-radio-button>
+                </el-radio-group>
+            </div>
+            <div class="comments dialog-comments d-flex flex-column  w-100 align-items-center"
+                 v-infinite-scroll="getComments" :infinite-scroll-disabled="isLoading"
+                 infinite-scroll-distance="30"
+            >
+                <root-comment v-for="rootComment in rootComments" :key="rootComment.rootComment.id"
+                              :comments="rootComment"></root-comment>
+                <el-skeleton :rows="5" :throttle="0.5" animated/>
+            </div>
 
-                    <el-skeleton v-show="isLoading" :rows="5" :throttle="0.5" animated/>
-                </div>
-            </div>
-            <div v-if="total===0&&!isLoading" class="d-flex justify-content-center align-items-center">
-                <el-empty description="还没有评论，快来抢沙发吧~"/>
-            </div>
         </div>
-        <post-comment></post-comment>
+        <div v-if="total===0&&!isLoading" class="d-flex justify-content-center align-items-center">
+            <el-empty description="还没有评论，快来抢沙发吧~"/>
+        </div>
+    </div>
+    <post-comment></post-comment>
 </template>
 
 <script>

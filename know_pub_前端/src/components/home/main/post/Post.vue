@@ -3,10 +3,13 @@
         <div class="card-body">
             <!--            问题名-->
             <div v-if="action" class="fw-xsm text-gray d-flex"><span>{{ action.name }}了该回答</span><span
-                class="ms-auto">{{ action.time }}</span></div>
-            <div class="card-title">
-                <div class="question">{{ post.question }}</div>
-            </div>
+                    class="ms-auto">{{ action.time }}</span></div>
+
+
+                <div class="card-title pointer">
+                    <div class="question" @click="toQuestion">{{ post.question }}</div>
+                </div>
+
 
             <!--            简短介绍-未展开时显示-->
             <div v-if="isCollapseFullText" class="intro d-flex w-100">
@@ -48,7 +51,7 @@
                             </el-icon>
                             <span>
                                {{
-                                    isCollapseComments ? post.commentNumber > 0 ? `${post.commentNumber}条评论` : "添加评论" : '收起评论'
+                                isCollapseComments ? post.commentNumber > 0 ? `${post.commentNumber}条评论` : "添加评论" : '收起评论'
                                 }}
                             </span>
 
@@ -152,36 +155,37 @@ export default {
         return {
             isCollapseFullText: true,
             isCollapseComments: true,
+            isPatternAnswer: false,
 
         }
     }, //绑定父组件的属性
     props: {
         post: {
-            id: Mock.mock('@guid'),
-            question: Mock.mock('@ctitle(20,40)'),
+            id: '',
+            question: '',
+            questionId: '',
             content: {
-                text: Mock.mock('@cparagraph(6,20)'),
-                images: Mock.mock({
-                    "images|0-3": [
-                        Mock.mock('@image("200x100")')
-                    ]
-                })['images']
+                text: '',
+                images: ''
             },
-            likeCount: Mock.mock('@integer(0,100)'),
-            dislikeCount: Mock.mock('@integer(0,100)'),
+            likeCount: 0,
+            dislikeCount:0,
             author: {
-                id: Mock.mock('@guid'),
-                name: Mock.mock('@cname'),
-                avatar: Mock.mock('@image("100x100")'),
-                desc: Mock.mock('@cparagraph(1,3)'),
+                id: '',
+                name: '',
+                avatar:'',
+                desc: '',
             },
-            publishTime: Mock.mock('@datetime'),
-            updateTime: Mock.mock('@datetime'),
-            commentNumber: Mock.mock('@integer(0,100)'),
+            publishTime: '',
+            updateTime: '',
+            commentNumber:0,
         },
         action: {
             type: Object,
-        }
+        },
+        isAnswerPattern: false
+
+
     },
     //方法
     methods: {
@@ -190,6 +194,12 @@ export default {
         },
         collapseComments() {
             this.isCollapseComments = !this.isCollapseComments;
+        },
+        toQuestion() {
+            const routeUrl = this.$router.resolve({
+                path: `/home-question/${this.post.questionId}`,
+            });
+            window.open(routeUrl.href, "_blank");
         }
     },
     //挂载时执行
@@ -197,6 +207,7 @@ export default {
     },
     //创建时执行
     created() {
+
     },
     //侦听器
     watch: {}

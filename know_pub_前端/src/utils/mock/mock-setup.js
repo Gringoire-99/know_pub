@@ -12,6 +12,69 @@ function getParams(url) {
 }
 
 function mockSetUp() {
+    Mock.mock(/.*question.*/, o => {
+        let param = getParams(o.url)
+        let questionId = param['questionId']
+        let pageIndex = parseInt(param['pageIndex'])
+        let pageSize = parseInt(param['pageSize'])
+        let question = {
+            questionId: Mock.mock('@guid'),
+            title: Mock.mock('@ctitle(20,40)'),
+            content: Mock.mock('@cparagraph(6,20)'),
+            likeCount: Mock.mock('@integer(0,100)'),
+            commentCount: Mock.mock('@integer(0,100)'),
+            answerCount: Mock.mock('@integer(0,100)'),
+            tags: Mock.mock({
+                "tags|1-5": [
+                    {
+                        "name|+1": [
+                            "教育",
+                            "游戏",
+                            "历史",
+                            "国际",
+                        ],
+                        "id": Mock.mock('@guid')
+                    }
+                ]
+            })['tags']
+        }
+        let answers = []
+        for (let i = pageIndex; i < pageSize + pageIndex; i++) {
+            let post = {
+                id: Mock.mock('@guid'),
+                question: Mock.mock('@ctitle(20,40)'),
+                questionId: Mock.mock('@guid'),
+                content: {
+                    text: Mock.mock('@cparagraph(6,20)'),
+                    images: Mock.mock({
+                        "images|0-3": [
+                            Mock.mock('@image("200x100")')
+                        ]
+                    })['images']
+                },
+                likeCount: Mock.mock('@integer(0,100)'),
+                dislikeCount: Mock.mock('@integer(0,100)'),
+                author: {
+                    id: Mock.mock('@guid'),
+                    name: Mock.mock('@cname'),
+                    avatar: Mock.mock('@image("100x100")'),
+                    desc: Mock.mock('@cparagraph(1,3)'),
+                },
+                publishTime: Mock.mock('@datetime'),
+                updateTime: Mock.mock('@datetime'),
+                commentNumber: Mock.mock('@integer(100,200)'),
+            }
+            answers.push(post)
+        }
+        return {
+            code: 200,
+            data: {
+                question: question,
+                answers: answers
+            }
+        }
+
+    })
     Mock.mock(/.*user\/dynamics.*/, o => {
         /**
          * 动态：userId+postId+动作
@@ -30,10 +93,11 @@ function mockSetUp() {
                 post: {
                     id: Mock.mock('@guid'),
                     question: Mock.mock('@ctitle(20,40)'),
+                    questionId: Mock.mock('@guid'),
                     content: {
                         text: Mock.mock('@cparagraph(6,20)'),
                         images: Mock.mock({
-                            "images|0-3": [
+                            "images|0-2": [
                                 Mock.mock('@image("200x100")')
                             ]
                         })['images']
@@ -101,6 +165,7 @@ function mockSetUp() {
             let post = {
                 id: Mock.mock('@guid'),
                 question: Mock.mock('@ctitle(20,40)'),
+                questionId: Mock.mock('@guid'),
                 content: {
                     text: Mock.mock('@cparagraph(6,20)'),
                     images: Mock.mock({
