@@ -1,11 +1,12 @@
 <template>
-    <el-container class="w-100 h-100">
+    <div class="w-100 h-100">
         <home-navbar/>
-        <el-main class="main d-flex ">
-            <router-view></router-view>
-        </el-main>
 
-    </el-container>
+        <div class="main d-flex">
+            <router-view></router-view>
+        </div>
+
+    </div>
 
 </template>
 <script>
@@ -48,18 +49,6 @@ export default {
     overflow-x: hidden;
 }
 
-@media screen and (min-width: 1200px) {
-    .el-main {
-        margin-left: 120px;
-        margin-right: 140px;
-    }
-}
-
-@media screen and (max-width: 400px) {
-    .el-main {
-        padding: 60px 0 0;
-    }
-}
 
 </style>
 <style>

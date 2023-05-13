@@ -1,28 +1,28 @@
 <template>
-    <div class="w-100">
-        <el-row :gutter="10">
-            <el-col :lg="17" :md="17" :sm="24" :xl="24" :xs="24">
-                <div class="card w-100">
-                    <div class="card-body">
-                        <div class="card-title d-flex align-items-center">
-                            <router-link v-for="(tab,index) in tabs" :key="index" :to="{path:`${tab.path}`}"
-                            >
-                                <button :class="{'selected':(index===currentTabIndex)}" class="btn"
-                                        @click="onTabChange(index)">{{ tab.name }}
-                                </button>
-                            </router-link>
+    <div class="w-100 grid">
+        <div class="space"></div>
+        <div class="body-grid">
+            <div class="card w-100 main">
+                <div class="card-body">
+                    <div class="card-title d-flex align-items-center">
+                        <router-link v-for="(tab,index) in tabs" :key="index" :to="{path:`${tab.path}`}"
+                        >
+                            <button :class="{'selected':(index===currentTabIndex)}" class="btn"
+                                    @click="onTabChange(index)">{{ tab.name }}
+                            </button>
+                        </router-link>
 
-                        </div>
-                        <div class="w-100">
-                            <router-view></router-view>
-                        </div>
+                    </div>
+                    <div class="w-100">
+                        <router-view></router-view>
                     </div>
                 </div>
-            </el-col>
-            <el-col :span="7" class="d-none d-lg-inline ">
+            </div>
+            <div class="sed">
                 <main-secondary></main-secondary>
-            </el-col>
-        </el-row>
+            </div>
+        </div>
+        <div class="space"></div>
     </div>
 </template>
 
@@ -57,9 +57,7 @@ export default {
     color: #0095da;
 }
 
-.el-row {
-    flex-wrap: nowrap !important;
-}
+
 
 .card {
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
@@ -86,5 +84,41 @@ export default {
     .card-title {
         justify-content: center;
     }
+
 }
+
+@media screen and (max-width: 1300px) {
+    .grid {
+        grid-template-columns: 0fr 5fr 0fr !important;
+    }
+
+
+}
+
+@media screen and (max-width: 1000px) {
+    .body-grid {
+        grid-template-columns: 1fr 0fr !important;
+    }
+}
+
+.sed {
+    min-width: 0;
+    overflow: hidden;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 5fr 1fr;
+    grid-template-rows: 1fr;
+    transition: all 0.5s;
+}
+
+.body-grid {
+    display: grid;
+    grid-template-columns: 9fr 4fr;
+    grid-template-rows: 1fr;
+    grid-gap: 10px;
+    transition: all 0.5s;
+}
+
 </style>

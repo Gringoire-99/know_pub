@@ -24,6 +24,8 @@ function mockSetUp() {
             likeCount: Mock.mock('@integer(0,100)'),
             commentCount: Mock.mock('@integer(0,100)'),
             answerCount: Mock.mock('@integer(0,100)'),
+            collectionCount: Mock.mock('@integer(2000,200000)'),
+            visitCount: Mock.mock('@integer(20000,2000000)'),
             tags: Mock.mock({
                 "tags|1-5": [
                     {

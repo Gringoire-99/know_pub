@@ -4,29 +4,34 @@
 
 </head>
 <body>
-<div class="wrapper">
-    <span>11111111</span>
-    <div class="grid">
-        <div>11111111111111111111</div>
-    </div>
-
-
+<div class="grid">
+    <span>1</span>
+    <span class="body">2</span>
+    <span>3</span>
 </div>
 </body>
 <style>
     .grid {
+        width: 1000px;
         display: grid;
-        grid-template-rows: 0fr;
-        transition: .3s;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: 1fr;
+        transition: all 1s;
+    }
+
+    .grid span {
+        border: 1px solid #0095da;
+        min-width: 0px;
         overflow: hidden;
     }
 
-    .grid > div {
-        min-height: 0;
+    @media screen and (max-width: 1000px) {
+        .grid {
+            grid-template-columns: 0fr 2fr 0fr;
+            grid-template-rows: 1fr;
+        }
     }
 
-    .wrapper:hover .grid {
-        grid-template-rows: 1fr;
-    }
+
 </style>
 </html>
