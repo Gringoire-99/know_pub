@@ -2,17 +2,19 @@
     <div class="root card">
         <div class="card-body">
             <!--            问题名-->
-            <div v-if="action" class="fw-xsm text-gray d-flex"><span>{{ action.name }}了该回答</span><span
-                    class="ms-auto">{{ action.time }}</span></div>
+            <div v-if="action" class="fw-xsm text-gray d-flex">
+                <span>{{ action.name }}了该回答</span>
+                <span class="ms-auto">{{ action.time }}</span>
+            </div>
 
 
-                <div class="card-title pointer">
-                    <div class="question" @click="toQuestion">{{ post.question }}</div>
-                </div>
+            <div v-if="!isAnswerPattern" class="card-title pointer">
+                <div class="question" @click="toQuestion">{{ post.question }}</div>
+            </div>
 
 
             <!--            简短介绍-未展开时显示-->
-            <div v-if="isCollapseFullText" class="intro d-flex w-100">
+            <div v-if="isCollapseFullText&&!isAnswerPattern" class="intro d-flex w-100">
                 <img v-if="post.content.images.length>0" :src="post.content.images[0]" alt="介绍图片"
                      class="img-fluid col-3 intro-img">
 
@@ -25,8 +27,9 @@
                 </div>
             </div>
             <!--            正文-->
-            <div v-if="!isCollapseFullText" class="full-text">
-                <post-body :post="post" @collapseFullText="isCollapseFullText=true"></post-body>
+            <div v-if="isAnswerPattern||!isCollapseFullText" class="full-text">
+                <post-body :is-answer-pattern="isAnswerPattern" :post="post"
+                           @collapseFullText="isCollapseFullText=true"></post-body>
             </div>
 
             <!--            操作栏-->
@@ -101,16 +104,18 @@
 
                         </div>
                     </el-button>
-
                 </div>
             </div>
+
             <!--            评论栏-->
             <div v-if="!isCollapseComments" class="card-footer">
                 <post-comment></post-comment>
                 <comments :post-id="post.id"></comments>
             </div>
+
         </div>
     </div>
+
 </template>
 
 <script>
@@ -155,8 +160,6 @@ export default {
         return {
             isCollapseFullText: true,
             isCollapseComments: true,
-            isPatternAnswer: false,
-
         }
     }, //绑定父组件的属性
     props: {
@@ -169,21 +172,24 @@ export default {
                 images: ''
             },
             likeCount: 0,
-            dislikeCount:0,
+            dislikeCount: 0,
             author: {
                 id: '',
                 name: '',
-                avatar:'',
+                avatar: '',
                 desc: '',
             },
             publishTime: '',
             updateTime: '',
-            commentNumber:0,
+            commentNumber: 0,
         },
         action: {
             type: Object,
         },
-        isAnswerPattern: false
+        isAnswerPattern: {
+            type: Boolean,
+            default: false
+        }
 
 
     },
@@ -359,9 +365,5 @@ export default {
     border-bottom: 1px solid #ebebeb;
 }
 
-.grid {
-    display: grid;
-    transition: grid-template-rows 0.5s;
-}
 
 </style>

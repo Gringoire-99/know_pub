@@ -1,108 +1,116 @@
 <template>
-    <div class=" w-100">
-
-        <div class="body">
-            <div class=" grid header w-100">
-                <div></div>
-                <div class="d-flex">
-                    <div class="d-flex flex-column">
-                        <div class="d-flex flex-fill">
-                            <div class="tags">
-                                <el-tag v-for="tag in question.tags" class="pointer mx-1" round size="large">
-                                    {{ tag.name }}
-                                </el-tag>
-                            </div>
-
+    <div class="hq-root w-100">
+        <div class="header w-100">
+            <div></div>
+            <div class="header-grid">
+                <div class="d-flex flex-column">
+                    <div class="d-flex flex-fill">
+                        <div class="tags">
+                            <el-tag v-for="tag in question.tags" class="pointer mx-1" round size="large">
+                                {{ tag.name }}
+                            </el-tag>
                         </div>
-                        <div>
-                            <div class="title fs-3 fw-bold mt-4">
-                                {{ question.title }}
-                            </div>
-                            <div class="content">
-                                <div v-if="isCollapseFullText" class="short">
+                    </div>
+                    <el-skeleton v-show="isLoadingQuestion" :rows="3">
+                    </el-skeleton>
+                    <div>
+                        <div class="title fs-3 fw-bold mt-4">
+                            {{ question.title }}
+                        </div>
+                        <div class="content">
+                            <div v-if="isCollapseFullText" class="short">
                                     <span class="content-short" @click="collapseFullText">
                                         {{ question.content.substring(0, 100) + '...' }}
                                     </span>
-                                    <span class="full-text-btn pointer text-blue"
-                                          v-on:click="collapseFullText">展开全部</span>
-                                    <el-icon class="d-inline pointer text-blue" @click="collapseFullText">
-                                        <arrow-down/>
-                                    </el-icon>
-                                </div>
-                                <div v-else class="full">
+                                <span class="full-text-btn pointer text-blue"
+                                      v-on:click="collapseFullText">展开全部</span>
+                                <el-icon class="d-inline pointer text-blue" @click="collapseFullText">
+                                    <arrow-down/>
+                                </el-icon>
+                            </div>
+                            <div v-else class="full">
                                     <span>
                                         {{ question.content }}
                                     </span>
-                                    <span class="full-text-btn pointer text-blue"
-                                          v-on:click="isCollapseFullText=!isCollapseFullText">收起</span>
-                                    <el-icon class="d-inline pointer text-blue">
-                                        <arrow-up/>
-                                    </el-icon>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="operations mt-3">
-                            <button class="btn bg-primary text-white">
-                                <el-icon>
-                                    <star-filled></star-filled>
+                                <span class="full-text-btn pointer text-blue"
+                                      v-on:click="isCollapseFullText=!isCollapseFullText">收起</span>
+                                <el-icon class="d-inline pointer text-blue">
+                                    <arrow-up/>
                                 </el-icon>
-                                <span>关注问题</span></button>
-                            <button class="btn text-blue bg-white">
-                                <el-icon>
-                                    <edit></edit>
-                                </el-icon>
-                                <span>回答</span></button>
-                            <button class="btn text-blue bg-white">
-                                <el-icon>
-                                    <add-user></add-user>
-                                </el-icon>
-                                <span>邀请</span>
-                            </button>
-                            <div>
-                                <el-icon>
-                                    <like></like>
-                                </el-icon>
-                                <span>好问题<span>{{ question.likeCount }}</span></span>
-                            </div>
-                            <div>
-                                <el-icon>
-                                    <message></message>
-                                </el-icon>
-                                <span>{{ question.commentCount > 0 ? `${question.commentCount}条评论` : '添加评论' }}</span>
-                            </div>
-                            <div>
-                                <el-icon>
-                                    <share></share>
-                                </el-icon>
-                                <span>分享</span>
-                            </div>
-                            <div>
-                                <el-icon>
-                                    <more></more>
-                                </el-icon>
-                                <span>...</span>
                             </div>
                         </div>
                     </div>
-                    <div class="count ms-auto d-flex">
-                        <div class="flex-column me-3">
-                            <span class="text-gray">关注者</span>
-                            <span class="fs-5 fw-bold">{{ question.collectionCount }}</span>
+                    <div class="operations mt-3">
+                        <button class="btn bg-primary text-white">
+                            <el-icon>
+                                <star-filled></star-filled>
+                            </el-icon>
+                            <span>关注问题</span></button>
+                        <button class="btn text-blue bg-white">
+                            <el-icon>
+                                <edit></edit>
+                            </el-icon>
+                            <span>回答</span></button>
+                        <button class="btn text-blue bg-white">
+                            <el-icon>
+                                <add-user></add-user>
+                            </el-icon>
+                            <span>邀请</span>
+                        </button>
+                        <div>
+                            <el-icon>
+                                <like></like>
+                            </el-icon>
+                            <span>好问题<span>{{ question.likeCount }}</span></span>
                         </div>
-                        <div class="flex-column">
-                            <span class="text-gray">被浏览</span>
-                            <span class="fs-5 fw-bold">{{ question.visitCount }}</span>
+                        <div>
+                            <el-icon>
+                                <message></message>
+                            </el-icon>
+                            <span>{{ question.commentCount > 0 ? `${question.commentCount}条评论` : '添加评论' }}</span>
+                        </div>
+                        <div>
+                            <el-icon>
+                                <share></share>
+                            </el-icon>
+                            <span>分享</span>
+                        </div>
+                        <div>
+                            <el-icon>
+                                <more></more>
+                            </el-icon>
                         </div>
                     </div>
                 </div>
-                <div></div>
+                <div class="count  d-flex">
+                    <div class="flex-column me-3">
+                        <span class="text-gray">关注者</span>
+                        <span class="fs-5 fw-bold">{{ question.collectionCount }}</span>
+                    </div>
+                    <div class="flex-column">
+                        <span class="text-gray">被浏览</span>
+                        <span class="fs-5 fw-bold">{{ question.visitCount }}</span>
+                    </div>
+                </div>
             </div>
-            <div class="answers">
-
-            </div>
+            <div></div>
         </div>
 
+        <div class="body">
+            <div class="space"></div>
+            <div class="main">
+                <div class="post-header ps-3 border-bottom pb-3 pt-3">
+                    <span class="fw-bold">{{ question.commentCount }}个回答</span>
+                </div>
+                <post v-for="post in posts" :key="post.postId" :is-answer-pattern="true" :post="post">
+
+                </post>
+            </div>
+            <div class="sed"></div>
+            <div class="space"></div>
+        </div>
     </div>
+
 
 </template>
 
@@ -115,15 +123,17 @@ import AddUser from "@/components/icons/AddUser.vue";
 import Pen from "@/components/icons/Pen.vue";
 import Edit from "@/components/icons/Edit.vue";
 import Message from "@/components/icons/Message.vue";
+import Post from "@/components/home/main/post/Post.vue";
 
 export default {
     //组件名
     name: "home-question",
     //依赖的组件
-    components: {More, Message, Edit, Pen, AddUser, StarFilled, Collection, Write, Like, ArrowUp, ArrowDown},
+    components: {Post, More, Message, Edit, Pen, AddUser, StarFilled, Collection, Write, Like, ArrowUp, ArrowDown},
     //数据
     data() {
         return {
+            isLoadingQuestion: true,
             question: {
                 questionId: '',
                 title: '',
@@ -136,6 +146,9 @@ export default {
             },
             posts: [],
             isCollapseFullText: true,
+            pageSize: 10,
+            currentPage: 1,
+
         }
     },
     methods: {
@@ -150,18 +163,18 @@ export default {
     ,
     //创建时执行
     created() {
-        console.log("created")
         http.get('/question', {
             params: {
-                questionId: this.$route.params.questionId
+                questionId: this.$route.params.questionId,
+                pageSize: this.pageSize,
+                currentPage: this.currentPage
+
             }
         }).then(res => {
             this.question = res.data.data.question
             this.posts = res.data.data.posts
-            console.log(this.question)
-            console.log(this.posts)
+            this.isLoadingQuestion = false
         }, reason => {
-            console.log(reason)
         })
     },
     //侦听器
@@ -180,19 +193,31 @@ export default {
 
 <style scoped>
 .header {
-    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    box-shadow: rgba(50, 50, 105, 0.15) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1px 0px;
+    display: grid;
+    grid-template-columns: 2fr 8fr 1fr;
+    grid-template-rows: 1fr;
+    transition: grid 0.5s;
+    padding-bottom: 20px;
 }
 
-.grid {
+.main {
+    box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
+}
+
+.header-grid {
     display: grid;
-    grid-template-columns: 1fr 8fr 1fr;
+    grid-template-columns: 4fr 1fr;
     grid-template-rows: 1fr;
+    transition: grid 0.5s;
 }
 
 .count {
     display: flex;
     align-content: center;
     justify-content: start;
+    min-width: 0;
+    overflow: hidden;
 }
 
 .count span {
@@ -242,15 +267,12 @@ export default {
 }
 
 @media screen and (max-width: 1000px) {
-    .grid {
-        display: grid;
-        grid-template-columns: 0fr 8fr 0fr;
-        grid-template-rows: 1fr;
-        padding: 10px
+    .header {
+        grid-template-columns: 1fr 8fr 1fr;
     }
 
-    .count {
-        display: none !important;
+    .header-grid {
+        grid-template-columns: 1fr 0fr !important;
     }
 
     .operations {
@@ -258,7 +280,7 @@ export default {
     }
 }
 
-@media screen  and (max-width: 500px) {
+@media screen  and (max-width: 700px) {
     .operations button {
         font-size: 5px;
     }
@@ -271,6 +293,24 @@ export default {
         display: none;
     }
 
+    .body {
+        grid-template-columns: 0fr 6fr 2fr 0fr;
+
+    }
+
 }
 
+.hq-root {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    grid-gap: 10px;
+}
+
+.body {
+    display: grid;
+    grid-template-columns: 2fr 6fr 2fr 1fr;
+    grid-template-rows: 1fr;
+    transition: grid 0.5s;
+}
 </style>

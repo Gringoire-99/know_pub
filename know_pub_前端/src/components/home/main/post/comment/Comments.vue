@@ -53,7 +53,7 @@ export default {
     data() {
         return {
             pageSize: 5,
-            pageIndex: 0,
+            currentPage: 1,
             isLoading: false,
 
             // 默认按照点赞数排序
@@ -115,7 +115,7 @@ export default {
                 params: {
                     postId: this.postId,
                     pageSize: this.pageSize,
-                    pageIndex: this.pageIndex,
+                    currentPage: this.currentPage,
                     orderBy: this.orderBy
                 }
             }).then(
@@ -125,10 +125,10 @@ export default {
                         console.log(resolve.data.data.comments.length);
                         if (isMerge) {
                             this.comments.push(...resolve.data.data.comments)
-                            this.pageIndex += this.pageSize
+                            this.currentPage += this.pageSize
                         } else {
                             this.comments = resolve.data.data.comments
-                            this.pageIndex = this.pageSize
+                            this.currentPage = this.pageSize
                         }
                         this.total = resolve.data.data.total
                         this.isLoading = false

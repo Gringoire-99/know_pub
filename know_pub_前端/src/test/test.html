@@ -3,34 +3,52 @@
 <head>
 
 </head>
-<body>
-<div class="grid">
-    <span>1</span>
-    <span class="body">2</span>
-    <span>3</span>
+<body style="height: 2000px">
+<div class="nav" style="">
+    1
+    <div class="grid">
+        <div>nav</div>
+    </div>
 </div>
+
 </body>
 <style>
-    .grid {
-        width: 1000px;
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        grid-template-rows: 1fr;
-        transition: all 1s;
+    .nav {
+        flex-grow: 1;
+        max-height: 25px;
+        border: 1px solid black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
-    .grid span {
-        border: 1px solid #0095da;
-        min-width: 0px;
+    .grid div {
+        min-height: 0;
+        margin: 5px;
         overflow: hidden;
     }
 
-    @media screen and (max-width: 1000px) {
-        .grid {
-            grid-template-columns: 0fr 2fr 0fr;
-            grid-template-rows: 1fr;
-        }
+    .grid:hover {
+
+        grid-template-rows:1fr !important;
     }
+
+    .grid {
+        display: grid;
+        grid-template-columns: 0fr;
+        grid-template-rows:1fr;
+        transition: all 1s;
+        overflow: hidden;
+    }
+
+    body {
+        display: flex;
+        justify-content: center;
+        align-content: center;
+        flex-wrap: wrap;
+    }
+
+
 
 
 </style>

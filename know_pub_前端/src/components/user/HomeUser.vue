@@ -1,76 +1,75 @@
 <template>
-    <div class="root d-flex flex-column flex-fill">
-        <div class="header d-flex flex-column flex-fill w-100">
-            <div class="background-img">
-                <img :src="userInfo.backgroundImg" alt="用户背景图"/>
-
-            </div>
-            <div class="d-flex">
-                <div class="avatar d-flex align-items-end">
-                    <div class="img">
-                        <el-image :src="userInfo.avatar" alt="" class="h-100 w-100">
-                        </el-image>
-                    </div>
-                </div>
-                <div class="detail d-flex flex-column ms-4 mt-2">
-                    <span>
-                        <span class="fw-bold fs-5">{{ userInfo.name }}</span>
-                        <span
-                            class="ms-2 fs-6 fw-light">{{
-                                userInfo.description.length > 10 ? userInfo.description.substring(0, 10) + '...' : userInfo.description
-                            }}</span>
-                    </span>
-
-                    <div class="d-flex flex-column">
-                        <div v-if="isCollapseFullInfo" class="info-short d-flex flex-column">
-                            <div class="">
-                                <div v-show="userInfo.gender!==''">
-                                    <el-icon>
-                                        <gender></gender>
-                                    </el-icon>
-                                    <span>
-                                {{ userInfo.gender }}
-                            </span>
-                                </div>
-                                <div v-show="userInfo.jobHistory!==''">
-                                    <el-icon>
-                                        <job></job>
-                                    </el-icon>
-                                    <span>
-                                {{ userInfo.jobHistory }}
-                            </span>
-                                </div>
+    <el-dialog v-model="showInfoDialog">
+        <div class="info-full ">
+            <span class="fw-bold">性别</span><span>{{ userInfo.gender }}</span>
+            <span class="fw-bold">一句话介绍</span><span>{{ userInfo.description }}</span>
+            <span class="fw-bold">居住地</span><span>{{ userInfo.location }}</span>
+            <span class="fw-bold">所在行业</span><span>{{ userInfo.industry }}</span>
+            <span class="fw-bold">职业经历</span><span>{{ userInfo.jobHistory }}</span>
+            <span class="fw-bold">教育经历</span><span>{{ userInfo.school }}</span>
+            <span class="fw-bold">个人认证</span><span>{{ userInfo.authentication }}</span>
+        </div>
+    </el-dialog>
+    <div class="grid">
+        <div class="space"></div>
+        <div class="body-grid">
+            <div class="header">
+                <div :style="`background: url('${userInfo.backgroundImg}')`" class="background-img ">
+                    <div class="d-flex info">
+                        <div class="avatar d-flex align-items-end">
+                            <div class="img">
+                                <el-image :src="userInfo.avatar" alt="" class="h-100 w-100">
+                                </el-image>
                             </div>
                         </div>
-                        <div v-else class="info-full ">
-                            <span class="fw-bold">性别</span><span>{{ userInfo.gender }}</span>
-                            <span class="fw-bold">一句话介绍</span><span>{{ userInfo.description }}</span>
-                            <span class="fw-bold">居住地</span><span>{{ userInfo.location }}</span>
-                            <span class="fw-bold">所在行业</span><span>{{ userInfo.industry }}</span>
-                            <span class="fw-bold">职业经历</span><span>{{ userInfo.jobHistory }}</span>
-                            <span class="fw-bold">教育经历</span><span>{{ userInfo.school }}</span>
-                            <span class="fw-bold">个人认证</span><span>{{ userInfo.authentication }}</span>
+                        <div class="user-info">
+                            <div class="detail d-flex flex-column ms-4 mt-2">
+                                <span>
+                                    <span class="fw-bold fs-5">{{ userInfo.name }}</span>
+                                    <span
+                                        class="ms-2 fs-6 fw-light">{{
+                                            userInfo.description.length > 10 ? userInfo.description.substring(0, 10) + '...' : userInfo.description
+                                        }}
+                                    </span>
+                                </span>
+
+                                <div class="d-flex flex-column">
+                                    <div class="info-short d-flex flex-column">
+                                        <div class="">
+                                            <div v-show="userInfo.gender!==''">
+                                                <span>性别：</span>
+                                                <span>{{ userInfo.gender }}</span>
+                                            </div>
+                                            <div v-show="userInfo.jobHistory!==''">
+                                                <span>工作历史：</span>
+                                                <span>{{ userInfo.jobHistory }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="check-detail text-blue pointer"
+                                         @click="showInfoDialog=!showInfoDialog">
+                                        <el-icon>
+                                            <arrow-down-bold></arrow-down-bold>
+                                        </el-icon>
+                                        <span>查看详细信息</span>
+                                    </div>
+                                </div>
+
+                            </div>
                         </div>
-                        <div class="check-detail text-blue pointer" @click="isCollapseFullInfo=!isCollapseFullInfo">
-                            <el-icon v-if="isCollapseFullInfo">
-                                <arrow-down-bold></arrow-down-bold>
-                            </el-icon>
-                            <el-icon v-else>
-                                <arrow-up-bold></arrow-up-bold>
-                            </el-icon>
-                            <span>{{ isCollapseFullInfo ? '查看详细信息' : '收起' }}</span>
-                        </div>
+                        <button class="ms-auto align-self-center me-3 edit">编辑资料</button>
+
                     </div>
-
                 </div>
-                <button class="ms-auto align-self-end me-3 edit">编辑资料</button>
+                <div class="detail-space"></div>
             </div>
-
+            <div class="detail-grid">
+                <user-detail class="main"></user-detail>
+                <user-secondary :userInfo="userInfo" class="secondary"></user-secondary>
+            </div>
         </div>
-        <div class="d-flex">
-            <user-detail class="main"></user-detail>
-            <user-secondary :userInfo="userInfo" class="secondary"></user-secondary>
-        </div>
+        <div class="space"></div>
     </div>
 </template>
 
@@ -90,7 +89,7 @@ export default {
     //数据
     data() {
         return {
-            isCollapseFullInfo: true,
+            showInfoDialog: false,
             id: '',
             userInfo: {
                 id: "",
@@ -159,36 +158,48 @@ export default {
 </script>
 
 <style scoped>
-.header {
-    margin-bottom: 15px;
-}
-
 .info-short span {
     font-size: 15px;
 }
 
 .background-img {
+    background: #7d7f80 !important;
     height: 200px;
-    display: flex;
-    justify-content: center;
-    align-content: start;
-    background: #6f7073 center;
-    overflow: hidden;
+    background-position: center !important;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    align-content: end;
+    flex-wrap: wrap;
 }
 
-.background-img img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+.user-info {
+    position: relative;
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr 1fr;
+    min-height: 0;
+    transition: bottom 0.5s, bottom 0.5s, color 0.5s;
+}
+
+.detail-space {
+    height: 120px;
+    background-color: #ffffff;
+    transition: height 0.5s;
 }
 
 .header {
+    display: grid;
+    grid-template-columns:  1fr;
+    grid-template-rows: 1fr;
     box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 3px 0px;
-    padding-bottom: 20px;
+    min-height: 100px;
+    overflow: hidden;
 }
 
 .avatar {
     height: 100px;
+    transition: all 0.5s;
 }
 
 .img {
@@ -197,6 +208,7 @@ export default {
     border: 3px solid #ffffff;
     border-radius: 3px;
     margin-left: 20px;
+    transition: all 0.5s;
 }
 
 .info-short > div > div {
@@ -205,33 +217,22 @@ export default {
     flex-wrap: wrap;
 }
 
-.el-icon {
-    align-self: center !important;
+.check-detail * {
+    transition: color 0.5s;
 }
 
-/*.info-short{*/
-/*    min-height: 70px;*/
-/*    position: absolute;*/
-/*    transition: all 0.3s;*/
-/*}*/
+.info {
+    height: 150px;
+    position: relative;
+    bottom: -200px;
+    transition: bottom 0.5s;
+}
 
-/*.info-full{*/
-/*    min-height: 70px;*/
-/*    position: absolute;*/
-/*    opacity: 0;*/
-/*    transition: all 0.3s;*/
-/*}*/
+.info * {
+    white-space: nowrap !important;
+    flex-wrap: nowrap !important;
+}
 
-/*.switchOpacity.info-short{*/
-/*    opacity: 0;*/
-/*}*/
-/*.switchOpacity.info-full{*/
-/*    opacity: 1;*/
-/*}*/
-/*.check-detail{*/
-/*    position: absolute;*/
-/*    */
-/*}*/
 .info-full {
     display: grid;
     grid-template-columns: auto auto;
@@ -248,12 +249,60 @@ export default {
     background-color: white;
 }
 
-.main {
-    flex-grow: 3;
-    margin-right: 15px;
+
+@media screen  and (max-width: 1200px) {
+    .grid {
+        grid-template-columns: 0fr 5fr 0fr !important;
+    }
+
+
 }
 
-.secondary {
-    flex-grow: 1;
+@media screen  and (max-width: 900px) {
+    .detail-grid {
+        grid-template-columns: 1fr 0fr !important;
+    }
+
+    .img {
+        width: 150px;
+        height: 150px;
+    }
+
+    .detail-space {
+        height: 0;
+    }
+
+    .info {
+        bottom: -75px;
+    }
+
+    .info :not(.edit) {
+        color: white;
+    }
+
+
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 6fr 1fr;
+    grid-template-rows: 1fr;
+    transition: grid 0.5s;
+}
+
+.body-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr auto;
+    grid-gap: 10px;
+    transition: all 0.5s;
+}
+
+.detail-grid {
+    display: grid;
+    grid-template-columns: 9fr 3fr;
+    grid-template-rows: 1fr;
+    grid-gap: 10px;
+    transition: all 0.3s;
 }
 </style>

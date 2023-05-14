@@ -68,6 +68,7 @@ export default {
 .card-body .btn {
     border: none;
     font-size: 19px;
+    white-space: nowrap;
 
 }
 

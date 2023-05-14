@@ -43,7 +43,7 @@ export default {
             collections: [],
             follows: [],
             pageSize: 10,
-            pageIndex: 0,
+            currentPage: 1,
             currentTab: 'dynamic'
         }
     },
@@ -72,7 +72,7 @@ export default {
             http.get('/user/dynamics', {
                 params: {
                     userId: this.$store.state.userId,
-                    pageIndex: this.pageIndex,
+                    currentPage: this.currentPage,
                     pageSize: this.pageSize
                 }
             }).then(res => {
@@ -84,7 +84,7 @@ export default {
             http.get('/user/questions', {
                 params: {
                     userId: this.$store.state.userId,
-                    pageIndex: this.pageIndex,
+                    currentPage: this.currentPage,
                     pageSize: this.pageSize
                 }
             }).then(res => {
@@ -95,7 +95,7 @@ export default {
             http.get('/user/articles', {
                 params: {
                     userId: this.$store.state.userId,
-                    pageIndex: this.pageIndex,
+                    currentPage: this.currentPage,
                     pageSize: this.pageSize
                 }
             }).then(res => {
@@ -106,7 +106,7 @@ export default {
             http.get('/user/collections', {
                 params: {
                     userId: this.$store.state.userId,
-                    pageIndex: this.pageIndex,
+                    currentPage: this.currentPage,
                     pageSize: this.pageSize
                 }
             }).then(res => {
@@ -117,7 +117,7 @@ export default {
             http.get('/user/follow', {
                 params: {
                     userId: this.$store.state.userId,
-                    pageIndex: this.pageIndex,
+                    currentPage: this.currentPage,
                     pageSize: this.pageSize
                 }
             }).then(res => {

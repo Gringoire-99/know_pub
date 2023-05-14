@@ -45,7 +45,7 @@ export default {
     data() {
         return {
             pageSize: 5,
-            pageIndex: 0,
+            currentPage: 1,
             isLoading: false,
             // 默认按照点赞数排序
             ORDER_BY: {
@@ -100,7 +100,7 @@ export default {
                 params: {
                     postId: this.postId,
                     pageSize: this.pageSize,
-                    pageIndex: this.pageIndex,
+                    currentPage: this.currentPage,
                     orderBy: order
                 }
             }).then(
@@ -109,10 +109,10 @@ export default {
                         // 连接两个数组
                         if (isMerge) {
                             this.comments.push(...resolve.data.data.comments)
-                            this.pageIndex += this.pageSize
+                            this.currentPage += this.pageSize
                         } else {
                             this.comments = resolve.data.data.comments
-                            this.pageIndex = this.pageSize
+                            this.currentPage = this.pageSize
                         }
                         this.total = resolve.data.data.total
                         this.isLoading = false
@@ -170,10 +170,7 @@ export default {
 <style scoped>
 
 .body {
-    margin-top: 10px;
-    border: 1px solid #ebebeb;
-    border-radius: 3px;
-    padding: 10px 20px;
+
 
 }
 

@@ -5,16 +5,18 @@
                 <navigator></navigator>
             </el-icon>
         </div>
-        <div class="nav-item logo">
+        <div class=" logo d-flex align-items-center">
             <img alt="logo" src="../../assets/common/logo_full.png">
         </div>
-        <div class="nav-item menu">
-            <router-link v-for="(tab,index) in tabs" :to="tab.path">
-                <button :key="index" :class="{'selected':index===currentTabIndex}" @click="onTabChange(index)">
-                    {{ tab.label }}
-                </button>
-            </router-link>
+        <div class="d-flex nav-items">
+            <div class="nav-item menu">
+                <router-link v-for="(tab,index) in tabs" :to="tab.path">
+                    <button :key="index" :class="{'selected':index===currentTabIndex}" @click="onTabChange(index)">
+                        {{ tab.label }}
+                    </button>
+                </router-link>
 
+            </div>
         </div>
         <div class="search">
             <el-autocomplete
@@ -38,132 +40,6 @@
             </el-autocomplete>
             <button class="search-btn" type="button" @click="handleSearch">提问</button>
         </div>
-        <div class="sub-nav">
-            <el-popover :width="400" placement="bottom" trigger="click">
-                <template #reference>
-                    <el-button class="ms-3 h-100">
-                        <div>
-                            <el-icon>
-                                <Bell/>
-                            </el-icon>
-                            <br>
-                            <span>消息</span>
-                        </div>
-                    </el-button>
-                </template>
-                <messages></messages>
-            </el-popover>
-            <el-popover :width="400" placement="bottom" trigger="click">
-                <template #reference>
-                    <el-button class="h-100">
-                        <div>
-                            <el-badge type="danger" value="1">
-                                <el-icon>
-                                    <message/>
-                                </el-icon>
-                            </el-badge>
-                            <br>
-                            <span>私信</span>
-                        </div>
-                    </el-button>
-                </template>
-            </el-popover>
-        </div>
-        <div v-if="$store.state.isLogin" :class="{'hover':showAvatarDetail}" class="avatar" @mouseenter="clearTimer"
-             @mouseleave="hideDetail">
-            <img :src="userInfo.avatar" alt="avatar"
-                 @mouseenter="showDetail"/>
-            <div class="avatar-dropdown">
-                <span class="name pointer">{{ userInfo.name }}</span>
-                <div class="fs-xsm">
-                    <span class="me-2"><span class="fw-lighter">K币：</span>{{ userInfo.koinCount }}</span>
-                    <span><span class="fw-lighter">经验：</span>{{ userInfo.experienceCount }}</span>
-                </div>
-                <div>
-                    <span class="fs-xsm text-primary pointer">Lv1</span>
-                    <el-progress :percentage="50" :show-text="false" class="flex-fill"/>
-                    <span class="fs-xsm text-info pointer">Lv2</span>
-                </div>
-                <!--                TODO 通过js计算等级-->
-                <div>
-                    <span class="fs-xsm fw-lighter text-gray">{{
-                            `当前经验${userInfo.experienceCount}，距离升级Lv1，还需要${12}`
-                        }}</span>
-                </div>
-                <div class="mt-2 mb-2">
-                    <div class="d-flex flex-column align-items-center flex-fill ">
-                        <span class="fw-bold pointer">{{ userInfo.followCount }}</span>
-                        <span class="fs-xsm pointer">关注</span>
-                    </div>
-                    <div class="d-flex flex-column align-items-center flex-fill pointer">
-                        <span class="fw-bold pointer">{{ userInfo.followerCount }}</span>
-                        <span class="fs-xsm pointer">粉丝</span>
-                    </div>
-                    <div class="d-flex flex-column align-items-center flex-fill pointer">
-                        <span class="fw-bold pointer">{{ userInfo.articleCount + userInfo.postCount }}</span>
-                        <span class="fs-xsm pointer">动态</span>
-                    </div>
-                </div>
-                <div class="member">
-                    <div class="d-flex flex-column">
-                        <span class="text-red pointer">成为会员</span>
-                        <span class="text-white pointer">了解更多权益</span>
-                    </div>
-                    <button class="member-button fs-xsm align-self-center">开通</button>
-                </div>
-                <div class="avatar-nav-item w-100 mt-1">
-                    <div class="w-100">
-                        <router-link :to="`/home-user/${$store.state.userId}`">
-                            <div class="d-flex align-items-center nav-list-item">
-                                <el-icon class="me-3">
-                                    <House/>
-                                </el-icon>
-                                <span class="">个人中心</span>
-                                <el-icon class="ms-auto">
-                                    <arrow-right-bold></arrow-right-bold>
-                                </el-icon>
-                            </div>
-                        </router-link>
-                        <router-link to="/home-user">
-                            <div class="d-flex align-items-center nav-list-item">
-                                <el-icon class="me-3">
-                                    <wallet></wallet>
-                                </el-icon>
-                                <span class="">我的钱包</span>
-                                <el-icon class="ms-auto">
-                                    <arrow-right-bold></arrow-right-bold>
-                                </el-icon>
-                            </div>
-                        </router-link>
-                        <router-link to="/home-user">
-                            <div class="d-flex align-items-center nav-list-item">
-                                <el-icon class="me-3">
-                                    <setting></setting>
-                                </el-icon>
-                                <span class="">我的设置</span>
-                                <el-icon class="ms-auto">
-                                    <arrow-right-bold></arrow-right-bold>
-                                </el-icon>
-                            </div>
-                        </router-link>
-                        <div class="el-divider--horizontal mt-1 mb-1"></div>
-                        <router-link :to="{name:'login-page',query:{isLogout: true}}">
-                            <div class="d-flex align-items-center nav-list-item">
-                                <el-icon class="me-3">
-                                    <House/>
-                                </el-icon>
-                                <span class="">退出登录</span>
-                            </div>
-                        </router-link>
-                    </div>
-
-                </div>
-
-            </div>
-        </div>
-        <div v-else>
-            <span class="text-blue pointer" @click="isShowLogin=!isShowLogin">登录</span>
-        </div>
         <div class="icons d-flex align-content-center justify-content-center">
             <div class="search-icon">
                 <el-icon>
@@ -176,11 +52,140 @@
                 </el-icon>
             </div>
         </div>
-        <el-dialog v-model="isShowLogin" :show-close="false" class="login-dialog">
-            <login/>
-        </el-dialog>
+        <div class="grid-avatar">
+            <div class="sub-nav">
+                <el-popover :width="400" placement="bottom" trigger="click">
+                    <template #reference>
+                        <el-button class="ms-3 h-100">
+                            <div>
+                                <el-icon>
+                                    <Bell/>
+                                </el-icon>
+                                <br>
+                                <span>消息</span>
+                            </div>
+                        </el-button>
+                    </template>
+                    <messages></messages>
+                </el-popover>
+                <el-popover :width="400" placement="bottom" trigger="click">
+                    <template #reference>
+                        <el-button class="h-100">
+                            <div>
+                                <el-badge type="danger" value="1">
+                                    <el-icon>
+                                        <message/>
+                                    </el-icon>
+                                </el-badge>
+                                <br>
+                                <span>私信</span>
+                            </div>
+                        </el-button>
+                    </template>
+                </el-popover>
+            </div>
+            <div v-if="$store.state.isLogin" :class="{'hover':showAvatarDetail}" class="avatar" @mouseenter="clearTimer"
+                 @mouseleave="hideDetail">
+                <img :src="userInfo.avatar" alt="avatar"
+                     @mouseenter="showDetail"/>
+                <div class="avatar-dropdown">
+                    <span class="name pointer">{{ userInfo.name }}</span>
+                    <div class="fs-xsm">
+                        <span class="me-2"><span class="fw-lighter">K币：</span>{{ userInfo.koinCount }}</span>
+                        <span><span class="fw-lighter">经验：</span>{{ userInfo.experienceCount }}</span>
+                    </div>
+                    <div>
+                        <span class="fs-xsm text-primary pointer">Lv1</span>
+                        <el-progress :percentage="50" :show-text="false" class="flex-fill"/>
+                        <span class="fs-xsm text-info pointer">Lv2</span>
+                    </div>
+                    <!--                TODO 通过js计算等级-->
+                    <div>
+                    <span class="fs-xsm fw-lighter text-gray">{{
+                            `当前经验${userInfo.experienceCount}，距离升级Lv1，还需要${12}`
+                        }}</span>
+                    </div>
+                    <div class="mt-2 mb-2">
+                        <div class="d-flex flex-column align-items-center flex-fill ">
+                            <span class="fw-bold pointer">{{ userInfo.followCount }}</span>
+                            <span class="fs-xsm pointer">关注</span>
+                        </div>
+                        <div class="d-flex flex-column align-items-center flex-fill pointer">
+                            <span class="fw-bold pointer">{{ userInfo.followerCount }}</span>
+                            <span class="fs-xsm pointer">粉丝</span>
+                        </div>
+                        <div class="d-flex flex-column align-items-center flex-fill pointer">
+                            <span class="fw-bold pointer">{{ userInfo.articleCount + userInfo.postCount }}</span>
+                            <span class="fs-xsm pointer">动态</span>
+                        </div>
+                    </div>
+                    <div class="member">
+                        <div class="d-flex flex-column">
+                            <span class="text-red pointer">成为会员</span>
+                            <span class="text-white pointer">了解更多权益</span>
+                        </div>
+                        <button class="member-button fs-xsm align-self-center">开通</button>
+                    </div>
+                    <div class="avatar-nav-item w-100 mt-1">
+                        <div class="w-100">
+                            <router-link :to="`/home-user/${$store.state.userId}`">
+                                <div class="d-flex align-items-center nav-list-item">
+                                    <el-icon class="me-3">
+                                        <House/>
+                                    </el-icon>
+                                    <span class="">个人中心</span>
+                                    <el-icon class="ms-auto">
+                                        <arrow-right-bold></arrow-right-bold>
+                                    </el-icon>
+                                </div>
+                            </router-link>
+                            <router-link to="/home-user">
+                                <div class="d-flex align-items-center nav-list-item">
+                                    <el-icon class="me-3">
+                                        <wallet></wallet>
+                                    </el-icon>
+                                    <span class="">我的钱包</span>
+                                    <el-icon class="ms-auto">
+                                        <arrow-right-bold></arrow-right-bold>
+                                    </el-icon>
+                                </div>
+                            </router-link>
+                            <router-link to="/home-user">
+                                <div class="d-flex align-items-center nav-list-item">
+                                    <el-icon class="me-3">
+                                        <setting></setting>
+                                    </el-icon>
+                                    <span class="">我的设置</span>
+                                    <el-icon class="ms-auto">
+                                        <arrow-right-bold></arrow-right-bold>
+                                    </el-icon>
+                                </div>
+                            </router-link>
+                            <div class="el-divider--horizontal mt-1 mb-1"></div>
+                            <router-link :to="{name:'login-page',query:{isLogout: true}}">
+                                <div class="d-flex align-items-center nav-list-item">
+                                    <el-icon class="me-3">
+                                        <House/>
+                                    </el-icon>
+                                    <span class="">退出登录</span>
+                                </div>
+                            </router-link>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div v-else class="login-btn">
+                <span class="text-blue pointer" @click="isShowLogin=!isShowLogin">登录</span>
+            </div>
+        </div>
 
     </div>
+
+    <el-dialog v-model="isShowLogin" :show-close="false" class="login-dialog">
+        <login/>
+    </el-dialog>
 </template>
 
 <script>
@@ -301,6 +306,13 @@ export default {
 </script>
 
 <style scoped>
+.logo {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    transition: all 0.3s;
+}
+
 :deep(.login-dialog) {
     display: flex;
     align-self: center;
@@ -344,11 +356,10 @@ img[alt='avatar'] {
     padding: 3px 15px;
     height: 40px;
     margin-left: 20px;
+    white-space: nowrap;
 }
 
-.logo {
-    flex-grow: 0;
-}
+
 
 .menu {
     flex-grow: 2;
@@ -356,33 +367,35 @@ img[alt='avatar'] {
     display: flex;
     justify-content: start;
     align-content: center;
+    white-space: nowrap;
 }
 
 .navbar {
-    display: flex;
-    justify-content: start;
-    align-items: center;
+    display: grid;
+    grid-template-columns: 0fr 1fr 4fr 4fr 0fr 2fr;
+    grid-template-rows: 1fr;
     background-color: #ffffff;
     height: 60px;
     box-shadow: 0 0 10px #b9b4b4;
     padding: 0 50px;
-    flex-wrap: nowrap;
-    white-space: nowrap;
+    transition: all 0.5s;
 }
 
-.nav-collapse {
-    width: 60px;
-    display: flex;
-    justify-content: center;
-    position: absolute;
-    left: 10px;
+.navbar > div {
+    min-width: 0;
+    overflow: hidden;
+    opacity: 1;
 }
 
 .nav-item {
-    box-sizing: content-box;
-    margin-left: 10px;
-    margin-right: 10px;
     cursor: pointer;
+}
+
+.login-btn {
+    position: absolute;
+    right: 10px;
+    top: 20px;
+    transition: opacity 0.5s;
 }
 
 .menu button {
@@ -408,51 +421,38 @@ img[alt="logo"] {
     height: 40px;
 }
 
-@media screen and (min-width: 648px) {
-    .nav-collapse {
-        display: none;
-    }
-
-    .icons {
-        display: none !important;
-    }
-}
-
-/*手机适配*/
-@media screen and (max-width: 648px) {
+@media screen and (max-width: 800px) {
     .navbar {
-        padding: 0;
-        justify-content: center;
-    }
-
-    .menu {
-        display: none;
-    }
-
-    .search {
-        display: none;
+        grid-template-columns: 1fr 3fr 0fr 0fr 1fr 0fr;
+        padding-right: 10px;
+        padding-left: 10px;
     }
 
     .logo {
-        display: flex;
-    }
-
-    .sub-nav {
-        flex-grow: 0;
-    }
-
-    .sub-nav * {
-        display: none;
-    }
-
-    .sub-nav img {
-        display: none;
+        justify-content: center;
     }
 
     .avatar {
         display: none !important;
     }
 
+    .navbar :is(.nav-collapse,.icons) {
+        opacity: 1 !important;
+    }
+
+    .navbar :is(.nav-item,.search,.login-btn) {
+        opacity: 0 !important;
+    }
+}
+
+.navbar :is(.nav-item,.search) {
+    transition: opacity 0.5s;
+    opacity: 1;
+}
+
+.navbar :is(.nav-collapse,.icons) {
+    opacity: 0;
+    transition: opacity 0.5s;
 }
 
 :deep(.el-autocomplete .el-input__wrapper) {
@@ -507,11 +507,6 @@ img[alt="logo"] {
     font-weight: bold !important;
 }
 
-.icons {
-    margin-right: 15px;
-    position: absolute;
-    right: 10px;
-}
 
 .search-icon {
     display: flex;
@@ -554,6 +549,7 @@ img[alt='avatar'] {
 }
 
 .avatar {
+    top: 10px;
     right: 20px;
     position: absolute;
     transition-property: all;

@@ -15,7 +15,7 @@ function mockSetUp() {
     Mock.mock(/.*question.*/, o => {
         let param = getParams(o.url)
         let questionId = param['questionId']
-        let pageIndex = parseInt(param['pageIndex'])
+        let currentPage = parseInt(param['currentPage'])
         let pageSize = parseInt(param['pageSize'])
         let question = {
             questionId: Mock.mock('@guid'),
@@ -40,19 +40,21 @@ function mockSetUp() {
                 ]
             })['tags']
         }
-        let answers = []
-        for (let i = pageIndex; i < pageSize + pageIndex; i++) {
+        let posts = []
+        console.log(currentPage, pageSize)
+        for (let i = currentPage; i < pageSize + currentPage; i++) {
             let post = {
                 id: Mock.mock('@guid'),
                 question: Mock.mock('@ctitle(20,40)'),
                 questionId: Mock.mock('@guid'),
                 content: {
-                    text: Mock.mock('@cparagraph(6,20)'),
+                    text: Mock.mock('@cparagraph(20,100)'),
                     images: Mock.mock({
                         "images|0-3": [
                             Mock.mock('@image("200x100")')
                         ]
-                    })['images']
+                    })['images'],
+                    coverImage: Mock.mock('@image("200x100")'),
                 },
                 likeCount: Mock.mock('@integer(0,100)'),
                 dislikeCount: Mock.mock('@integer(0,100)'),
@@ -66,13 +68,13 @@ function mockSetUp() {
                 updateTime: Mock.mock('@datetime'),
                 commentNumber: Mock.mock('@integer(100,200)'),
             }
-            answers.push(post)
+            posts.push(post)
         }
         return {
             code: 200,
             data: {
                 question: question,
-                answers: answers
+                posts: posts
             }
         }
 
@@ -86,10 +88,10 @@ function mockSetUp() {
          * */
         let param = getParams(o.url)
         let userId = param['userId']
-        let pageIndex = parseInt(param['pageIndex'])
+        let currentPage = parseInt(param['currentPage'])
         let pageSize = parseInt(param['pageSize'])
         let dynamics = []
-        for (let i = pageIndex; i < pageSize + pageIndex; i++) {
+        for (let i = currentPage; i < pageSize + currentPage; i++) {
             let dynamic = {
                 action: {name: '赞同', time: Mock.mock('@datetime')},
                 post: {
@@ -102,7 +104,8 @@ function mockSetUp() {
                             "images|0-2": [
                                 Mock.mock('@image("200x100")')
                             ]
-                        })['images']
+                        })['images'],
+                        coverImage: Mock.mock('@image("200x100")'),
                     },
                     likeCount: Mock.mock('@integer(0,100)'),
                     dislikeCount: Mock.mock('@integer(0,100)'),
@@ -174,7 +177,8 @@ function mockSetUp() {
                         "images|0-3": [
                             Mock.mock('@image("200x100")')
                         ]
-                    })['images']
+                    })['images'],
+                    coverImage: Mock.mock('@image("200x100")'),
                 },
                 likeCount: Mock.mock('@integer(0,100)'),
                 dislikeCount: Mock.mock('@integer(0,100)'),
@@ -195,7 +199,7 @@ function mockSetUp() {
     Mock.mock(/.*messages.*/, o => {
         let messages = []
         let param = getParams(o.url)
-        let pageIndex = parseInt(param['pageIndex'])
+        let currentPage = parseInt(param['currentPage'])
         let pageSize = parseInt(param['pageSize'])
         for (let i = 0; i < 20; i++) {
             let msg = {
@@ -239,7 +243,7 @@ function mockSetUp() {
     Mock.mock(/.*comments.*/, o => {
         let param = getParams(o.url)
         // 转换为数值
-        let pageIndex = parseInt(param['pageIndex'])
+        let currentPage = parseInt(param['currentPage'])
         let pageSize = parseInt(param['pageSize'])
         let postId = param['postId']
         let result = {
@@ -252,7 +256,7 @@ function mockSetUp() {
 
         let comments = []
         // 根评论
-        for (let i = pageIndex; i < pageIndex + pageSize; i++) {
+        for (let i = currentPage; i < currentPage + pageSize; i++) {
             let comment = {
                 // 这个评论的id
                 id: Mock.mock('@guid'),
@@ -312,7 +316,7 @@ function mockSetUp() {
     Mock.mock(/.*comments\/child-comments.*/, o => {
         let params = getParams(o.url)
         let id = params['id']
-        let pageIndex = parseInt(params['pageIndex'])
+        let currentPage = parseInt(params['currentPage'])
         let pageSize = parseInt(params['pageSize'])
         let result = {
             code: 200,
@@ -322,7 +326,7 @@ function mockSetUp() {
             }
         }
         let comments = []
-        for (let i = pageIndex; i < pageIndex + pageSize; i++) {
+        for (let i = currentPage; i < currentPage + pageSize; i++) {
             let comment = {
                 id: Mock.mock('@guid'),
                 content: Mock.mock('@cparagraph(1,3)'),

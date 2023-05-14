@@ -1,24 +1,103 @@
+
 <template>
-    <div class="info-short d-flex flex-column">
+    <div class="root">
         <div class="">
-            <el-icon>
-                <gender></gender>
-            </el-icon>
+
             <div>
-                性别
-                <!--                                {{ userInfo.gender }}-->
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus aliquam aliquid animi deleniti
+                earum, eos eum expedita incidunt itaque, iure, libero molestias nostrum odit perspiciatis repellendus
+                tempore temporibus ut voluptates.
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus aliquam aliquid animi deleniti
+                earum, eos eum expedita incidunt itaque, iure, libero molestias nostrum odit perspiciatis repellendus
+                tempore temporibus ut voluptates.
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus aliquam aliquid animi deleniti
+                earum, eos eum expedita incidunt itaque, iure, libero molestias nostrum odit perspiciatis repellendus
+                tempore temporibus ut voluptates.
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus aliquam aliquid animi deleniti
+                earum, eos eum expedita incidunt itaque, iure, libero molestias nostrum odit perspiciatis repellendus
+                tempore temporibus ut voluptates.
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus aliquam aliquid animi deleniti
+                earum, eos eum expedita incidunt itaque, iure, libero molestias nostrum odit perspiciatis repellendus
+                tempore temporibus ut voluptates.
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus aliquam aliquid animi deleniti
+                earum, eos eum expedita incidunt itaque, iure, libero molestias nostrum odit perspiciatis repellendus
+                tempore temporibus ut voluptates.
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus aliquam aliquid animi deleniti
+                earum, eos eum expedita incidunt itaque, iure, libero molestias nostrum odit perspiciatis repellendus
+                tempore temporibus ut voluptates.
             </div>
         </div>
-        <div class="">
-            <el-icon>
-                <job></job>
-            </el-icon>
+        <div class="info-short d-flex flex-column">
+
             <div>
-                职业
-                <!--                                {{ userInfo.jobHistory }}-->
             </div>
+        </div>
+        <div class="info-short d-flex flex-column">
+
+            <div>
+                <button>1</button>
+            </div>
+        </div>
+        <div class="info-short d-flex flex-column d">
+
+            <div>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus aliquam aliquid animi deleniti
+                earum, eos eum expedita incidunt itaque, iure, libero molestias nostrum odit perspiciatis repellendus
+                tempore temporibus ut voluptates.
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus aliquam aliquid animi deleniti
+                earum, eos eum expedita incidunt itaque, iure, libero molestias nostrum odit perspiciatis repellendus
+                tempore temporibus ut voluptates.
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus aliquam aliquid animi deleniti
+                earum, eos eum expedita incidunt itaque, iure, libero molestias nostrum odit perspiciatis repellendus
+                tempore temporibus ut voluptates.
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus aliquam aliquid animi deleniti
+                earum, eos eum expedita incidunt itaque, iure, libero molestias nostrum odit perspiciatis repellendus
+                tempore temporibus ut voluptates.
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus aliquam aliquid animi deleniti
+                earum, eos eum expedita incidunt itaque, iure, libero molestias nostrum odit perspiciatis repellendus
+                tempore temporibus ut voluptates.
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus aliquam aliquid animi deleniti
+                earum, eos eum expedita incidunt itaque, iure, libero molestias nostrum odit perspiciatis repellendus
+                tempore temporibus ut voluptates.
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus aliquam aliquid animi deleniti
+                earum, eos eum expedita incidunt itaque, iure, libero molestias nostrum odit perspiciatis repellendus
+                tempore temporibus ut voluptates.
+            </div>
+            <el-affix position="bottom" target=".d">
+                <el-button>1</el-button>
+            </el-affix>
+        </div>
+        <div class="info-short d-flex flex-column first d2">
+            <div>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus aliquam aliquid animi deleniti
+                earum, eos eum expedita incidunt itaque, iure, libero molestias nostrum odit perspiciatis repellendus
+                tempore temporibus ut voluptates.
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus aliquam aliquid animi deleniti
+                earum, eos eum expedita incidunt itaque, iure, libero molestias nostrum odit perspiciatis repellendus
+                tempore temporibus ut voluptates.
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus aliquam aliquid animi deleniti
+                earum, eos eum expedita incidunt itaque, iure, libero molestias nostrum odit perspiciatis repellendus
+                tempore temporibus ut voluptates.
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus aliquam aliquid animi deleniti
+                earum, eos eum expedita incidunt itaque, iure, libero molestias nostrum odit perspiciatis repellendus
+                tempore temporibus ut voluptates.
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus aliquam aliquid animi deleniti
+                earum, eos eum expedita incidunt itaque, iure, libero molestias nostrum odit perspiciatis repellendus
+                tempore temporibus ut voluptates.
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus aliquam aliquid animi deleniti
+                earum, eos eum expedita incidunt itaque, iure, libero molestias nostrum odit perspiciatis repellendus
+                tempore temporibus ut voluptates.
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus aliquam aliquid animi deleniti
+                earum, eos eum expedita incidunt itaque, iure, libero molestias nostrum odit perspiciatis repellendus
+                tempore temporibus ut voluptates.
+            </div>
+            <el-affix position="bottom" target=".d2">
+                <el-button>1</el-button>
+            </el-affix>
+
         </div>
     </div>
+
 </template>
 
 <script>
@@ -59,9 +138,15 @@ export default {
 </script>
 
 <style scoped>
-.info-short > div {
-    display: flex;
-    align-content: center;
-    flex-wrap: wrap;
+.affix-container {
+    text-align: center;
+    border-radius: 4px;
+    background: var(--el-color-primary-light-9);
+}
+
+.root {
+    height: 500px;
+    width: 500px;
+    overflow: scroll;
 }
 </style>

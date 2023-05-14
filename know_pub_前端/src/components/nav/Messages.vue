@@ -63,7 +63,7 @@ export default {
         return {
             iconSize: 23,
             pageSize: 10,
-            pageIndex: 0,
+            currentPage: 1,
             messages: [],
             isLoading: false
         }
@@ -76,7 +76,7 @@ export default {
             http.get('/messages', {
                 params: {
                     pageSize: this.pageSize,
-                    pageIndex: this.pageIndex
+                    currentPage: this.currentPage
                 }
             }).then(
                 resolve => {
@@ -99,7 +99,7 @@ export default {
             let distance = 100
             const {scrollTop, clientHeight, scrollHeight} = e.target
             if (scrollTop + clientHeight + distance > scrollHeight) {
-                this.pageIndex += this.pageSize
+                this.currentPage += this.pageSize
             }
 
 
@@ -109,7 +109,7 @@ export default {
         this.getMessages()
     },
     watch: {
-        pageIndex: function (newVal, oldVal) {
+        currentPage: function (newVal, oldVal) {
             this.getMessages()
         }
     }
