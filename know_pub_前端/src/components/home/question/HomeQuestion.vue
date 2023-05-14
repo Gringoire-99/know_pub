@@ -22,7 +22,7 @@
                                     <span class="content-short" @click="collapseFullText">
                                         {{ question.content.substring(0, 100) + '...' }}
                                     </span>
-                                <span class="full-text-btn pointer text-blue"
+                                <span v-show="!isLoadingQuestion" class="full-text-btn pointer text-blue"
                                       v-on:click="collapseFullText">展开全部</span>
                                 <el-icon class="d-inline pointer text-blue" @click="collapseFullText">
                                     <arrow-down/>
@@ -102,6 +102,7 @@
                 <div class="post-header ps-3 border-bottom pb-3 pt-3">
                     <span class="fw-bold">{{ question.commentCount }}个回答</span>
                 </div>
+                <el-skeleton v-show="isLoadingQuestion||isLoadingAnswer" :rows="5"></el-skeleton>
                 <post v-for="post in posts" :key="post.postId" :is-answer-pattern="true" :post="post">
 
                 </post>
@@ -134,13 +135,14 @@ export default {
     data() {
         return {
             isLoadingQuestion: true,
+            isLoadingAnswer: false,
             question: {
                 questionId: '',
                 title: '',
                 content: '',
-                likeCount: '',
-                commentCount: '',
-                answerCount: '',
+                likeCount: 0,
+                commentCount: 0,
+                answerCount: 0,
                 tags: {name: '', id: ''},
 
             },
@@ -294,8 +296,7 @@ export default {
     }
 
     .body {
-        grid-template-columns: 0fr 6fr 2fr 0fr;
-
+        grid-template-columns: 0fr 6fr 0fr 0fr !important;
     }
 
 }

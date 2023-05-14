@@ -162,10 +162,10 @@ export default {
     justify-content: center;
     align-content: end;
     flex-wrap: wrap;
-    height: 50px;
+    height: 80px;
     position: relative;
     top: -50px;
-    background: linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.87) 50%, rgba(255, 255, 255, 0.8128501400560224) 100%, rgba(248, 248, 248, 0) 100%);
+    background: linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.82) 50%, rgba(255, 255, 255, 0.3) 100%, rgba(248, 248, 248, 0) 100%);
     z-index: 2;
 }
 

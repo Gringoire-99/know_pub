@@ -1,8 +1,11 @@
 
 <template>
-    <div class="root">
-        <div class="">
+    <div class="root t2">
 
+        <div ref="target" class="" style="height: 100px;overflow: scroll">
+            <a-affix :target="()=>target">
+                <a-button>1</a-button>
+            </a-affix>
             <div>
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus aliquam aliquid animi deleniti
                 earum, eos eum expedita incidunt itaque, iure, libero molestias nostrum odit perspiciatis repellendus
@@ -27,11 +30,7 @@
                 tempore temporibus ut voluptates.
             </div>
         </div>
-        <div class="info-short d-flex flex-column">
 
-            <div>
-            </div>
-        </div>
         <div class="info-short d-flex flex-column">
 
             <div>
@@ -91,9 +90,7 @@
                 earum, eos eum expedita incidunt itaque, iure, libero molestias nostrum odit perspiciatis repellendus
                 tempore temporibus ut voluptates.
             </div>
-            <el-affix position="bottom" target=".d2">
-                <el-button>1</el-button>
-            </el-affix>
+
 
         </div>
     </div>
@@ -105,6 +102,7 @@ import PostBody from "@/components/home/main/post/PostBody.vue";
 import PostCard from "@/components/user/PostCard.vue";
 import Job from "@/components/icons/Job.vue";
 import Gender from "@/components/icons/Gender.vue";
+import {ref} from "vue";
 
 export default {
     //组件名
@@ -117,6 +115,12 @@ export default {
     },
     //方法
     methods: {},
+    setup() {
+        const target = ref()
+        return {
+            target
+        }
+    },
     //挂载时执行
     mounted() {
     },
