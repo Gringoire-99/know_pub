@@ -1,18 +1,23 @@
 <template>
-    <div style="border: 1px solid #ccc">
-        <Toolbar
-            :defaultConfig="toolbarConfig"
-            :editor="editorRef"
-            :mode="mode"
-            style="border-bottom: 1px solid #ccc"
-        />
-        <Editor
-            v-model="valueHtml"
-            :defaultConfig="editorConfig"
-            :mode="mode"
-            style="height: 500px; overflow-y: hidden;"
-            @onCreated="handleCreated"
-        />
+    <div class="editor" style="border: 1px solid #ccc">
+        <div>
+            <Toolbar
+                :defaultConfig="toolbarConfig"
+                :editor="editorRef"
+                :mode="mode"
+                style="border-bottom: 1px solid #ccc"
+            />
+            <Editor
+                v-model="valueHtml"
+                :defaultConfig="editorConfig"
+                :mode="mode"
+                style="height: 500px; overflow-y: hidden;"
+                @onCreated="handleCreated"
+            />
+        </div>
+        <div class="operations w-100">
+            <el-button class="ms-auto" type="primary" @click="submit">提交</el-button>
+        </div>
     </div>
 </template>
 <script>
@@ -59,6 +64,25 @@ export default {
             editorConfig,
             handleCreated
         };
+    },
+    methods: {
+        submit() {
+            console.log(this.valueHtml)
+        }
     }
 }
 </script>
+
+<style scoped>
+.editor {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 2fr;
+}
+
+.operations {
+    padding: 10px;
+    border-top: 1px solid rgba(186, 187, 188, 0.49);
+    display: flex;
+}
+</style>

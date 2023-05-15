@@ -142,4 +142,9 @@ body::-webkit-scrollbar-button {
 .text-gray {
     color: #8c8c8c;
 }
+
+.space {
+    flex-grow: 0;
+    flex-shrink: 1;
+}
 </style>

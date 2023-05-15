@@ -46,11 +46,12 @@
                                 <star-filled></star-filled>
                             </el-icon>
                             <span>关注问题</span></button>
-                        <button class="btn text-blue bg-white">
+                        <button class="btn text-blue bg-white" @click="showEditor=!showEditor">
                             <el-icon>
                                 <edit></edit>
                             </el-icon>
-                            <span>回答</span></button>
+                            <span>回答</span>
+                        </button>
                         <button class="btn text-blue bg-white">
                             <el-icon>
                                 <add-user></add-user>
@@ -98,15 +99,23 @@
 
         <div class="body">
             <div class="space"></div>
-            <div class="main">
-                <div class="post-header ps-3 border-bottom pb-3 pt-3">
-                    <span class="fw-bold">{{ question.commentCount }}个回答</span>
+            <div>
+                <div :class="{'show-editor':showEditor}" class="editor mb-3">
+                    <div class="post-editor">
+                        <post-editor>
+                        </post-editor>
+                    </div>
                 </div>
-                <el-skeleton v-show="isLoadingQuestion||isLoadingAnswer" :rows="5"></el-skeleton>
-                <post v-for="post in posts" :key="post.postId" :is-answer-pattern="true" :post="post">
-
-                </post>
+                <div class="main">
+                    <div class="post-header ps-3 border-bottom pb-3 pt-3">
+                        <span class="fw-bold">{{ question.commentCount }}个回答</span>
+                    </div>
+                    <el-skeleton v-show="isLoadingQuestion||isLoadingAnswer" :rows="5"></el-skeleton>
+                    <post v-for="post in posts" :key="post.postId" :is-answer-pattern="true" :post="post">
+                    </post>
+                </div>
             </div>
+
             <div class="sed"></div>
             <div class="space"></div>
         </div>
@@ -125,12 +134,16 @@ import Pen from "@/components/icons/Pen.vue";
 import Edit from "@/components/icons/Edit.vue";
 import Message from "@/components/icons/Message.vue";
 import Post from "@/components/home/main/post/Post.vue";
+import PostEditor from "@/components/post-editor/PostEditor.vue";
 
 export default {
     //组件名
     name: "home-question",
     //依赖的组件
-    components: {Post, More, Message, Edit, Pen, AddUser, StarFilled, Collection, Write, Like, ArrowUp, ArrowDown},
+    components: {
+        PostEditor,
+        Post, More, Message, Edit, Pen, AddUser, StarFilled, Collection, Write, Like, ArrowUp, ArrowDown
+    },
     //数据
     data() {
         return {
@@ -150,13 +163,15 @@ export default {
             isCollapseFullText: true,
             pageSize: 10,
             currentPage: 1,
+            showEditor: true
 
         }
     },
     methods: {
         collapseFullText() {
             this.isCollapseFullText = !this.isCollapseFullText
-        }
+        },
+
     },
     //挂载时执行
     mounted() {
@@ -313,5 +328,21 @@ export default {
     grid-template-columns: 2fr 6fr 2fr 1fr;
     grid-template-rows: 1fr;
     transition: grid 0.5s;
+}
+
+.editor {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 0fr;
+    transition: grid 0.5s;
+}
+
+.post-editor {
+    min-height: 0;
+    overflow: hidden;
+}
+
+.show-editor {
+    grid-template-rows: 1fr;
 }
 </style>
