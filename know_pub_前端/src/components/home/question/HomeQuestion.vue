@@ -163,7 +163,7 @@ export default {
             isCollapseFullText: true,
             pageSize: 10,
             currentPage: 1,
-            showEditor: true
+            showEditor: false
 
         }
     },

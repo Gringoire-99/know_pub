@@ -2,17 +2,17 @@
     <div class="editor" style="border: 1px solid #ccc">
         <div>
             <Toolbar
-                :defaultConfig="toolbarConfig"
-                :editor="editorRef"
-                :mode="mode"
-                style="border-bottom: 1px solid #ccc"
+                    :defaultConfig="toolbarConfig"
+                    :editor="editorRef"
+                    :mode="mode"
+                    style="border-bottom: 1px solid #ccc"
             />
             <Editor
-                v-model="valueHtml"
-                :defaultConfig="editorConfig"
-                :mode="mode"
-                style="height: 500px; overflow-y: hidden;"
-                @onCreated="handleCreated"
+                    v-model="valueHtml"
+                    :defaultConfig="editorConfig"
+                    :mode="mode"
+                    style="height: 500px; overflow-y: hidden;"
+                    @onCreated="handleCreated"
             />
         </div>
         <div class="operations w-100">
@@ -33,12 +33,12 @@ export default {
         const editorRef = shallowRef()
 
         // 内容 HTML
-        const valueHtml = ref('<p>hello</p>')
+        const valueHtml = ref('<p></p>')
 
-        // 模拟 ajax 异步获取内容
         onMounted(() => {
             setTimeout(() => {
-                valueHtml.value = '<p>模拟 Ajax 异步设置内容</p>'
+                // 在编辑的时候使用
+                valueHtml.value = '<p>编辑</p>'
             }, 1500)
         })
 
