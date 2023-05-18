@@ -70,10 +70,7 @@ export default {
 
 }
 </script>
-<style lang="scss">
 
-
-</style>
 <style>
 .fs-sed {
     font-size: 12px;

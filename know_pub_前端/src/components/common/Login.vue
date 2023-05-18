@@ -287,36 +287,97 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.login {
+    height: 700px;
+    width: 1000px;
 
-.other-way span {
-    font-weight: lighter;
-    color: #696868;
+    .qr {
+        display: grid;
+        align-items: center;
+        justify-content: center;
+        min-width: 0;
+        overflow: hidden;
+
+        & > * {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+
+    .login-form {
+        min-width: 0;
+        overflow: hidden;
+
+        .form-phone {
+            .phone-prefix {
+                border: none;
+                outline: none;
+                font-size: 18px;
+                height: 100%;
+            }
+
+            .prefix-list {
+                height: 200px;
+                overflow-y: scroll;
+                overflow-x: hidden;
+                padding: 0;
+
+                .li {
+                    /*    取消默认样式*/
+                    list-style: none;
+                    padding: 0 0;
+                    cursor: pointer;
+                    height: 25px;
+                    margin-bottom: 10px;
+                }
+            }
+
+            .phone {
+
+            }
+
+            .submit-btn {
+                button {
+                    height: 50px;
+                    background: #056de8;
+                    color: white;
+                    border: 1px solid #056de8;
+                    border-radius: 5px;
+
+                    &:hover {
+                        background: #2b80e3;
+                    }
+                }
+            }
+
+        }
+
+        .other-way {
+            span {
+                font-weight: lighter;
+                color: #696868;
+            }
+
+            img {
+                width: 50px;
+                height: 50px;
+                margin: 0 50px;
+                cursor: pointer;
+            }
+        }
+
+        .agreement {
+            cursor: pointer;
+        }
+    }
+
+    &:hover {
+        box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.1);
+    }
+
 }
-
-.agreement {
-    cursor: pointer;
-}
-
-.other-way-icons img {
-    width: 50px;
-    height: 50px;
-    margin: 0 50px;
-    cursor: pointer;
-}
-
-.submit-btn button {
-    height: 50px;
-    background: #056de8;
-    color: white;
-    border: 1px solid #056de8;
-    border-radius: 5px;
-}
-
-.submit-btn button:hover {
-    background: #2b80e3;
-}
-
 :deep(.el-tabs__nav-wrap::after) {
     width: 0;
 }
@@ -327,33 +388,12 @@ export default {
     height: 70px;
 }
 
-.prefix-list {
-    height: 200px;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    padding: 0;
-}
-
-.prefix-list li {
-    /*    取消默认样式*/
-    list-style: none;
-    padding: 0 0;
-    cursor: pointer;
-    height: 25px;
-    margin-bottom: 10px;
-}
 
 .prefix-list li:hover {
     color: #fff;
     background: #409eff;
 }
 
-.phone-prefix {
-    border: none;
-    outline: none;
-    font-size: 18px;
-    height: 100%;
-}
 
 .phone {
     margin-left: 15px;
@@ -376,24 +416,6 @@ export default {
     color: #409eff;
 }
 
-.login-form {
-    min-width: 0;
-    overflow: hidden;
-}
-
-.qr {
-    display: grid;
-    align-items: center;
-    justify-content: center;
-    min-width: 0;
-    overflow: hidden;
-}
-
-.qr > * {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
 
 .login {
     display: grid;
@@ -403,16 +425,8 @@ export default {
     padding: 40px;
     grid-gap: 40px;
     transition: grid 0.5s;
-    max-height: 800px;
-    min-width: 500px;
+
 }
-
-.login:hover {
-    /*    背光*/
-    box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.1);
-}
-
-
 
 
 .qr .el-button {
@@ -476,11 +490,5 @@ export default {
         grid-template-columns: 1fr 0fr;
         grid-gap: 0;
     }
-
-    .qrcode {
-        max-width: 400px;
-    }
-
-
 }
 </style>

@@ -1,7 +1,9 @@
 <template>
-    <div class="root d-flex flex-column justify-content-center align-items-center">
+    <div class="root w-100 ">
         <div class="h-25"></div>
-        <login></login>
+        <div class="login">
+            <login></login>
+        </div>
         <div class="footer  d-flex flex-column justify-content-center align-items-center text-white mt-4">
             <div class="p-2">
                 <span>知道吧专栏</span>·
@@ -69,8 +71,18 @@ export default {
 </script>
 
 <style scoped>
+.login {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+}
 
 .root {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 5fr 1fr;
     height: 125vh;
     background: url("../../assets/login/login_bg.png") no-repeat scroll center;
     background-size: cover;
