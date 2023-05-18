@@ -1,81 +1,83 @@
 <template>
-    <div class="login d-flex row-cols-2">
-        <div class="qr col-5 pt-5 d-flex flex-column justify-content-center align-items-center">
-            <div class="p-1 fw-bold fs-6 mt-3">打开知道吧this</div>
+    <div class="login">
+        <div class="qr">
+            <div class="p-1 fw-bold fs-6"><span>打开知道吧</span></div>
             <div class="p-1 fw-light fs-6">在[首页]左上角打开扫一扫</div>
-            <img alt="" class="qrcode mt-4 mb-2" src="../../assets/login/qr_login.png"/>
-            <div class="p-2 fw-bold fs-6 mt-4 mb-4">其他扫码方式：微信</div>
-            <div class="d-inline">
-                <el-button>下载知道吧this</el-button>
+            <div><img alt="qr" class="qrcode justify-content-center" src="../../assets/login/qr_login.png"/></div>
+            <div class="p-2 fw-bold fs-6 ">其他扫码方式：微信</div>
+            <div class="">
+                <el-button>下载知道吧</el-button>
                 <el-button>开通机构号</el-button>
                 <el-button>无障碍模式</el-button>
             </div>
         </div>
-        <div class="login-form col-7">
-            <el-tabs v-model="activeName" class="">
-                <el-tab-pane class="mb-4" label="验证码登录" name="first">
-                    <div class="form-phone d-flex row-cols-2 mt-5">
-                        <el-popover
+        <div class="login-form">
+            <div>
+                <el-tabs v-model="activeName" class="">
+                    <el-tab-pane class="mb-4" label="验证码登录" name="first">
+                        <div class="form-phone d-flex row-cols-2 mt-5">
+                            <el-popover
                                 placement="bottom"
                                 popper-class="phone-prefix-popover"
                                 trigger="click"
                                 width="200"
-                        >
-                            <template #reference>
-                                <el-button class="phone-prefix d-flex col-3">
-                                    <span>{{ loginForm.phone.label }}</span><span>+{{
-                                    loginForm.phone.prefix
-                                    }}</span>
-                                    <el-icon class="ms-1">
-                                        <arrow-down></arrow-down>
-                                    </el-icon>
-                                </el-button>
-                            </template>
-                            <ul class="prefix-list d-flex flex-column">
-                                <li v-for="item in phonePrefix" :key="item.value" class=" w-100"
-                                    @click="loginForm.phone.prefix = item.value;loginForm.phone.label = item.label">
-                                    <div class="phone-prefix d-flex ">
-                                        <span>{{ item.label }}</span><span>+{{ item.value }}</span>
-                                    </div>
-                                </li>
-                            </ul>
-                        </el-popover>
-                        <div class="el-divider--vertical h-75 align-self-center"></div>
-                        <input v-model="loginForm.phone.number" class="phone col-9" placeholder="手机号">
-                    </div>
-                    <div class="form-captcha d-flex row-cols-2 mt-3 ">
-                        <input v-model="loginForm.captcha" class="captcha-input col-9"
-                               placeholder="请输入6位验证码">
-                        <button class="col-3 captcha-btn">获取短信验证码</button>
-                    </div>
-                    <div class="form-etc d-flex p-2 mt-3 mb-3 justify-content-end ">
-                        <button class="voice-captcha-btn ">获取语音验证码</button>
-                    </div>
-                    <div class="submit-btn d-flex">
-                        <button class="w-100">登录/注册</button>
-                    </div>
-                </el-tab-pane>
-                <el-tab-pane class="mb-4" label="密码登录" name="second">
-                    <form>
-                        <div class="form-phone d-flex mt-5">
-                            <input v-model="loginFormByPassword.account" autocomplete="username" class="phone w-100"
-                                   placeholder="手机号或邮箱">
+                            >
+                                <template #reference>
+                                    <el-button class="phone-prefix d-flex col-3">
+                                        <span>{{ loginForm.phone.label }}</span><span>+{{
+                                            loginForm.phone.prefix
+                                        }}</span>
+                                        <el-icon class="ms-1">
+                                            <arrow-down></arrow-down>
+                                        </el-icon>
+                                    </el-button>
+                                </template>
+                                <ul class="prefix-list d-flex flex-column">
+                                    <li v-for="item in phonePrefix" :key="item.value" class=" w-100"
+                                        @click="loginForm.phone.prefix = item.value;loginForm.phone.label = item.label">
+                                        <div class="phone-prefix d-flex ">
+                                            <span>{{ item.label }}</span><span>+{{ item.value }}</span>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </el-popover>
+                            <div class="el-divider--vertical h-75 align-self-center"></div>
+                            <input v-model="loginForm.phone.number" class="phone col-9" placeholder="手机号">
                         </div>
-                        <div class="form-captcha d-flex  mt-3 ">
-                            <input v-model="loginFormByPassword.password" autocomplete="current-password"
-                                   class="phone w-100" placeholder="密码"
-                                   type="password">
+                        <div class="form-captcha d-flex row-cols-2 mt-3 ">
+                            <input v-model="loginForm.captcha" class="captcha-input col-9"
+                                   placeholder="请输入6位验证码">
+                            <button class="col-3 captcha-btn">获取短信验证码</button>
                         </div>
-                    </form>
+                        <div class="form-etc d-flex p-2 mt-3 mb-3 justify-content-end ">
+                            <button class="voice-captcha-btn ">获取语音验证码</button>
+                        </div>
+                        <div class="submit-btn d-flex">
+                            <button class="w-100">登录/注册</button>
+                        </div>
+                    </el-tab-pane>
+                    <el-tab-pane class="mb-4" label="密码登录" name="second">
+                        <form>
+                            <div class="form-phone d-flex mt-5">
+                                <input v-model="loginFormByPassword.account" autocomplete="username" class="phone w-100"
+                                       placeholder="手机号或邮箱">
+                            </div>
+                            <div class="form-captcha d-flex  mt-3 ">
+                                <input v-model="loginFormByPassword.password" autocomplete="current-password"
+                                       class="phone w-100" placeholder="密码"
+                                       type="password">
+                            </div>
+                        </form>
 
-                    <div class="form-etc d-flex p-2 mt-3 mb-3 justify-content-end ">
-                        <button class="voice-captcha-btn ">忘记密码</button>
-                    </div>
-                    <div class="submit-btn d-flex">
-                        <button class="w-100">登录</button>
-                    </div>
-                </el-tab-pane>
-            </el-tabs>
+                        <div class="form-etc d-flex p-2 mt-3 mb-3 justify-content-end ">
+                            <button class="voice-captcha-btn ">忘记密码</button>
+                        </div>
+                        <div class="submit-btn d-flex">
+                            <button class="w-100">登录</button>
+                        </div>
+                    </el-tab-pane>
+                </el-tabs>
+            </div>
             <div class="other-way mb-3">
                 <div class="d-flex justify-content-center align-items-center mb-3">
                     <div class="el-divider--horizontal"></div>
@@ -375,20 +377,34 @@ export default {
 }
 
 .login-form {
-    padding: 20px 20px;
+    min-width: 0;
+    overflow: hidden;
 }
 
 .qr {
-    border-right: 1px solid rgba(204, 204, 204, 0.38);
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    overflow: hidden;
 }
 
+.qr > * {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
 .login {
+    display: grid;
+    grid-template-columns: 2fr 3fr;
+    grid-template-rows: 1fr;
     background: #fff;
-    width: 1000px;
-    padding-top: 20px;
-    padding-bottom: 20px;
-    height: fit-content;
+    padding: 40px;
+    grid-gap: 40px;
+    transition: grid 0.5s;
+    max-height: 800px;
+    min-width: 500px;
 }
 
 .login:hover {
@@ -396,10 +412,7 @@ export default {
     box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.1);
 }
 
-img {
-    width: 500px;
-    height: 200px;
-}
+
 
 
 .qr .el-button {
@@ -412,11 +425,13 @@ img {
 }
 
 .qrcode {
-    width: 200px;
-    height: 200px;
+    max-width: 250px;
+    width: 100%;
     padding: 10px;
     border-radius: 5px;
     border: 1px solid #ccc;
+    object-fit: cover;
+    transition: all 0.5s;
 }
 
 .voice-captcha-btn {
@@ -454,5 +469,18 @@ img {
 :deep(.el-tabs__item) {
     font-weight: bold;
     font-size: 20px;
+}
+
+@media screen and (max-width: 850px) {
+    .login {
+        grid-template-columns: 1fr 0fr;
+        grid-gap: 0;
+    }
+
+    .qrcode {
+        max-width: 400px;
+    }
+
+
 }
 </style>

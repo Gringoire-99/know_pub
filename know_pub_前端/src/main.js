@@ -12,7 +12,6 @@ import {store} from "../store";
 import http from "@/utils/http/http";
 import VueCookie from 'vue3-cookies'
 import mockSetUp from "@/utils/mock/mock-setup";
-import Antd from 'ant-design-vue';
 
 const app = createApp(App)
 
@@ -33,7 +32,6 @@ app.use(ElementPlus, {locale: zhCn,})
 app.use(Router)
 app.use(store)
 app.use(VueCookie)
-app.use(Antd)
 // 注册element-plus图标
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
     app.component(key, component)

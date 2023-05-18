@@ -70,13 +70,8 @@ export default {
 
 }
 </script>
+<style lang="scss">
 
-<style scoped>
-</style>
-<style>
-body {
-    overflow-x: hidden;
-}
 
 </style>
 <style>
@@ -147,4 +142,7 @@ body::-webkit-scrollbar-button {
     flex-grow: 0;
     flex-shrink: 1;
 }
+</style>
+<style lang="scss">
+
 </style>
