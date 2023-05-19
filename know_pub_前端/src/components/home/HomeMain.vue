@@ -5,6 +5,8 @@
             <div class="card w-100 main">
                 <div class="card-body">
                     <div class="card-title d-flex align-items-center">
+
+
                         <router-link v-for="(tab,index) in tabs" :key="index" :to="{path:`${tab.path}`}"
                         >
                             <button :class="{'selected':(index===currentTabIndex)}" class="btn"
@@ -14,7 +16,12 @@
 
                     </div>
                     <div class="w-100">
-                        <router-view></router-view>
+                        <transition
+                            name="main"
+                        >
+                            <router-view></router-view>
+                        </transition>
+
                     </div>
                 </div>
             </div>
@@ -52,11 +59,21 @@ export default {
     }
 }
 </script>
+<!--<style lang="scss" scoped>-->
+<!--.main {-->
+<!--  &-enter-active {-->
+<!--    @include a-fadeIn($duration: 0.3s);-->
+<!--  }-->
+
+<!--  &-leave-active {-->
+<!--    @include a-fadeIn($reverse: true, $duration: 0.5s, $x: -10%, $y: 0, $z: 0);-->
+<!--  }-->
+<!--}-->
+<!--</style>-->
 <style scoped>
 .card-body .btn:focus {
     color: #0095da;
 }
-
 
 
 .card {

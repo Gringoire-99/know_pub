@@ -1,66 +1,32 @@
-.login-form {
-  min-width: 0;
-  overflow: hidden;
 
-  .form-phone {
-    .phone-prefix {
-      border: none;
-      outline: none;
-      font-size: 18px;
-      height: 100%;
-    }
+@mixin animated($duration:1s) {
 
-    .prefix-list {
-      height: 200px;
-      overflow-y: scroll;
-      overflow-x: hidden;
-      padding: 0;
+}
 
-      .li {
-        /*    取消默认样式*/
-        list-style: none;
-        padding: 0 0;
-        cursor: pointer;
-        height: 25px;
-        margin-bottom: 10px;
-      }
-    }
-
-    .phone {
-
-    }
-
-    .submit-btn {
-      button {
-        height: 50px;
-        background: #056de8;
-        color: white;
-        border: 1px solid #056de8;
-        border-radius: 5px;
-
-        &:hover {
-          background: #2b80e3;
-        }
-      }
-    }
-
+@mixin a-fadeIn($direction:in,$duration:1s,$x:0%,$y:0%,$z:0%,$reverse:false) {
+  animation-duration: $duration;
+  animation-fill-mode: both;
+  $from: 0;
+  $to: 1;
+  @if ($reverse) {
+    animation-direction: reverse;
   }
-
-  .other-way {
-    span {
-      font-weight: lighter;
-      color: #696868;
-    }
-
-    img {
-      width: 50px;
-      height: 50px;
-      margin: 0 50px;
-      cursor: pointer;
-    }
+  @if ($direction=='out') {
+    $from: 1;
+    $to: 0;
   }
+  animation-name: fadeIn;
 
-  .agreement {
-    cursor: pointer;
+  @keyframes fadeIn {
+    from {
+      opacity: $from;
+      transform: translate3d($x, $y, $z);
+    }
+
+    to {
+      opacity: $to;
+      transform: translate3d(0, 0, 0);
+    }
   }
 }
+

@@ -1,10 +1,15 @@
 <template>
     <div class="w-100 h-100">
         <home-navbar/>
-
         <div class="main d-flex">
-            <router-view></router-view>
+            <transition
+                name="fade"
+            >
+
+                <router-view></router-view>
+            </transition>
         </div>
+
 
     </div>
 
@@ -42,7 +47,16 @@ export default {
     props: {}
 }
 </script>
-<style scoped>
+<style lang="scss" scoped>
+//.fade {
+//  &-enter-active {
+//    @include a-fadeIn($duration: 0.3s);
+//  }
+//
+//  &-leave-active {
+//    @include a-fadeIn($reverse: true, $duration: 0.5s, $x: -20px);
+//  }
+//}
 
 .main {
     padding-top: 70px;

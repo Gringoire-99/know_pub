@@ -1,19 +1,4 @@
-$red: #ff0000;
-$blue: #0794ff;
-$lightBlue: #00bfff;
-$gray: #8c8c8c;
-$lightGray: #dcdcdc;
-$white: #ffffff;
-$black: #000000;
-
-$fs-xxxsmall: 5px;
-$fs-xxsmall: 10px;
-$fs-small: 12px;
-$fs-medium: 14px;
-$fs-large: 16px;
-$fs-xlarge: 18px;
-$fs-xxlarge: 20px;
-$fs-xxxlarge: 25px;
+@import "constant";
 
 @mixin clickable($color:$blue) {
   cursor: pointer;
@@ -80,7 +65,7 @@ $fs-xxxlarge: 25px;
   }
 }
 
-@mixin hoverUnderLine($position:left) {
+@mixin hoverUnderLine($position:left,$duration:0.3s,$color:#2098D1) {
   $left: 0;
   $right: 0;
   display: inline-block;
@@ -94,10 +79,10 @@ $fs-xxxlarge: 25px;
     position: absolute;
     z-index: -1;
     bottom: 0;
-    background: #2098D1;
+    background: $color;
     height: 4px;
     transition-property: right, left;
-    transition-duration: 0.3s;
+    transition-duration: $duration;
     transition-timing-function: ease-out;
   }
   @if ($position == left) {
@@ -119,3 +104,31 @@ $fs-xxxlarge: 25px;
     left: 0;
   }
 }
+
+@mixin animated($duration:1s) {
+  animation-duration: $duration;
+  animation-fill-mode: both;
+}
+
+@mixin a-fadeIn($reverse:false,$duration:1s,$x:0,$y:0,$z:0) {
+  @include animated($duration);
+
+  @if ($reverse) {
+    animation-direction: reverse;
+  }
+  animation-name: fadeIn;
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translate3d($x, $y, $z);
+    }
+
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+}
+
+

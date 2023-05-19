@@ -10,8 +10,8 @@
         </div>
         <div class="d-flex nav-items">
             <div class="nav-item">
-                <router-link v-for="(tab,index) in tabs" :to="tab.path">
-                    <button :key="index" :class="{'selected':index===currentTabIndex}" @click="onTabChange(index)">
+                <router-link v-for="(tab,index) in tabs" :to="tab.path" active-class="selected">
+                    <button :key="index" @click="onTabChange(index)">
                         {{ tab.label }}
                     </button>
                 </router-link>
@@ -227,16 +227,6 @@ export default {
             keyword: '',
             showAvatarDetail: false,
             hideDelay: {},
-            userInfo: {
-                id: '',
-                name: '',
-                avatar: '',
-                description: '',
-                postCount: 0,
-                articleCount: 0,
-                followerCount: 0,
-
-            },
             progress: 50,
             isShowLogin: false,
 
@@ -339,22 +329,30 @@ export default {
     .nav-items {
         .nav-item {
             @include align($justify-content: start);
-            cursor: pointer;
+            @include clickable();
             flex-grow: 2;
             height: 100%;
             white-space: nowrap;
 
+            .selected {
+                button {
+                    font-weight: bold;
+                    color: $dark-blue;
+                }
+            }
+
+
             button {
                 @include clearDefault();
                 font-weight: lighter;
-                color: #696969;
+                color: $gray;
                 border: none;
                 background: none;
                 padding-top: 15px;
                 padding-bottom: 15px;
                 margin-left: 10px;
                 margin-right: 10px;
-                @include hoverUnderLine();
+                @include hoverUnderLine(center, 0.1s, lighten($dark-blue, 20%));
             }
 
             span {
@@ -373,9 +371,9 @@ export default {
         }
 
         .search-btn {
-            border: 1px solid #0095da;
+            border: 1px solid $blue;
             border-radius: 20px;
-            background: #0095da;
+            background: $blue;
             color: white;
             outline: none;
             padding: 3px 15px;
@@ -392,7 +390,7 @@ export default {
             @include align();
             width: 30px;
             height: 30px;
-            border: 1px solid #073348;
+            border: 1px solid $dark-blue;
             border-radius: 50%;
         }
 
@@ -420,9 +418,9 @@ export default {
 
             .nav-list-item {
                 padding: 10px 20px;
-                color: #073348;
+                color: $dark-blue;
                 border-radius: 5px;
-                background-color: white;
+                background-color: $white;
                 transition: background-color 0.5s;
                 font-size: 15px;
 
@@ -432,7 +430,7 @@ export default {
             }
 
             * {
-                text-decoration: none !important;
+                text-decoration: none;
             }
         }
 
@@ -493,7 +491,7 @@ export default {
                     .member-button {
                         border: none;
                         background: white;
-                        color: rgba(0, 85, 213, 1);
+                        color: $dark-blue;
                         margin-left: auto;
                         width: fit-content;
                         height: fit-content;

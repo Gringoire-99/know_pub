@@ -19,13 +19,16 @@
                      class="img-fluid col-3 intro-img">
 
                 <div class="text">
-                    <span class="intro-text" v-on:click="collapseFullText">{{ post.content.text.slice(0, 80) }}</span>
+                        <span class="intro-text" v-on:click="collapseFullText">{{
+                                post.content.text.slice(0, 80)
+                            }}</span>
                     <span class="full-text-btn" v-on:click="collapseFullText">...阅读全文</span>
                     <el-icon class="d-inline">
                         <arrow-down/>
                     </el-icon>
                 </div>
             </div>
+
             <!--            正文-->
             <div v-if="isAnswerPattern||!isCollapseFullText" class="full-text">
                 <post-body :is-answer-pattern="isAnswerPattern" :post="post"
@@ -224,6 +227,7 @@ export default {
 
 }
 </script>
+
 <style scoped>
 
 .list-group .el-popover.el-popper {

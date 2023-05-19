@@ -23,7 +23,7 @@ const routes = [
             {name: 'login-page', path: '/login', component: loginPage},
             {
                 name: 'home', path: '/home', component: home, redirect: '/home-main', children: [
-                    {
+                     {
                         name: 'home-main',
                         path: '/home-main',
                         redirect: '/main-recommended',
