@@ -1,15 +1,5 @@
 <template>
-    <el-dialog v-model="showInfoDialog">
-        <div class="info-full ">
-            <span class="fw-bold">性别</span><span>{{ userInfo.gender }}</span>
-            <span class="fw-bold">一句话介绍</span><span>{{ userInfo.description }}</span>
-            <span class="fw-bold">居住地</span><span>{{ userInfo.location }}</span>
-            <span class="fw-bold">所在行业</span><span>{{ userInfo.industry }}</span>
-            <span class="fw-bold">职业经历</span><span>{{ userInfo.jobHistory }}</span>
-            <span class="fw-bold">教育经历</span><span>{{ userInfo.school }}</span>
-            <span class="fw-bold">个人认证</span><span>{{ userInfo.authentication }}</span>
-        </div>
-    </el-dialog>
+
     <div class="grid">
         <div class="space"></div>
         <div class="body-grid">
@@ -54,6 +44,21 @@
                                         </el-icon>
                                         <span>查看详细信息</span>
                                     </div>
+                                    <el-dialog v-model="showInfoDialog">
+                                        <div class="info-full ">
+                                            <span class="fw-bold">性别</span><span>{{ userInfo.gender }}</span>
+                                            <span class="fw-bold">一句话介绍</span><span>{{
+                                                userInfo.description
+                                            }}</span>
+                                            <span class="fw-bold">居住地</span><span>{{ userInfo.location }}</span>
+                                            <span class="fw-bold">所在行业</span><span>{{ userInfo.industry }}</span>
+                                            <span class="fw-bold">职业经历</span><span>{{ userInfo.jobHistory }}</span>
+                                            <span class="fw-bold">教育经历</span><span>{{ userInfo.school }}</span>
+                                            <span class="fw-bold">个人认证</span><span>{{
+                                                userInfo.authentication
+                                            }}</span>
+                                        </div>
+                                    </el-dialog>
                                 </div>
 
                             </div>

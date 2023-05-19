@@ -16,11 +16,10 @@
 
                     </div>
                     <div class="w-100">
-                        <transition
-                            name="main"
-                        >
-                            <router-view></router-view>
-                        </transition>
+
+                        <router-view>
+                        </router-view>
+
 
                     </div>
                 </div>
@@ -59,17 +58,11 @@ export default {
     }
 }
 </script>
-<!--<style lang="scss" scoped>-->
-<!--.main {-->
-<!--  &-enter-active {-->
-<!--    @include a-fadeIn($duration: 0.3s);-->
-<!--  }-->
+<style lang="scss" scoped>
+.home-main {
 
-<!--  &-leave-active {-->
-<!--    @include a-fadeIn($reverse: true, $duration: 0.5s, $x: -10%, $y: 0, $z: 0);-->
-<!--  }-->
-<!--}-->
-<!--</style>-->
+}
+</style>
 <style scoped>
 .card-body .btn:focus {
     color: #0095da;
