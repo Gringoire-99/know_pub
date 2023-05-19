@@ -30,7 +30,7 @@
     <el-skeleton v-if="isLoading" :rows="5" :throttle="0.5" animated/>
 
     <div v-if="isLoadDialog">
-        <el-dialog v-model="dialogVisible" :align-center="true" :draggable="true" width="75%">
+        <el-dialog v-model="dialogVisible" :align-center="true" :draggable="true" width="85%">
             <comments-dialog :post-id="postId"></comments-dialog>
         </el-dialog>
     </div>
@@ -233,17 +233,5 @@ export default {
 
 </style>
 <style>
-.el-dialog__body {
-    padding-top: 0;
-}
 
-.el-dialog__header {
-    padding-top: 0;
-}
-
-.dialog-comments {
-    height: 450px;
-    overflow-x: hidden;
-    overflow-y: scroll;
-}
 </style>

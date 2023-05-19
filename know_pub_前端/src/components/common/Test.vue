@@ -1,10 +1,8 @@
 <template>
-<div>1</div>
+  <a>1</a>
 </template>
 <style lang="scss" scoped>
-//@import "../../scss/variables.scss";
-div {
-  //$red: #ff0000;
-  color: $red;
+a {
+  @include clearDefault();
 }
 </style>

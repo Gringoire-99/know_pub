@@ -1,5 +1,6 @@
 # 不使用外键
 CREATE DATABASE IF NOT EXISTS know_pub CHAR SET utf8;
+USE know_pub;
 CREATE TABLE IF NOT EXISTS know_pub.user
 (
     id char(30) NOT NULL primary key comment '用户id',
@@ -77,5 +78,15 @@ CREATE TABLE IF NOT EXISTS question(
     answer_count int default 0 comment '回答数',
     collection_count int default 0 comment '收藏数',
     view_count int default 0 comment '浏览数',
-    tag_ids varchar(50) default '' comment '标签id,需要查询，使用逗号分隔'
+    tag_names varchar(50) default '' comment '标签名，使用逗号分隔'
+);
+CREATE TABLE IF NOT EXISTS tag(
+    name varchar(20) NOT NULL PRIMARY KEY  comment '标签名',
+    description varchar(256) default '' comment '标签描述',
+    create_time datetime default now() comment '创建时间',
+    status int default 0 comment '状态,0:正常,1:禁用',
+    view_count int default 0 comment '浏览数',
+    question_count int default 0 comment '问题数',
+    discuss_count int default 0 comment '讨论数',
+    collection_count int default 0 comment '收藏数'
 );

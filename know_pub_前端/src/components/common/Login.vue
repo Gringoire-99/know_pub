@@ -15,66 +15,74 @@
             <div>
                 <el-tabs v-model="activeName" class="">
                     <el-tab-pane class="mb-4" label="验证码登录" name="first">
-                        <div class="form-phone d-flex row-cols-2 mt-5">
-                            <el-popover
-                                placement="bottom"
-                                popper-class="phone-prefix-popover"
-                                trigger="click"
-                                width="200"
-                            >
-                                <template #reference>
-                                    <el-button class="phone-prefix d-flex col-3">
-                                        <span>{{ loginForm.phone.label }}</span><span>+{{
-                                            loginForm.phone.prefix
-                                        }}</span>
-                                        <el-icon class="ms-1">
-                                            <arrow-down></arrow-down>
-                                        </el-icon>
-                                    </el-button>
-                                </template>
-                                <ul class="prefix-list d-flex flex-column">
-                                    <li v-for="item in phonePrefix" :key="item.value" class=" w-100"
-                                        @click="loginForm.phone.prefix = item.value;loginForm.phone.label = item.label">
-                                        <div class="phone-prefix d-flex ">
-                                            <span>{{ item.label }}</span><span>+{{ item.value }}</span>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </el-popover>
-                            <div class="el-divider--vertical h-75 align-self-center"></div>
-                            <input v-model="loginForm.phone.number" class="phone col-9" placeholder="手机号">
+                        <div class="by-captcha">
+                            <div class="form-phone d-flex mt-5">
+                                <el-popover
+                                    placement="bottom"
+                                    popper-class="phone-prefix-popover"
+                                    trigger="click"
+                                    width="200"
+                                >
+                                    <template #reference>
+                                        <el-button class="phone-prefix">
+                                            <span class="prefix-label">{{ loginForm.phone.label }}</span><span>+{{
+                                                loginForm.phone.prefix
+                                            }}</span>
+                                            <el-icon class="ms-1">
+                                                <arrow-down></arrow-down>
+                                            </el-icon>
+                                        </el-button>
+                                    </template>
+                                    <ul class="prefix-list d-flex flex-column">
+                                        <li v-for="item in phonePrefix" :key="item.value" class="list-item w-100"
+                                            @click="loginForm.phone.prefix = item.value;loginForm.phone.label = item.label">
+                                            <div class="phone-prefix d-flex ">
+                                                <span>{{ item.label }}</span><span>+{{ item.value }}</span>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </el-popover>
+                                <div class="el-divider--vertical h-75 align-self-center"></div>
+                                <input v-model="loginForm.phone.number" class="phone col-9" placeholder="手机号">
+                            </div>
+                            <div class="form-captcha d-flex row-cols-2 mt-3 ">
+                                <input v-model="loginForm.captcha" class="captcha-input col-9"
+                                       placeholder="请输入6位验证码">
+                                <button class="col-3 captcha-btn">获取短信验证码</button>
+                            </div>
+                            <div class="form-captcha d-flex p-2 mt-3 mb-3 justify-content-end ">
+                                <button class="voice-captcha-btn ">获取语音验证码</button>
+                            </div>
+                            <div class="submit-btn d-flex">
+                                <button class="w-100">登录/注册</button>
+                            </div>
                         </div>
-                        <div class="form-captcha d-flex row-cols-2 mt-3 ">
-                            <input v-model="loginForm.captcha" class="captcha-input col-9"
-                                   placeholder="请输入6位验证码">
-                            <button class="col-3 captcha-btn">获取短信验证码</button>
-                        </div>
-                        <div class="form-etc d-flex p-2 mt-3 mb-3 justify-content-end ">
-                            <button class="voice-captcha-btn ">获取语音验证码</button>
-                        </div>
-                        <div class="submit-btn d-flex">
-                            <button class="w-100">登录/注册</button>
-                        </div>
+
                     </el-tab-pane>
                     <el-tab-pane class="mb-4" label="密码登录" name="second">
-                        <form>
-                            <div class="form-phone d-flex mt-5">
-                                <input v-model="loginFormByPassword.account" autocomplete="username" class="phone w-100"
-                                       placeholder="手机号或邮箱">
-                            </div>
-                            <div class="form-captcha d-flex  mt-3 ">
-                                <input v-model="loginFormByPassword.password" autocomplete="current-password"
-                                       class="phone w-100" placeholder="密码"
-                                       type="password">
-                            </div>
-                        </form>
+                        <div class="by-passwd">
 
-                        <div class="form-etc d-flex p-2 mt-3 mb-3 justify-content-end ">
-                            <button class="voice-captcha-btn ">忘记密码</button>
+                            <form>
+                                <div class="form-phone d-flex mt-5">
+                                    <input v-model="loginFormByPassword.account" autocomplete="username"
+                                           class="phone w-100"
+                                           placeholder="手机号或邮箱">
+                                </div>
+                                <div class="form-captcha d-flex  mt-3 ">
+                                    <input v-model="loginFormByPassword.password" autocomplete="current-password"
+                                           class="phone w-100" placeholder="密码"
+                                           type="password">
+                                </div>
+                            </form>
+
+                            <div class="form-etc d-flex p-2 mt-3 mb-3 justify-content-end ">
+                                <button class="voice-captcha-btn ">忘记密码</button>
+                            </div>
+                            <div class="submit-btn d-flex">
+                                <button class="w-100">登录</button>
+                            </div>
                         </div>
-                        <div class="submit-btn d-flex">
-                            <button class="w-100">登录</button>
-                        </div>
+
                     </el-tab-pane>
                 </el-tabs>
             </div>
@@ -289,20 +297,34 @@ export default {
 
 <style lang="scss" scoped>
 .login {
-    height: 700px;
-    width: 1000px;
+    display: grid;
+    grid-template-columns: 2fr 3fr;
+    grid-template-rows: 1fr;
+    background: #fff;
+    padding: 40px;
+    grid-gap: 40px;
+    transition: grid 0.5s;
+    @media screen and (max-width: 850px) {
+        grid-template-columns: 0fr 1fr;
+        grid-gap: 0;
+    }
 
     .qr {
-        display: grid;
-        align-items: center;
-        justify-content: center;
+        @include align(grid);
         min-width: 0;
         overflow: hidden;
 
+        .el-button {
+            font-weight: lighter;
+            font-size: 10px;
+            padding: 5px;
+            border-radius: 20px;
+            margin-top: 50px;
+            margin-bottom: 50px
+        }
+
         & > * {
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            @include align();
         }
     }
 
@@ -310,48 +332,73 @@ export default {
         min-width: 0;
         overflow: hidden;
 
-        .form-phone {
-            .phone-prefix {
-                border: none;
-                outline: none;
-                font-size: 18px;
-                height: 100%;
-            }
+        .by-captcha {
+            .form-phone {
+                padding-bottom: 5px;
+                border-bottom: 1px solid rgba(220, 223, 230, 0.51);
+                height: 70px;
 
-            .prefix-list {
-                height: 200px;
-                overflow-y: scroll;
-                overflow-x: hidden;
-                padding: 0;
-
-                .li {
-                    /*    取消默认样式*/
-                    list-style: none;
-                    padding: 0 0;
-                    cursor: pointer;
-                    height: 25px;
-                    margin-bottom: 10px;
+                .phone {
+                    margin-left: 15px;
+                    @include clearDefault();
                 }
-            }
 
-            .phone {
+                .phone-prefix {
+                    @include clearDefault();
+                    font-size: 18px;
+                    height: 100%;
 
-            }
+                    .prefix-label {
+                        @media screen and (max-width: 1000px) {
+                            display: none;
+                        }
+                    }
+                }
 
-            .submit-btn {
-                button {
-                    height: 50px;
-                    background: #056de8;
-                    color: white;
-                    border: 1px solid #056de8;
-                    border-radius: 5px;
+                @at-root .prefix-list {
+                    height: 200px;
+                    overflow-y: scroll;
+                    overflow-x: hidden;
+                    padding: 0;
 
-                    &:hover {
-                        background: #2b80e3;
+                    @at-root .list-item {
+                        @include clearDefault();
+                        padding: 0 0;
+                        cursor: pointer;
+                        height: 25px;
+                        margin-bottom: 10px;
+                        &:hover {
+                            color: #fff;
+                            background: #409eff;
+                        }
                     }
                 }
             }
 
+            .form-captcha {
+                padding-bottom: 5px;
+                border-bottom: 1px solid rgba(220, 223, 230, 0.51);
+                height: 70px;
+
+                .captcha-input {
+                    border: none;
+                    outline: none;
+                }
+            }
+        }
+
+        .submit-btn {
+            button {
+                height: 40px;
+                background: #056de8;
+                color: white;
+                border: 1px solid #056de8;
+                border-radius: 5px;
+
+                &:hover {
+                    background: #2b80e3;
+                }
+            }
         }
 
         .other-way {
@@ -371,112 +418,37 @@ export default {
         .agreement {
             cursor: pointer;
         }
+
+
+        .captcha-btn, .voice-captcha-btn {
+            @include textButton();
+            @include clickEffect();
+        }
     }
 
     &:hover {
         box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.1);
     }
 
+    .qrcode {
+        max-width: 250px;
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        object-fit: cover;
+        transition: all 0.5s;
+    }
+
+    * {
+        white-space: nowrap;
+        flex-wrap: nowrap;
+    }
 }
+
+
 :deep(.el-tabs__nav-wrap::after) {
     width: 0;
-}
-
-.form-phone, .form-captcha {
-    padding-bottom: 5px;
-    border-bottom: 1px solid rgba(220, 223, 230, 0.51);
-    height: 70px;
-}
-
-
-.prefix-list li:hover {
-    color: #fff;
-    background: #409eff;
-}
-
-
-.phone {
-    margin-left: 15px;
-    border: none;
-    outline: none;
-}
-
-.captcha-input {
-    border: none;
-    outline: none;
-}
-
-.captcha-btn, .voice-captcha-btn {
-    color: #056de8;
-    border: none;
-    background: none;
-}
-
-.captcha-btn:hover, .voice-captcha-btn:hover {
-    color: #409eff;
-}
-
-
-.login {
-    display: grid;
-    grid-template-columns: 2fr 3fr;
-    grid-template-rows: 1fr;
-    background: #fff;
-    padding: 40px;
-    grid-gap: 40px;
-    transition: grid 0.5s;
-
-}
-
-
-.qr .el-button {
-    font-weight: lighter;
-    font-size: 10px;
-    padding: 5px;
-    border-radius: 20px;
-    margin-top: 50px;
-    margin-bottom: 50px
-}
-
-.qrcode {
-    max-width: 250px;
-    width: 100%;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    object-fit: cover;
-    transition: all 0.5s;
-}
-
-.voice-captcha-btn {
-    align-self: center;
-}
-
-.footer span:hover {
-    /*下划线*/
-    text-decoration: underline;
-    cursor: pointer;
-}
-
-
-/* Float */
-.footer span {
-    display: inline-block;
-    vertical-align: middle;
-    -webkit-transform: perspective(1px) translateZ(0);
-    transform: perspective(1px) translateZ(0);
-    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
-    -webkit-transition-duration: 0.3s;
-    transition-duration: 0.3s;
-    -webkit-transition-property: transform;
-    transition-property: transform;
-    -webkit-transition-timing-function: ease-out;
-    transition-timing-function: ease-out;
-}
-
-.footer span:hover, .footer span:focus, .footer span:active {
-    -webkit-transform: translateY(-3px);
-    transform: translateY(-3px);
 }
 
 /*改变tab文字大小*/
@@ -485,10 +457,5 @@ export default {
     font-size: 20px;
 }
 
-@media screen and (max-width: 850px) {
-    .login {
-        grid-template-columns: 1fr 0fr;
-        grid-gap: 0;
-    }
-}
+
 </style>

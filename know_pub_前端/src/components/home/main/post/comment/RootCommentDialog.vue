@@ -1,22 +1,25 @@
 <template>
-    <div class="header fw-bold mb-3 mt-3">评论回复</div>
-        <div class="root border-0">
+    <div class="dialog-root">
+        <div class="header fw-bold mb-3 mt-3">评论回复</div>
+        <div class="body border-0">
             <comment :comment="rootComment"></comment>
             <div class="divider w-100"></div>
             <div class="">{{ `${total}条回复` }}</div>
             <div v-infinite-scroll="getComments" :infinite-scroll-disabled="isLoading"
-                 class="comments dialog-comments pe-2"
+                 class="comments root-comment-dialog-comments pe-2"
                  infinite-scroll-distance="10">
                 <comment v-for="childComment in comments" :key="childComment.id" :comment="childComment"
                 ></comment>
-                <el-skeleton  :rows="3" :throttle="0.5" animated/>
+                <el-skeleton :rows="3" :throttle="0.5" animated/>
             </div>
             <div v-if="total===0&&!isLoading" class="d-flex justify-content-center align-items-center">
                 <el-empty description="还没有评论，快来抢沙发吧~"/>
             </div>
         </div>
 
-    <post-comment></post-comment>
+        <post-comment></post-comment>
+    </div>
+
 </template>
 
 <script>
@@ -110,20 +113,33 @@ export default {
 </script>
 
 <style scoped>
-.divider {
-    height: 20px;
-    background: rgba(217, 219, 225, 0.36);
+.dialog-root {
+    padding: 20px;
+
+    .header {
+
+    }
+
+
+    .body {
+        margin-top: 10px;
+        padding: 10px 0px;
+
+        .divider {
+            height: 20px;
+            background: rgba(217, 219, 225, 0.36);
+        }
+    }
+
 }
 
-.root {
-    margin-top: 10px;
-    padding: 10px 0px;
-}
 
-:deep(.dialog-comments) {
-    height: 330px;
-}
+
 </style>
 <style>
-
+.root-comment-dialog-comments {
+    height: 450px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
 </style>

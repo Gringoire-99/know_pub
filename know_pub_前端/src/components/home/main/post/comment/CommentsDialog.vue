@@ -1,34 +1,37 @@
 <template>
-    <div class="root d-flex flex-column">
-        <div class="body border-0">
-            <div class="comment-header d-flex align-items-center w-100">
-                <div class="comment_count">{{ total }}条评论</div>
-                <el-radio-group v-model="orderBy" class="order" size="small">
-                    <el-radio-button :label="ORDER_BY.LIKE_COUNT" @click="changeOrderBy(ORDER_BY.LIKE_COUNT)">默认
-                    </el-radio-button>
-                    <el-radio-button :label="ORDER_BY.PUBLISH_TIME" @click="changeOrderBy(ORDER_BY.PUBLISH_TIME)">
-                        最新
-                    </el-radio-button>
-                    <el-radio-button :label="ORDER_BY.COMMENT_COUNT" @click="changeOrderBy(ORDER_BY.COMMENT_COUNT)">
-                        最热
-                    </el-radio-button>
-                </el-radio-group>
-            </div>
-            <div class="comments dialog-comments d-flex flex-column  w-100 align-items-center"
-                 v-infinite-scroll="getComments" :infinite-scroll-disabled="isLoading"
-                 infinite-scroll-distance="30"
-            >
-                <root-comment v-for="rootComment in rootComments" :key="rootComment.rootComment.id"
-                              :comments="rootComment"></root-comment>
-                <el-skeleton :rows="5" :throttle="0.5" animated/>
-            </div>
+    <div class="dialog-root">
+        <div class="d-flex flex-column">
+            <div class="body border-0">
+                <div class="comment-header d-flex align-items-center w-100">
+                    <div class="comment_count">{{ total }}条评论</div>
+                    <el-radio-group v-model="orderBy" class="order" size="small">
+                        <el-radio-button :label="ORDER_BY.LIKE_COUNT" @click="changeOrderBy(ORDER_BY.LIKE_COUNT)">默认
+                        </el-radio-button>
+                        <el-radio-button :label="ORDER_BY.PUBLISH_TIME" @click="changeOrderBy(ORDER_BY.PUBLISH_TIME)">
+                            最新
+                        </el-radio-button>
+                        <el-radio-button :label="ORDER_BY.COMMENT_COUNT" @click="changeOrderBy(ORDER_BY.COMMENT_COUNT)">
+                            最热
+                        </el-radio-button>
+                    </el-radio-group>
+                </div>
+                <div v-infinite-scroll="getComments"
+                     :infinite-scroll-disabled="isLoading" class="comments comment-dialog-comments d-flex flex-column  w-100 align-items-center"
+                     infinite-scroll-distance="30"
+                >
+                    <root-comment v-for="rootComment in rootComments" :key="rootComment.rootComment.id"
+                                  :comments="rootComment"></root-comment>
+                    <el-skeleton :rows="5" :throttle="0.5" animated/>
+                </div>
 
+            </div>
+            <div v-if="total===0&&!isLoading" class="d-flex justify-content-center align-items-center">
+                <el-empty description="还没有评论，快来抢沙发吧~"/>
+            </div>
         </div>
-        <div v-if="total===0&&!isLoading" class="d-flex justify-content-center align-items-center">
-            <el-empty description="还没有评论，快来抢沙发吧~"/>
-        </div>
+        <post-comment></post-comment>
     </div>
-    <post-comment></post-comment>
+
 </template>
 
 <script>
@@ -166,13 +169,22 @@ export default {
     }
 }
 </script>
-
-<style scoped>
-
-.body {
-
-
+<style lang="scss">
+.comment-dialog-comments {
+    height: 600px;
+    overflow-x: hidden;
+    overflow-y: scroll;
 }
+</style>
+<style scoped>
+.dialog-root {
+    padding: 20px;
+
+    .body {
+
+    }
+}
+
 
 .comment-header {
     padding: 10px;
@@ -198,11 +210,7 @@ export default {
     margin-left: auto !important;
 }
 
-@media screen and (max-width: 768px) {
-    .root {
-        width: 100%;
-    }
-}
+
 </style>
 
 

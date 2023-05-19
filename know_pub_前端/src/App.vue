@@ -141,5 +141,13 @@ body::-webkit-scrollbar-button {
 }
 </style>
 <style lang="scss">
+.el-dialog {
+    .el-dialog__body {
+        padding: 0 !important;
+    }
 
+    .el-dialog__header {
+        padding: 0 !important;
+    }
+}
 </style>

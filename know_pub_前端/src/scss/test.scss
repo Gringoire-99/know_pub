@@ -1,0 +1,66 @@
+.login-form {
+  min-width: 0;
+  overflow: hidden;
+
+  .form-phone {
+    .phone-prefix {
+      border: none;
+      outline: none;
+      font-size: 18px;
+      height: 100%;
+    }
+
+    .prefix-list {
+      height: 200px;
+      overflow-y: scroll;
+      overflow-x: hidden;
+      padding: 0;
+
+      .li {
+        /*    取消默认样式*/
+        list-style: none;
+        padding: 0 0;
+        cursor: pointer;
+        height: 25px;
+        margin-bottom: 10px;
+      }
+    }
+
+    .phone {
+
+    }
+
+    .submit-btn {
+      button {
+        height: 50px;
+        background: #056de8;
+        color: white;
+        border: 1px solid #056de8;
+        border-radius: 5px;
+
+        &:hover {
+          background: #2b80e3;
+        }
+      }
+    }
+
+  }
+
+  .other-way {
+    span {
+      font-weight: lighter;
+      color: #696868;
+    }
+
+    img {
+      width: 50px;
+      height: 50px;
+      margin: 0 50px;
+      cursor: pointer;
+    }
+  }
+
+  .agreement {
+    cursor: pointer;
+  }
+}

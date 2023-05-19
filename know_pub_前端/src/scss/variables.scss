@@ -1,4 +1,121 @@
 $red: #ff0000;
 $blue: #0794ff;
+$lightBlue: #00bfff;
 $gray: #8c8c8c;
+$lightGray: #dcdcdc;
 $white: #ffffff;
+$black: #000000;
+
+$fs-xxxsmall: 5px;
+$fs-xxsmall: 10px;
+$fs-small: 12px;
+$fs-medium: 14px;
+$fs-large: 16px;
+$fs-xlarge: 18px;
+$fs-xxlarge: 20px;
+$fs-xxxlarge: 25px;
+
+@mixin clickable($color:$blue) {
+  cursor: pointer;
+  &:hover {
+    color: lighten($color, 20%);
+  }
+}
+
+@mixin clickEffect($color:$blue,$scale:0.99) {
+  @include clickable($color);
+  &:active {
+    transform: scale($scale);
+  }
+  &:not(:active) {
+    transform: scale(1);
+  }
+}
+
+@mixin align($display:flex,$flex-wrap:nowrap,$justify-content:center,$align-items:center) {
+  display: $display;
+  justify-content: $justify-content;
+  align-items: $align-items;
+  flex-wrap: $flex-wrap;
+}
+
+@mixin textButton($color:$blue,$fs:$fs-medium) {
+  border: none;
+  background: none;
+  color: $color;
+  font-size: $fs;
+  @include clickable($color);
+}
+
+@mixin clearDefault() {
+  border: none;
+  background: none;
+  outline: none;
+  padding: 0;
+  margin: 0;
+  text-decoration: none;
+  list-style: none;
+  color: inherit;
+  font-size: inherit;
+  font-family: inherit;
+  cursor: inherit;
+  &:is(:active,:hover,:focus) {
+    color: inherit;
+  }
+}
+
+@mixin hoverFloat($duration:0.1s,$y:-3px) {
+  &:hover {
+    transform: translateY($y);
+  }
+  &:not(:hover) {
+    transition-duration: $duration+0.2s;
+  }
+  & {
+    transform: perspective(1px) translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    transition-duration: $duration;
+    transition-property: transform;
+    transition-timing-function: ease-out;
+  }
+}
+
+@mixin hoverUnderLine($position:left) {
+  $left: 0;
+  $right: 0;
+  display: inline-block;
+  vertical-align: middle;
+  transform: perspective(1px) translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  position: relative;
+  overflow: hidden;
+  &:before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    bottom: 0;
+    background: #2098D1;
+    height: 4px;
+    transition-property: right, left;
+    transition-duration: 0.3s;
+    transition-timing-function: ease-out;
+  }
+  @if ($position == left) {
+    $left: 0%;
+    $right: 100%;
+  } @else if ($position == center) {
+    $left: 51%;
+    $right: 51%;
+  } @else if ($position == right) {
+    $left: 100%;
+    $right: 0%;
+  }
+  &:before {
+    left: $left;
+    right: $right;
+  }
+  &:hover:before, &:focus:before, &:active:before {
+    right: 0;
+    left: 0;
+  }
+}
