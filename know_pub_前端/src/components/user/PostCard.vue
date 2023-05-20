@@ -1,55 +1,59 @@
 <template>
-    <div v-if="!isLoading" class="post-card d-flex flex-column">
-        <div class="header d-flex">
-            <div class="avatar d-flex align-items-end">
-                <img :src="userInfo.avatar"/>
-            </div>
-            <div>
-                <p class="mb-0 mt-1">{{ userInfo.name }}</p>
-                <p class="desc">
-                    {{
-                        userInfo.description.length > 10 ? userInfo.description.substring(0, 10) + "..." : userInfo.description
-                    }}</p>
+    <transition mode="out-in" name="post-card">
+        <div v-if="!isLoading" class="post-card d-flex flex-column">
+            <div class="header d-flex">
+                <div class="avatar d-flex align-items-end">
+                    <img :src="userInfo.avatar"/>
+                </div>
+                <div>
+                    <p class="mb-0 mt-1">{{ userInfo.name }}</p>
+                    <p class="desc">
+                        {{
+                            userInfo.description.length > 10 ? userInfo.description.substring(0, 10) + "..." : userInfo.description
+                        }}</p>
 
+                </div>
+            </div>
+            <div class="body">
+                <div class="count d-flex">
+                    <div class="d-flex flex-column align-items-center justify-content-center flex-fill">
+                        <span>回答</span>
+                        <span>{{ userInfo.postCount }}</span>
+                    </div>
+                    <div class="d-flex flex-column align-items-center justify-content-center flex-fill">
+                        <span>文章</span>
+                        <span>{{ userInfo.articleCount }}</span>
+                    </div>
+                    <div class="d-flex flex-column align-items-center justify-content-center flex-fill">
+                        <span>关注者</span>
+                        <span>{{ userInfo.followerCount }}</span>
+                    </div>
+                </div>
+                <div class="mt-4 d-flex align-items-center justify-content-center flex-fill">
+                    <el-button class="bg-primary text-white flex-fill">
+                        <el-icon class="">
+                            <Plus></Plus>
+                        </el-icon>
+                        <span class="fs-6">关注它</span>
+
+                    </el-button>
+                    <el-button class=" flex-fill">
+                        <el-icon :size="15">
+                            <Message></Message>
+                        </el-icon>
+                        <span class="fs-6">发私信</span>
+
+                    </el-button>
+
+                </div>
             </div>
         </div>
-        <div class="body">
-            <div class="count d-flex">
-                <div class="d-flex flex-column align-items-center justify-content-center flex-fill">
-                    <span>回答</span>
-                    <span>{{ userInfo.postCount }}</span>
-                </div>
-                <div class="d-flex flex-column align-items-center justify-content-center flex-fill">
-                    <span>文章</span>
-                    <span>{{ userInfo.articleCount }}</span>
-                </div>
-                <div class="d-flex flex-column align-items-center justify-content-center flex-fill">
-                    <span>关注者</span>
-                    <span>{{ userInfo.followerCount }}</span>
-                </div>
-            </div>
-            <div class="mt-4 d-flex align-items-center justify-content-center flex-fill">
-                <el-button class="bg-primary text-white flex-fill">
-                    <el-icon class="">
-                        <Plus></Plus>
-                    </el-icon>
-                    <span class="fs-6">关注它</span>
-
-                </el-button>
-                <el-button class=" flex-fill">
-                    <el-icon :size="15">
-                        <Message></Message>
-                    </el-icon>
-                    <span class="fs-6">发私信</span>
-
-                </el-button>
-
-            </div>
+        <div v-else>
+            <el-skeleton :rows="3"></el-skeleton>
         </div>
-    </div>
-    <div v-else>
-        <el-skeleton :rows="3"></el-skeleton>
-    </div>
+    </transition>
+
+
 </template>
 
 <script>
@@ -78,11 +82,8 @@ export default {
     },
     //方法
     methods: {},
-    //挂载时执行
     mounted() {
-    },
-    //创建时执行
-    created() {
+        console.log("postcard")
         http.get("/user/post-card", {
             params: {
                 id: this.id
@@ -112,16 +113,15 @@ export default {
     }
 }
 </script>
-
-<style scoped>
-
-
+<style lang="scss" scoped>
+@include zoom(post-card, 0.3s, (0.05, 0.05, 0.05), $reverse: false);
 .desc {
     color: #232121;
     font-size: 12px;
 }
 
 .post-card {
+    background: white;
     width: 400px;
     padding-left: 20px;
     padding-right: 20px;

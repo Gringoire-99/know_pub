@@ -232,8 +232,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@include fade(comment, 0.2s, 0, -10px);
-@include fade(text, 0.1s, 10px);
+@include fade(text, 0.2s, (-10px, 0, 0));
+@include fade(comment, 0.2s, (0, -10px, 0));
 .list-group .el-popover.el-popper {
     padding: 0
 }

@@ -2,10 +2,11 @@
     <div class="d-flex align-items-start flex-column">
 
         <div class="authorInfo ps-0 pe-0 d-flex align-items-center w-100">
-            <el-popover
+            <popover
                 placement="bottom"
                 trigger="hover"
-                width="430"
+                :show-after="500"
+                :width="430"
             >
                 <div v-if="isLoadingPostCard" class="post-card">
                     <post-card :id="post.author.id"></post-card>
@@ -30,7 +31,7 @@
                     </div>
 
                 </template>
-            </el-popover>
+            </popover>
 
 
             <div v-if="!isAnswerPattern" class="hideFullText ms-auto d-flex align-items-center"
@@ -75,12 +76,13 @@ import post from "./Post.vue";
 import PostCard from "@/components/user/PostCard.vue";
 import Plus from "@/components/icons/Plus.vue";
 import {ArrowDown, ArrowDownBold, ArrowUp} from "@element-plus/icons-vue";
+import Popover from "@/components/common/Popover.vue";
 
 export default {
     //组件名
     name: "post-body",
     //依赖的组件
-    components: {ArrowDownBold, ArrowDown, ArrowUp, Plus, PostCard},
+    components: {Popover, ArrowDownBold, ArrowDown, ArrowUp, Plus, PostCard},
     //数据
     data() {
         return {

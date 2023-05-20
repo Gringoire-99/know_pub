@@ -1,42 +1,47 @@
 <template>
     <div class="comment w-100 mb-3">
         <div class="avatar me-2">
-            <el-popover
+            <popover
                 placement="bottom"
                 trigger="hover"
-                width="430"
+                :show-after="500"
+                :width="430"
+
             >
                 <post-card :id="comment.publisherId"></post-card>
                 <template #reference>
                     <el-avatar :src="comment.avatar" shape="square" size="small"></el-avatar>
                 </template>
-            </el-popover>
+            </popover>
         </div>
         <div class="body d-flex flex-column w-100">
-            <div class="name d-flex align-items-center justify-content-start">
+            <div class="header d-flex align-items-center justify-content-start">
                 <span class="fw-bold d-flex align-items-center reply">
-                     <el-popover
+                     <popover
                          placement="bottom"
                          trigger="hover"
-                         width="430"
+                         :show-after="500"
+                         :width="430"
                      >
                          <post-card :id="comment.publisherId"></post-card>
                         <template #reference>
-                            <span class="pointer">{{ comment.name }}</span>
+                            <span class="name">{{ comment.name }}</span>
                         </template>
-                    </el-popover>
+                    </popover>
                     <span v-if="isShowReplyTo" class="d-flex align-items-center">
                         <el-icon><DArrowRight/></el-icon>
-                        <el-popover
+                        <popover
                             placement="bottom"
                             trigger="hover"
-                            width="430"
+                            :show-after="500"
+                            :width="430"
+
                         >
-                         <post-card :id="comment.replyToId"></post-card>
-                        <template #reference>
-                            <span class="pointer">{{ comment.replyToName }}</span>
-                        </template>
-                    </el-popover>
+                             <post-card :id="comment.replyToId"></post-card>
+                            <template #reference>
+                                <span class="name">{{ comment.replyToName }}</span>
+                            </template>
+                         </popover>
 
                     </span>
                 </span>
@@ -76,12 +81,13 @@ import PostComment from "@/components/home/main/post/comment/PostComment.vue";
 import {ArrowRightBold, ChatDotRound, DArrowRight, MoreFilled} from "@element-plus/icons-vue";
 import PostCard from "@/components/user/PostCard.vue";
 import Like from "@/components/icons/Like.vue";
+import Popover from "@/components/common/Popover.vue";
 
 export default {
     //组件名
     name: "comment",
     //依赖的组件
-    components: {Like, PostCard, DArrowRight, ArrowRightBold, MoreFilled, ChatDotRound, PostComment},
+    components: {Popover, Like, PostCard, DArrowRight, ArrowRightBold, MoreFilled, ChatDotRound, PostComment},
     //数据
     data() {
         return {
@@ -128,17 +134,26 @@ export default {
     @include align($ai: start);
 
     .avatar {
-        cursor: pointer;
+        .el-avatar {
+            cursor: pointer;
+            transition-delay: 1s;
+        }
+
     }
 
     .body {
-        .name {
+        .header {
             .reply {
+
                 .el-icon {
                     font-size: 15px;
                     margin-left: 5px;
                     margin-right: 5px;
                     color: #98989a;
+                }
+
+                .name {
+                    cursor: pointer;
                 }
             }
 

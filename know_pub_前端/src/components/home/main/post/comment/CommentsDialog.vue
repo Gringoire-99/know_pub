@@ -174,7 +174,7 @@ export default {
 }
 </script>
 <style lang="scss">
-@include fade(root-comments, 0.5s, 10px);
+@include fade(root-comments, 0.5s, (10px, 0, 0));
 
 
 .dialog-root {

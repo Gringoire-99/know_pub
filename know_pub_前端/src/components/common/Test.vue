@@ -3,7 +3,7 @@
     <Transition
             name="p"
     >
-        <span v-if="show">hello</span>
+        <span v-if="show" class="animate__zoomOutLeft">hello</span>
     </Transition>
 </template>
 <script>

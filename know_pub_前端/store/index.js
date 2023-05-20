@@ -13,6 +13,9 @@ const mutations = {
     },
     SET_USER_ID(state, userId) {
         state.userId = userId;
+    },
+    SET_LOAD_DATA(state, loadData) {
+        state.loadData = loadData;
     }
 
 }
@@ -26,7 +29,8 @@ const state = {
         postCount: 0,
         articleCount: 0,
         followerCount: 0,
-    }
+    },
+    loadData: false
 }
 export const store = Vuex.createStore({
     state,

@@ -1,12 +1,13 @@
 <template>
-    <div class="w-100 h-100">
+    <div v-infinite-scroll="loadData" class="w-100 h-100" infinite-scroll-distance="120">
         <home-navbar/>
         <div class="main d-flex">
-            <router-view>
+            <router-view v-slot="{Component}">
+                <transition mode="out-in" name="home">
+                    <component :is="Component"></component>
+                </transition>
             </router-view>
         </div>
-
-
     </div>
 
 </template>
@@ -23,7 +24,13 @@ export default {
         return {}
     },
     //方法
-    methods: {},
+    methods: {
+        loadData() {
+            this.$store.commit('SET_LOAD_DATA', true)
+            console.log(this.$store.state.loadData)
+        }
+
+    },
     //挂载时执行
     mounted() {
     },
@@ -44,11 +51,12 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-
+@include fade(home, 0.2s, (-10px, 0, 0));
 
 .main {
     padding-top: 70px;
     overflow-x: hidden;
+    overflow-y: scroll;
 }
 
 

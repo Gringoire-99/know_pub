@@ -66,7 +66,7 @@
   }
 }
 
-@mixin hoverUnderLine($position:left,$duration:0.3s,$color:#2098D1) {
+@mixin hoverUnderLine($position:left,$duration:0.3s,$color:$blue) {
   $left: 0;
   $right: 0;
   display: inline-block;
@@ -111,18 +111,20 @@
   animation-fill-mode: both;
 }
 
-@mixin a-fadeIn($reverse:false,$duration:1s,$x:0,$y:0,$z:0) {
+@mixin a-fadeIn($reverse:false,$duration:1s,$move:(0,0,0),$name:v) {
   @include animated($duration);
 
   @if ($reverse) {
     animation-direction: reverse;
   }
-  animation-name: fadeIn;
+  //防止keyframes重名
+  $name: fade+$reverse+$name;
+  animation-name: $name;
 
-  @keyframes fadeIn {
+  @keyframes #{$name} {
     from {
       opacity: 0;
-      transform: translate3d($x, $y, $z);
+      transform: translate3d($move);
     }
 
     to {
@@ -132,33 +134,34 @@
   }
 }
 
-@mixin fade($name:v,$duration:1s,$x:0,$y:0,$z:0,$reverse:true) {
+@mixin fade($name:v,$duration:1s,$move:(0,0,0),$reverse:true) {
   .#{$name} {
     &-enter-active {
-      @include a-fadeIn(false, $duration, $x, $y, $z);
+      @include a-fadeIn(false, $duration, $move, $name);
     }
 
     @if ($reverse) {
       &-leave-active {
-        @include a-fadeIn(true, $duration, $x, $y, $z);
+        @include a-fadeIn(true, $duration, $move, $name);
       }
     }
   }
 }
 
 
-@mixin zoomIn($reverse:false,$duration:1s,$x:0.3,$y:0.3,$z:0.3) {
+@mixin zoomIn($reverse:false,$duration:1s,$scale:(0.3,0.3,0.3),$move:(0,0,0),$name:v) {
   @include animated($duration);
 
   @if ($reverse) {
     animation-direction: reverse;
   }
-  animation-name: zoom;
+  $name: zoom+$reverse+$name;
+  animation-name: $name;
 
-  @keyframes zoom {
+  @keyframes #{$name} {
     from {
       opacity: 0;
-      transform: scale3d($x, $y, $z);
+      transform: scale3d($scale) translate3d($move);
     }
 
     50% {
@@ -168,17 +171,18 @@
   }
 }
 
-@mixin zoom($name:v,$duration:1s,$x:0.3,$y:0.3,$z:0.3,$reverse:true) {
+@mixin zoom($name:v,$duration:1s,$scale:(0.3,0.3,0.3),$move:(0,0,0),$reverse:true) {
   .#{$name} {
     &-enter-active {
-      @include zoomIn(false, $duration, $x, $y, $z);
+      @include zoomIn(false, $duration, $scale, $move, $name);
     }
 
     @if ($reverse) {
       &-leave-active {
-        @include zoomIn(true, $duration, $x, $y, $z);
+        @include zoomIn(true, $duration, $scale, $move, $name);
       }
     }
 
   }
 }
+

@@ -193,7 +193,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@include fade(comments, 0.5s, 10px, $reverse: false);
+@include fade(comments, 0.5s, (10px, 0, 0), $reverse: false);
 @media screen and (max-width: 768px) {
     .root {
         padding: 0 !important;

@@ -1,7 +1,6 @@
-@mixin align($d:flex,$fw:nowrap,$jc:center,$ai:center,$fd:row) {
-  display: $d;
-  justify-content: $jc;
-  align-items: $ai;
-  flex-wrap: $fw;
-  flex-direction: $fd;
-}
+@import "global";
+
+@include fade(comment, 0.2s, (100px, 0, 0));
+
+
+

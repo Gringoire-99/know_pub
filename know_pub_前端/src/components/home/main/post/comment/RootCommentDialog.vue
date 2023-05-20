@@ -120,7 +120,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@include fade(comments, 0.5s, 10px);
+@include fade(comments, 0.5s, (10px, 0, 0));
 .dialog-root {
     padding: 20px;
 

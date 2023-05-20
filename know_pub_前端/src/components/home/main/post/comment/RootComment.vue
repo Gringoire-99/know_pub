@@ -100,7 +100,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@include fade(comments, 0.1s, 10px);
+@include fade(comments, 0.1s, (10px, 0, 0));
 .body {
     @include align($fd: column);
 

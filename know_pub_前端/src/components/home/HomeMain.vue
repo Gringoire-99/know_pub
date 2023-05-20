@@ -8,20 +8,20 @@
 
 
                         <router-link v-for="(tab,index) in tabs" :key="index" :to="{path:`${tab.path}`}"
+                                     active-class="selected"
                         >
-                            <button :class="{'selected':(index===currentTabIndex)}" class="btn"
+                            <button class="btn"
                                     @click="onTabChange(index)">{{ tab.name }}
                             </button>
                         </router-link>
 
                     </div>
                     <div class="w-100">
-                        <transition name="home-main">
-                            <router-view>
-                            </router-view>
-                        </transition>
-
-
+                        <router-view v-slot="{Component}">
+                            <transition mode="out-in" name="home-main">
+                                <component :is="Component" ref="content"></component>
+                            </transition>
+                        </router-view>
                     </div>
                 </div>
             </div>
@@ -43,26 +43,34 @@ export default {
         return {
             currentTabIndex: 0,
             tabs: {
-                'main-recommended': {name: '推荐', path: '/main-recommended'},
-                'main-followed': {name: '关注', path: '/main-followed',},
-                'main-hot-topics': {name: '热榜', path: '/main-hot-topics'},
-                'main-videos': {name: '视频', path: '/main-videos'}
+                'main-recommended': {name: '推荐', path: 'main-recommended'},
+                'main-followed': {name: '关注', path: 'main-followed',},
+                'main-hot-topics': {name: '热榜', path: 'main-hot-topics'},
+                'main-videos': {name: '视频', path: 'main-videos'}
             }
         }
     },
     methods: {
         onTabChange(index) {
             this.currentTabIndex = index
-        }
+        },
+
     },
     created() {
-    }
+    },
+
 }
 </script>
 <style lang="scss" scoped>
-@include fade(home-main, 0.5s, -20px);
+@include fade(home-main, 0.2s, (-20px, 0, 0));
 </style>
-<style scoped>
+<style lang="scss" scoped>
+.selected {
+    button {
+        color: $blue;
+    }
+}
+
 .card-body .btn:focus {
     color: #0095da;
 }

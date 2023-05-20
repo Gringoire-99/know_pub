@@ -1,1 +1,1 @@
-{"version":3,"sourceRoot":"","sources":[],"names":[],"mappings":"","file":"test.css"}
+{"version":3,"sourceRoot":"","sources":["global.scss","test.scss"],"names":[],"mappings":"AA0II;EA7BF,oBC3GqB;ED4GrB;EAWA,gBADO;;AAGP;EACE;IACE;IACA;;EAGF;IACE;IACA;;;AAYA;EAlCJ,oBC3GqB;ED4GrB;EAOE;EAIF,gBADO;;AAGP;EACE;IACE;IACA;;EAGF;IACE;IACA","file":"test.css"}

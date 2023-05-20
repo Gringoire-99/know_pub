@@ -128,7 +128,7 @@
                     </div>
                     <div class="avatar-nav-item w-100 mt-1">
                         <div class="w-100">
-                            <router-link :to="`/home-user/${$store.state.userId}`">
+                            <router-link :to="`/home-user/${$store.state.userId}`" active-class="selected">
                                 <div class="d-flex align-items-center nav-list-item">
                                     <el-icon class="me-3">
                                         <House/>
@@ -139,7 +139,7 @@
                                     </el-icon>
                                 </div>
                             </router-link>
-                            <router-link to="/home-user">
+                            <router-link active-class="selected" to="/home-user">
                                 <div class="d-flex align-items-center nav-list-item">
                                     <el-icon class="me-3">
                                         <wallet></wallet>
@@ -150,7 +150,7 @@
                                     </el-icon>
                                 </div>
                             </router-link>
-                            <router-link to="/home-user">
+                            <router-link active-class="selected" to="/home-user">
                                 <div class="d-flex align-items-center nav-list-item">
                                     <el-icon class="me-3">
                                         <setting></setting>
@@ -162,7 +162,7 @@
                                 </div>
                             </router-link>
                             <div class="el-divider--horizontal mt-1 mb-1"></div>
-                            <router-link :to="{name:'login-page',query:{isLogout: true}}">
+                            <router-link :to="{name:'login-page',query:{isLogout: true}}" active-class="selected">
                                 <div class="d-flex align-items-center nav-list-item">
                                     <el-icon class="me-3">
                                         <House/>
@@ -307,11 +307,19 @@ export default {
     padding: 0 50px;
     transition: all 0.5s;
 
+    .selected {
+        * {
+            font-weight: bold !important;
+            color: $dark-blue !important;
+        }
+    }
+
     & > div {
         min-width: 0;
         overflow: hidden;
         opacity: 1;
     }
+
 
     .nav-collapse {
 
@@ -333,13 +341,6 @@ export default {
             flex-grow: 2;
             height: 100%;
             white-space: nowrap;
-
-            .selected {
-                button {
-                    font-weight: bold;
-                    color: $dark-blue;
-                }
-            }
 
 
             button {
@@ -555,7 +556,7 @@ export default {
         transition: opacity 0.5s;
     }
 
-    @media screen and (max-width: 800px) {
+    @media screen and (max-width: 850px) {
         grid-template-columns: 1fr 3fr 0fr 0fr 1fr 0fr;
         padding-right: 10px;
         padding-left: 10px;

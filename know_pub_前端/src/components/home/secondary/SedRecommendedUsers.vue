@@ -10,10 +10,11 @@
             <el-carousel-item v-for="users in usersParts" class="d-flex align-items-center">
                 <div class="d-flex flex-column align-items-center w-100">
                     <div v-for="user in users" :key="user.id" class="w-100 mb-2 d-flex align-items-center">
-                        <el-popover
+                        <popover
                             placement="bottom"
                             trigger="hover"
-                            width="430"
+                            :show-after="500"
+                            :width="430"
                         >
                             <post-card :id="user.id"></post-card>
                             <template #reference>
@@ -26,7 +27,7 @@
                                 </div>
 
                             </template>
-                        </el-popover>
+                        </popover>
                         <div class="ms-auto">
                             <el-button class="follow">
                                 <el-icon>
@@ -49,12 +50,13 @@ import AddUser from "@/components/icons/AddUser.vue";
 import http from "@/utils/http/http";
 import Plus from "@/components/icons/Plus.vue";
 import PostCard from "@/components/user/PostCard.vue";
+import Popover from "@/components/common/Popover.vue";
 
 export default {
     //组件名
     name: "sed-recommended-users",
     //依赖的组件
-    components: {PostCard, Plus, AddUser},
+    components: {Popover, PostCard, Plus, AddUser},
     //数据
     data() {
         return {
