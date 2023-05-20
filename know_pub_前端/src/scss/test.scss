@@ -1,32 +1,7 @@
-
-@mixin animated($duration:1s) {
-
+@mixin align($d:flex,$fw:nowrap,$jc:center,$ai:center,$fd:row) {
+  display: $d;
+  justify-content: $jc;
+  align-items: $ai;
+  flex-wrap: $fw;
+  flex-direction: $fd;
 }
-
-@mixin a-fadeIn($direction:in,$duration:1s,$x:0%,$y:0%,$z:0%,$reverse:false) {
-  animation-duration: $duration;
-  animation-fill-mode: both;
-  $from: 0;
-  $to: 1;
-  @if ($reverse) {
-    animation-direction: reverse;
-  }
-  @if ($direction=='out') {
-    $from: 1;
-    $to: 0;
-  }
-  animation-name: fadeIn;
-
-  @keyframes fadeIn {
-    from {
-      opacity: $from;
-      transform: translate3d($x, $y, $z);
-    }
-
-    to {
-      opacity: $to;
-      transform: translate3d(0, 0, 0);
-    }
-  }
-}
-

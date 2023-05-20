@@ -17,11 +17,12 @@
   }
 }
 
-@mixin align($display:flex,$flex-wrap:nowrap,$justify-content:center,$align-items:center) {
-  display: $display;
-  justify-content: $justify-content;
-  align-items: $align-items;
-  flex-wrap: $flex-wrap;
+@mixin align($d:flex,$fw:nowrap,$jc:center,$ai:center,$fd:row) {
+  display: $d;
+  justify-content: $jc;
+  align-items: $ai;
+  flex-wrap: $fw;
+  flex-direction: $fd;
 }
 
 @mixin textButton($color:$blue,$fs:$fs-medium) {
@@ -131,4 +132,53 @@
   }
 }
 
+@mixin fade($name:v,$duration:1s,$x:0,$y:0,$z:0,$reverse:true) {
+  .#{$name} {
+    &-enter-active {
+      @include a-fadeIn(false, $duration, $x, $y, $z);
+    }
 
+    @if ($reverse) {
+      &-leave-active {
+        @include a-fadeIn(true, $duration, $x, $y, $z);
+      }
+    }
+  }
+}
+
+
+@mixin zoomIn($reverse:false,$duration:1s,$x:0.3,$y:0.3,$z:0.3) {
+  @include animated($duration);
+
+  @if ($reverse) {
+    animation-direction: reverse;
+  }
+  animation-name: zoom;
+
+  @keyframes zoom {
+    from {
+      opacity: 0;
+      transform: scale3d($x, $y, $z);
+    }
+
+    50% {
+      opacity: 1;
+    }
+
+  }
+}
+
+@mixin zoom($name:v,$duration:1s,$x:0.3,$y:0.3,$z:0.3,$reverse:true) {
+  .#{$name} {
+    &-enter-active {
+      @include zoomIn(false, $duration, $x, $y, $z);
+    }
+
+    @if ($reverse) {
+      &-leave-active {
+        @include zoomIn(true, $duration, $x, $y, $z);
+      }
+    }
+
+  }
+}

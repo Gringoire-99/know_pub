@@ -12,28 +12,29 @@
                 <div class="question" @click="toQuestion">{{ post.question }}</div>
             </div>
 
+            <transition mode="out-in" name="text">
+                <!--            简短介绍-未展开时显示-->
+                <div v-if="isCollapseFullText&&!isAnswerPattern" class="intro d-flex w-100">
+                    <img v-if="post.content.images.length>0" :src="post.content.images[0]" alt="介绍图片"
+                         class="img-fluid col-3 intro-img">
 
-            <!--            简短介绍-未展开时显示-->
-            <div v-if="isCollapseFullText&&!isAnswerPattern" class="intro d-flex w-100">
-                <img v-if="post.content.images.length>0" :src="post.content.images[0]" alt="介绍图片"
-                     class="img-fluid col-3 intro-img">
-
-                <div class="text">
+                    <div class="text">
                         <span class="intro-text" v-on:click="collapseFullText">{{
                                 post.content.text.slice(0, 80)
                             }}</span>
-                    <span class="full-text-btn" v-on:click="collapseFullText">...阅读全文</span>
-                    <el-icon class="d-inline">
-                        <arrow-down/>
-                    </el-icon>
+                        <span class="full-text-btn" v-on:click="collapseFullText">...阅读全文</span>
+                        <el-icon class="d-inline">
+                            <arrow-down/>
+                        </el-icon>
+                    </div>
                 </div>
-            </div>
+                <!--            正文-->
+                <div v-else class="full-text">
+                    <post-body :is-answer-pattern="isAnswerPattern" :post="post"
+                               @collapseFullText="isCollapseFullText=true"></post-body>
+                </div>
+            </transition>
 
-            <!--            正文-->
-            <div v-if="isAnswerPattern||!isCollapseFullText" class="full-text">
-                <post-body :is-answer-pattern="isAnswerPattern" :post="post"
-                           @collapseFullText="isCollapseFullText=true"></post-body>
-            </div>
 
             <!--            操作栏-->
             <div class="card-footer d-flex align-items-center">
@@ -109,12 +110,14 @@
                     </el-button>
                 </div>
             </div>
+            <transition name="comment">
+                <!--            评论栏-->
+                <div v-if="!isCollapseComments" class="card-footer">
+                    <post-comment></post-comment>
+                    <comments :post-id="post.id"></comments>
+                </div>
+            </transition>
 
-            <!--            评论栏-->
-            <div v-if="!isCollapseComments" class="card-footer">
-                <post-comment></post-comment>
-                <comments :post-id="post.id"></comments>
-            </div>
 
         </div>
     </div>
@@ -228,8 +231,9 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+@include fade(comment, 0.2s, 0, -10px);
+@include fade(text, 0.1s, 10px);
 .list-group .el-popover.el-popper {
     padding: 0
 }

@@ -1,8 +1,7 @@
 <template>
-  <!--    TODO 待抽取-->
-    <div v-if="total>0" class="root">
+    <div class="root">
         <div class="comment-header d-flex align-items-center w-100">
-            <div class="comment_count">{{ total }}条评论</div>
+            <div class="comment-count">{{ total }}条评论</div>
             <el-radio-group v-model="orderBy" class="order" size="small">
                 <el-radio-button :label="ORDER_BY.LIKE_COUNT" @click="changeOrderBy(ORDER_BY.LIKE_COUNT)">默认
                 </el-radio-button>
@@ -12,9 +11,16 @@
                 </el-radio-button>
             </el-radio-group>
         </div>
-        <div class="comments d-flex flex-column  w-100 align-items-center justify-content-center">
-            <root-comment v-for="rootComment in rootComments" :key="rootComment.rootComment.id"
-                          :comments="rootComment"></root-comment>
+        <div class="comments">
+            <transition-group
+                name="comments"
+            >
+                <root-comment v-for="rootComment in rootComments" :key="rootComment.rootComment.id"
+                              :comments="rootComment">
+                </root-comment>
+
+            </transition-group>
+
             <div class="d-flex align-items-center showMore" v-on:click="openCommentsDialog">
                 <span>{{ `点击查看所有${total}条评论` }}</span>
                 <el-icon>
@@ -22,17 +28,16 @@
                 </el-icon>
             </div>
         </div>
-    </div>
+        <div v-if="!isLoading&&total===0" class="d-flex justify-content-center align-items-center">
+            <el-empty description="还没有评论，快来抢沙发吧~"/>
+        </div>
+        <el-skeleton v-if="isLoading" :rows="5" :throttle="0.5" animated/>
 
-    <div v-if="!isLoading&&total===0" class="d-flex justify-content-center align-items-center">
-        <el-empty description="还没有评论，快来抢沙发吧~"/>
-    </div>
-    <el-skeleton v-if="isLoading" :rows="5" :throttle="0.5" animated/>
-
-    <div v-if="isLoadDialog">
-        <el-dialog v-model="dialogVisible" :align-center="true" :draggable="true" width="85%">
-            <comments-dialog :post-id="postId"></comments-dialog>
-        </el-dialog>
+        <div v-if="isLoadDialog">
+            <el-dialog v-model="dialogVisible" :align-center="true" :draggable="true" width="85%">
+                <comments-dialog :post-id="postId"></comments-dialog>
+            </el-dialog>
+        </div>
     </div>
 </template>
 
@@ -187,7 +192,8 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@include fade(comments, 0.5s, 10px, $reverse: false);
 @media screen and (max-width: 768px) {
     .root {
         padding: 0 !important;
@@ -204,6 +210,7 @@ export default {
     border-radius: 3px;
     padding: 10px 20px;
     transition: height 2s;
+
 }
 
 .comment-header {
@@ -215,15 +222,18 @@ export default {
 
 .showMore {
     color: #a2a7a9;
+
+    &:hover {
+        cursor: pointer;
+        color: #409eff;
+    }
 }
 
-.showMore:hover {
-    cursor: pointer;
-    color: #409eff;
-}
 
 .comments {
+    @include align($fd: column);
     padding: 20px 10px;
+
 
 }
 

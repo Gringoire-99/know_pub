@@ -318,7 +318,7 @@ export default {
     }
 
     .logo {
-        @include align($justify-content: start);
+        @include align($jc: start);
         transition: all 0.3s;
 
         img {
@@ -328,7 +328,7 @@ export default {
 
     .nav-items {
         .nav-item {
-            @include align($justify-content: start);
+            @include align($jc: start);
             @include clickable();
             flex-grow: 2;
             height: 100%;

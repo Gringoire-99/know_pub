@@ -1,31 +1,35 @@
 <template>
+    <div class="body w-100">
+        <comment :comment="comments.rootComment"></comment>
 
-    <comment :comment="comments.rootComment"></comment>
+        <div v-if="comments.childComments.length>0"
+             class="child_comments w-100">
+            <transition-group name="comments">
+                <div v-for="(comment,index) in tempChildComments" :key="index">
+                    <comment :comment="comment"></comment>
+                </div>
+            </transition-group>
 
-    <div v-if="comments.childComments.length>0"
-         class="child_comments w-100">
-        <div v-for="(comment,index) in tempChildComments" :key="index">
-                <comment :comment="comment"></comment>
-        </div>
+            <div class="showMore mt-4 mb-4">
+                <!--            -2>4 有大于4个折叠元素（>4） -2>0有折叠元素(4-1)-->
+                <el-button
+                    v-show="comments.childComments.length>TEMP_DISPLAY_NUMBER&&tempChildComments.length<=TEMP_DISPLAY_NUMBER"
+                    v-on:click="unfold">
+                    {{
+                        (comments.childComments.length > NUMBER_ON_HIDE)
+                            ? `查看全部${comments.childComments.length}条评论` : `展开其他${comments.childComments.length - TEMP_DISPLAY_NUMBER}条评论`
+                    }}
+                </el-button>
+            </div>
+            <div v-if="isLoadingRCD">
+                <el-dialog v-model="dialogVisible" :align-center="true" :draggable="true" width="75%">
+                    <root-comment-dialog :root-comment="comments.rootComment"></root-comment-dialog>
+                </el-dialog>
 
-        <div class="showMore mt-4 mb-4">
-            <!--            -2>4 有大于4个折叠元素（>4） -2>0有折叠元素(4-1)-->
-            <el-button
-                v-show="comments.childComments.length>TEMP_DISPLAY_NUMBER&&tempChildComments.length<=TEMP_DISPLAY_NUMBER"
-                v-on:click="unfold">
-                {{
-                    (comments.childComments.length > NUMBER_ON_HIDE)
-                        ? `查看全部${comments.childComments.length}条评论` : `展开其他${comments.childComments.length - TEMP_DISPLAY_NUMBER}条评论`
-                }}
-            </el-button>
-        </div>
-        <div v-if="isLoadingRCD">
-            <el-dialog v-model="dialogVisible" :align-center="true" :draggable="true" width="75%">
-                <root-comment-dialog :root-comment="comments.rootComment"></root-comment-dialog>
-            </el-dialog>
-
+            </div>
         </div>
     </div>
+
 
 </template>
 
@@ -95,16 +99,20 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@include fade(comments, 0.1s, 10px);
+.body {
+    @include align($fd: column);
 
-
-.child_comments {
-    margin-left: 65px;
-    display: flex;
-    flex-direction: column;
-    justify-content: start !important;
-    padding-right: 33px;
+    .child_comments {
+        margin-left: 65px;
+        display: flex;
+        flex-direction: column;
+        justify-content: start !important;
+        padding-right: 33px;
+    }
 }
+
 
 @media screen and (max-width: 500px) {
     .child_comments {

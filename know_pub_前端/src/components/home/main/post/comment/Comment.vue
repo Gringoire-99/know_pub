@@ -1,6 +1,6 @@
 <template>
-    <div class="d-flex justify-content-start align-items-start w-100 mb-3 root">
-        <div class="avatar me-2 pointer">
+    <div class="comment w-100 mb-3">
+        <div class="avatar me-2">
             <el-popover
                 placement="bottom"
                 trigger="hover"
@@ -12,8 +12,8 @@
                 </template>
             </el-popover>
         </div>
-        <div class="d-flex flex-column w-100">
-            <div class="d-flex align-items-center justify-content-start">
+        <div class="body d-flex flex-column w-100">
+            <div class="name d-flex align-items-center justify-content-start">
                 <span class="fw-bold d-flex align-items-center reply">
                      <el-popover
                          placement="bottom"
@@ -40,12 +40,11 @@
 
                     </span>
                 </span>
-
                 <el-icon class="more">
                     <MoreFilled/>
                 </el-icon>
             </div>
-            <span>{{ comment.content }}</span>
+            <span class="content">{{ comment.content }}</span>
             <div class="footer d-flex align-items-center">
                 <span class="fw-lighter fs-6">{{ comment.publishTime.substring(0, 10) }}</span>
                 <span v-show="comment.likeCount>200"><span>·</span><span class="label">热评</span></span>
@@ -65,7 +64,7 @@
                     </div>
                 </div>
             </div>
-            <div v-show="isOpenPostComment" class="w-100 mt-1 mb-1" @focusout="displayPostComment">
+            <div v-show="isOpenPostComment" class="post-comment w-100 mt-1 mb-1" @focusout="displayPostComment">
                 <post-comment :is-show-avatar="false" :placeholder="`回复 ${comment.name}`"></post-comment>
             </div>
         </div>
@@ -124,38 +123,67 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.comment {
+    @include align($ai: start);
 
-.reply .el-icon {
-    font-size: 15px;
-    margin-left: 5px;
-    margin-right: 5px;
-    color: #98989a;
+    .avatar {
+        cursor: pointer;
+    }
+
+    .body {
+        .name {
+            .reply {
+                .el-icon {
+                    font-size: 15px;
+                    margin-left: 5px;
+                    margin-right: 5px;
+                    color: #98989a;
+                }
+            }
+
+            .more {
+                margin-left: auto;
+            }
+
+        }
+
+        .content {
+
+        }
+
+        .footer {
+            .operations {
+                margin-left: auto;
+                width: max-content;
+
+                span {
+                    text-wrap: none;
+                    text-overflow: ellipsis;
+                }
+
+                img {
+                    width: 20px;
+                    height: 20px;
+                    margin-left: 10px;
+                }
+
+                div {
+                    cursor: pointer;
+
+                    &:hover {
+                        color: #2259dc;
+                    }
+                }
+            }
+        }
+
+        .post-comment {
+
+        }
+    }
 }
 
-.more {
-    margin-left: auto;
-}
-
-.label {
-    color: #e7800a;
-}
-
-.operations {
-    margin-left: auto;
-    width: max-content;
-}
-
-.operations span {
-    text-wrap: none;
-    text-overflow: ellipsis;
-}
-
-.operations img {
-    width: 20px;
-    height: 20px;
-    margin-left: 10px;
-}
 
 @media screen and (max-width: 500px) {
     .footer span {
@@ -165,13 +193,6 @@ export default {
     .root {
         margin-bottom: 5px !important;
     }
-}
-.operations div {
-    cursor: pointer;
-}
-
-.operations div:hover {
-    color: #2259dc;
 }
 
 

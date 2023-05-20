@@ -16,9 +16,10 @@
 
                     </div>
                     <div class="w-100">
-
-                        <router-view>
-                        </router-view>
+                        <transition name="home-main">
+                            <router-view>
+                            </router-view>
+                        </transition>
 
 
                     </div>
@@ -59,9 +60,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.home-main {
-
-}
+@include fade(home-main, 0.5s, -20px);
 </style>
 <style scoped>
 .card-body .btn:focus {
