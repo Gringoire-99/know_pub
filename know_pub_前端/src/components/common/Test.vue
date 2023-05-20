@@ -1,10 +1,16 @@
 <template>
-    <button @click="show=!show">show</button>
-    <Transition
-            name="p"
-    >
-        <span v-if="show" class="animate__zoomOutLeft">hello</span>
-    </Transition>
+    <div class="body">
+        <div class="left">
+            <div class="box">11111111</div>
+            <div class="box">11111111</div>
+            <div class="box">11111111</div>
+        </div>
+        <div class="right">
+            <div class="box">11111111</div>
+            <div class="box">11111111</div>
+            <div class="box">11111111</div>
+        </div>
+    </div>
 </template>
 <script>
 export default {
@@ -14,11 +20,13 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-@include zoom(p);
+.body {
+    @include align(grid);
+    grid-template-columns: 1fr 2fr;
 
-span {
-  @include hoverUnderLine(left);
-
+    & > div {
+        @include align($grow: 1);
+    }
 }
 
 </style>

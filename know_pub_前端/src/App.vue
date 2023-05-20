@@ -39,8 +39,8 @@ export default {
     },
     //创建时执行
     created() {
-        localStorage.setItem("userId", '1')
-        this.$cookies.set("token", Mock.mock('@guid'))
+        // localStorage.setItem("userId", '1')
+        // this.$cookies.set("token", Mock.mock('@guid'))
 
         //     从本地存储中获取用户id
         let userId = localStorage.getItem("userId")

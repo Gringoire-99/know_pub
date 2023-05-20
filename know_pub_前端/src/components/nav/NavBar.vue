@@ -182,7 +182,7 @@
         </div>
 
     </div>
-    <el-dialog v-model="isShowLogin" center class="dialog-login">
+    <el-dialog v-model="isShowLogin" center class="dialog-login" width="50%">
         <login/>
     </el-dialog>
 </template>

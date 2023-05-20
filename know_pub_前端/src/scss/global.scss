@@ -17,13 +17,22 @@
   }
 }
 
-@mixin align($d:flex,$fw:nowrap,$jc:center,$ai:center,$fd:row) {
+@mixin align($d:flex,$fw:nowrap,$jc:center,$ai:center,$fd:row,$grow:0,$basis:10px) {
   display: $d;
   justify-content: $jc;
   align-items: $ai;
-  flex-wrap: $fw;
-  flex-direction: $fd;
+  @if ($d == flex) {
+    flex-wrap: $fw;
+    flex-direction: $fd;
+  }
+  @if ($grow!=0) {
+    & > * {
+      flex-grow: $grow;
+      flex-basis: $basis;
+    }
+  }
 }
+
 
 @mixin textButton($color:$blue,$fs:$fs-medium) {
   border: none;
