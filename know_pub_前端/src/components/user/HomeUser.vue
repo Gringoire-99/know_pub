@@ -1,5 +1,4 @@
 <template>
-
     <div class="grid">
         <div class="space"></div>
         <div class="body-grid">

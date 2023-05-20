@@ -71,15 +71,7 @@ export default {
 }
 </script>
 <style lang="scss">
-.fade {
-    &-enter-active {
-        @include a-fadeIn($duration: 0.3s);
-    }
 
-    &-leave-active {
-        @include a-fadeIn($reverse: true, $duration: 0.5s, $x: -10%, $y: 0, $z: 0);
-    }
-}
 </style>
 <style>
 .fs-sed {

@@ -2,8 +2,6 @@
     <div class="w-100 h-100">
         <home-navbar/>
         <div class="main d-flex">
-
-
             <router-view>
             </router-view>
         </div>
