@@ -27,7 +27,14 @@
         <module>kp_common</module>
     </modules>
 
-
+    <dependencies>
+        <!--junit-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
     <dependencyManagement>
         <dependencies>
             <!-- SpringBoot的依赖配置-->
