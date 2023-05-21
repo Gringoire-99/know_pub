@@ -1,18 +1,19 @@
 <template>
     <div class="comment w-100 mb-3">
         <div class="avatar me-2">
-            <popover
+
+        <popover
                 placement="bottom"
                 trigger="hover"
                 :show-after="500"
                 :width="430"
-
             >
                 <post-card :id="comment.publisherId"></post-card>
                 <template #reference>
                     <el-avatar :src="comment.avatar" shape="square" size="small"></el-avatar>
                 </template>
             </popover>
+
         </div>
         <div class="body d-flex flex-column w-100">
             <div class="header d-flex align-items-center justify-content-start">

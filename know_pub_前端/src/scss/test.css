@@ -1,16 +1,31 @@
-.collapse-grid {
-  display: grid;
-  transition: grid 0.2s, opacity 0.2s;
-  opacity: 0;
-  grid-template-rows: 0fr;
+.box-enter-active {
+  animation-duration: 0.5s;
+  animation-fill-mode: both;
+  animation-name: zoomfalsebox;
 }
-.collapse-grid > * {
-  min-height: 0;
-  overflow: hidden;
+@keyframes zoomfalsebox {
+  from {
+    opacity: 0;
+    transform: scale3d(0.1, 0.1, 0.1) translate3d(0, 0, 0);
+  }
+  50% {
+    opacity: 1;
+  }
 }
-.collapse-grid.showPostComment {
-  grid-template-rows: 1fr !important;
-  opacity: 1 !important;
+.box-leave-active {
+  animation-duration: 0.5s;
+  animation-fill-mode: both;
+  animation-direction: reverse;
+  animation-name: zoomtruebox;
+}
+@keyframes zoomtruebox {
+  from {
+    opacity: 0;
+    transform: scale3d(0.1, 0.1, 0.1) translate3d(0, 0, 0);
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
 /*# sourceMappingURL=test.css.map */

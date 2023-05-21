@@ -1,16 +1,14 @@
 <template>
-    <div class="body">
-        <div class="left">
-            <div class="box">11111111</div>
-            <div class="box">11111111</div>
-            <div class="box">11111111</div>
+    <button @click="show=!show">show</button>
+    <transition
+        name="box"
+    >
+
+        <div v-show="show" class="">
+            1
         </div>
-        <div class="right">
-            <div class="box">11111111</div>
-            <div class="box">11111111</div>
-            <div class="box">11111111</div>
-        </div>
-    </div>
+    </transition>
+
 </template>
 <script>
 export default {
@@ -20,13 +18,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.body {
-    @include align(grid);
-    grid-template-columns: 1fr 2fr;
+@include zoom(box, 0.3s, (0.05, 0.05, 0.05), (0, 10px, 0), $reverse: false);
 
-    & > div {
-        @include align($grow: 1);
-    }
-}
 
 </style>

@@ -114,7 +114,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-@include zoom(post-card, 0.3s, (0.05, 0.05, 0.05), $reverse: false);
+@include zoom(post-card, 0.3s, (0.05, 0.05, 0.05), (0, -10px, 0), $reverse: false);
 .desc {
     color: #232121;
     font-size: 12px;

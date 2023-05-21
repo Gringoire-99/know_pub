@@ -19,7 +19,7 @@
         <div class="login-form w">
             <div class="form-body">
                 <el-tabs v-model="activeName" class="">
-                    <el-tab-pane class="" label="验证码登录" name="first">
+                    <el-tab-pane class="" label="验证码登录" name="phone">
                         <div class="form">
                             <div class="account">
                                 <div>
@@ -61,12 +61,12 @@
                                 <button class="text-btn">获取语音验证码</button>
                             </div>
                             <div class="submit-btn">
-                                <button class="w-100">登录/注册</button>
+                                <button class="w-100" @click="login">登录/注册</button>
                             </div>
                         </div>
 
                     </el-tab-pane>
-                    <el-tab-pane class="" label="密码登录" name="second">
+                    <el-tab-pane class="" label="密码登录" name="passwd">
                         <div class="form">
 
                             <div class="account">
@@ -84,7 +84,7 @@
                                 <button class="text-btn">忘记密码</button>
                             </div>
                             <div class="submit-btn">
-                                <button class="w-100">登录</button>
+                                <button class="w-100" @click="login">登录</button>
                             </div>
                         </div>
 
@@ -124,6 +124,7 @@ import {ArrowDown, Picture} from "@element-plus/icons-vue";
 import QQ from "@/components/icons/QQ.vue";
 import WeChat from "@/components/icons/WeChat.vue";
 import Github from "@/components/icons/Github.vue";
+import http from "@/utils/http/http";
 
 export default {
     //组件名
@@ -139,7 +140,6 @@ export default {
                     number: '',
                     label: '中国大陆'
                 },
-                password: '',
                 captcha: ''
 
             },
@@ -148,7 +148,7 @@ export default {
                 password: '',
             }
             ,
-            activeName: 'first',
+            activeName: 'phone',
             phonePrefix: [
                 {
                     value: '86',
@@ -276,6 +276,16 @@ export default {
     },
     //方法
     methods: {
+        login() {
+            http.post('/user/login', {
+                account: this.activeName === 'phone' ? this.loginForm.phone : this.loginFormByPassword.account,
+                password: this.activeName === 'phone' ? this.loginForm.captcha : this.loginFormByPassword.password
+            }).then(res => {
+                console.log(res)
+            }, err => {
+                console.log(err)
+            })
+        },
         logout() {
             this.$store.commit("SET_USER_ID", null)
             this.$store.commit("LOGIN_STATE", false)
@@ -290,16 +300,11 @@ export default {
     created() {
         let isLogout = this.$route.query['isLogout']
         if (isLogout) {
-            //     清除登录信息
-
             this.logout()
         }
     },
     //侦听器
-    watch: {
-        // 每当 question 改变时，这个函数就会执行
-        // question(newQuestion, oldQuestion) {}
-    }
+    watch: {}
     ,
     //计算属性
     computed: {}
@@ -411,8 +416,7 @@ export default {
                             @include clearDefault();
                             @include clickEffect($color: $white, $bg: $blue);
                             @include align($jc: start, $ai: center);
-                            padding: 0 0;
-                            cursor: pointer;
+                            padding: 0;
                             height: 25px;
                             margin-bottom: 10px;
 
@@ -449,6 +453,7 @@ export default {
         }
 
         .submit-btn {
+            @include clickEffect();
             margin-top: 20px;
 
             button {

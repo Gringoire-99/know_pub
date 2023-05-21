@@ -1,8 +1,6 @@
 @import "global";
-.collapse-grid {
-  @include gridCollapse(showPostComment, row, 0.2s)
+@include zoom(box, 0.5s, (0.1, 0.1, 0.1), (0, 0, 0))
 
-}
 
 
 
