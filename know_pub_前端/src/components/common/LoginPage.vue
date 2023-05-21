@@ -1,5 +1,6 @@
 <template>
     <div class="login-root">
+        <div class="space"></div>
         <div class="main">
             <div class="space"></div>
             <login></login>
@@ -27,6 +28,7 @@
             </div>
             <div class="space"></div>
         </div>
+        <div class="space"></div>
     </div>
 
 </template>
@@ -74,18 +76,24 @@ export default {
 
 .login-root {
     @include align(grid);
-    grid-template-columns: 1fr;
-    padding-left: 10%;
-    padding-right: 10%;
+    grid-template-columns:1fr 2fr 1fr;
     height: 100vh;
     background: url("../../assets/login/login_bg.png") no-repeat scroll center;
     background-size: cover;
     overflow-x: hidden;
     overflow-y: scroll;
+    transition: grid 0.5s;
+    @media screen and (max-width: 1200px) {
+        grid-template-columns:1fr 4fr 1fr;
+    }
+    @media screen and (max-width: 800px) {
+        grid-template-columns:1fr 8fr 1fr;
+    }
 
     .main {
         @include align(grid);
         grid-template-rows: 1fr 5fr 1fr;
+        flex-shrink: 0;
 
         .footer {
             div {

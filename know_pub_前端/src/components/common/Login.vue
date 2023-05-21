@@ -55,10 +55,10 @@
                             <div class="captcha">
                                 <input v-model="loginForm.captcha" class="captcha-input"
                                        placeholder="请输入6位验证码">
-                                <button class="captcha-btn">获取短信验证码</button>
+                                <button class="text-btn">获取短信验证码</button>
                             </div>
                             <div class="get-captcha">
-                                <button class="voice-captcha-btn ">获取语音验证码</button>
+                                <button class="text-btn">获取语音验证码</button>
                             </div>
                             <div class="submit-btn">
                                 <button class="w-100">登录/注册</button>
@@ -81,7 +81,7 @@
                             </div>
 
                             <div class="get-passwd">
-                                <button class="voice-captcha-btn ">忘记密码</button>
+                                <button class="text-btn">忘记密码</button>
                             </div>
                             <div class="submit-btn">
                                 <button class="w-100">登录</button>
@@ -110,8 +110,8 @@
                 </div>
                 <div class="">
                         <span>未注册手机验证后自动登录，注册即代表同意
-                            <span class="agreement text-primary">《知道吧协议》</span>
-                            <span class="agreement text-primary">《隐私保护指引》</span>
+                            <span class="agreement">《知道吧协议》</span>
+                            <span class="agreement">《隐私保护指引》</span>
                         </span>
                 </div>
             </div>
@@ -361,29 +361,38 @@ export default {
             width: 100%;
 
             .form {
-                @include align(grid, $ai: center);
-                grid-template-rows: auto auto auto auto;
-                grid-gap: 10px;
-                grid-template-columns: 1fr;
 
                 & > div {
                     @include align($jc: start, $ai: center);
                 }
 
+                .text-btn {
+                    @include clearDefault();
+                    @include clickEffect();
+                    margin-left: auto;
+                    color: $blue;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+
+                }
 
                 .account, .captcha, .passwd {
                     padding-bottom: 5px;
                     border-bottom: 1px solid rgba(220, 223, 230, 0.51);
 
                     input {
-                        margin-left: 15px;
                         @include clearDefault();
+                        flex-grow: 1;
+                        flex-basis: 5px;
+                        height: 75px;
                     }
 
                     .phone-prefix {
                         @include clearDefault();
+                        @include clickEffect();
+                        align-self: stretch;
                         font-size: $fs-medium;
-                        @include clickable();
+                        color: $blue;
 
                         .prefix-label {
                             @media screen and (max-width: 1000px) {
@@ -400,14 +409,13 @@ export default {
 
                         @at-root .list-item {
                             @include clearDefault();
+                            @include clickEffect($color: $white, $bg: $blue);
+                            @include align($jc: start, $ai: center);
                             padding: 0 0;
                             cursor: pointer;
                             height: 25px;
                             margin-bottom: 10px;
-                            &:hover {
-                                color: #fff;
-                                background: #409eff;
-                            }
+
                         }
                     }
                 }
@@ -422,17 +430,27 @@ export default {
 
             @include align(grid, $jc: start, $ai: center);
 
-            .other-way-icons .el-icon {
-                font-size: 50px;
-                cursor: pointer;
+            .other-way-icons {
+                margin-top: 20px;
+                margin-bottom: 20px;
+
+                .el-icon {
+                    flex-grow: 1;
+                    flex-basis: 10px;
+                    font-size: 50px;
+                    cursor: pointer;
+                }
             }
 
             .agreement {
-                @include clickable()
+                color: $dark-blue;
+                @include clickEffect()
             }
         }
 
         .submit-btn {
+            margin-top: 20px;
+
             button {
                 height: 40px;
                 background: #056de8;
@@ -446,11 +464,6 @@ export default {
             }
         }
 
-
-        .captcha-btn, .voice-captcha-btn {
-            @include textButton();
-            @include clickEffect();
-        }
     }
 
     &:hover {

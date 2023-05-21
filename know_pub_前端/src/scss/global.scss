@@ -2,13 +2,16 @@
 
 @mixin clickable($color:$blue) {
   cursor: pointer;
-  &:hover {
+  &:is(:hover,:active,:focus) {
     color: lighten($color, 20%);
   }
 }
 
-@mixin clickEffect($color:$blue,$scale:0.99) {
+@mixin clickEffect($color:$blue,$scale:0.99,$bg:none) {
   @include clickable($color);
+  &:hover {
+    background: $bg;
+  }
   &:active {
     transform: scale($scale);
   }
@@ -195,3 +198,25 @@
   }
 }
 
+@mixin gridCollapse($name:isShow,$direction:row,$duration:0.3s) {
+  display: grid;
+  transition: grid $duration, opacity $duration;
+  opacity: 0;
+  & > * {
+    min-height: 0;
+    overflow: hidden;
+  }
+  @if ($direction==row) {
+    grid-template-rows: 0fr;
+    &.#{$name} {
+      grid-template-rows: 1fr !important;
+      opacity: 1 !important;
+    }
+  } @else {
+    grid-template-columns: 0fr;
+    &.#{$name} {
+      grid-template-columns: 1fr !important;
+      opacity: 1 !important;
+    }
+  }
+}

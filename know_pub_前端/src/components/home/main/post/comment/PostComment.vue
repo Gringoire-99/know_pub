@@ -8,36 +8,41 @@
 
             >
             </textarea>
-            <div v-if="isShowFooter" class="comment-footer w-100 d-flex align-items-center mb-1">
-                <div class="icon">
-                    <el-icon>
-                        <select-picture></select-picture>
-                    </el-icon>
-                </div>
-                <div class="icon">
-                    <el-icon>
-                        <voice></voice>
-                    </el-icon>
-                </div>
-                <el-popover
-                    placement="bottom"
-                    trigger="click"
-                    width="370px"
-                >
-                    <template #reference>
-                        <div>
-                            <el-icon class="icon" @mousedown="preventDefault">
-                                <emoji></emoji>
-                            </el-icon>
-                        </div>
-                        <!--                      preventDefault  防止textarea失焦-->
 
-                    </template>
-                    <VuemojiPicker class="d-block" @emojiClick="handleEmojiClick" v-on:mousedown="preventDefault"/>
-                </el-popover>
-                <button class="">发布</button>
+            <div :class="{'show-footer':isShowFooter}" class="comment-footer">
+                <div>
+                    <div class="icon">
+                        <el-icon>
+                            <select-picture></select-picture>
+                        </el-icon>
+                    </div>
+                    <div class="icon">
+                        <el-icon>
+                            <voice></voice>
+                        </el-icon>
+                    </div>
+                    <el-popover
+                        placement="bottom"
+                        trigger="click"
+                        width="370px"
+                    >
+                        <template #reference>
+                            <div>
+                                <el-icon class="icon" @mousedown="preventDefault">
+                                    <emoji></emoji>
+                                </el-icon>
+                            </div>
+                            <!--                      preventDefault  防止textarea失焦-->
+
+                        </template>
+                        <VuemojiPicker class="d-block" @emojiClick="handleEmojiClick" v-on:mousedown="preventDefault"/>
+                    </el-popover>
+                    <button class="publish">发布</button>
+                </div>
+
 
             </div>
+
         </div>
     </div>
 
@@ -118,8 +123,8 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+@include fade(footer, 0.3s, (0, -10px, 0));
 textarea {
     width: 100%;
     border: none;
@@ -129,18 +134,38 @@ textarea {
     min-height: 52px;
 }
 
-.comment-footer button {
-    font-size: 15px;
-    border-radius: 2px;
-    font-weight: bold;
-    padding: 3px 15px;
-    background-color: #54a2d5;
-    color: white;
-    border: none;
-    outline: none;
-    box-shadow: none;
-    /*    最右*/
+.comment-footer {
+    @include gridCollapse(show-footer, row, 0.2s);
+
+    & > div {
+        @include align();
+        min-height: 0;
+        overflow: hidden;
+
+        .publish {
+        }
+
+        .icon {
+            font-size: 30px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+    }
+
+    button {
+        font-size: 15px;
+        border-radius: 2px;
+        font-weight: bold;
+        padding: 3px 15px;
+        background-color: #54a2d5;
+        color: white;
+        border: none;
+        outline: none;
+        box-shadow: none;
+        /*    最右*/
     margin-left: auto;
+    }
 }
 
 .avatar {
@@ -160,10 +185,5 @@ textarea {
     padding: 5px 10px 0px;
 }
 
-.icon {
-    font-size: 30px;
-    margin-right: 10px;
-    cursor: pointer;
-}
 
 </style>

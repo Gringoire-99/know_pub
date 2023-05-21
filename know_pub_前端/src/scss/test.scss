@@ -1,6 +1,8 @@
 @import "global";
+.collapse-grid {
+  @include gridCollapse(showPostComment, row, 0.2s)
 
-@include fade(comment, 0.2s, (100px, 0, 0));
+}
 
 
 

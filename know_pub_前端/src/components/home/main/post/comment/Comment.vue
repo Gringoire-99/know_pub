@@ -69,8 +69,11 @@
                     </div>
                 </div>
             </div>
-            <div v-show="isOpenPostComment" class="post-comment w-100 mt-1 mb-1" @focusout="displayPostComment">
-                <post-comment :is-show-avatar="false" :placeholder="`回复 ${comment.name}`"></post-comment>
+            <div :class="{'showPostComment':isOpenPostComment}" class="collapse-grid ">
+                <div class="post-comment w-100 mt-1 mb-1"
+                     @focusout="displayPostComment">
+                    <post-comment :is-show-avatar="false" :placeholder="`回复 ${comment.name}`"></post-comment>
+                </div>
             </div>
         </div>
     </div>
@@ -193,7 +196,8 @@ export default {
             }
         }
 
-        .post-comment {
+        .collapse-grid {
+            @include gridCollapse(showPostComment, row, 0.2s)
 
         }
     }
