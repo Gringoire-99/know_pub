@@ -47,5 +47,8 @@ public class Result<T> implements java.io.Serializable {
     public static Result<?> error(Integer code ,String msg) {
         return new Result<>(code, msg);
     }
+    public static Result<?> error(HttpEnum httpEnum) {
+        return new Result<>(httpEnum.getCode(),httpEnum.getMsg());
+    }
 
 }

@@ -5,6 +5,7 @@ import lombok.Data;
 public enum HttpEnum {
     SUCCESS(200, "success"),
     ERROR(500, "error"),
+    USER_NOT_FOUND(512, "user not found"),
     NOT_FOUND(404, "not found"),
     BAD_REQUEST(400, "bad request"),
     UNAUTHORIZED(401, "unauthorized"),
