@@ -5,14 +5,11 @@ const actions = {}
 //动作调用的实现方法(改变state)
 const mutations = {
     //参数1 state 所有组件都可访问到的空间，2 action传递的参数
-    LOGIN_STATE(state, flag) {
+    SET_LOGIN_STATE(state, flag) {
         state.isLogin = flag;
     },
     SET_USER(state, user) {
         state.userInfo = user;
-    },
-    SET_USER_ID(state, userId) {
-        state.userId = userId;
     },
     SET_LOAD_DATA(state, loadData) {
         state.loadData = loadData;
@@ -20,15 +17,35 @@ const mutations = {
 
 }
 const state = {
-    userId: '',
     isLogin: false,
     userInfo: {
-        name: '',
-        avatar: '',
-        description: '',
-        postCount: 0,
+        answerCount: 0,
         articleCount: 0,
+        auth: "0",
+        avatar: "",
+        background: "",
+        collectionCount: 0,
+        commentCount: 0,
+        company: "",
+        createTime: null,
+        description: "这个人很懒，什么都没有留下",
+        experience: 0,
+        followCount: 0,
         followerCount: 0,
+        gender: "",
+        id: "",
+        industry: "",
+        job: "",
+        koinCount: 0,
+        likeCount: 0,
+        location: "",
+        name: "",
+        postCount: 0,
+        questionCount: 0,
+        resume: "",
+        school: "",
+        status: 0,
+        videoCount: 0
     },
     loadData: false
 }

@@ -22,7 +22,7 @@ export default {
     }, methods: {
         getPosts() {
             this.isLoading = true
-            axios.get('/api/recommended-posts', {
+            axios.get('/recommended-posts', {
                 id: this.$store.userId,
                 pageSize: this.pageSize,
                 currentPage: this.currentPage,
@@ -31,7 +31,6 @@ export default {
                 this.posts.push(...response.data)
                 this.isLoading = false
             }, reason => {
-                alert(reason)
             }).finally(() => {
                 this.$store.state.loadData = false
             })

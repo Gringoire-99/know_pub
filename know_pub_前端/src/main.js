@@ -11,7 +11,7 @@ import zhCn from 'element-plus/es/locale/lang/zh-cn'
 import Router from "@/router";
 import {store} from "../store";
 import http from "@/utils/http/http";
-import VueCookie from 'vue3-cookies'
+import VueCookie from 'vue3-cookies';
 import mockSetUp from "@/utils/mock/mock-setup";
 
 const app = createApp(App)

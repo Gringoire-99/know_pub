@@ -15,6 +15,12 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @TableName("know_pub.user")
 public class User {
+
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
     @TableId(value = "id", type = IdType.AUTO)
     // 用户id
     private String id;

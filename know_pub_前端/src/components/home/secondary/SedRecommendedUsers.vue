@@ -82,7 +82,6 @@ export default {
                 this.users = response.data.data.users
             }
         }, reason => {
-            alert("failed in getting recommended users")
         })
     },
     //侦听器

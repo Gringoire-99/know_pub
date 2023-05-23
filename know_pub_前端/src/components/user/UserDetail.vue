@@ -130,7 +130,7 @@ export default {
     },
     //创建时执行
     created() {
-        this.getDynamics()
+        // this.getDynamics()
     },
     //侦听器
     watch: {

@@ -3,7 +3,7 @@
         <div class="space"></div>
         <div class="body-grid">
             <div class="header">
-                <div :style="`background: url('${userInfo.backgroundImg}')`" class="background-img ">
+                <div :style="`background: url('${userInfo.background}')`" class="background-img ">
                     <div class="d-flex info">
                         <div class="avatar d-flex align-items-end">
                             <div class="img">
@@ -94,36 +94,7 @@ export default {
     data() {
         return {
             showInfoDialog: false,
-            id: '',
-            userInfo: {
-                id: "",
-                name: "",
-                avatar: "",
-                description: "",
-                // 回答数
-                postCount: 0,
-                // 文章数
-                articleCount: 0,
-                // 被关注数
-                followerCount: 0,
-                // 提问数
-                questionCount: 0,
-                collectionCount: 0,
-                followCount: 0,
-                videoCount: 0,
-                followedTopicCount: 0,
-                followedQuestionCount: 0,
-                // 个人简介
-                industry: '',
-                gender: '',
-                location: '',
-                school: '',
-                jobHistory: '',
-                resume: '',
-                authentication: '',
-                backgroundImg: '',
-            },
-
+            userInfo: {}
         }
     },
     //方法
@@ -133,25 +104,27 @@ export default {
     },
     //创建时执行
     created() {
-        this.id = this.$route.params.userId
-        http.get('/user/info-detail/', {
+        let id = this.$route.params.userId
+        if (id === this.$store.state.userInfo.id) {
+            this.userInfo = this.$store.state.userInfo
+            return
+        }
+        http.get('/user/info-detail', {
             params: {
-                id: this.id
+                userId: id
             }
         }).then(res => {
-            if (res.status === 200) {
+            if (res.data.code === 200) {
                 this.userInfo = res.data.data
-                console.log(this.userInfo)
+            } else {
             }
-        }).catch(err => {
-            alert("fail in HomeUser")
+        }, err => {
+        }).finally(() => {
+            console.log(this.userInfo)
         })
     },
     //侦听器
-    watch: {
-        // 每当 question 改变时，这个函数就会执行
-        // question(newQuestion, oldQuestion) {}
-    }
+    watch: {}
     ,
     //计算属性
     computed: {}

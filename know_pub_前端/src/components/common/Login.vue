@@ -20,8 +20,8 @@
             <div class="form-body">
                 <el-tabs v-model="activeName" class="">
                     <el-tab-pane class="" label="验证码登录" name="phone">
-                        <div class="form">
-                            <div class="account">
+                        <form class="form">
+                            <div class="username">
                                 <div>
                                     <el-popover
                                         placement="bottom"
@@ -57,20 +57,22 @@
                                        placeholder="请输入6位验证码">
                                 <button class="text-btn">获取短信验证码</button>
                             </div>
-                            <div class="get-captcha">
-                                <button class="text-btn">获取语音验证码</button>
+                            <div class="pane-footer">
+                                <div class="get-captcha">
+                                    <button class="text-btn">获取语音验证码</button>
+                                </div>
                             </div>
                             <div class="submit-btn">
-                                <button class="w-100" @click="login">登录/注册</button>
+                                <button class="w-100" @click="loginBySms">登录/注册</button>
                             </div>
-                        </div>
+                        </form>
 
                     </el-tab-pane>
                     <el-tab-pane class="" label="密码登录" name="passwd">
-                        <div class="form">
+                        <form class="form">
 
-                            <div class="account">
-                                <input v-model="loginFormByPassword.account" autocomplete="username"
+                            <div class="username">
+                                <input v-model="loginFormByPassword.username" autocomplete="username"
                                        class="phone"
                                        placeholder="手机号或邮箱">
                             </div>
@@ -80,14 +82,43 @@
                                        type="password">
                             </div>
 
-                            <div class="get-passwd">
-                                <button class="text-btn">忘记密码</button>
+
+                            <div class="pane-footer">
+                                <div v-show="!isLoading" class="get-passwd ms-auto">
+                                    <button class="text-btn">忘记密码</button>
+                                </div>
+                                <el-progress v-show="isLoading" :indeterminate="true"
+                                             :percentage="100"/>
+
                             </div>
                             <div class="submit-btn">
                                 <button class="w-100" @click="login">登录</button>
                             </div>
-                        </div>
+                        </form>
 
+                    </el-tab-pane>
+                    <el-tab-pane label="注册" name="register">
+                        <form>
+                            <form class="form">
+
+                                <div class="username">
+                                    <input v-model="registerForm.username" autocomplete="username"
+                                           class="phone"
+                                           placeholder="手机号或邮箱">
+                                </div>
+                                <div class="passwd">
+                                    <input v-model="registerForm.password" autocomplete="current-password"
+                                           class="phone" placeholder="密码"
+                                           type="password">
+                                </div>
+                                <div class="pane-footer">
+
+                                </div>
+                                <div class="submit-btn">
+                                    <button class="w-100" @click="register">注册</button>
+                                </div>
+                            </form>
+                        </form>
                     </el-tab-pane>
                 </el-tabs>
             </div>
@@ -124,7 +155,9 @@ import {ArrowDown, Picture} from "@element-plus/icons-vue";
 import QQ from "@/components/icons/QQ.vue";
 import WeChat from "@/components/icons/WeChat.vue";
 import Github from "@/components/icons/Github.vue";
-import http from "@/utils/http/http";
+import {http, http_no_token} from "@/utils/http/http";
+import {ElMessage, ElMessageBox} from "element-plus";
+import ValidationUtils from "@/utils/vaildation";
 
 export default {
     //组件名
@@ -144,11 +177,14 @@ export default {
 
             },
             loginFormByPassword: {
-                account: "",
+                username: "",
                 password: '',
-            }
-            ,
-            activeName: 'phone',
+            },
+            registerForm: {
+                username: '',
+                password: ''
+            },
+            activeName: 'passwd',
             phonePrefix: [
                 {
                     value: '86',
@@ -272,29 +308,99 @@ export default {
                 }
 
             ],
+            isLoading: false
         }
     },
     //方法
     methods: {
         login() {
-            http.post('/user/login', {
-                account: this.activeName === 'phone' ? this.loginForm.phone : this.loginFormByPassword.account,
-                password: this.activeName === 'phone' ? this.loginForm.captcha : this.loginFormByPassword.password
+            if (this.isLoading) return
+            let validation = ValidationUtils.validate()
+                .validateEmpty(this.loginFormByPassword.password, this.loginForm.phone)
+                .validateUsername(this.loginFormByPassword.username)
+                .validatePassword(this.loginFormByPassword.password)
+            if (!validation.status) {
+                ElMessage({
+                    message: `登录失败 ：${validation.msg}`,
+                    type: "error"
+                })
+                return;
+            }
+
+            this.isLoading = true
+            http_no_token.post('/user/login', {
+                username: this.loginFormByPassword.username,
+                password: this.loginFormByPassword.password
             }).then(res => {
-                console.log(res)
+                if (res.data.code === 200) {
+                    ElMessage({
+                        message: `登录成功！`,
+                        type: "success"
+                    })
+                    this.$cookies.set('token', res.data.data.token)
+                    this.$store.commit('SET_USER', res.data.data.userVo)
+                    this.$store.commit('SET_LOGIN_STATE', true)
+                    localStorage.setItem('userId', res.data.data.userVo.id)
+                    this.$emit('login')
+
+                } else {
+                    ElMessage({
+                        message: `登录失败：${res.data.msg},code:${res.data.code}`,
+                        type: "error"
+                    })
+                }
             }, err => {
-                console.log(err)
+                console.log(err);
+            }).finally(() => {
+                this.isLoading = false
             })
         },
+        loginBySms() {
+            this.$popUp('尚未实现', '', 'info', 1000)
+        },
         logout() {
-            this.$store.commit("SET_USER_ID", null)
-            this.$store.commit("LOGIN_STATE", false)
-            this.$store.commit("SET_USER", null)
-            localStorage.removeItem("userId")
-            this.$cookies.remove("userId")
-            this.$popUp('退出登录', '', 'info', 2000)
+            if (this.isLoading) return
+
 
         },
+        register() {
+            if (this.isLoading) return
+            let validation =
+                ValidationUtils.validate()
+                    .validateEmpty(this.registerForm.username, this.registerForm.password)
+                    .validateUsername(this.registerForm.username)
+                    .validatePassword(this.registerForm.password)
+            if (!validation.status) {
+                ElMessage({
+                    message: `注册失败 ：${validation.msg}`,
+                    type: "error"
+                })
+                return;
+            }
+
+            this.isLoading = true
+            http.post('user/register', {
+                username: this.registerForm.username,
+                password: this.registerForm.password
+            }).then(res => {
+                if (res.data.code === 200) {
+                    ElMessage({
+                        message: `注册成功：即将转入主页`,
+                        type: "success"
+                    })
+                } else {
+                    ElMessage({
+                        message: `注册失败：${res.data.msg},code:${res.data.code}`,
+                        type: "error"
+                    })
+                }
+            }, err => {
+                console.log(err);
+            }).finally(() => {
+                this.isLoading = false
+            })
+
+        }
     },
     //创建时执行
     created() {
@@ -365,7 +471,7 @@ export default {
         .form-body {
             width: 100%;
 
-            .form {
+            form {
 
                 & > div {
                     @include align($jc: start, $ai: center);
@@ -381,7 +487,7 @@ export default {
 
                 }
 
-                .account, .captcha, .passwd {
+                .username, .captcha, .passwd {
                     padding-bottom: 5px;
                     border-bottom: 1px solid rgba(220, 223, 230, 0.51);
 
@@ -421,6 +527,23 @@ export default {
                             margin-bottom: 10px;
 
                         }
+                    }
+                }
+
+                .pane-footer {
+                    @include align($fd: column, $jc: start);
+                    min-height: 35px;
+
+                    & > * {
+                        @include align();
+                        margin-top: 10px;
+                        text-align: right;
+                        margin-left: auto;
+                        width: 100%;
+                    }
+
+                    @at-root :deep(.el-progress__text) {
+                        display: none !important;
                     }
                 }
             }

@@ -17,19 +17,26 @@ public class Result<T> implements java.io.Serializable {
         this.msg = HttpEnum.SUCCESS.getMsg();
     }
 
-    public Result(Integer code, T data) {
-        this.code = code;
+    public Result(T data) {
+        this.code = HttpEnum.SUCCESS.getCode();
         this.data = data;
+    }
+
+    public Result(Integer code, String msg) {
+        this.code = code;
+        this.msg = msg;
     }
 
     public void setStatus(HttpEnum httpEnum) {
         this.code = httpEnum.getCode();
         this.msg = httpEnum.getMsg();
     }
-    public void setStatus(Integer code,String msg) {
+
+    public void setStatus(Integer code, String msg) {
         this.code = code;
         this.msg = msg;
     }
+
     public static <T> Result<T> ok(T data) {
         return new Result<T>(HttpEnum.SUCCESS.getCode(), HttpEnum.SUCCESS.getMsg(), data);
     }
@@ -37,6 +44,7 @@ public class Result<T> implements java.io.Serializable {
     public static Result<?> ok(String msg) {
         return new Result<>(HttpEnum.SUCCESS.getCode(), msg);
     }
+
     public static Result<?> ok() {
         return new Result<>(HttpEnum.SUCCESS.getCode(), HttpEnum.SUCCESS.getMsg());
     }
@@ -44,11 +52,13 @@ public class Result<T> implements java.io.Serializable {
     public static Result<?> error() {
         return new Result<>(HttpEnum.ERROR.getCode(), HttpEnum.ERROR.getMsg());
     }
-    public static Result<?> error(Integer code ,String msg) {
+
+    public static Result<?> error(Integer code, String msg) {
         return new Result<>(code, msg);
     }
+
     public static Result<?> error(HttpEnum httpEnum) {
-        return new Result<>(httpEnum.getCode(),httpEnum.getMsg());
+        return new Result<>(httpEnum.getCode(), httpEnum.getMsg());
     }
 
 }

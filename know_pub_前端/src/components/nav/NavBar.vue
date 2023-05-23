@@ -92,7 +92,7 @@
                     <span class="name pointer">{{ userInfo.name }}</span>
                     <div class="fs-xsm">
                         <span class="me-2"><span class="fw-lighter">K币：</span>{{ userInfo.koinCount }}</span>
-                        <span><span class="fw-lighter">经验：</span>{{ userInfo.experienceCount }}</span>
+                        <span><span class="fw-lighter">经验：</span>{{ userInfo.experience }}</span>
                     </div>
                     <div>
                         <span class="fs-xsm text-primary pointer">Lv1</span>
@@ -102,7 +102,7 @@
                     <!--                TODO 通过js计算等级-->
                     <div>
                     <span class="fs-xsm fw-lighter text-gray">{{
-                            `当前经验${userInfo.experienceCount}，距离升级Lv1，还需要${12}`
+                            `当前经验${userInfo.experience}，距离升级Lv1，还需要${12}`
                         }}</span>
                     </div>
                     <div class="mt-2 mb-2">
@@ -128,7 +128,7 @@
                     </div>
                     <div class="avatar-nav-item w-100 mt-1">
                         <div class="w-100">
-                            <router-link :to="`/home-user/${$store.state.userId}`" active-class="selected">
+                            <router-link :to="`/home-user/${userInfo.id}`" active-class="selected">
                                 <div class="d-flex align-items-center nav-list-item">
                                     <el-icon class="me-3">
                                         <House/>
@@ -183,7 +183,7 @@
 
     </div>
     <el-dialog v-model="isShowLogin" center class="dialog-login" width="50%">
-        <login/>
+        <login v-on:login="isShowLogin=!isShowLogin"/>
     </el-dialog>
 </template>
 

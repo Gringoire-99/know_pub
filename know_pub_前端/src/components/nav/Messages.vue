@@ -55,7 +55,7 @@
 
 <script>
 
-import http from "@/utils/http/http";
+import {http} from "@/utils/http/http";
 
 export default {
     name: "messages",
@@ -88,7 +88,6 @@ export default {
                         alert("failed")
                     }
                 }, reason => {
-                    alert("failed")
                 }
             )
 

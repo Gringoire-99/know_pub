@@ -23,7 +23,7 @@ public class UserDetailServiceImpl extends ServiceImpl<UserMapper, User> impleme
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         LambdaQueryWrapper<User> lqw = new LambdaQueryWrapper<>();
-        lqw.eq(User::getEmail, username);
+        lqw.eq(User::getEmail, username).or().eq(User::getPhone,username);
         User user = baseMapper.selectOne(lqw);
         if (Objects.isNull(user)) {
             throw new UsernameNotFoundException("用户名不存在");

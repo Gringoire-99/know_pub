@@ -2,6 +2,7 @@ package com.gg.kp_main.controller;
 
 import com.gg.kp_common.entity.po.User;
 import com.gg.kp_common.entity.po.UserDetail;
+import com.gg.kp_common.entity.vo.RegisterUser;
 import com.gg.kp_common.entity.vo.UserInfoVo;
 import com.gg.kp_common.entity.vo.UserVo;
 import com.gg.kp_common.service.IUserService;
@@ -21,18 +22,21 @@ public class UserController {
      * user: 必须包含username和password，其中username是email
      */
     @PostMapping("/login")
-    public Result<?> login(@RequestBody User user){
+    public Result<UserInfoVo> login(@RequestBody User user){
         return userService.login(user);
     }
     @DeleteMapping("/logout")
     public Result<?> logout(){
         return userService.logout();
     }
+    @PostMapping("/register")
+    public Result<?> register(@RequestBody RegisterUser user){
+        return userService.register(user);
+    }
     @PreAuthorize("hasAuthority('user:info-detail')")
     @GetMapping("/info-detail")
-    public Result<UserVo> infoDetail(){
-        UserDetail details =(UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return userService.infoDetail(details.getUser().getId());
+    public Result<UserVo> infoDetail(@RequestParam String userId){
+        return userService.infoDetail(userId);
     }
- 
+
 }

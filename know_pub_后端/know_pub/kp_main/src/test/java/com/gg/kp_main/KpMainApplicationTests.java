@@ -4,9 +4,8 @@ import com.gg.kp_common.dao.sys.MenuMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.util.List;
 
 @SpringBootTest
 class KpMainApplicationTests {
@@ -16,8 +15,7 @@ class KpMainApplicationTests {
     PasswordEncoder passwordEncoder;
 
     @Test
-    void contextLoads() {
-        System.out.println(passwordEncoder.encode("123"));
+    void test1() {
+        System.out.println(new BCryptPasswordEncoder().encode("123456789"));
     }
-
 }

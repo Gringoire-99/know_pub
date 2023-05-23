@@ -5,8 +5,8 @@
 <script>
 
 import HomeNavbar from "@/components/nav/NavBar.vue";
-import http from "@/utils/http/http";
-import Mock from "mockjs";
+import {http} from "@/utils/http/http";
+
 export default {
     //组件名
     name: "app",
@@ -19,38 +19,29 @@ export default {
     //方法
     methods: {
         getUserInfo() {
-            http.get("/user/info", {
+            let id = localStorage.getItem('userId')
+            if (id == null || id === '') return
+            http.get('/user/info-detail', {
                 params: {
-                    userId: this.$store.state.userId
+                    userId: id
                 }
-            }).then(response => {
-                if (response.status === 200) {
-                    this.$store.commit("SET_USER", response.data.data)
-                    this.$store.commit("LOGIN_STATE", true)
-
-                } else alert("get user info failed")
-            }, reason => {
-                this.$store.commit("LOGIN_STATE", false)
-                alert("failed in app.vue")
+            }).then(res => {
+                if (res.data.code === 200) {
+                    this.$store.commit('SET_USER', res.data.data)
+                    this.$store.commit('SET_LOGIN_STATE', true)
+                } else {
+                }
+            }, err => {
+                console.log(err)
             })
         },
 
 
     },
+
     //创建时执行
     created() {
-        // localStorage.setItem("userId", '1')
-        // this.$cookies.set("token", Mock.mock('@guid'))
-
-        //     从本地存储中获取用户id
-        let userId = localStorage.getItem("userId")
-        if (userId) {
-            this.$store.commit("SET_USER_ID", userId)
-            this.getUserInfo()
-        } else {
-            this.$store.commit("LOGIN_STATE", false)
-            this.$popUp('登录以查看更多内容', '', 'info', 2000)
-        }
+        this.getUserInfo()
     },
     //侦听器
     watch: {
@@ -64,7 +55,7 @@ export default {
     //绑定父组件的属性
     props: {},
     beforeCreate() {
-        this.$mockSetUp()
+        // this.$mockSetUp()
 
     }
 

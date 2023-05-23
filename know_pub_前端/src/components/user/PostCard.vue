@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import http from "@/utils/http/http";
+import {http} from "@/utils/http/http";
 import {Message, Plus} from "@element-plus/icons-vue";
 
 export default {

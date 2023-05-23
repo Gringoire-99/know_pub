@@ -3,10 +3,10 @@ CREATE DATABASE IF NOT EXISTS know_pub CHAR SET utf8;
 USE know_pub;
 CREATE TABLE IF NOT EXISTS know_pub.user
 (
-    id               char(40)    NOT NULL primary key comment '用户id',
+    id               char(40)     NOT NULL primary key comment '用户id',
     email            char(40) UNIQUE comment '邮箱',
     phone            char(40) UNIQUE comment '手机号',
-    name             char(20)    NOT NULL comment '用户名',
+    name             char(40)     NOT NULL comment '用户名',
     password         varchar(200) NOT NULL comment '密码',
     avatar           varchar(100) default 'http://dummyimage.com/100x100' comment '头像',
     description      varchar(256) default '这个人很懒，什么都没有留下' comment '描述',
@@ -36,9 +36,9 @@ CREATE TABLE IF NOT EXISTS know_pub.user
 );
 CREATE TABLE IF NOT EXISTS comment
 (
-    id               char(30)     NOT NULL primary key comment '评论id',
+    id               char(40)     NOT NULL primary key comment '评论id',
     content          varchar(256) NOT NULL comment '评论内容',
-    name             char(20)     NOT NULL comment '评论人的姓名',
+    name             char(40)     NOT NULL comment '评论人的姓名',
     avatar           varchar(100) default 'http://dummyimage.com/100x100' comment '评论人的头像',
     create_time      datetime     default now() comment '评论时间',
     like_count       int          default 0 comment '点赞数',
@@ -52,15 +52,15 @@ CREATE TABLE IF NOT EXISTS comment
 );
 CREATE TABLE IF NOT EXISTS post
 (
-    id            char(30)       NOT NULL primary key comment '博文id',
+    id            char(40)       NOT NULL primary key comment '博文id',
     question      varchar(256)   NOT NULL comment '问题/标题',
-    question_id   char(30)       NOT NULL comment '问题id',
+    question_id   char(40)       NOT NULL comment '问题id',
     content       varchar(10000) NOT NULL comment '内容(富文本)',
     cover         varchar(100)   default '' comment '封面',
     images        varchar(10000) default '' comment '图片，使用逗号分隔',
     like_count    int            default 0 comment '点赞数',
     dislike_count int            default 0 comment '踩数',
-    author_id     char(30)       NOT NULL comment '作者id,需要根据id去user表中查找基础信息',
+    author_id     char(40)       NOT NULL comment '作者id,需要根据id去user表中查找基础信息',
     publish_time  datetime       default now() comment '发布时间',
     update_time   datetime       default now() comment '更新时间',
     status        int            default 0 comment '状态,0:正常,1:禁用',
@@ -69,13 +69,13 @@ CREATE TABLE IF NOT EXISTS post
 );
 CREATE TABLE IF NOT EXISTS question
 (
-    id               char(30)       NOT NULL primary key comment '问题id',
+    id               char(40)       NOT NULL primary key comment '问题id',
     question         varchar(256)   NOT NULL comment '问题/标题',
     content          varchar(10000) NOT NULL comment '内容(富文本)',
     cover            varchar(100)   default '' comment '封面',
     images           varchar(10000) default '' comment '图片，使用逗号分隔',
     like_count       int            default 0 comment '点赞数',
-    author_id        char(30)       NOT NULL comment '作者id,需要根据id去user表中查找基础信息',
+    author_id        char(40)       NOT NULL comment '作者id,需要根据id去user表中查找基础信息',
     publish_time     datetime       default now() comment '发布时间',
     update_time      datetime       default now() comment '更新时间',
     status           int            default 0 comment '状态,0:正常,1:禁用',
@@ -87,7 +87,7 @@ CREATE TABLE IF NOT EXISTS question
 );
 CREATE TABLE IF NOT EXISTS tag
 (
-    name             varchar(20) NOT NULL PRIMARY KEY comment '标签名',
+    name             char(40) NOT NULL PRIMARY KEY comment '标签名',
     description      varchar(256) default '' comment '标签描述',
     create_time      datetime     default now() comment '创建时间',
     status           int          default 0 comment '状态,0:正常,1:禁用',
@@ -100,11 +100,10 @@ CREATE TABLE IF NOT EXISTS tag
 
 /*Table structure for table `sys_menu` */
 
-DROP TABLE IF EXISTS `sys_menu`;
 
-CREATE TABLE `sys_menu`
+CREATE TABLE IF NOT EXISTS `sys_menu`
 (
-    `id`          bigint(20)  NOT NULL AUTO_INCREMENT,
+    `id`          char(40)    NOT NULL,
     `menu_name`   varchar(64) NOT NULL DEFAULT 'NULL' COMMENT '菜单名',
     `path`        varchar(200)         DEFAULT NULL COMMENT '路由地址',
     `component`   varchar(255)         DEFAULT NULL COMMENT '组件路径',
@@ -120,16 +119,14 @@ CREATE TABLE `sys_menu`
     `remark`      varchar(500)         DEFAULT NULL COMMENT '备注',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 2
   DEFAULT CHARSET = utf8mb4 COMMENT ='菜单表';
 
 /*Table structure for table `sys_role` */
 
-DROP TABLE IF EXISTS `sys_role`;
 
-CREATE TABLE `sys_role`
+CREATE TABLE IF NOT EXISTS `sys_role`
 (
-    `id`          bigint(20) NOT NULL AUTO_INCREMENT,
+    `id`          char(40) NOT NULL,
     `name`        varchar(128) DEFAULT NULL,
     `role_key`    varchar(100) DEFAULT NULL COMMENT '角色权限字符串',
     `status`      char(1)      DEFAULT '0' COMMENT '角色状态（0正常 1停用）',
@@ -141,57 +138,43 @@ CREATE TABLE `sys_role`
     `remark`      varchar(500) DEFAULT NULL COMMENT '备注',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 3
   DEFAULT CHARSET = utf8mb4 COMMENT ='角色表';
 
 /*Table structure for table `sys_role_menu` */
 
-DROP TABLE IF EXISTS `sys_role_menu`;
 
-CREATE TABLE `sys_role_menu`
+CREATE TABLE IF NOT EXISTS `sys_role_menu`
 (
-    `role_id` bigint(200) NOT NULL AUTO_INCREMENT COMMENT '角色ID',
-    `menu_id` bigint(200) NOT NULL DEFAULT '0' COMMENT '菜单id',
+    `role_id` char(40) NOT NULL COMMENT '角色ID',
+    `menu_id` char(40) NOT NULL DEFAULT '0' COMMENT '菜单id',
     PRIMARY KEY (`role_id`, `menu_id`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 2
   DEFAULT CHARSET = utf8mb4;
 
 /*Table structure for table `sys_user` */
 
-DROP TABLE IF EXISTS `sys_user`;
 
-CREATE TABLE `sys_user`
+CREATE TABLE IF NOT EXISTS `sys_user_role`
 (
-    `id`          bigint(20)  NOT NULL AUTO_INCREMENT COMMENT '主键',
-    `user_name`   varchar(64) NOT NULL DEFAULT 'NULL' COMMENT '用户名',
-    `nick_name`   varchar(64) NOT NULL DEFAULT 'NULL' COMMENT '昵称',
-    `password`    varchar(64) NOT NULL DEFAULT 'NULL' COMMENT '密码',
-    `status`      char(1)              DEFAULT '0' COMMENT '账号状态（0正常 1停用）',
-    `email`       varchar(64)          DEFAULT NULL COMMENT '邮箱',
-    `phonenumber` varchar(32)          DEFAULT NULL COMMENT '手机号',
-    `sex`         char(1)              DEFAULT NULL COMMENT '用户性别（0男，1女，2未知）',
-    `avatar`      varchar(128)         DEFAULT NULL COMMENT '头像',
-    `user_type`   char(1)     NOT NULL DEFAULT '1' COMMENT '用户类型（0管理员，1普通用户）',
-    `create_by`   bigint(20)           DEFAULT NULL COMMENT '创建人的用户id',
-    `create_time` datetime             DEFAULT NULL COMMENT '创建时间',
-    `update_by`   bigint(20)           DEFAULT NULL COMMENT '更新人',
-    `update_time` datetime             DEFAULT NULL COMMENT '更新时间',
-    `del_flag`    int(11)              DEFAULT '0' COMMENT '删除标志（0代表未删除，1代表已删除）',
-    PRIMARY KEY (`id`)
-) ENGINE = InnoDB
-  AUTO_INCREMENT = 3
-  DEFAULT CHARSET = utf8mb4 COMMENT ='用户表';
-
-/*Table structure for table `sys_user_role` */
-
-DROP TABLE IF EXISTS `sys_user_role`;
-
-CREATE TABLE `sys_user_role`
-(
-    `user_id` bigint(200) NOT NULL AUTO_INCREMENT COMMENT '用户id',
-    `role_id` bigint(200) NOT NULL DEFAULT '0' COMMENT '角色id',
+    `user_id` char(40)          DEFAULT 1 COMMENT '用户id,1',
+    `role_id` char(40) NOT NULL DEFAULT '1' COMMENT '角色id,1:User,0:admin',
     PRIMARY KEY (`user_id`, `role_id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
+# 设定权限
+INSERT INTO sys_menu(id, menu_name, perms)
+VALUES ('1', '查看用户详情', 'user:info-detail');
 
+# 设定角色
+INSERT INTO sys_role(id, name, role_key)
+VALUES ('1', 'User', 'user'),
+       ('0', 'admin', 'admin');
+# 设定角色拥有的权限
+INSERT INTO sys_role_menu(role_id, menu_id)
+VALUES ('1', '1'),
+       ('0', '1');
+
+# 设定用户拥有的角色
+# INSERT INTO sys_user_role(user_id, role_id)
+# VALUES ('1', '1'),
+#        ('0', '0');
