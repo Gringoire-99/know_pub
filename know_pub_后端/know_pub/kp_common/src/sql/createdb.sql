@@ -32,7 +32,8 @@ CREATE TABLE IF NOT EXISTS know_pub.user
     gender           varchar(10)  default '' comment '性别',
     resume           varchar(100) default '' comment '简单介绍',
     auth             varchar(20)  default 0 comment '个人认证',
-    background       varchar(100) default 'http://dummyimage.com/2000x1000' comment '背景图'
+    background       varchar(100) default 'http://dummyimage.com/2000x1000' comment '背景图',
+    del_flag         int          default 0 comment '删除标志,0:未删除,1:已删除'
 );
 CREATE TABLE IF NOT EXISTS comment
 (
@@ -48,7 +49,9 @@ CREATE TABLE IF NOT EXISTS comment
     reply_to_name    char(20)     default '' comment '回复的评论人的姓名',
     reply_to_user_id char(30)     default '' comment '回复的评论人的id',
     is_root_comment  int          default 1 comment '是否是根评论,1:是,0:不是',
-    child_count      int          default 0 comment '子评论数,当数量小于等于4时查出所有子评论,大于4时不查'
+    child_count      int          default 0 comment '子评论数,当数量小于等于4时查出所有子评论,大于4时不查',
+    del_flag         int          default 0 comment '删除标志,0:未删除,1:已删除'
+
 );
 CREATE TABLE IF NOT EXISTS post
 (
@@ -64,7 +67,9 @@ CREATE TABLE IF NOT EXISTS post
     publish_time  datetime       default now() comment '发布时间',
     update_time   datetime       default now() comment '更新时间',
     status        int            default 0 comment '状态,0:正常,1:禁用',
-    comment_count int            default 0 comment '评论数'
+    comment_count int            default 0 comment '评论数',
+    del_flag      int            default 0 comment '删除标志,0:未删除,1:已删除'
+
 
 );
 CREATE TABLE IF NOT EXISTS question
@@ -83,7 +88,8 @@ CREATE TABLE IF NOT EXISTS question
     answer_count     int            default 0 comment '回答数',
     collection_count int            default 0 comment '收藏数',
     view_count       int            default 0 comment '浏览数',
-    tag_names        varchar(50)    default '' comment '标签名，使用逗号分隔'
+    tag_names        varchar(50)    default '' comment '标签名，使用逗号分隔',
+    del_flag         int            default 0 comment '删除标志,0:未删除,1:已删除'
 );
 CREATE TABLE IF NOT EXISTS tag
 (
@@ -94,7 +100,9 @@ CREATE TABLE IF NOT EXISTS tag
     view_count       int          default 0 comment '浏览数',
     question_count   int          default 0 comment '问题数',
     discuss_count    int          default 0 comment '讨论数',
-    collection_count int          default 0 comment '收藏数'
+    collection_count int          default 0 comment '收藏数',
+    del_flag         int          default 0 comment '删除标志,0:未删除,1:已删除'
+
 );
 
 
@@ -162,17 +170,17 @@ CREATE TABLE IF NOT EXISTS `sys_user_role`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 # 设定权限
-INSERT INTO sys_menu(id, menu_name, perms)
-VALUES ('1', '查看用户详情', 'user:info-detail');
-
-# 设定角色
-INSERT INTO sys_role(id, name, role_key)
-VALUES ('1', 'User', 'user'),
-       ('0', 'admin', 'admin');
-# 设定角色拥有的权限
-INSERT INTO sys_role_menu(role_id, menu_id)
-VALUES ('1', '1'),
-       ('0', '1');
+# INSERT INTO sys_menu(id, menu_name, perms)
+# VALUES ('1', '查看用户详情', 'user:info-detail');
+#
+# # 设定角色
+# INSERT INTO sys_role(id, name, role_key)
+# VALUES ('1', 'User', 'user'),
+#        ('0', 'admin', 'admin');
+# # 设定角色拥有的权限
+# INSERT INTO sys_role_menu(role_id, menu_id)
+# VALUES ('1', '1'),
+#        ('0', '1');
 
 # 设定用户拥有的角色
 # INSERT INTO sys_user_role(user_id, role_id)

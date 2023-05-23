@@ -29,7 +29,10 @@ export default {
                 if (res.data.code === 200) {
                     this.$store.commit('SET_USER', res.data.data)
                     this.$store.commit('SET_LOGIN_STATE', true)
+
                 } else {
+                    localStorage.clear()
+
                 }
             }, err => {
                 console.log(err)

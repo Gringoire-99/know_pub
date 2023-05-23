@@ -9,7 +9,7 @@ import com.gg.kp_common.entity.po.UserDetail;
 import com.gg.kp_common.entity.vo.RegisterUser;
 import com.gg.kp_common.entity.vo.UserInfoVo;
 import com.gg.kp_common.entity.vo.UserVo;
-import com.gg.kp_common.service.IUserService;
+import com.gg.kp_common.service.UserService;
 import com.gg.kp_common.utils.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ import org.springframework.stereotype.Service;
 import java.util.Objects;
 
 @Service
-public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
+public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
     @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired

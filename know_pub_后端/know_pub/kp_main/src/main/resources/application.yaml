@@ -3,7 +3,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: 123456789
-    url: jdbc:mysql://localhost:3306/lms2?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://localhost:3306/know_pub?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml
   configuration:

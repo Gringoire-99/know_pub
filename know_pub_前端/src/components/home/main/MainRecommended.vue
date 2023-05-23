@@ -7,7 +7,7 @@
 </template>
 <script>
 import Post from "@/components/home/main/post/Post.vue";
-import axios from "axios";
+import http from "@/utils/http/http";
 
 export default {
     name: 'main-recommended',
@@ -15,20 +15,23 @@ export default {
     data() {
         return {
             posts: [],
-            pageSize: 5,
+            pageSize: 10,
             currentPage: 1,
             isLoading: false,
         }
     }, methods: {
         getPosts() {
             this.isLoading = true
-            axios.get('/recommended-posts', {
-                id: this.$store.userId,
-                pageSize: this.pageSize,
-                currentPage: this.currentPage,
-
+            let id = this.$store.state.userInfo.id
+            http.get('/post/recommended-posts', {
+                params: {
+                    id: (id === '' || id == null) ? 1 : 1,
+                    pageSize: this.pageSize,
+                    currentPage: this.currentPage,
+                }
             }).then(response => {
-                this.posts.push(...response.data)
+                this.posts.push(...response.data.data.posts)
+                console.log(this.posts)
                 this.isLoading = false
             }, reason => {
             }).finally(() => {

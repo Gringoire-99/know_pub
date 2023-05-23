@@ -7,7 +7,7 @@ import com.gg.kp_common.entity.vo.UserInfoVo;
 import com.gg.kp_common.entity.vo.UserVo;
 import com.gg.kp_common.utils.Result;
 
-public interface IUserService extends IService<User> {
+public interface UserService extends IService<User> {
     Result<UserInfoVo> login(User user);
 
     Result<UserVo> infoDetail(String userId);
