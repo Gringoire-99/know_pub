@@ -8,7 +8,7 @@
                 :show-after="500"
                 :width="430"
             >
-                <post-card :id="comment.publisherId"></post-card>
+                <post-card :id="comment.userId"></post-card>
                 <template #reference>
                     <el-avatar :src="comment.avatar" shape="square" size="small"></el-avatar>
                 </template>
@@ -24,7 +24,7 @@
                          :show-after="500"
                          :width="430"
                      >
-                         <post-card :id="comment.publisherId"></post-card>
+                         <post-card :id="comment.userId"></post-card>
                         <template #reference>
                             <span class="name">{{ comment.name }}</span>
                         </template>
@@ -38,9 +38,9 @@
                             :width="430"
 
                         >
-                             <post-card :id="comment.replyToId"></post-card>
+                             <post-card :id="comment.replyToUserId"></post-card>
                             <template #reference>
-                                <span class="name">{{ comment.replyToName }}</span>
+                                <span class="name">{{ comment.replyToUserName }}</span>
                             </template>
                          </popover>
 
@@ -52,7 +52,7 @@
             </div>
             <span class="content">{{ comment.content }}</span>
             <div class="footer d-flex align-items-center">
-                <span class="fw-lighter fs-6">{{ comment.publishTime.substring(0, 10) }}</span>
+                <span class="fw-lighter fs-6">{{ comment.createTime.substring(0, 10) }}</span>
                 <span v-show="comment.likeCount>200"><span>·</span><span class="label">热评</span></span>
                 <div class="operations d-flex align-items-center">
 
@@ -73,7 +73,8 @@
             <div :class="{'showPostComment':isOpenPostComment}" class="collapse-grid ">
                 <div class="post-comment w-100 mt-1 mb-1"
                      @focusout="displayPostComment">
-                    <post-comment :is-show-avatar="false" :placeholder="`回复 ${comment.name}`"></post-comment>
+                    <post-comment :is-show-avatar="false" :parent="comment"
+                                  :placeholder="`回复 ${comment.name}`"></post-comment>
                 </div>
             </div>
         </div>

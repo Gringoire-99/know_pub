@@ -1,5 +1,7 @@
 package com.gg.kp_common.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.gg.kp_common.dao.PostMapper;
@@ -29,4 +31,12 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         data.put(PageUtils.TOTAL,total);
         return Result.ok(data);
     }
+
+    @Override
+    public Integer onComment(String postId) {
+        LambdaUpdateWrapper<Post> luw = new LambdaUpdateWrapper<>();
+        luw.eq(Post::getId,postId).setSql("comment_count = comment_count + 1");
+        return baseMapper.update(null,luw);
+    }
+
 }

@@ -21,7 +21,7 @@
 
             </transition-group>
 
-            <div class="d-flex align-items-center showMore" v-on:click="openCommentsDialog">
+            <div v-if="isLoading&&total===0" class="d-flex align-items-center showMore" v-on:click="openCommentsDialog">
                 <span>{{ `点击查看所有${total}条评论` }}</span>
                 <el-icon>
                     <arrow-right></arrow-right>
@@ -90,7 +90,7 @@ export default {
             // 筛选出根评论
             let rootComments = new Map()
             comments.forEach(comment => {
-                if (comment.rootCommentId === comment.postId) {
+                if (comment.isRootComment === 1) {
                     if (!rootComments.has(comment.id)) {
                         rootComments.set(comment.id, {
                             rootComment: comment,
@@ -98,10 +98,10 @@ export default {
                         })
                     }
                 } else {
-                    if (rootComments.has(comment.rootCommentId)) {
-                        rootComments.get(comment.rootCommentId).childComments.push(comment)
+                    if (rootComments.has(comment.parentId)) {
+                        rootComments.get(comment.parentId).childComments.push(comment)
                     } else {
-                        rootComments.set(comment.rootCommentId, {
+                        rootComments.set(comment.parentId, {
                             rootComment: null,
                             childComments: [comment]
                         })
@@ -116,32 +116,28 @@ export default {
         getComments(isMerge = true) {
             if (this.isLoading) return
             this.isLoading = true
-            http.get('/comments', {
+            http.get('/comment/comments', {
                 params: {
                     postId: this.postId,
                     pageSize: this.pageSize,
                     currentPage: this.currentPage,
-                    orderBy: this.orderBy
                 }
             }).then(
                 resolve => {
                     if (resolve.status === 200) {
                         // 连接两个数组
-                        console.log(resolve.data.data.comments.length);
                         if (isMerge) {
-                            this.comments.push(...resolve.data.data.comments)
+                            this.comments.push(...resolve.data.data.page)
                             this.currentPage += this.pageSize
                         } else {
-                            this.comments = resolve.data.data.comments
+                            this.comments = resolve.data.data.page
                             this.currentPage = this.pageSize
                         }
                         this.total = resolve.data.data.total
                         this.isLoading = false
                     } else {
-                        alert("failed")
                     }
                 }, reason => {
-                    alert("failed")
                 }
             )
         }
@@ -162,7 +158,7 @@ export default {
         comments: {
             handler(newValue, oldValue) {
                 this.filterRootComments(newValue)
-                return true
+                return newValue
             },
             deep: true
         },

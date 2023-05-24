@@ -5,7 +5,6 @@
 
             <textarea ref="textarea" v-model="comment" :placeholder="placeholder" v-on:focusin="displayFooter"
                       v-on:focusout="displayFooter"
-
             >
             </textarea>
 
@@ -37,7 +36,7 @@
                         </template>
                         <VuemojiPicker class="d-block" @emojiClick="handleEmojiClick" v-on:mousedown="preventDefault"/>
                     </el-popover>
-                    <button class="publish">发布</button>
+                    <button class="publish" @click="postComment" @mousedown="preventDefault">发布</button>
                 </div>
 
 
@@ -53,6 +52,8 @@ import {Picture} from "@element-plus/icons-vue";
 import SelectPicture from "@/components/icons/SelectPicture.vue";
 import Voice from "@/components/icons/Voice.vue";
 import Emoji from "@/components/icons/emoji.vue";
+import http from "@/utils/http/http";
+import {ElMessage} from "element-plus";
 
 export default {
 
@@ -89,6 +90,50 @@ export default {
         },
         preventDefault(e) {
             e.preventDefault()
+        },
+        postComment() {
+            if (this.$store.state.isLogin) {
+                let parent = this.parent
+                let postId = parent.postId
+                let newComment = {}
+                // 有postId说明parent是评论
+                console.log(parent)
+                newComment.content = this.comment
+                newComment.name = this.userInfo.name
+                newComment.avatar = this.userInfo.avatar
+                newComment.userId = this.userInfo.id
+                newComment.parentId = parent.id
+                newComment.replyToUserId = parent.userId
+
+                if (postId) {
+                    //     父级是根评论：需要显示回复了谁
+                    newComment.postId = postId
+                    newComment.replyToUserName = parent.name
+                    newComment.isRootComment = 0
+                } else {
+                    //     父级是post
+                    newComment.postId = parent.id
+                    newComment.replyToUserName = ''
+                    newComment.isRootComment = 1
+                }
+                http.post('/comment/post-comment', newComment).then(res => {
+                    if (res.data.code === 200) {
+                        this.$emit('load')
+                        ElMessage({
+                            message: '发布成功！',
+                            type: 'success'
+                        })
+                    } else {
+                        ElMessage({
+                            message: '发布失败！',
+                            type: 'error'
+                        })
+                    }
+                }, reason => {
+                })
+            } else {
+                this.$store.commit('SET_SHOW_LOGIN', true)
+            }
         }
     },
     //挂载时执行
@@ -117,6 +162,10 @@ export default {
         placeholder: {
             type: String,
             default: '评论千万条，友善第一条'
+        },
+        parent: {
+            type: Object,
+            require: true
         }
 
     }
@@ -164,7 +213,7 @@ textarea {
         outline: none;
         box-shadow: none;
         /*    最右*/
-    margin-left: auto;
+        margin-left: auto;
     }
 }
 

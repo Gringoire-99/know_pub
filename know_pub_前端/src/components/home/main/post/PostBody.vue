@@ -102,12 +102,11 @@ export default {
         getUserInfo() {
             http.get('user/info-short', {
                 params: {
-                    userId: this.post.authorId
+                    userId: this.post.userId
                 }
             }).then(res => {
                 if (res.data.code === 200) {
                     this.userInfo = res.data.data
-                    console.log(this.userInfo)
                 } else {
                     ElMessage({
                         message: '获取用户信息错误',

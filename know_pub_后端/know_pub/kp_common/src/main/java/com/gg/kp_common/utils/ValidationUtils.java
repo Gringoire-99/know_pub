@@ -32,9 +32,9 @@ public class ValidationUtils {
         }
         return this;
     }
-    public ValidationUtils validateEmpty(String... strings ) {
-        for (String string : strings) {
-            if (Objects.isNull(string) || string.isEmpty()) {
+    public ValidationUtils validateEmpty(Object... objects ) {
+        for (Object object : objects) {
+            if (Objects.isNull(object)||object.toString().isEmpty()) {
                 throw new SystemException(HttpEnum.ERROR, EM_NULL);
             }
         }

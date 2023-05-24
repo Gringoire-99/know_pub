@@ -177,13 +177,13 @@
                 </div>
             </div>
             <div v-else class="login-btn">
-                <span class="text-blue pointer" @click="isShowLogin=!isShowLogin">登录</span>
+                <span class="text-blue pointer" @click="$store.commit('SET_SHOW_LOGIN',true)">登录</span>
             </div>
         </div>
 
     </div>
-    <el-dialog v-model="isShowLogin" center class="dialog-login" width="50%">
-        <login v-on:login="isShowLogin=!isShowLogin"/>
+    <el-dialog v-model="$store.state.showLogin" center class="dialog-login" width="50%">
+        <login/>
     </el-dialog>
 </template>
 
@@ -228,7 +228,6 @@ export default {
             showAvatarDetail: false,
             hideDelay: {},
             progress: 50,
-            isShowLogin: false,
             userInfo: {}
 
         }

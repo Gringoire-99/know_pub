@@ -13,6 +13,9 @@ const mutations = {
     },
     SET_LOAD_DATA(state, loadData) {
         state.loadData = loadData;
+    },
+    SET_SHOW_LOGIN(state, showLogin) {
+        state.showLogin = showLogin
     }
 
 }
@@ -47,7 +50,8 @@ const state = {
         status: 0,
         videoCount: 0
     },
-    loadData: false
+    loadData: false,
+    showLogin: false
 }
 export const store = Vuex.createStore({
     state,

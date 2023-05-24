@@ -26,7 +26,7 @@ public class PostVo {
 
     private Integer dislikeCount = 0;
 
-    private String authorId;
+    private String userId;
 
     private Integer commentCount = 0;
 }

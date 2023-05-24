@@ -1,23 +1,29 @@
 package com.gg.kp_main.controller;
 
+import com.gg.kp_common.entity.vo.CommentVo;
 import com.gg.kp_common.service.CommentService;
 import com.gg.kp_common.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
-
+@RequestMapping("/comment")
 @RestController
 public class CommentController {
     @Autowired
     private CommentService commentService;
-    @GetMapping("/comment/post-comment")
+    @GetMapping("/comments")
     public Result<HashMap<String, Object>> getPostComment(@RequestParam Map<String,Object> params){
         return commentService.getPostComment(params);
     }
+    @PreAuthorize("hasRole('USER')")
+    @PostMapping("/post-comment")
+    public Result<Integer> postComment(@RequestBody CommentVo comment){
+        return commentService.postComment(comment);
+    }
+
 
 
 }

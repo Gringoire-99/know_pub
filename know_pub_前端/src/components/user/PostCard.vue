@@ -53,8 +53,8 @@
                     </el-button>
                 </div>
                 <div v-else class="mt-4 d-flex align-items-center justify-content-center flex-fill">
-                    <router-link to="/home-user">
-                        <el-button class="flex-fill" @click="follow">
+                    <router-link :to="{path:`/home-user/${$store.state.userInfo.id}`}">
+                        <el-button class="flex-fill">
                             <el-icon class="">
                                 <home-filled></home-filled>
                             </el-icon>

@@ -5,10 +5,15 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.gg.kp_common.dao.CommentMapper;
 import com.gg.kp_common.entity.po.Comment;
+import com.gg.kp_common.entity.vo.CommentVo;
 import com.gg.kp_common.service.CommentService;
+import com.gg.kp_common.service.PostService;
 import com.gg.kp_common.utils.PageUtils;
 import com.gg.kp_common.utils.Result;
+import com.gg.kp_common.utils.SecurityUtils;
 import com.gg.kp_common.utils.ValidationUtils;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,6 +22,9 @@ import java.util.Map;
 
 @Service
 public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> implements CommentService {
+    @Autowired
+    PostService postService;
+
     @Override
     public Result<HashMap<String, Object>> getPostComment(Map<String, Object> params) {
 
@@ -37,13 +45,29 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         LambdaQueryWrapper<Comment> lqwC = new LambdaQueryWrapper<>();
         for (Comment record : commentIPage.getRecords()) {
             if (record.getChildCount() < 4) {
-                lqw.eq(Comment::getId, record.getParentId());
+//                TODO fix
+                lqw.eq(Comment::getId, record.getParentId()).eq(Comment::getPostId, postId);
                 comments.addAll(this.baseMapper.selectList(lqwC));
+                lqw.clear();
             }
         }
         HashMap<String, Object> data = new HashMap<>();
-        data.put(PageUtils.PAGE,comments);
-        data.put(PageUtils.TOTAL,commentIPage.getTotal());
+        data.put(PageUtils.PAGE, comments);
+        data.put(PageUtils.TOTAL, commentIPage.getTotal());
         return Result.ok(data);
+    }
+
+    @Override
+    public Result<Integer> postComment(CommentVo comment) {
+//      TODO 对comment合法性进行校验
+
+        String id = SecurityUtils.getId();
+        Comment c = new Comment();
+        c.setUserId(id);
+        BeanUtils.copyProperties(comment, c);
+        Integer r = postService.onComment(comment.getPostId());
+        if (r == 0) throw new RuntimeException("评论失败-评论不存在");
+        Integer result = this.baseMapper.insert(c);
+        return Result.ok(result);
     }
 }

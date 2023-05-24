@@ -113,8 +113,8 @@
             <transition name="comment">
                 <!--            评论栏-->
                 <div v-if="!isCollapseComments" class="card-footer">
-                    <post-comment></post-comment>
-                    <comments :post-id="post.id"></comments>
+                    <post-comment :parent="post" @load="$refs.comment.getComments()"></post-comment>
+                    <comments ref="comment" :post-id="post.id"></comments>
                 </div>
             </transition>
 
@@ -170,9 +170,12 @@ export default {
     }, //绑定父组件的属性
     props: {
         post: {
+            type: Object,
+            require: true
         },
         action: {
             type: Object,
+            default: null
         },
         isAnswerPattern: {
             type: Boolean,

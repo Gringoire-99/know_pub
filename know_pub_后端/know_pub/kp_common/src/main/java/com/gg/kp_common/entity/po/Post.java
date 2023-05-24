@@ -26,7 +26,7 @@ public class Post {
 
     private Integer dislikeCount = 0;
 
-    private String authorId;
+    private String userId;
 
     private Date publishTime;
 
