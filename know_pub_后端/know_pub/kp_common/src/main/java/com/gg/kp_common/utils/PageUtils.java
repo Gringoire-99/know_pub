@@ -13,6 +13,7 @@ public class PageUtils<T> {
     public static final String ORDER = "order";
     public static final String ASC = "asc";
     public static final String PAGE = "page";
+    public static final String TOTAL = "total";
 
 
     //    根据请求参数构造page对象，通过这个page对象分页查询数据

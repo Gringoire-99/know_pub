@@ -338,11 +338,11 @@ export default {
                         type: "success"
                     })
                     this.$cookies.set('token', res.data.data.token)
-                    this.$store.commit('SET_USER', res.data.data.userVo)
+                    this.$store.commit('SET_USER', res.data.data.userInfoDetailVo)
                     this.$store.commit('SET_LOGIN_STATE', true)
-                    localStorage.setItem('userId', res.data.data.userVo.id)
+                    localStorage.setItem('userId', res.data.data.userInfoDetailVo.id)
                     this.$emit('login')
-
+                    this.$router.push({path: '/home-main'})
                 } else {
                     ElMessage({
                         message: `登录失败：${res.data.msg},code:${res.data.code}`,
@@ -360,6 +360,27 @@ export default {
         },
         logout() {
             if (this.isLoading) return
+            this.isLoading = true
+            http.delete('/user/logout').then(res => {
+                if (res.data.code === 200) {
+                    this.$cookies.remove('token')
+                    localStorage.clear()
+                    ElMessage({
+                        message: `登出成功 ：${res.data.msg}`,
+                        type: "success"
+                    })
+                    this.$router.push({path: '/login'})
+                } else {
+                    ElMessage({
+                        message: `登出失败 ：${res.data.msg}`,
+                        type: "error"
+                    })
+                }
+            }, reason => {
+                console.log(reason)
+            }).finally(() => {
+                this.isLoading = false
+            })
 
 
         },
@@ -379,7 +400,7 @@ export default {
             }
 
             this.isLoading = true
-            http.post('user/register', {
+            http_no_token.post('user/register', {
                 username: this.registerForm.username,
                 password: this.registerForm.password
             }).then(res => {
@@ -388,6 +409,11 @@ export default {
                         message: `注册成功：即将转入主页`,
                         type: "success"
                     })
+                    this.isLoading = false
+                    this.loginFormByPassword.username = this.registerForm.username
+                    this.loginFormByPassword.password = this.registerForm.password
+                    this.login()
+
                 } else {
                     ElMessage({
                         message: `注册失败：${res.data.msg},code:${res.data.code}`,
@@ -405,7 +431,7 @@ export default {
     //创建时执行
     created() {
         let isLogout = this.$route.query['isLogout']
-        if (isLogout) {
+        if (isLogout && this.$store.state.isLogin) {
             this.logout()
         }
     },

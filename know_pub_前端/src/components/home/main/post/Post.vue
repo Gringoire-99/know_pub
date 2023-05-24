@@ -1,21 +1,21 @@
 <template>
     <div class="root card">
         <div class="card-body">
-            <!--            问题名-->
             <div v-if="action" class="fw-xsm text-gray d-flex">
                 <span>{{ action.name }}了该回答</span>
                 <span class="ms-auto">{{ action.time }}</span>
             </div>
 
+            <!--            问题名-->
 
-            <div v-if="!isAnswerPattern" class="card-title pointer">
-                <div class="question" @click="toQuestion">{{ post.question }}</div>
+            <div v-if="!isAnswerPattern" class="card-title">
+                <div class="question"><span class="pointer" @click="toQuestion">{{ post.question }}</span></div>
             </div>
 
             <transition mode="out-in" name="text">
                 <!--            简短介绍-未展开时显示-->
                 <div v-if="isCollapseFullText&&!isAnswerPattern" class="intro d-flex w-100">
-                    <img v-if="post.images.length>0" :src="post.content.images[0]" alt="介绍图片"
+                    <img v-if="post.cover!==''" :src="post.cover" alt="介绍图片"
                          class="img-fluid col-3 intro-img">
 
                     <div class="text">

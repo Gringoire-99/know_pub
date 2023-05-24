@@ -1,6 +1,12 @@
 # 不使用外键
 CREATE DATABASE IF NOT EXISTS know_pub CHAR SET utf8;
 USE know_pub;
+CREATE TABLE IF NOT EXISTS follow
+(
+    follow_id   char(40) not null comment '被关注人id',
+    follower_id char(40) not null comment '关注人id',
+    primary key (follow_id, follower_id)
+);
 CREATE TABLE IF NOT EXISTS know_pub.user
 (
     id               char(40)     NOT NULL primary key comment '用户id',
@@ -45,9 +51,10 @@ CREATE TABLE IF NOT EXISTS comment
     like_count       int          default 0 comment '点赞数',
     status           int          default 0 comment '状态,0:正常,1:禁用',
     post_id          char(30)     NOT NULL comment '评论的文章id',
-    user_id          char(30)     NOT NULL comment '评论人的id',
-    reply_to_name    char(20)     default '' comment '回复的评论人的姓名',
-    reply_to_user_id char(30)     default '' comment '回复的评论人的id',
+    user_id          char(30)     NOT NULL comment '这条评论发布者的id',
+    parent_id        char(30)     default '-1' comment '父级评论的id,如果是根评论，此条为-1',
+    reply_to_user_name char(40)   default '' comment '被回复者的名字',
+    reply_to_user_id char(30)     default '' comment '被回复者的id',
     is_root_comment  int          default 1 comment '是否是根评论,1:是,0:不是',
     child_count      int          default 0 comment '子评论数,当数量小于等于4时查出所有子评论,大于4时不查',
     del_flag         int          default 0 comment '删除标志,0:未删除,1:已删除'

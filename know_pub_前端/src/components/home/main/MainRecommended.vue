@@ -7,7 +7,7 @@
 </template>
 <script>
 import Post from "@/components/home/main/post/Post.vue";
-import http from "@/utils/http/http";
+import http, {http_no_token} from "@/utils/http/http";
 
 export default {
     name: 'main-recommended',
@@ -23,15 +23,15 @@ export default {
         getPosts() {
             this.isLoading = true
             let id = this.$store.state.userInfo.id
-            http.get('/post/recommended-posts', {
+            http_no_token.get('/post/recommended-posts', {
                 params: {
                     id: (id === '' || id == null) ? 1 : 1,
                     pageSize: this.pageSize,
                     currentPage: this.currentPage,
                 }
             }).then(response => {
-                this.posts.push(...response.data.data.posts)
-                console.log(this.posts)
+                this.posts.push(...response.data.data.page)
+                console.log(this.page)
                 this.isLoading = false
             }, reason => {
             }).finally(() => {

@@ -2,17 +2,21 @@ package com.gg.kp_common.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.gg.kp_common.entity.po.User;
-import com.gg.kp_common.entity.vo.RegisterUser;
-import com.gg.kp_common.entity.vo.UserInfoVo;
-import com.gg.kp_common.entity.vo.UserVo;
+import com.gg.kp_common.entity.vo.*;
 import com.gg.kp_common.utils.Result;
 
 public interface UserService extends IService<User> {
-    Result<UserInfoVo> login(User user);
+    Result<UserVo> login(User user);
 
-    Result<UserVo> infoDetail(String userId);
+    Result<UserInfoDetailVo> infoDetail(String userId);
 
     Result<?> logout();
 
     Result<?> register(RegisterUser user);
+
+    Result<UserInfoShortVo> infoShort(String userId);
+
+    Result<UserPostCardVo> postCard(String userId);
+
+    Result<?> follow(String userId);
 }

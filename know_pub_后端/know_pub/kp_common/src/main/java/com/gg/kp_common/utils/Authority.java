@@ -6,11 +6,15 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class Authority implements GrantedAuthority {
-    private String perms;
+    private String authority;
+
+    public Authority(String authority) {
+        this.authority = authority;
+    }
+
     @Override
     public String getAuthority() {
-        return perms;
+        return authority;
     }
 }

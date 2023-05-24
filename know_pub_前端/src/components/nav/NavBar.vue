@@ -229,6 +229,7 @@ export default {
             hideDelay: {},
             progress: 50,
             isShowLogin: false,
+            userInfo: {}
 
         }
     },
@@ -274,6 +275,7 @@ export default {
     },
     //创建时执行
     created() {
+        this.userInfo = this.$store.state.userInfo
 
     },
     //侦听器

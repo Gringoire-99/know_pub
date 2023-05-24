@@ -8,14 +8,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @TableName("know_pub.user")
-public class User {
-
+public class User implements Serializable {
     public User(String username, String password) {
         this.username = username;
         this.password = password;
@@ -48,7 +49,7 @@ public class User {
     private String description;
 
     // 创建时间，默认值为当前时间
-    private LocalDateTime createTime;
+    private Date createTime;
 
     // 发表回答数，默认值为 0
     private int postCount;

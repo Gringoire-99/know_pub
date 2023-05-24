@@ -28,7 +28,7 @@ public class UserDetailServiceImpl extends ServiceImpl<UserMapper, User> impleme
         if (Objects.isNull(user)) {
             throw new UsernameNotFoundException("用户名不存在");
         }
-        List<Authority> permissionKeyList =  menuMapper.selectPermsByUserId(user.getId());
+        List<String> permissionKeyList =  menuMapper.selectPermsByUserId(user.getId());
         return new UserDetail(user,permissionKeyList);
     }
 }

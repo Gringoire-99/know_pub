@@ -5,6 +5,19 @@
         INSERT INTO know_pub.sys_user_role (user_id)
         VALUES (#{userid})
     </insert>
-
+    <select id="isFollowed" parameterType="string" resultType="integer">
+        SELECT COUNT(*)
+        FROM know_pub.follow f
+        WHERE follow_id = #{followId}
+        AND follower_id = #{followerId}
+    </select>
+    <insert id="follow" parameterType="string">
+        INSERT INTO know_pub.follow (follow_id, follower_id)
+        VALUES (#{followId}, #{followerId})
+    </insert>
+    <delete id="unfollow" parameterType="string">
+        DELETE FROM know_pub.follow
+        WHERE follow_id = #{followId} AND follower_id = #{followerId}
+    </delete>
 </mapper>
 

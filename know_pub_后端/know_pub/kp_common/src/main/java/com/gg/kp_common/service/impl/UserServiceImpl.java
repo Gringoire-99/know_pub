@@ -6,9 +6,7 @@ import com.gg.kp_common.config.exception.SystemException;
 import com.gg.kp_common.dao.UserMapper;
 import com.gg.kp_common.entity.po.User;
 import com.gg.kp_common.entity.po.UserDetail;
-import com.gg.kp_common.entity.vo.RegisterUser;
-import com.gg.kp_common.entity.vo.UserInfoVo;
-import com.gg.kp_common.entity.vo.UserVo;
+import com.gg.kp_common.entity.vo.*;
 import com.gg.kp_common.service.UserService;
 import com.gg.kp_common.utils.*;
 import org.springframework.beans.BeanUtils;
@@ -16,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +27,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     private RedisCache redisCache;
 
     @Override
-    public Result<UserInfoVo> login(User user) {
+    public Result<UserVo> login(User user) {
 //      需要被验证的对象
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
 //      使用manager验证对象
@@ -45,28 +42,25 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         String id = userDetail.getUser().getId();
         String jwt = JwtUtil.createJWT(id);
         redisCache.setCacheObject("userId:" + id, userDetail);
-        UserVo userVo = new UserVo();
-        BeanUtils.copyProperties(userDetail.getUser(), userVo);
-        UserInfoVo userInfoVo = new UserInfoVo(jwt, userVo);
-        return Result.ok(userInfoVo);
-    }
-
-    @Override
-    public Result<UserVo> infoDetail(String userId) {
-        User user = this.baseMapper.selectById(userId);
-        if (Objects.isNull(user)) {
-            throw new SystemException(HttpEnum.ERROR, "用户不存在");
-        }
-        UserVo userVo = new UserVo();
-        BeanUtils.copyProperties(user, userVo);
+        UserInfoDetailVo userInfoDetailVo = new UserInfoDetailVo();
+        BeanUtils.copyProperties(userDetail.getUser(), userInfoDetailVo);
+        UserVo userVo = new UserVo(jwt, userInfoDetailVo);
         return Result.ok(userVo);
     }
 
     @Override
+    public Result<UserInfoDetailVo> infoDetail(String userId) {
+        User user = getUserById(userId);
+
+        UserInfoDetailVo userInfoDetailVo = new UserInfoDetailVo();
+        BeanUtils.copyProperties(user, userInfoDetailVo);
+        return Result.ok(userInfoDetailVo);
+    }
+
+    @Override
     public Result<?> logout() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDetail userDetail = (UserDetail) authentication.getPrincipal();
-        String userid = userDetail.getUser().getId();
+
+        String userid = SecurityUtils.getId();
         redisCache.deleteObject("userId:" + userid);
         return Result.ok("退出成功");
     }
@@ -107,4 +101,51 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return Result.ok("注册成功");
     }
 
+    @Override
+    public Result<UserInfoShortVo> infoShort(String userId) {
+        User user = getUserById(userId);
+        UserInfoShortVo shortVo = new UserInfoShortVo();
+        BeanUtils.copyProperties(user, shortVo);
+        return Result.ok(shortVo);
+    }
+
+    @Override
+    public Result<UserPostCardVo> postCard(String userId) {
+        User user = getUserById(userId);
+        UserPostCardVo postCardVo = new UserPostCardVo();
+        BeanUtils.copyProperties(user, postCardVo);
+        String selfId = SecurityUtils.getId();
+        if (selfId == null || selfId.equals(userId)) {
+            postCardVo.setIsFollowed(false);
+        } else {
+            Integer followed = this.baseMapper.isFollowed(userId, selfId);
+            postCardVo.setIsFollowed(followed == 1);
+        }
+        return Result.ok(postCardVo);
+    }
+
+    @Override
+    public Result<?> follow(String userId) {
+        String selfId = SecurityUtils.getId();
+        if (selfId.equals(userId)) {
+            throw new SystemException("不能关注自己");
+        }
+        Integer followed = this.baseMapper.isFollowed(userId, selfId);
+        Integer change =0;
+        if (followed == 1) {
+            change = this.baseMapper.unfollow(userId, selfId);
+        }else {
+            change = this.baseMapper.follow(userId, selfId);
+        }
+        return Result.ok(change);
+
+    }
+
+    private User getUserById(String userId) {
+        User user = this.baseMapper.selectById(userId);
+        if (Objects.isNull(user)) {
+            throw new SystemException(HttpEnum.ERROR, "用户不存在");
+        }
+        return user;
+    }
 }

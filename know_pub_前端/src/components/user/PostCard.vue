@@ -29,13 +29,20 @@
                         <span>{{ userInfo.followerCount }}</span>
                     </div>
                 </div>
-                <div class="mt-4 d-flex align-items-center justify-content-center flex-fill">
-                    <el-button class="bg-primary text-white flex-fill">
+                <div v-if="userInfo.id!==$store.state.userInfo.id"
+                     class="mt-4 d-flex align-items-center justify-content-center flex-fill">
+                    <el-button v-if="!userInfo.isFollowed" class="bg-primary text-white flex-fill" @click="follow">
                         <el-icon class="">
                             <Plus></Plus>
                         </el-icon>
                         <span class="fs-6">关注它</span>
+                    </el-button>
 
+                    <el-button v-else class="flex-fill" @click="follow">
+                        <el-icon class="">
+                            <close-bold></close-bold>
+                        </el-icon>
+                        <span class="fs-6">取消关注</span>
                     </el-button>
                     <el-button class=" flex-fill">
                         <el-icon :size="15">
@@ -44,7 +51,16 @@
                         <span class="fs-6">发私信</span>
 
                     </el-button>
-
+                </div>
+                <div v-else class="mt-4 d-flex align-items-center justify-content-center flex-fill">
+                    <router-link to="/home-user">
+                        <el-button class="flex-fill" @click="follow">
+                            <el-icon class="">
+                                <home-filled></home-filled>
+                            </el-icon>
+                            <span class="fs-6">我的主页</span>
+                        </el-button>
+                    </router-link>
                 </div>
             </div>
         </div>
@@ -58,13 +74,14 @@
 
 <script>
 import {http} from "@/utils/http/http";
-import {Message, Plus} from "@element-plus/icons-vue";
+import {CloseBold, HomeFilled, Message, Plus, Search} from "@element-plus/icons-vue";
+import {ElMessage} from "element-plus";
 
 export default {
     //组件名
     name: "post-card",
     //依赖的组件
-    components: {Message, Plus},
+    components: {Search, HomeFilled, CloseBold, Message, Plus},
     //数据
     data() {
         return {
@@ -81,18 +98,43 @@ export default {
         }
     },
     //方法
-    methods: {},
+    methods: {
+        follow() {
+            http.get('/user/follow', {
+                params: {
+                    userId: this.id
+                }
+            }).then(res => {
+                if (res.data.code === 200) {
+                    this.userInfo.isFollowed = !this.userInfo.isFollowed;
+                } else {
+                    ElMessage({
+                        message: "关注失败",
+                        type: "error"
+                    })
+                }
+
+            }, reason => {
+                console.log(reason)
+            })
+        }
+    },
     mounted() {
         console.log("postcard")
         http.get("/user/post-card", {
             params: {
-                id: this.id
+                userId: this.id
             }
         }).then(res => {
             if (res.data.code === 200) {
-                this.userInfo = res.data.data.userInfo;
+                this.userInfo = res.data.data;
                 this.isLoading = false;
-            } else alert("failed in getting user info")
+            } else {
+                ElMessage({
+                    message: "获取名片失败",
+                    type: "error"
+                })
+            }
         })
     },
     //侦听器

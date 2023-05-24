@@ -1,6 +1,8 @@
 <template>
     <div v-infinite-scroll="loadData" class="w-100 h-100" infinite-scroll-distance="120">
-        <home-navbar/>
+        <keep-alive>
+            <home-navbar/>
+        </keep-alive>
         <div class="main d-flex">
             <router-view v-slot="{Component}">
                 <transition mode="out-in" name="home">

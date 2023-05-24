@@ -1,20 +1,22 @@
 package com.gg.kp_common.entity.po;
 
-import com.gg.kp_common.utils.Authority;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.io.Serializable;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor
-public class UserDetail implements UserDetails {
+public class UserDetail implements UserDetails , Serializable {
     private User user;
-    private Collection<Authority> authorities;
+    private Collection<String> authorities;
 
-    public UserDetail(User user, Collection<Authority> permissionKeyList) {
+    public UserDetail(User user, Collection<String> permissionKeyList) {
         this.user = user;
         this.authorities = permissionKeyList;
     }
@@ -22,7 +24,7 @@ public class UserDetail implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
+        return authorities.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
     }
 
     @Override

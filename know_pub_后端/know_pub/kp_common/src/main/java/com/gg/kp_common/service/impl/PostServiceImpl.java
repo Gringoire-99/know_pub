@@ -25,8 +25,8 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         List<PostVo> recordsVo = BeanCopyUtils.copyBeanList(records,PostVo.class);
         Long total = postIPage.getTotal();
         HashMap<String, Object> data = new HashMap<>();
-        data.put("posts", recordsVo);
-        data.put("total",total);
+        data.put(PageUtils.PAGE, recordsVo);
+        data.put(PageUtils.TOTAL,total);
         return Result.ok(data);
     }
 }
