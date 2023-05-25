@@ -30,8 +30,8 @@ export default {
                     currentPage: this.currentPage,
                 }
             }).then(response => {
+                this.currentPage += 1
                 this.posts.push(...response.data.data.page)
-                console.log(this.page)
                 this.isLoading = false
             }, reason => {
             }).finally(() => {

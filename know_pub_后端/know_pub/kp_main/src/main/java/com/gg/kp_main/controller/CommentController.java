@@ -24,6 +24,10 @@ public class CommentController {
         return commentService.postComment(comment);
     }
 
+    @GetMapping("/child-comments")
+    public Result<HashMap<String, Object>> getChildComment(@RequestParam Map<String,Object> params){
+        return commentService.getChildComment(params);
+    }
 
 
 }

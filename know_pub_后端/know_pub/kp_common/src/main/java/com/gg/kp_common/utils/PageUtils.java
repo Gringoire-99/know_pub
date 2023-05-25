@@ -9,11 +9,12 @@ import java.util.Map;
 public class PageUtils<T> {
     public static final String CURRENT_PAGE = "currentPage";
     public static final String PAGE_SIZE = "pageSize";
-    public static final String ORDER_FIELD = "orderField";
+    public static final String ORDER_By = "orderBy";
     public static final String ORDER = "order";
     public static final String ASC = "asc";
     public static final String PAGE = "page";
     public static final String TOTAL = "total";
+    public static final String ROWS = "rows";
 
 
     //    根据请求参数构造page对象，通过这个page对象分页查询数据
@@ -30,8 +31,8 @@ public class PageUtils<T> {
 
         Page<T> page = new Page<>(currentPage, pageSize);
 
-        if (params.get(ORDER_FIELD) != null) {
-            String orderField = (String) params.get(ORDER_FIELD);
+        if (params.get(ORDER_By) != null) {
+            String orderField = (String) params.get(ORDER_By);
             String order = (String) params.get(ORDER);
             if (ASC.equals(order)) {
                 page.addOrder(OrderItem.asc(orderField));

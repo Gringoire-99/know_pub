@@ -12,4 +12,6 @@ public interface PostService extends IService<Post> {
     Result<Map<String,Object>> getRecommendedPosts(Map<String, Object> params);
 
     Integer onComment(String postId);
+
+    Result<PostVo> getPost(String postId);
 }

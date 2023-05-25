@@ -29,14 +29,13 @@
                             <span class="name">{{ comment.name }}</span>
                         </template>
                     </popover>
-                    <span v-if="isShowReplyTo" class="d-flex align-items-center">
+                    <span v-if="isShowReplyTo&&comment.replyToUserId" class="d-flex align-items-center">
                         <el-icon><DArrowRight/></el-icon>
                         <popover
                             placement="bottom"
                             trigger="hover"
                             :show-after="500"
                             :width="430"
-
                         >
                              <post-card :id="comment.replyToUserId"></post-card>
                             <template #reference>

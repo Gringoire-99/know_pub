@@ -21,7 +21,8 @@
 
             </transition-group>
 
-            <div v-if="isLoading&&total===0" class="d-flex align-items-center showMore" v-on:click="openCommentsDialog">
+            <div v-if="rootCommentTotal>pageSize" class="d-flex align-items-center showMore"
+                 v-on:click="openCommentsDialog">
                 <span>{{ `点击查看所有${total}条评论` }}</span>
                 <el-icon>
                     <arrow-right></arrow-right>
@@ -73,7 +74,8 @@ export default {
             total: 0,
             dialogVisible: false,
             isLoadDialog: false,
-            rootComments: []
+            rootComments: [],
+            rootCommentTotal: 0
 
         }
     },
@@ -109,14 +111,11 @@ export default {
                 }
 
             })
-            console.log(rootComments.values())
             // 将map转换为数组
             return Array.from(rootComments.values())
 
         },
         getComments(isMerge = true) {
-            console.log('load')
-
             if (this.isLoading) return
             if (!isMerge) {
                 this.currentPage = 1
@@ -139,10 +138,10 @@ export default {
                         } else {
                             // 刷新数据
                             this.comments = resolve.data.data.page
-                            this.currentPage = this.pageSize
                         }
                         this.total = resolve.data.data.total
                         this.isLoading = false
+                        this.rootCommentTotal = resolve.data.data.rootCommentTotal
                     } else {
                     }
                 }, reason => {

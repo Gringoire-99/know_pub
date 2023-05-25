@@ -7,24 +7,26 @@
 
             <div class="divider w-100"></div>
             <div class="count">{{ `${total}条回复` }}</div>
-            <div v-infinite-scroll="getComments" :infinite-scroll-disabled="isLoading"
+            <div v-infinite-scroll="getComments" :infinite-scroll-disabled="rootComment.childCount === total"
                  class="comments pe-2"
                  infinite-scroll-distance="10">
                 <transition-group
                     name="comments"
                 >
                     <comment v-for="childComment in comments" :key="childComment.id" :comment="childComment"
+                             @refresh="getComments(false)"
                     ></comment>
                 </transition-group>
-
-                <el-skeleton :rows="3" :throttle="0.5" animated/>
+                <div v-show="isLoading">
+                    <el-skeleton :rows="3" :throttle="0.5" animated/>
+                </div>
             </div>
             <div v-if="total===0&&!isLoading" class="d-flex justify-content-center align-items-center">
                 <el-empty description="还没有评论，快来抢沙发吧~"/>
             </div>
         </div>
 
-        <post-comment></post-comment>
+        <post-comment @refresh="getComments(false)"></post-comment>
     </div>
 
 </template>
@@ -64,32 +66,33 @@ export default {
         getComments(isMerge = true, orderBy = "likeCount", useParams = false) {
             if (this.isLoading) return
             this.isLoading = true
+            if (!isMerge) {
+                this.currentPage = 1
+            }
+
             let order = useParams ? orderBy : this.orderBy
-            http.get('/comments/child-comments', {
+            http.get('/comment/child-comments', {
                 params: {
-                    id: this.rootComment.id,
+                    commentId: this.rootComment.id,
                     pageSize: this.pageSize,
                     currentPage: this.currentPage,
-                    orderBy: order
                 }
             }).then(
                 resolve => {
                     if (resolve.status === 200) {
                         // 连接两个数组
                         if (isMerge) {
-                            this.comments.push(...resolve.data.data.comments)
-                            this.currentPage += this.pageSize
+                            this.comments.push(...resolve.data.data.page)
+                            this.currentPage += 1
                         } else {
-                            this.comments = resolve.data.data.comments
-                            this.currentPage = this.pageSize
+                            this.comments = resolve.data.data.page
                         }
                         this.total = resolve.data.data.total
+                        console.log(this.total)
                         this.isLoading = false
                     } else {
-                        alert("failed")
                     }
                 }, reason => {
-                    alert("failed")
                 }
             )
         }
@@ -144,7 +147,7 @@ export default {
         }
 
         .comments {
-            height: 450px;
+            height: 400px;
             overflow-x: hidden;
             overflow-y: scroll;
         }

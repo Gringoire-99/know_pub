@@ -26,4 +26,8 @@ public class PostController {
 
         return postService.getRecommendedPosts(params);
     }
+    @GetMapping("/getPost")
+    public Result<PostVo> getPost(@RequestParam String postId){
+        return postService.getPost(postId);
+    }
 }

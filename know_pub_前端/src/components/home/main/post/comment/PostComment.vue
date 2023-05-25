@@ -101,20 +101,22 @@ export default {
                 newComment.name = this.userInfo.name
                 newComment.avatar = this.userInfo.avatar
                 newComment.userId = this.userInfo.id
-                newComment.replyToUserId = parent.userId
                 if (postId) {
-                    //     父级是评论：需要显示回复了谁
+                    //     父级是评论：如果是父级是根评论，不显示回复了谁，如果是普通评论显示回复了谁
                     newComment.postId = postId
-                    newComment.replyToUserName = parent.name
                     newComment.isRootComment = 0
                     newComment.rootCommentId = parent.rootCommentId
+                    if (parent.isRootComment !== 1) {
+                        newComment.replyToUserName = parent.name
+                        newComment.replyToUserId = parent.userId
+                    }
                 } else {
                     //     父级是post,说明这是根评论，不需要显示回复了谁
                     newComment.postId = parent.id
-                    newComment.replyToUserName = ''
                     newComment.isRootComment = 1
                     newComment.rootCommentId = newComment.id
                 }
+                console.log(newComment)
                 http.post('/comment/post-comment', newComment).then(res => {
                     if (res.data.code === 200) {
                         this.$emit('refresh')

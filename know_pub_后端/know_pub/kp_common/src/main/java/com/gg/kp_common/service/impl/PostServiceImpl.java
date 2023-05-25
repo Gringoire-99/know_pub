@@ -11,6 +11,7 @@ import com.gg.kp_common.service.PostService;
 import com.gg.kp_common.utils.BeanCopyUtils;
 import com.gg.kp_common.utils.PageUtils;
 import com.gg.kp_common.utils.Result;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -37,6 +38,14 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         LambdaUpdateWrapper<Post> luw = new LambdaUpdateWrapper<>();
         luw.eq(Post::getId,postId).setSql("comment_count = comment_count + 1");
         return baseMapper.update(null,luw);
+    }
+
+    @Override
+    public Result<PostVo> getPost(String postId) {
+        Post post = getById(postId);
+        PostVo postVo = new PostVo();
+        BeanUtils.copyProperties(post,postVo);
+        return Result.ok(postVo);
     }
 
 }

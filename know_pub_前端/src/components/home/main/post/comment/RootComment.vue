@@ -6,18 +6,18 @@
              class="child_comments w-100">
             <transition-group name="comments">
                 <div v-for="(comment,index) in tempChildComments" :key="index">
-                    <comment :comment="comment" @refresh="$emit('refresh')"></comment>
+                    <comment :comment="comment" :is-show-reply-to="true" @refresh="$emit('refresh')"></comment>
                 </div>
             </transition-group>
 
             <div class="showMore  mb-4">
                 <!--            -2>4 有大于4个折叠元素（>4） -2>0有折叠元素(4-1)-->
                 <el-button
-                    v-show="comments.childComments.length>TEMP_DISPLAY_NUMBER&&tempChildComments.length<=TEMP_DISPLAY_NUMBER"
+                    v-show="comments.rootComment.childCount>TEMP_DISPLAY_NUMBER"
                     v-on:click="unfold">
                     {{
-                        (comments.childComments.length > NUMBER_ON_HIDE)
-                            ? `查看全部${comments.childComments.length}条评论` : `展开其他${comments.childComments.length - TEMP_DISPLAY_NUMBER}条评论`
+                        (comments.rootComment.childCount > NUMBER_ON_HIDE)
+                            ? `查看全部${comments.rootComment.childCount}条评论` : `展开其他${comments.rootComment.childCount - TEMP_DISPLAY_NUMBER}条评论`
                     }}
                 </el-button>
             </div>
@@ -61,7 +61,7 @@ export default {
             this.isOpenPostComment = !this.isOpenPostComment
         },
         unfold() {
-            if (this.comments.childComments.length > this.NUMBER_ON_HIDE) {
+            if (this.comments.rootComment.childCount > this.NUMBER_ON_HIDE) {
                 this.isLoadingRCD = true
                 this.dialogVisible = true
             } else {

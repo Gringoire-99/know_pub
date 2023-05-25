@@ -1,5 +1,5 @@
 # 不使用外键
-CREATE DATABASE IF NOT EXISTS know_pub CHAR SET utf8;
+CREATE DATABASE if not exists know_pub CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE know_pub;
 CREATE TABLE IF NOT EXISTS follow
 (
@@ -36,23 +36,23 @@ CREATE TABLE IF NOT EXISTS know_pub.user
     school           varchar(20)  default '' comment '学校',
     location         varchar(20)  default '' comment '地区',
     gender           varchar(10)  default '' comment '性别',
-    resume           varchar(100) default '' comment '简单介绍',
+    resume           LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci comment '简单介绍',
     auth             varchar(20)  default 0 comment '个人认证',
     background       varchar(100) default 'http://dummyimage.com/2000x1000' comment '背景图',
     del_flag         int          default 0 comment '删除标志,0:未删除,1:已删除'
 );
 CREATE TABLE IF NOT EXISTS comment
 (
-    id                 char(40)     NOT NULL primary key comment '评论id',
-    content            varchar(256) NOT NULL comment '评论内容',
-    name               char(40)     NOT NULL comment '评论人的姓名',
+    id                 char(40) NOT NULL primary key comment '评论id',
+    content            LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci comment '评论内容',
+    name               char(40) NOT NULL comment '评论人的姓名',
     avatar             varchar(100) default 'http://dummyimage.com/100x100' comment '评论人的头像',
     create_time        datetime     default now() comment '评论时间',
     like_count         int          default 0 comment '点赞数',
     status             int          default 0 comment '状态,0:正常,1:禁用',
-    post_id            char(40)     NOT NULL comment '评论的文章id',
-    user_id            char(40)     NOT NULL comment '这条评论发布者的id',
-    root_comment_id    char(40)     NOT NULL comment '根评论的id,如果自己是根评论，此条为自己的id',
+    post_id            char(40) NOT NULL comment '评论的文章id',
+    user_id            char(40) NOT NULL comment '这条评论发布者的id',
+    root_comment_id    char(40) NOT NULL comment '根评论的id,如果自己是根评论，此条为自己的id',
     reply_to_user_name char(40)     default '' comment '被回复者的名字',
     reply_to_user_id   char(40)     default '' comment '被回复者的id',
     is_root_comment    int          default 1 comment '是否是根评论,1:是,0:不是',
@@ -62,41 +62,41 @@ CREATE TABLE IF NOT EXISTS comment
 );
 CREATE TABLE IF NOT EXISTS post
 (
-    id            char(40)       NOT NULL primary key comment '博文id',
-    question      varchar(256)   NOT NULL comment '问题/标题',
-    question_id   char(40)       NOT NULL comment '问题id',
-    content       varchar(10000) NOT NULL comment '内容(富文本)',
-    cover         varchar(100)   default '' comment '封面',
-    images        varchar(10000) default '' comment '图片，使用逗号分隔',
-    like_count    int            default 0 comment '点赞数',
-    dislike_count int            default 0 comment '踩数',
-    user_id       char(40)       NOT NULL comment '作者id,需要根据id去user表中查找基础信息',
-    publish_time  datetime       default now() comment '发布时间',
-    update_time   datetime       default now() comment '更新时间',
-    status        int            default 0 comment '状态,0:正常,1:禁用',
-    comment_count int            default 0 comment '评论数',
-    del_flag      int            default 0 comment '删除标志,0:未删除,1:已删除'
+    id            char(40)     NOT NULL primary key comment '博文id',
+    question      varchar(256) NOT NULL comment '问题/标题',
+    question_id   char(40)     NOT NULL comment '问题id',
+    content       LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci comment '内容(富文本)',
+    cover         varchar(100) default '' comment '封面',
+    images        LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci comment '图片，使用逗号分隔',
+    like_count    int          default 0 comment '点赞数',
+    dislike_count int          default 0 comment '踩数',
+    user_id       char(40)     NOT NULL comment '作者id,需要根据id去user表中查找基础信息',
+    publish_time  datetime     default now() comment '发布时间',
+    update_time   datetime     default now() comment '更新时间',
+    status        int          default 0 comment '状态,0:正常,1:禁用',
+    comment_count int          default 0 comment '评论数',
+    del_flag      int          default 0 comment '删除标志,0:未删除,1:已删除'
 
 
 );
 CREATE TABLE IF NOT EXISTS question
 (
-    id               char(40)       NOT NULL primary key comment '问题id',
-    question         varchar(256)   NOT NULL comment '问题/标题',
-    content          varchar(10000) NOT NULL comment '内容(富文本)',
-    cover            varchar(100)   default '' comment '封面',
-    images           varchar(10000) default '' comment '图片，使用逗号分隔',
-    like_count       int            default 0 comment '点赞数',
-    user_id          char(40)       NOT NULL comment '作者id,需要根据id去user表中查找基础信息',
-    publish_time     datetime       default now() comment '发布时间',
-    update_time      datetime       default now() comment '更新时间',
-    status           int            default 0 comment '状态,0:正常,1:禁用',
-    comment_count    int            default 0 comment '评论数',
-    answer_count     int            default 0 comment '回答数',
-    collection_count int            default 0 comment '收藏数',
-    view_count       int            default 0 comment '浏览数',
-    tag_names        varchar(50)    default '' comment '标签名，使用逗号分隔',
-    del_flag         int            default 0 comment '删除标志,0:未删除,1:已删除'
+    id               char(40)     NOT NULL primary key comment '问题id',
+    question         varchar(256) NOT NULL comment '问题/标题',
+    content          LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci comment '内容(富文本)',
+    cover            varchar(100) default '' comment '封面',
+    images           TEXT comment '图片，使用逗号分隔',
+    like_count       int          default 0 comment '点赞数',
+    user_id          char(40)     NOT NULL comment '作者id,需要根据id去user表中查找基础信息',
+    publish_time     datetime     default now() comment '发布时间',
+    update_time      datetime     default now() comment '更新时间',
+    status           int          default 0 comment '状态,0:正常,1:禁用',
+    comment_count    int          default 0 comment '评论数',
+    answer_count     int          default 0 comment '回答数',
+    collection_count int          default 0 comment '收藏数',
+    view_count       int          default 0 comment '浏览数',
+    tag_names        varchar(50)  default '' comment '标签名，使用逗号分隔',
+    del_flag         int          default 0 comment '删除标志,0:未删除,1:已删除'
 );
 CREATE TABLE IF NOT EXISTS tag
 (
@@ -176,20 +176,27 @@ CREATE TABLE IF NOT EXISTS `sys_user_role`
     PRIMARY KEY (`user_id`, `role_id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
-# 设定权限
+# INSERT INTO user(id, name, phone, password)
+# values ('1', 'admin', '1', '$2a$10$7XD2uoWxm8V33yZATXjOs.F/dWyZmLCUJmxmJCRLdbLHv0xVigM9m'),
+#        ('2', 'user1', '2', '$2a$10$7XD2uoWxm8V33yZATXjOs.F/dWyZmLCUJmxmJCRLdbLHv0xVigM9m'),
+#        ('3', 'user2', '3', '$2a$10$7XD2uoWxm8V33yZATXjOs.F/dWyZmLCUJmxmJCRLdbLHv0xVigM9m');
+# # 设定权限
 # INSERT INTO sys_menu(id, menu_name, perms)
-# VALUES ('1', '查看用户详情', 'user:info-detail');
+# VALUES ('1', '角色：用户', 'ROLE_USER');
 #
-# # 设定角色
+# # # 设定角色
 # INSERT INTO sys_role(id, name, role_key)
 # VALUES ('1', 'User', 'user'),
 #        ('0', 'admin', 'admin');
-# # 设定角色拥有的权限
+# # # 设定角色拥有的权限
 # INSERT INTO sys_role_menu(role_id, menu_id)
 # VALUES ('1', '1'),
 #        ('0', '1');
-
-# 设定用户拥有的角色
+#
+# # 设定用户拥有的角色
 # INSERT INTO sys_user_role(user_id, role_id)
-# VALUES ('1', '1'),
-#        ('0', '0');
+# VALUES
+#     ('1', '0'),
+#        ('2', '1'),
+#        ('3', '1');
+

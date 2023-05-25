@@ -16,6 +16,6 @@ class KpMainApplicationTests {
 
     @Test
     void test1() {
-        System.out.println(new BCryptPasswordEncoder().encode("123456789"));
+        System.out.println(new BCryptPasswordEncoder().encode("1"));
     }
 }

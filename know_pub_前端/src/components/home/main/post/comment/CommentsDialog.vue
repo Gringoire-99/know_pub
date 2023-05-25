@@ -14,26 +14,29 @@
                     </el-radio-button>
                 </el-radio-group>
             </div>
-            <div v-infinite-scroll="getComments"
-                 :infinite-scroll-disabled="isLoading"
-                 class="comments d-flex flex-column  w-100 align-items-center"
-                 infinite-scroll-distance="30"
+            <div
+                v-if="total!==0"
+                v-infinite-scroll="getComments"
+                :infinite-scroll-disabled="isLoading||comments.length===total"
+                class="comments d-flex flex-column  w-100 align-items-center"
+                infinite-scroll-distance="50"
             >
                 <transition-group name="root-comments">
                     <root-comment v-for="rootComment in rootComments" :key="rootComment.rootComment.id"
-                                  :comments="rootComment">
-
+                                  :comments="rootComment" @refresh="getComments(false)">
                     </root-comment>
                 </transition-group>
 
-                <el-skeleton :rows="5" :throttle="0.5" animated/>
+                <div v-show="isLoading">
+                    <el-skeleton :rows="5" :throttle="0.5" animated/>
+                </div>
             </div>
+            <div v-else class="d-flex justify-content-center align-items-center">
+                <el-empty description="还没有评论，快来抢沙发吧~"/>
+            </div>
+        </div>
 
-        </div>
-        <div v-if="total===0&&!isLoading" class="d-flex justify-content-center align-items-center">
-            <el-empty description="还没有评论，快来抢沙发吧~"/>
-        </div>
-        <post-comment></post-comment>
+        <post-comment :parent="post" @refresh="getComments(false)"></post-comment>
     </div>
 
 </template>
@@ -41,7 +44,7 @@
 <script>
 import RootComment from "@/components/home/main/post/comment/RootComment.vue";
 import PostComment from "@/components/home/main/post/comment/PostComment.vue";
-import http from "@/utils/http/http";
+import http, {http_no_token} from "@/utils/http/http";
 
 export default {
     //组件名
@@ -51,7 +54,7 @@ export default {
     //数据
     data() {
         return {
-            pageSize: 5,
+            pageSize: 10,
             currentPage: 1,
             isLoading: false,
             // 默认按照点赞数排序
@@ -64,6 +67,8 @@ export default {
             orderBy: "likeCount",
             comments: [],
             total: 0,
+            rootComments: {},
+            post: {}
 
         }
     },
@@ -76,7 +81,7 @@ export default {
             // 筛选出根评论
             let rootComments = new Map()
             comments.forEach(comment => {
-                if (comment.rootCommentId === comment.postId) {
+                if (comment.isRootComment === 1) {
                     if (!rootComments.has(comment.id)) {
                         rootComments.set(comment.id, {
                             rootComment: comment,
@@ -101,35 +106,53 @@ export default {
         },
         getComments(isMerge = true, orderBy = "likeCount", useParams = false) {
             if (this.isLoading) return
+            if (!isMerge) {
+                this.currentPage = 1
+            }
             this.isLoading = true
-            let order = useParams ? orderBy : this.orderBy
-            http.get('/comments', {
+            http.get('/comment/comments', {
                 params: {
                     postId: this.postId,
                     pageSize: this.pageSize,
                     currentPage: this.currentPage,
-                    orderBy: order
                 }
             }).then(
                 resolve => {
+                    console.log(resolve)
                     if (resolve.status === 200) {
                         // 连接两个数组
                         if (isMerge) {
-                            this.comments.push(...resolve.data.data.comments)
-                            this.currentPage += this.pageSize
+                            // 无限滚动的追加
+                            this.comments.push(...resolve.data.data.page)
+                            this.currentPage += 1
                         } else {
-                            this.comments = resolve.data.data.comments
-                            this.currentPage = this.pageSize
+                            // 刷新数据
+                            this.comments = resolve.data.data.page
                         }
                         this.total = resolve.data.data.total
                         this.isLoading = false
+                        console.log(this.total)
+                        console.log(this.comments)
                     } else {
-                        alert("failed")
                     }
                 }, reason => {
-                    alert("failed")
                 }
-            )
+            ).finally(() => {
+                this.isLoading = false
+            })
+
+        },
+        getPost() {
+            http_no_token.get('/post/getPost', {
+                params: {
+                    postId: this.postId
+                }
+            }).then(res => {
+                if (res.data.code === 200) {
+                    this.post = res.data.data
+                }
+            }, reason => {
+            })
         }
 
     },
@@ -138,30 +161,34 @@ export default {
     },
     //创建时执行
     created() {
-        this.getComments(false)
+        this.getComments(true)
+        this.getPost()
+
 
     },
     //侦听器
     watch: {
+        comments: {
+            deep: true,
+            handler(newVal, oldVal) {
+                this.rootComments = this.filterRootComments(newVal)
+                return newVal
+            }
+        },
         orderBy(newValue, oldValue) {
-            this.getComments(false, newValue, true)
+            this.getComments(false)
             return newValue
         },
-        comments: {
-            handler(newValue, oldValue) {
-                this.filterRootComments(newValue)
-                return newValue
-            },
-            deep: true
-        },
+        rootComments: {
+            deep: true,
+            handler(newVal, oldVal) {
+                return newVal
+            }
+        }
     }
     ,
     //计算属性
-    computed: {
-        rootComments() {
-            return this.filterRootComments(this.comments)
-        }
-    }
+    computed: {}
     ,
     //绑定父组件的属性
     props: {
@@ -174,7 +201,7 @@ export default {
 }
 </script>
 <style lang="scss">
-@include fade(root-comments, 0.5s, (10px, 0, 0));
+@include fade(root-comments, 0.9s, (30px, 0, 0));
 
 
 .dialog-root {
@@ -203,7 +230,7 @@ export default {
             @include align($fd: column, $ai: start, $jc: start);
             width: 100%;
             padding: 20px 10px;
-            height: 600px;
+            height: 550px;
             overflow-x: hidden;
             overflow-y: scroll;
         }
