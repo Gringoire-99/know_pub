@@ -176,6 +176,17 @@ CREATE TABLE IF NOT EXISTS `sys_user_role`
     PRIMARY KEY (`user_id`, `role_id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
+
+# 向根据userId查出动作，再通过动作查出相应的事件，action:点赞，收藏，回复
+CREATE TABLE IF NOT EXISTS action(
+    action char(20) not null comment '动作,枚举对象',
+    action_id char(60) primary key not null comment '动作id',
+    user_id char(60) not null comment '用户id',
+    create_time datetime default now() comment '创建时间',
+    target_id char(60) not null comment '目标id(postId)',
+    content char(50) default '' comment '可选内容'
+)
+
 # INSERT INTO user(id, name, phone, password)
 # values ('1', 'admin', '1', '$2a$10$7XD2uoWxm8V33yZATXjOs.F/dWyZmLCUJmxmJCRLdbLHv0xVigM9m'),
 #        ('2', 'user1', '2', '$2a$10$7XD2uoWxm8V33yZATXjOs.F/dWyZmLCUJmxmJCRLdbLHv0xVigM9m'),

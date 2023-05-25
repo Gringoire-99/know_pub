@@ -51,11 +51,11 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
          */
         LambdaQueryWrapper<Comment> lqwC = new LambdaQueryWrapper<>();
         for (Comment record : commentIPage.getRecords()) {
-            lqwC.eq(Comment::getRootCommentId, record.getId()).eq(Comment::getIsRootComment,0);
+            lqwC.eq(Comment::getRootCommentId, record.getId()).eq(Comment::getIsRootComment, 0);
             if (record.getChildCount() < 4) {
                 comments.addAll(this.baseMapper.selectList(lqwC));
             }
-            if (record.getChildCount() > 4) {
+            if (record.getChildCount() >= 4) {
                 lqwC.last("limit 4");
                 comments.addAll(this.baseMapper.selectList(lqwC));
             }
@@ -65,7 +65,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         HashMap<String, Object> data = new HashMap<>();
         data.put(PageUtils.PAGE, comments);
         data.put(PageUtils.TOTAL, total);
-        data.put(PageUtils.ROWS,comments.size());
+        data.put(PageUtils.ROWS, comments.size());
         data.put("rootCommentTotal", rootCommentTotal);
         return Result.ok(data);
     }
@@ -86,7 +86,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         if (comment.getIsRootComment() == 0) {
             lqwU.eq(Comment::getId, comment.getRootCommentId())
                     .setSql("child_count = child_count + 1");
-            baseMapper.update(null,lqwU );
+            baseMapper.update(null, lqwU);
         }
         Integer result = this.baseMapper.insert(c);
         return Result.ok(result);
@@ -99,12 +99,12 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         ValidationUtils.validate().validateEmpty(commentId);
         IPage<Comment> page = new PageUtils<Comment>().getPage(params);
         LambdaQueryWrapper<Comment> lqw = new LambdaQueryWrapper<>();
-        lqw.eq(Comment::getRootCommentId, commentId);
+        lqw.eq(Comment::getRootCommentId, commentId).eq(Comment::getIsRootComment, 0);
         IPage<Comment> commentIPage = this.baseMapper.selectPage(page, lqw);
         HashMap<String, Object> data = new HashMap<>();
         data.put(PageUtils.PAGE, commentIPage.getRecords());
         data.put(PageUtils.TOTAL, commentIPage.getTotal());
-        data.put(PageUtils.ROWS,commentIPage.getRecords().size());
+        data.put(PageUtils.ROWS, commentIPage.getRecords().size());
         return Result.ok(data);
 
     }

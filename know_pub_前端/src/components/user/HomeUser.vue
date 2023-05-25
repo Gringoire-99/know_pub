@@ -17,7 +17,7 @@
                                     <span class="fw-bold fs-5">{{ userInfo.name }}</span>
                                     <span
                                         class="ms-2 fs-6 fw-light">{{
-                                            userInfo.description.length > 10 ? userInfo.description.substring(0, 10) + '...' : userInfo.description
+                                        String(userInfo.description).length > 10 ? String(userInfo.description).substring(0, 10) + '...' : userInfo.description
                                         }}
                                     </span>
                                 </span>
@@ -84,6 +84,7 @@ import Job from "@/components/icons/Job.vue";
 import {ArrowDownBold, ArrowUpBold} from "@element-plus/icons-vue";
 import UserDetail from "@/components/user/UserDetail.vue";
 import UserSecondary from "@/components/user/UserSecondary.vue";
+import {ElMessage} from "element-plus";
 
 export default {
     //组件名
@@ -117,6 +118,10 @@ export default {
             if (res.data.code === 200) {
                 this.userInfo = res.data.data
             } else {
+                ElMessage({
+                    message: '获取用户信息失败',
+                    type: 'error'
+                })
             }
         }, err => {
         }).finally(() => {

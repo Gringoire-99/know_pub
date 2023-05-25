@@ -18,11 +18,11 @@
                     <img v-if="post.cover!==''" :src="post.cover" alt="介绍图片"
                          class="img-fluid col-3 intro-img">
 
-                    <div class="text">
-                        <span class="intro-text" v-on:click="collapseFullText">{{
+                    <div class="text" v-on:click="collapseFullText">
+                        <span class="intro-text">{{
                                 post.content.slice(0, 80)
                             }}</span>
-                        <span class="full-text-btn" v-on:click="collapseFullText">...阅读全文</span>
+                        <span class="full-text-btn">...阅读全文</span>
                         <el-icon class="d-inline">
                             <arrow-down/>
                         </el-icon>
@@ -38,14 +38,14 @@
 
             <!--            操作栏-->
             <div class="card-footer d-flex align-items-center">
-                <el-button class="agree-btn" type="primary">
+                <el-button :class="{on:onLike}" class="agree-btn" type="primary" @click="like">
                     <el-icon>
                         <caret-top></caret-top>
                     </el-icon>
                     <span>赞同</span>
                     {{ post.likeCount }}
                 </el-button>
-                <el-button class="disagree-btn" type="primary">
+                <el-button :class="{on:onDislike}" class="disagree-btn" type="primary">
                     <el-icon>
                         <caret-bottom></caret-bottom>
                     </el-icon>
@@ -141,6 +141,8 @@ import Mock from "mockjs";
 import Comments from "@/components/home/main/post/comment/Comments.vue";
 import PostComment from "@/components/home/main/post/comment/PostComment.vue";
 import PostBody from "@/components/home/main/post/PostBody.vue";
+import http from "@/utils/http/http";
+import {ElMessage} from "element-plus";
 
 /**
  * post：某个主题的一个回答，
@@ -166,6 +168,8 @@ export default {
         return {
             isCollapseFullText: true,
             isCollapseComments: true,
+            onLike: false,
+            onDislike: false
         }
     }, //绑定父组件的属性
     props: {
@@ -197,6 +201,31 @@ export default {
                 path: `/home-question/${this.post.questionId}`,
             });
             window.open(routeUrl.href, "_blank");
+        },
+        like() {
+            if (!this.$store.state.isLogin) {
+                this.$store.commit("SET_SHOW_LOGIN", true)
+                return
+            }
+            console.log(this.post.id)
+            http.post('/post/like', {
+                postId: this.post.id
+            }).then(res => {
+                if (res.data.code === 200) {
+                    this.post.likeCount++
+                    this.onLike = !this.onLike
+                    ElMessage({
+                        message: '点赞成功',
+                        type: 'success'
+                    })
+                } else {
+                    ElMessage({
+                        message: '点赞失败',
+                        type: 'error'
+                    })
+                }
+            }, reason => {
+            })
         }
     },
     //挂载时执行
@@ -204,7 +233,13 @@ export default {
     },
     //创建时执行
     created() {
-
+        console.log(this.post)
+        if (this.post.liked) {
+            this.onLike = true
+        }
+        // if (this.post.isCollected){
+        //
+        // }
     },
     //侦听器
     watch: {}
@@ -219,68 +254,78 @@ export default {
 <style lang="scss" scoped>
 @include fade(text, 0.2s, (-10px, 0, 0));
 @include fade(comment, 0.2s, (0, -10px, 0));
-.list-group .el-popover.el-popper {
-    padding: 0
-}
-
 .list-group {
     padding: 0;
     margin: 0;
     border: none;
+
+    .el-popover.el-popper {
+        padding: 0
+    }
+
+    .list-group-item {
+        border: none;
+
+        &:hover {
+            background: #f5f5f5;
+        }
+    }
+
 }
 
-.list-group-item {
-    border: none;
-}
-
-.list-group-item:hover {
-    background: #f5f5f5;
-}
-
-.card-footer .etc .el-button {
-    border: none;
-    background: white;
-    font-size: 16px;
-    margin-left: 5px;
-}
-
-
-.card-footer .el-button .el-icon {
-    font-size: 20px;
-    margin-bottom: 2px;
-    margin-right: 3px;
-}
-
-.disagree-btn {
-    width: 35px;
-    border: none;
-    background: rgba(5, 109, 232, .1);
-    color: #056de8;
-    margin-left: 5px;
-}
-
-.card-footer > .el-button .el-icon {
-    font-size: 20px;
-}
-
-.agree-btn {
-    padding-left: 10px;
-    border: none;
-    background: rgba(5, 109, 232, .1);
-    color: #056de8;
-}
-
-.hideComments {
-    margin-left: auto !important;
-}
 
 .card-footer {
+
     margin-top: 15px;
     padding: 0;
     border: none;
     background-color: white;
 
+    & > .el-button {
+        @include clickEffect($white, $scale: 0.95, $bg: $blue, $text: $deep-blue);
+        border: none;
+        background: $whiteBlue;
+        font-size: $fs-large;
+
+        &.disagree-btn {
+            width: 35px;
+            margin-left: 5px;
+        }
+
+        &.agree-btn {
+            padding-left: 10px;
+
+        }
+
+        &.on {
+            background: $blue;
+            color: $white;
+        }
+    }
+
+    .etc {
+        .el-button {
+            border: none;
+            background: white;
+            font-size: 16px;
+            margin-left: 5px;
+        }
+
+        .el-button {
+            .el-icon {
+                font-size: 20px;
+                margin-bottom: 2px;
+                margin-right: 3px;
+            }
+        }
+    }
 }
+
+
+.hideComments {
+    margin-left: auto !important;
+}
+
 
 .full-text-btn {
     color: #0470bd;
@@ -300,25 +345,26 @@ export default {
     transition: all 0.5s;
 }
 
-.intro > img {
-    border-radius: 5px;
-    margin-right: 20px;
-    min-width: 200px;
-    min-height: 100px;
-    max-height: 130px;
-    object-fit: cover;
+.intro {
+    & > img {
+        border-radius: 5px;
+        margin-right: 20px;
+        min-width: 200px;
+        min-height: 100px;
+        max-height: 130px;
+        object-fit: cover;
+    }
+
+    .text {
+        .el-icon {
+            font-size: 20px;
+            color: #0470bd;
+            margin-left: 5px;
+            @include clickEffect()
+        }
+    }
 }
 
-.intro .text .el-icon {
-    font-size: 20px;
-    color: #0470bd;
-    cursor: pointer;
-    margin-left: 5px;
-}
-
-.intro .text .el-icon:hover, .intro .text .full-text-btn:hover {
-    color: #0052d6;
-}
 
 .intro .text:hover {
     color: rgba(91, 88, 88, 0.86);

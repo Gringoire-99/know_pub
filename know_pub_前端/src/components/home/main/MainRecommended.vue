@@ -23,7 +23,7 @@ export default {
         getPosts() {
             this.isLoading = true
             let id = this.$store.state.userInfo.id
-            http_no_token.get('/post/recommended-posts', {
+            http.get('/post/recommended-posts', {
                 params: {
                     id: (id === '' || id == null) ? 1 : 1,
                     pageSize: this.pageSize,

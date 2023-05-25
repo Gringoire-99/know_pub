@@ -7,14 +7,14 @@
 
             <div class="divider w-100"></div>
             <div class="count">{{ `${total}条回复` }}</div>
-            <div v-infinite-scroll="getComments" :infinite-scroll-disabled="rootComment.childCount === total"
+            <div v-infinite-scroll="getComments" :infinite-scroll-disabled="comments.length === total"
                  class="comments pe-2"
-                 infinite-scroll-distance="10">
+                 infinite-scroll-distance="40">
                 <transition-group
-                    name="comments"
+                        name="comments"
                 >
                     <comment v-for="childComment in comments" :key="childComment.id" :comment="childComment"
-                             @refresh="getComments(false)"
+                             :is-show-reply-to="true" @refresh="getComments(false)"
                     ></comment>
                 </transition-group>
                 <div v-show="isLoading">
@@ -86,9 +86,10 @@ export default {
                             this.currentPage += 1
                         } else {
                             this.comments = resolve.data.data.page
+                            this.currentPage = 2
                         }
                         this.total = resolve.data.data.total
-                        console.log(this.total)
+                        console.log(this.comments.length === this.total)
                         this.isLoading = false
                     } else {
                     }
@@ -125,33 +126,33 @@ export default {
 <style lang="scss" scoped>
 @include fade(comments, 0.5s, (10px, 0, 0));
 .dialog-root {
-    padding: 20px;
+  padding: 20px;
 
-    .header {
+  .header {
+  }
+
+
+  .body {
+    @include align($fd: column, $jc: start, $ai: start);
+    margin-top: 10px;
+    padding: 10px 0px;
+    width: 100%;
+
+    .count {
+      text-align: start;
     }
 
-
-    .body {
-        @include align($fd: column, $jc: start, $ai: start);
-        margin-top: 10px;
-        padding: 10px 0px;
-        width: 100%;
-
-        .count {
-            text-align: start;
-        }
-
-        .divider {
-            height: 20px;
-            background: rgba(217, 219, 225, 0.36);
-        }
-
-        .comments {
-            height: 400px;
-            overflow-x: hidden;
-            overflow-y: scroll;
-        }
+    .divider {
+      height: 20px;
+      background: rgba(217, 219, 225, 0.36);
     }
+
+    .comments {
+      height: 400px;
+      overflow-x: hidden;
+      overflow-y: scroll;
+    }
+  }
 
 }
 

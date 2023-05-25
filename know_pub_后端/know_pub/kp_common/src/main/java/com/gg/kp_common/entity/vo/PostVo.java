@@ -4,8 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -29,4 +27,8 @@ public class PostVo {
     private String userId;
 
     private Integer commentCount = 0;
+    private boolean liked = false;
+    private boolean collected = false;
+    private boolean disliked = false;
+    private boolean replied = false;
 }

@@ -1,5 +1,12 @@
 @import "global";
-@include zoom(box, 0.5s, (0.1, 0.1, 0.1), (0, 0, 0))
+.disagree-btn {
+  @include clickEffect($white, $bg: $blue, $text: $blue);
+  width: 35px;
+  border: none;
+  background: rgba(5, 109, 232, .1);
+  margin-left: 5px;
+}
+
 
 
 

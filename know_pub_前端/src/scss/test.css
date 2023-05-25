@@ -1,31 +1,23 @@
-.box-enter-active {
-  animation-duration: 0.5s;
-  animation-fill-mode: both;
-  animation-name: zoomfalsebox;
+.disagree-btn {
+  cursor: pointer;
+  color: #0794ff;
+  width: 35px;
+  border: none;
+  background: rgba(5, 109, 232, 0.1);
+  margin-left: 5px;
 }
-@keyframes zoomfalsebox {
-  from {
-    opacity: 0;
-    transform: scale3d(0.1, 0.1, 0.1) translate3d(0, 0, 0);
-  }
-  50% {
-    opacity: 1;
-  }
+.disagree-btn:is(:hover, :active, :focus) {
+  color: white;
 }
-.box-leave-active {
-  animation-duration: 0.5s;
-  animation-fill-mode: both;
-  animation-direction: reverse;
-  animation-name: zoomtruebox;
+.disagree-btn:hover {
+  background: #0794ff;
 }
-@keyframes zoomtruebox {
-  from {
-    opacity: 0;
-    transform: scale3d(0.1, 0.1, 0.1) translate3d(0, 0, 0);
-  }
-  50% {
-    opacity: 1;
-  }
+.disagree-btn:active {
+  transform: scale(0.99);
+  border-color: white;
+}
+.disagree-btn:not(:active) {
+  transform: scale(1);
 }
 
 /*# sourceMappingURL=test.css.map */

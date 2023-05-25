@@ -5,10 +5,8 @@ import com.gg.kp_common.entity.vo.PostVo;
 import com.gg.kp_common.service.PostService;
 import com.gg.kp_common.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -30,4 +28,10 @@ public class PostController {
     public Result<PostVo> getPost(@RequestParam String postId){
         return postService.getPost(postId);
     }
+    @PostMapping("/like")
+    @PreAuthorize("hasRole('USER')")
+    public Result<Integer> onLike(@RequestBody Map<String,Object> params){
+        return postService.onLike(params);
+    }
+
 }

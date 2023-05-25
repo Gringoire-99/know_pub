@@ -14,4 +14,6 @@ public interface PostService extends IService<Post> {
     Integer onComment(String postId);
 
     Result<PostVo> getPost(String postId);
+
+    Result<Integer> onLike(Map<String,Object> params);
 }

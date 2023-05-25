@@ -128,6 +128,7 @@ export default {
                         } else {
                             // 刷新数据
                             this.comments = resolve.data.data.page
+                            this.currentPage = 2
                         }
                         this.total = resolve.data.data.total
                         this.isLoading = false
