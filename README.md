@@ -3,11 +3,11 @@
 （页面和主要业务参考知乎）
    
    # TODO:
-   1. login  <- now
-   2. userInfo
-   3. question
-   4. post
-   5. comment
+   1. login
+   5. comment 
+   5. post <- now
+   3. userInfo
+   4. question
    6. tag
    7. article
    8. etc...
