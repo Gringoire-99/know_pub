@@ -74,7 +74,7 @@
                 <div class="post-comment w-100 mt-1 mb-1"
                      @focusout="displayPostComment">
                     <post-comment :is-show-avatar="false" :parent="comment"
-                                  :placeholder="`回复 ${comment.name}`"></post-comment>
+                                  :placeholder="`回复 ${comment.name}`" @refresh="$emit('refresh')"></post-comment>
                 </div>
             </div>
         </div>

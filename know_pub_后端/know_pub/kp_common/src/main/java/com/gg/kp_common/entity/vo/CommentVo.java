@@ -19,7 +19,7 @@ public class CommentVo {
     private LocalDateTime createTime;
     private String postId;
     private String userId;
-    private String parentId;
+    private String rootCommentId;
     private String replyToUserName;
     private String replyToUserId;
     private int isRootComment;

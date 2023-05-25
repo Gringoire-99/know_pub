@@ -58,7 +58,7 @@
                             </el-icon>
                             <span>
                                {{
-                                isCollapseComments ? post.commentNumber > 0 ? `${post.commentNumber}条评论` : "添加评论" : '收起评论'
+                                    isCollapseComments ? post.commentCount > 0 ? `${post.commentCount}条评论` : "添加评论" : '收起评论'
                                 }}
                             </span>
 
@@ -113,7 +113,7 @@
             <transition name="comment">
                 <!--            评论栏-->
                 <div v-if="!isCollapseComments" class="card-footer">
-                    <post-comment :parent="post" @load="$refs.comment.getComments()"></post-comment>
+                    <post-comment :parent="post" @refresh="$refs.comment.getComments(false)"></post-comment>
                     <comments ref="comment" :post-id="post.id"></comments>
                 </div>
             </transition>

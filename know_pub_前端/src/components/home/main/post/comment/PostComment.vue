@@ -48,13 +48,12 @@
 </template>
 <script>
 import {VuemojiPicker} from 'vuemoji-picker'
-import {Picture} from "@element-plus/icons-vue";
 import SelectPicture from "@/components/icons/SelectPicture.vue";
 import Voice from "@/components/icons/Voice.vue";
 import Emoji from "@/components/icons/emoji.vue";
 import http from "@/utils/http/http";
 import {ElMessage} from "element-plus";
-
+import Mock from "mockjs";
 export default {
 
     //组件名
@@ -97,28 +96,28 @@ export default {
                 let postId = parent.postId
                 let newComment = {}
                 // 有postId说明parent是评论
-                console.log(parent)
+                newComment.id = Mock.mock('@guid')
                 newComment.content = this.comment
                 newComment.name = this.userInfo.name
                 newComment.avatar = this.userInfo.avatar
                 newComment.userId = this.userInfo.id
-                newComment.parentId = parent.id
                 newComment.replyToUserId = parent.userId
-
                 if (postId) {
-                    //     父级是根评论：需要显示回复了谁
+                    //     父级是评论：需要显示回复了谁
                     newComment.postId = postId
                     newComment.replyToUserName = parent.name
                     newComment.isRootComment = 0
+                    newComment.rootCommentId = parent.rootCommentId
                 } else {
-                    //     父级是post
+                    //     父级是post,说明这是根评论，不需要显示回复了谁
                     newComment.postId = parent.id
                     newComment.replyToUserName = ''
                     newComment.isRootComment = 1
+                    newComment.rootCommentId = newComment.id
                 }
                 http.post('/comment/post-comment', newComment).then(res => {
                     if (res.data.code === 200) {
-                        this.$emit('load')
+                        this.$emit('refresh')
                         ElMessage({
                             message: '发布成功！',
                             type: 'success'

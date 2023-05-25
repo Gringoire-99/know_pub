@@ -16,7 +16,7 @@
                 name="comments"
             >
                 <root-comment v-for="rootComment in rootComments" :key="rootComment.rootComment.id"
-                              :comments="rootComment">
+                              :comments="rootComment" @refresh="getComments(false)">
                 </root-comment>
 
             </transition-group>
@@ -72,8 +72,8 @@ export default {
             comments: [],
             total: 0,
             dialogVisible: false,
-            isLoadDialog: false
-
+            isLoadDialog: false,
+            rootComments: []
 
         }
     },
@@ -98,10 +98,10 @@ export default {
                         })
                     }
                 } else {
-                    if (rootComments.has(comment.parentId)) {
-                        rootComments.get(comment.parentId).childComments.push(comment)
+                    if (rootComments.has(comment.rootCommentId)) {
+                        rootComments.get(comment.rootCommentId).childComments.push(comment)
                     } else {
-                        rootComments.set(comment.parentId, {
+                        rootComments.set(comment.rootCommentId, {
                             rootComment: null,
                             childComments: [comment]
                         })
@@ -109,12 +109,18 @@ export default {
                 }
 
             })
+            console.log(rootComments.values())
             // 将map转换为数组
             return Array.from(rootComments.values())
 
         },
         getComments(isMerge = true) {
+            console.log('load')
+
             if (this.isLoading) return
+            if (!isMerge) {
+                this.currentPage = 1
+            }
             this.isLoading = true
             http.get('/comment/comments', {
                 params: {
@@ -127,9 +133,11 @@ export default {
                     if (resolve.status === 200) {
                         // 连接两个数组
                         if (isMerge) {
+                            // 无限滚动的追加
                             this.comments.push(...resolve.data.data.page)
-                            this.currentPage += this.pageSize
+                            this.currentPage += 1
                         } else {
+                            // 刷新数据
                             this.comments = resolve.data.data.page
                             this.currentPage = this.pageSize
                         }
@@ -156,25 +164,27 @@ export default {
     //侦听器
     watch: {
         comments: {
-            handler(newValue, oldValue) {
-                this.filterRootComments(newValue)
-                return newValue
-            },
-            deep: true
+            deep: true,
+            handler(newVal, oldVal) {
+                this.rootComments = this.filterRootComments(newVal)
+                return newVal
+            }
         },
         orderBy(newValue, oldValue) {
             this.getComments(false)
             return newValue
         },
+        rootComments: {
+            deep: true,
+            handler(newVal, oldVal) {
+                return newVal
+            }
+        }
 
     }
     ,
     //计算属性
-    computed: {
-        rootComments() {
-            return this.filterRootComments(this.comments)
-        }
-    }
+    computed: {}
     ,
     //绑定父组件的属性
     props: {

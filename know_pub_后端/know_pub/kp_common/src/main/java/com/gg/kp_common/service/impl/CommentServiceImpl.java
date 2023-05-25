@@ -34,6 +34,11 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         String postId = (String) params.get("postId");
         ValidationUtils.validate().validateEmpty(postId);
         IPage<Comment> page = new PageUtils<Comment>().getPage(params);
+        LambdaQueryWrapper<Comment> lqwN = new LambdaQueryWrapper<>();
+        lqwN.eq(Comment::getPostId,postId);
+        Long total = baseMapper.selectCount(lqwN);
+
+
         LambdaQueryWrapper<Comment> lqw = new LambdaQueryWrapper<>();
         lqw.eq(Comment::getPostId, postId).
                 eq(Comment::getIsRootComment, true);
@@ -45,15 +50,14 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         LambdaQueryWrapper<Comment> lqwC = new LambdaQueryWrapper<>();
         for (Comment record : commentIPage.getRecords()) {
             if (record.getChildCount() < 4) {
-//                TODO fix
-                lqw.eq(Comment::getId, record.getParentId()).eq(Comment::getPostId, postId);
+                lqwC.eq(Comment::getRootCommentId, record.getId());
                 comments.addAll(this.baseMapper.selectList(lqwC));
-                lqw.clear();
+                lqwC.clear();
             }
         }
         HashMap<String, Object> data = new HashMap<>();
         data.put(PageUtils.PAGE, comments);
-        data.put(PageUtils.TOTAL, commentIPage.getTotal());
+        data.put(PageUtils.TOTAL, total);
         return Result.ok(data);
     }
 
