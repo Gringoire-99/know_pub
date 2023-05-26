@@ -17,7 +17,7 @@
                                     <span class="fw-bold fs-5">{{ userInfo.name }}</span>
                                     <span
                                         class="ms-2 fs-6 fw-light">{{
-                                        String(userInfo.description).length > 10 ? String(userInfo.description).substring(0, 10) + '...' : userInfo.description
+                                            String(userInfo.description).length > 10 ? String(userInfo.description).substring(0, 10) + '...' : userInfo.description
                                         }}
                                     </span>
                                 </span>
@@ -69,7 +69,7 @@
                 <div class="detail-space"></div>
             </div>
             <div class="detail-grid">
-                <user-detail class="main"></user-detail>
+                <user-detail :user-id="$route.params.userId" class="main"></user-detail>
                 <user-secondary :userInfo="userInfo" class="secondary"></user-secondary>
             </div>
         </div>
@@ -99,34 +99,38 @@ export default {
         }
     },
     //方法
-    methods: {},
+    methods: {
+
+        getUserInfo() {
+            let id = this.$route.params.userId
+            if (id === this.$store.state.userInfo.id) {
+                this.userInfo = this.$store.state.userInfo
+                return
+            }
+            http.get('/user/info-detail', {
+                params: {
+                    userId: id
+                }
+            }).then(res => {
+                if (res.data.code === 200) {
+                    this.userInfo = res.data.data
+                } else {
+                    ElMessage({
+                        message: '获取用户信息失败',
+                        type: 'error'
+                    })
+                }
+            }, err => {
+            }).finally(() => {
+            })
+        }
+    },
     //挂载时执行
     mounted() {
     },
     //创建时执行
     created() {
-        let id = this.$route.params.userId
-        if (id === this.$store.state.userInfo.id) {
-            this.userInfo = this.$store.state.userInfo
-            return
-        }
-        http.get('/user/info-detail', {
-            params: {
-                userId: id
-            }
-        }).then(res => {
-            if (res.data.code === 200) {
-                this.userInfo = res.data.data
-            } else {
-                ElMessage({
-                    message: '获取用户信息失败',
-                    type: 'error'
-                })
-            }
-        }, err => {
-        }).finally(() => {
-            console.log(this.userInfo)
-        })
+        this.getUserInfo()
     },
     //侦听器
     watch: {}
@@ -145,9 +149,8 @@ export default {
 }
 
 .background-img {
-    background: #7d7f80 !important;
     height: 200px;
-    background-position: center !important;
+    background: #7d7f80 center !important;
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 1fr;

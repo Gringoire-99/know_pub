@@ -1,16 +1,18 @@
 .disagree-btn {
-  cursor: pointer;
-  color: #0794ff;
-  width: 35px;
-  border: none;
-  background: rgba(5, 109, 232, 0.1);
-  margin-left: 5px;
+    cursor: pointer;
+    color: #0794ff;
+    width: 35px;
+    border: none;
+    background: rgba(5, 109, 232, 0.1);
+    margin-left: 5px;
 }
-.disagree-btn:is(:hover, :active, :focus) {
-  color: white;
+
+.disagree-btn:is(:hover) {
+    color: white;
 }
+
 .disagree-btn:hover {
-  background: #0794ff;
+    background: #0794ff;
 }
 .disagree-btn:active {
   transform: scale(0.99);

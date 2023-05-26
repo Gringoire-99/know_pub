@@ -28,6 +28,7 @@ public class CommentController {
     public Result<HashMap<String, Object>> getChildComment(@RequestParam Map<String,Object> params){
         return commentService.getChildComment(params);
     }
+    @PreAuthorize("hasRole('USER')")
     @PostMapping("/like")
     public Result<Integer> likeComment(@RequestBody Map<String,Object> params){
         return commentService.likeComment(params);

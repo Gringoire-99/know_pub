@@ -1,7 +1,6 @@
 package com.gg.kp_common.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -30,13 +29,14 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         List<Post> records = postIPage.getRecords();
         List<PostVo> recordsVo = BeanCopyUtils.copyBeanList(records, PostVo.class);
         Long total = postIPage.getTotal();
-        setAction(recordsVo);
+        setAction(recordsVo, null);
         HashMap<String, Object> data = new HashMap<>();
         data.put(PageUtils.PAGE, recordsVo);
         data.put(PageUtils.TOTAL, total);
         return Result.ok(data);
     }
 
+    @Transactional
     @Override
     public Integer onComment(String postId) {
         LambdaUpdateWrapper<Post> luw = new LambdaUpdateWrapper<>();
@@ -54,11 +54,11 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
 
     @Transactional
     @Override
-    public Result<Integer> onLike(Map<String,Object> params) {
+    public Result<Integer> onLike(Map<String, Object> params) {
 //        先查询动作，如果有这个动作，说明是取消
         String postId = params.get("postId").toString();
         String userId = SecurityUtils.getId();
-        ValidationUtils.validate().validateEmpty(postId,userId);
+        ValidationUtils.validate().validateEmpty(postId, userId);
         LambdaQueryWrapper<Action> lqwA = new LambdaQueryWrapper<>();
         lqwA.eq(Action::getTargetId, postId)
                 .eq(Action::getUserId, userId);
@@ -82,19 +82,47 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         return Result.ok(baseMapper.update(null, luw));
     }
 
-    public void setAction(Collection<PostVo> posts) {
-        String userId;
-        try {
-            userId = SecurityUtils.getId();
-        } catch (Exception e) {
-            return;
+    @Override
+    public Result<HashMap<String, Object>> getDynamic(Map<String, Object> params) {
+        Object userId = params.get("userId");
+        ValidationUtils.validate().validateEmpty(userId);
+        LambdaQueryWrapper<Post> lqw = new LambdaQueryWrapper<>();
+//        先从查出这个用户所有action,在根据action查出对应的post
+        LambdaQueryWrapper<Action> lqwA = new LambdaQueryWrapper<>();
+//        一个post只查出一个action
+        lqwA.groupBy(Action::getTargetId)
+                .eq(Action::getUserId, userId);
+
+        IPage<Action> actionIPage = actionMapper.selectPage(new PageUtils<Action>().getPage(params), lqwA);
+        List<Action> actions = actionIPage.getRecords();
+//        将actions的postId提取为列表
+        List<String> postIds = new ArrayList<>();
+        actions.forEach(action -> postIds.add(action.getTargetId()));
+        List<Post> posts = baseMapper.selectBatchIds(postIds);
+        List<PostVo> postVos = BeanCopyUtils.copyBeanList(posts, PostVo.class);
+        setAction(postVos, userId.toString());
+        HashMap<String, Object> data = new HashMap<>();
+        data.put(PageUtils.PAGE, postVos);
+        data.put(PageUtils.TOTAL, actionIPage.getTotal());
+        data.put(PageUtils.ROWS, actionIPage.getSize());
+        return Result.ok(data);
+    }
+
+    public void setAction(Collection<PostVo> posts, String userId) {
+        if (userId == null) {
+            try {
+                userId = SecurityUtils.getId();
+            } catch (Exception e) {
+                return;
+            }
         }
         LambdaQueryWrapper<Action> lqwA = new LambdaQueryWrapper<>();
 //        查询出本用户userId和posts里所有postId的action
 //        TODO 待优化
+        String finalUserId = userId;
         posts.forEach(post -> {
 //            查出post的所有动作
-            lqwA.eq(Action::getUserId, userId)
+            lqwA.eq(Action::getUserId, finalUserId)
                     .eq(Action::getTargetId, post.getId());
             List<Action> actions = actionMapper.selectList(lqwA);
 //            根据修改post的状态
@@ -106,6 +134,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
                     post.setCollected(true);
                 }
             });
+            lqwA.clear();
         });
     }
 

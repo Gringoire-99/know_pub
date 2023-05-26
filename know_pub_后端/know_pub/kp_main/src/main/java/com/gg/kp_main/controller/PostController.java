@@ -1,6 +1,5 @@
 package com.gg.kp_main.controller;
 
-import com.gg.kp_common.entity.po.Post;
 import com.gg.kp_common.entity.vo.PostVo;
 import com.gg.kp_common.service.PostService;
 import com.gg.kp_common.utils.Result;
@@ -8,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -32,6 +31,11 @@ public class PostController {
     @PreAuthorize("hasRole('USER')")
     public Result<Integer> onLike(@RequestBody Map<String,Object> params){
         return postService.onLike(params);
+    }
+
+    @GetMapping("/dynamic")
+    public Result<HashMap<String, Object>> getDynamic(@RequestParam Map<String,Object> params){
+        return postService.getDynamic(params);
     }
 
 }

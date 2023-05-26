@@ -1,8 +1,8 @@
 <template>
     <div class="root card">
         <div class="card-body">
-            <div v-if="action" class="fw-xsm text-gray d-flex">
-                <span>{{ action.name }}了该回答</span>
+            <div v-if="isShowAction" class="fw-xsm text-gray d-flex">
+                <span>{{ action }}了该回答</span>
                 <span class="ms-auto">{{ action.time }}</span>
             </div>
 
@@ -169,7 +169,8 @@ export default {
             isCollapseFullText: true,
             isCollapseComments: true,
             onLike: false,
-            onDislike: false
+            onDislike: false,
+            action: ''
         }
     }, //绑定父组件的属性
     props: {
@@ -177,9 +178,9 @@ export default {
             type: Object,
             require: true
         },
-        action: {
-            type: Object,
-            default: null
+        isShowAction: {
+            type: Boolean,
+            default: false
         },
         isAnswerPattern: {
             type: Boolean,
@@ -215,8 +216,8 @@ export default {
                     this.post.likeCount += this.onLike ? -1 : 1
                     this.onLike = !this.onLike
                     ElMessage({
-                        message: '点赞成功',
-                        type: 'success'
+                        message: this.onLike ? '点赞成功' : '取消点赞成功',
+                        type: this.onLike ? 'success' : 'info'
                     })
                 } else {
                     ElMessage({
@@ -233,9 +234,9 @@ export default {
     },
     //创建时执行
     created() {
-        console.log(this.post)
         if (this.post.liked) {
             this.onLike = true
+            this.action += '点赞'
         }
         // if (this.post.isCollected){
         //

@@ -382,7 +382,7 @@ export default {
             height: 40px;
             margin-left: 20px;
             white-space: nowrap;
-            @include clickEffect($white);
+            @include clickEffect($white, $bg: $blue, $text: $white);
         }
     }
 

@@ -3,7 +3,7 @@
 @mixin clickable($color:$blue,$text:$white) {
   cursor: pointer;
   color: $text;
-  &:is(:hover,:active,:focus) {
+  &:is(:hover) {
     color: lighten($color, 20%);
   }
 }

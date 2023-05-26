@@ -5,7 +5,7 @@ import com.gg.kp_common.entity.po.Post;
 import com.gg.kp_common.entity.vo.PostVo;
 import com.gg.kp_common.utils.Result;
 
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 public interface PostService extends IService<Post> {
@@ -16,4 +16,6 @@ public interface PostService extends IService<Post> {
     Result<PostVo> getPost(String postId);
 
     Result<Integer> onLike(Map<String,Object> params);
+
+    Result<HashMap<String, Object>> getDynamic(Map<String, Object> params);
 }

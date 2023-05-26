@@ -1,5 +1,5 @@
 <template>
-    <div v-infinite-scroll="loadData" class="w-100 h-100" infinite-scroll-distance="120">
+    <div v-infinite-scroll="loadData" class="w-100 h-100" infinite-scroll-delay="3000" infinite-scroll-distance="120">
         <keep-alive>
             <home-navbar/>
         </keep-alive>

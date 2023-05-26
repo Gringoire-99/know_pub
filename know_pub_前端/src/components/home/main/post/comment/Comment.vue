@@ -2,7 +2,7 @@
     <div class="comment w-100 mb-3">
         <div class="avatar me-2">
 
-        <popover
+            <popover
                 placement="bottom"
                 trigger="hover"
                 :show-after="500"
@@ -55,13 +55,13 @@
                 <span v-show="comment.likeCount>200"><span>·</span><span class="label">热评</span></span>
                 <div class="operations d-flex align-items-center">
 
-                    <div class="d-flex align-items-center" @click="displayPostComment">
+                    <div class="" @click="displayPostComment">
                         <el-icon :size="15">
                             <ChatDotRound/>
                         </el-icon>
                         <span>回复</span>
                     </div>
-                    <div class="d-flex align-items-center ms-2">
+                    <div :class="{onLike:onLike}" class="ms-2" @click="like">
                         <el-icon :size="17">
                             <Like></Like>
                         </el-icon>
@@ -86,6 +86,8 @@ import {ArrowRightBold, ChatDotRound, DArrowRight, MoreFilled} from "@element-pl
 import PostCard from "@/components/user/PostCard.vue";
 import Like from "@/components/icons/Like.vue";
 import Popover from "@/components/common/Popover.vue";
+import http from "@/utils/http/http";
+import {ElMessage} from "element-plus";
 
 export default {
     //组件名
@@ -95,7 +97,8 @@ export default {
     //数据
     data() {
         return {
-            isOpenPostComment: false
+            isOpenPostComment: false,
+            onLike: false
         }
     },
     //方法
@@ -103,6 +106,28 @@ export default {
         displayPostComment() {
             this.isOpenPostComment = !this.isOpenPostComment
         },
+        like() {
+            if (!this.$store.state.isLogin) {
+                this.$store.commit("SET_SHOW_LOGIN", true)
+                return
+            }
+            http.post('/comment/like', {
+                commentId: this.comment.id
+            }).then(res => {
+                if (res.data.code === 200) {
+                    // 1 点赞 0 取消
+                    this.onLike = res.data.data === 1
+                    this.comment.likeCount += res.data.data ? 1 : -1
+                } else {
+                    ElMessage({
+                        message: '点赞失败',
+                        type: 'error'
+                    })
+                }
+            }, reason => {
+
+            })
+        }
     },
     //挂载时执行
     mounted() {
@@ -176,6 +201,10 @@ export default {
                 margin-left: auto;
                 width: max-content;
 
+                & > * {
+                    @include align();
+                }
+
                 span {
                     text-wrap: none;
                     text-overflow: ellipsis;
@@ -193,6 +222,10 @@ export default {
                     &:hover {
                         color: #2259dc;
                     }
+                }
+
+                .onLike {
+                    color: $orange;
                 }
             }
         }
