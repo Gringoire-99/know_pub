@@ -5,9 +5,9 @@
    # TODO:
    1. login
    5. comment 
-   5. post <- now
+   5. post
    3. userInfo
-   4. question
+   4. question <- now
    6. tag
    7. article
    8. etc...
