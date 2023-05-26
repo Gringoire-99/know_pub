@@ -101,10 +101,8 @@
             <div class="space"></div>
             <div>
                 <div :class="{'show-editor':showEditor}" class="editor mb-3">
-                    <div class="post-editor">
-                        <post-editor>
-                        </post-editor>
-                    </div>
+                    <post-editor>
+                    </post-editor>
                 </div>
                 <div class="main">
                     <div class="post-header ps-3 border-bottom pb-3 pt-3">
@@ -180,7 +178,7 @@ export default {
     ,
     //创建时执行
     created() {
-        http.get('/question', {
+        http.get('/question/detail', {
             params: {
                 questionId: this.$route.params.questionId,
                 pageSize: this.pageSize,
@@ -208,7 +206,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .header {
     box-shadow: rgba(50, 50, 105, 0.15) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1px 0px;
     display: grid;
@@ -297,7 +295,7 @@ export default {
     }
 }
 
-@media screen  and (max-width: 700px) {
+@media screen and (max-width: 700px) {
     .operations button {
         font-size: 5px;
     }
@@ -331,18 +329,7 @@ export default {
 }
 
 .editor {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 0fr;
-    transition: grid 0.5s;
+    @include gridCollapse(show-editor);
 }
 
-.post-editor {
-    min-height: 0;
-    overflow: hidden;
-}
-
-.show-editor {
-    grid-template-rows: 1fr;
-}
 </style>

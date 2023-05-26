@@ -38,7 +38,7 @@
                     <span class="link">{{ item.link }}</span>
                 </template>
             </el-autocomplete>
-            <button class="search-btn" type="button" @click="handleSearch">提问</button>
+            <button class="search-btn" type="button" @click="showPostQueston=true">提问</button>
         </div>
         <div class="icons d-flex align-content-center justify-content-center">
             <div class="search-icon">
@@ -185,6 +185,10 @@
     <el-dialog v-model="$store.state.showLogin" center class="dialog-login" width="50%">
         <login/>
     </el-dialog>
+
+    <el-dialog v-model="showPostQueston" :show-close="false" center class="dialog-post-question" width="35%">
+        <post-question @cancel="showPostQueston=false"></post-question>
+    </el-dialog>
 </template>
 
 <script>
@@ -203,12 +207,14 @@ import Messages from "@/components/nav/Messages.vue";
 import Navigator from "@/components/icons/Navigator.vue";
 import Mock from "mockjs";
 import Login from "@/components/common/Login.vue";
+import PostQuestion from "@/components/home/question/PostQuestion.vue";
 
 export default {
     //组件名
     name: "home-navbar",
     //依赖的组件
     components: {
+        PostQuestion,
         Login,
         Setting,
         Wallet,
@@ -228,7 +234,8 @@ export default {
             showAvatarDetail: false,
             hideDelay: {},
             progress: 50,
-            userInfo: {}
+            userInfo: {},
+            showPostQueston: false
 
         }
     },
@@ -382,7 +389,7 @@ export default {
             height: 40px;
             margin-left: 20px;
             white-space: nowrap;
-            @include clickEffect($white, $bg: $blue, $text: $white);
+            @include clickEffect($white, $bg: $blue);
         }
     }
 
@@ -578,6 +585,4 @@ export default {
         }
     }
 }
-
-
 </style>

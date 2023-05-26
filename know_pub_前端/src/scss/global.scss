@@ -1,15 +1,15 @@
 @import "constant";
 
-@mixin clickable($color:$blue,$text:$white) {
+@mixin clickable($color:$blue) {
   cursor: pointer;
-  color: $text;
+  color: $color;
   &:is(:hover) {
     color: lighten($color, 20%);
   }
 }
 
-@mixin clickEffect($color:$blue,$scale:0.99,$bg:none,$text:$white) {
-  @include clickable($color, $text);
+@mixin clickEffect($color:$blue,$scale:0.99,$bg:none) {
+  @include clickable($color);
   &:hover {
     background: $bg;
   }
@@ -211,14 +211,26 @@
   @if ($direction==row) {
     grid-template-rows: 0fr;
     &.#{$name} {
-      grid-template-rows: 1fr !important;
       opacity: 1 !important;
+      grid-template-rows: 1fr !important;
     }
   } @else {
     grid-template-columns: 0fr;
     &.#{$name} {
-      grid-template-columns: 1fr !important;
       opacity: 1 !important;
+      grid-template-columns: 1fr !important;
     }
   }
+}
+
+%card-border {
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  border: 1px solid $gray;
+  border-radius: 5px;
+}
+
+%card-border-light {
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+  border: 1px solid $gray;
+  border-radius: 5px;
 }

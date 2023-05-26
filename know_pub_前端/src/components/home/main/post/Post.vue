@@ -283,7 +283,8 @@ export default {
     background-color: white;
 
     & > .el-button {
-        @include clickEffect($white, $scale: 0.95, $bg: $blue, $text: $deep-blue);
+        @include clickEffect($white, $scale: 0.95, $bg: $blue);
+        color: $deep-blue;
         border: none;
         background: $whiteBlue;
         font-size: $fs-large;

@@ -1,1 +1,1 @@
-{"version":3,"sourceRoot":"","sources":["test.scss","global.scss","constant.scss"],"names":[],"mappings":"AACA;ECEE;EACA,OCDK;EFAL;EACA;EACA;EACA;;ACDA;EACE;;AAMF;EACE,YCVG;;ADYL;EACE;EACA;;AAEF;EACE","file":"test.css"}
+{"version":3,"sourceRoot":"","sources":["test.scss","global.scss"],"names":[],"mappings":"AAEA;ECyME;EACA;EACA;EAME;;AALF;EACE;EACA;;AAIA;EACE;EACA","file":"test.css"}

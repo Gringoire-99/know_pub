@@ -33,7 +33,7 @@ public class UserController {
         return userService.infoDetail(userId);
     }
 
-    @GetMapping("info-short")
+    @GetMapping("/info-short")
     public Result<UserInfoShortVo> infoShort(@RequestParam String userId){
         return userService.infoShort(userId);
     }

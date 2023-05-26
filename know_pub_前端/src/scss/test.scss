@@ -1,13 +1,8 @@
 @import "global";
-.disagree-btn {
-  @include clickEffect($white, $bg: $blue, $text: $blue);
-  width: 35px;
-  border: none;
-  background: rgba(5, 109, 232, .1);
-  margin-left: 5px;
+
+.editor {
+  @include gridCollapse(show-editor);
 }
-
-
 
 
 

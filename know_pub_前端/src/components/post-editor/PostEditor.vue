@@ -1,21 +1,21 @@
 <template>
-    <div class="editor" style="border: 1px solid #ccc">
+    <div class="post-editor">
         <div>
             <Toolbar
-                    :defaultConfig="toolbarConfig"
-                    :editor="editorRef"
-                    :mode="mode"
-                    style="border-bottom: 1px solid #ccc"
+                v-show="isShowToolbar"
+                :defaultConfig="toolbarConfig"
+                :editor="editorRef"
+                :mode="mode"
+                class="tool-bar"
             />
             <Editor
-                    v-model="valueHtml"
+                v-model="valueHtml"
                     :defaultConfig="editorConfig"
                     :mode="mode"
-                    style="height: 500px; overflow-y: hidden;"
                     @onCreated="handleCreated"
             />
         </div>
-        <div class="operations w-100">
+        <div v-show="isShowToolbar" class="operations w-100">
             <el-button class="ms-auto" type="primary" @click="submit">提交</el-button>
         </div>
     </div>
@@ -38,7 +38,7 @@ export default {
         onMounted(() => {
             setTimeout(() => {
                 // 在编辑的时候使用
-                valueHtml.value = '<p>编辑</p>'
+                valueHtml.value = '<p></p>'
             }, 1500)
         })
 
@@ -59,7 +59,7 @@ export default {
         return {
             editorRef,
             valueHtml,
-            mode: 'default', // 或 'simple'
+            mode: 'simple', // 或 'simple'
             toolbarConfig,
             editorConfig,
             handleCreated
@@ -69,15 +69,22 @@ export default {
         submit() {
             console.log(this.valueHtml)
         }
+    },
+    props: {
+        isShowToolbar: {
+            default: true,
+        }
     }
 }
 </script>
 
-<style scoped>
-.editor {
+<style lang="scss" scoped>
+.post-editor {
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 2fr;
+
+
 }
 
 .operations {
@@ -85,4 +92,7 @@ export default {
     border-top: 1px solid rgba(186, 187, 188, 0.49);
     display: flex;
 }
+</style>
+<style lang="scss">
+
 </style>
