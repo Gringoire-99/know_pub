@@ -5,7 +5,7 @@
             <el-radio-group v-model="orderBy" class="order" size="small">
                 <el-radio-button :label="ORDER_BY.LIKE_COUNT" @click="changeOrderBy(ORDER_BY.LIKE_COUNT)">默认
                 </el-radio-button>
-                <el-radio-button :label="ORDER_BY.PUBLISH_TIME" @click="changeOrderBy(ORDER_BY.PUBLISH_TIME)">最新
+                <el-radio-button :label="ORDER_BY.CREATE_TIME" @click="changeOrderBy(ORDER_BY.CREATE_TIME)">最新
                 </el-radio-button>
                 <el-radio-button :label="ORDER_BY.COMMENT_COUNT" @click="changeOrderBy(ORDER_BY.COMMENT_COUNT)">最热
                 </el-radio-button>
@@ -64,12 +64,12 @@ export default {
 
             // 默认按照点赞数排序
             ORDER_BY: {
-                PUBLISH_TIME: "publishTime",
-                LIKE_COUNT: "likeCount",
+                CREATE_TIME: "create_time",
+                LIKE_COUNT: "like_count",
                 // 最热：根评论的点赞数+子评论最多
-                COMMENT_COUNT: "commentCount",
+                COMMENT_COUNT: "child_count",
             },
-            orderBy: "likeCount",
+            orderBy: "create_time",
             comments: [],
             total: 0,
             dialogVisible: false,
@@ -126,6 +126,7 @@ export default {
                     postId: this.postId,
                     pageSize: this.pageSize,
                     currentPage: this.currentPage,
+                    orderBy: this.orderBy
                 }
             }).then(
                 resolve => {

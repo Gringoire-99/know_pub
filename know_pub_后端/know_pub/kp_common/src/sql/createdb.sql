@@ -7,6 +7,12 @@ CREATE TABLE IF NOT EXISTS follow
     follower_id char(40) not null comment '关注人id',
     primary key (follow_id, follower_id)
 );
+CREATE TABLE IF NOT EXISTS `comment_like`
+(
+    comment_id   char(40) not null comment '被点赞评论id',
+    user_id char(40) not null comment '点赞人id',
+    primary key (comment_id, user_id)
+);
 CREATE TABLE IF NOT EXISTS know_pub.user
 (
     id               char(40)     NOT NULL primary key comment '用户id',
@@ -71,7 +77,7 @@ CREATE TABLE IF NOT EXISTS post
     like_count    int          default 0 comment '点赞数',
     dislike_count int          default 0 comment '踩数',
     user_id       char(40)     NOT NULL comment '作者id,需要根据id去user表中查找基础信息',
-    publish_time  datetime     default now() comment '发布时间',
+    create_time  datetime     default now() comment '发布时间',
     update_time   datetime     default now() comment '更新时间',
     status        int          default 0 comment '状态,0:正常,1:禁用',
     comment_count int          default 0 comment '评论数',
@@ -88,7 +94,7 @@ CREATE TABLE IF NOT EXISTS question
     images           TEXT comment '图片，使用逗号分隔',
     like_count       int          default 0 comment '点赞数',
     user_id          char(40)     NOT NULL comment '作者id,需要根据id去user表中查找基础信息',
-    publish_time     datetime     default now() comment '发布时间',
+    create_time     datetime     default now() comment '发布时间',
     update_time      datetime     default now() comment '更新时间',
     status           int          default 0 comment '状态,0:正常,1:禁用',
     comment_count    int          default 0 comment '评论数',

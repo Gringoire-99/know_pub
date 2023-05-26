@@ -49,7 +49,7 @@ public class User implements Serializable {
     private String description;
 
     // 创建时间，默认值为当前时间
-    private Date createTime;
+    private LocalDateTime createTime;
 
     // 发表回答数，默认值为 0
     private int postCount;

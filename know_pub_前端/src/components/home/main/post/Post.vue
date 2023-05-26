@@ -212,7 +212,7 @@ export default {
                 postId: this.post.id
             }).then(res => {
                 if (res.data.code === 200) {
-                    this.post.likeCount++
+                    this.post.likeCount += this.onLike ? -1 : 1
                     this.onLike = !this.onLike
                     ElMessage({
                         message: '点赞成功',

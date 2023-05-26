@@ -10,8 +10,9 @@ public class SecurityUtils {
     public static String getId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String principal = authentication.getPrincipal().toString();
-        if ("anonymousUser".equals(principal))
-            throw new SystemException(HttpEnum.ERROR, "未授权");
+        if ("anonymousUser".equals(principal)){
+            return null;
+        }
         return principal;
     }
 }

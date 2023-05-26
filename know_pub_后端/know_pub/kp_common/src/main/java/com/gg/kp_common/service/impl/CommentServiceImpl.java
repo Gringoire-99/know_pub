@@ -16,6 +16,7 @@ import com.gg.kp_common.utils.ValidationUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,7 +29,6 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 
     @Override
     public Result<HashMap<String, Object>> getPostComment(Map<String, Object> params) {
-
         /**
          * 查出所有根评论
          */
@@ -47,18 +47,14 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         ArrayList<Comment> comments = new ArrayList<>(commentIPage.getRecords());
         long rootCommentTotal = commentIPage.getTotal();
         /*
-          如果根评论的子评论数量小于4，则根据根评论查出所有根评论的子评论,如果大于4个，则只查出4个
+          最多查出4个子评论
          */
         LambdaQueryWrapper<Comment> lqwC = new LambdaQueryWrapper<>();
+        lqwC.orderByDesc(Comment::getLikeCount).orderByDesc(Comment::getCreateTime);
         for (Comment record : commentIPage.getRecords()) {
             lqwC.eq(Comment::getRootCommentId, record.getId()).eq(Comment::getIsRootComment, 0);
-            if (record.getChildCount() < 4) {
-                comments.addAll(this.baseMapper.selectList(lqwC));
-            }
-            if (record.getChildCount() >= 4) {
-                lqwC.last("limit 4");
-                comments.addAll(this.baseMapper.selectList(lqwC));
-            }
+            lqwC.last("limit 4");
+            comments.addAll(this.baseMapper.selectList(lqwC));
             lqwC.clear();
         }
 
@@ -70,6 +66,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         return Result.ok(data);
     }
 
+    @Transactional
     @Override
     public Result<Integer> postComment(CommentVo comment) {
 //      TODO 对comment合法性进行校验
@@ -108,4 +105,31 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         return Result.ok(data);
 
     }
+
+    @Transactional
+    @Override
+    public Result<Integer> likeComment(Map<String, Object> params) {
+        String commentId = (String) params.get("commentId");
+        LambdaQueryWrapper<Comment> lqwC = new LambdaQueryWrapper<>();
+        lqwC.eq(Comment::getId, commentId);
+        Comment comment = this.baseMapper.selectOne(lqwC);
+        if (comment == null) throw new RuntimeException("评论不存在");
+        String userId = SecurityUtils.getId();
+
+        Integer result = baseMapper.isLiked(commentId, userId);
+        if (result == 0) {
+            comment.setLikeCount(comment.getLikeCount() + 1);
+            baseMapper.like(commentId, userId);
+            baseMapper.update(comment, lqwC);
+            return Result.ok(1);
+        } else if (result == 1) {
+            comment.setLikeCount(comment.getLikeCount() - 1);
+            baseMapper.unlike(commentId, userId);
+            baseMapper.update(comment, lqwC);
+            return Result.ok(0);
+        } else {
+            throw new RuntimeException("未知错误");
+        }
+    }
+
 }

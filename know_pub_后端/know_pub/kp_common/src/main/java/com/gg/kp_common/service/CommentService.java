@@ -14,4 +14,6 @@ public interface CommentService extends IService<Comment> {
     Result<Integer> postComment(CommentVo comment);
 
     Result<HashMap<String, Object>> getChildComment(Map<String, Object> params);
+
+    Result<Integer> likeComment(Map<String, Object> params);
 }

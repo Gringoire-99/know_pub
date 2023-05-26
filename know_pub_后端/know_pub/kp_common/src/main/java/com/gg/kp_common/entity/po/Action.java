@@ -16,7 +16,6 @@ public class Action {
     private LocalDateTime createTime;
     private String targetId;
     private String content;
-
     public static String LIKE = "点赞";
     public static String DISLIKE = "踩";
     public static String COLLECTION = "收藏";

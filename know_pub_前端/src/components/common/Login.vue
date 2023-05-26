@@ -342,8 +342,8 @@ export default {
                     this.$store.commit('SET_USER', res.data.data.userInfoDetailVo)
                     this.$store.commit('SET_LOGIN_STATE', true)
                     localStorage.setItem('userId', res.data.data.userInfoDetailVo.id)
-                    this.$router.push({path: '/home-main'})
                     this.$store.commit("SET_SHOW_LOGIN", false)
+                    this.$router.push({path: '/home-main'})
                 } else {
                     ElMessage({
                         message: `登录失败：${res.data.msg},code:${res.data.code}`,

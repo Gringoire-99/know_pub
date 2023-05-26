@@ -59,12 +59,12 @@ export default {
             isLoading: false,
             // 默认按照点赞数排序
             ORDER_BY: {
-                PUBLISH_TIME: "publishTime",
-                LIKE_COUNT: "likeCount",
+                CREATE_TIME: "create_time",
+                LIKE_COUNT: "like_count",
                 // 最热：根评论的点赞数+子评论最多
-                COMMENT_COUNT: "commentCount",
+                COMMENT_COUNT: "child_count",
             },
-            orderBy: "likeCount",
+            orderBy: "like_count",
             comments: [],
             total: 0,
             rootComments: {},
@@ -104,7 +104,7 @@ export default {
             return Array.from(rootComments.values())
 
         },
-        getComments(isMerge = true, orderBy = "likeCount", useParams = false) {
+        getComments(isMerge = true) {
             if (this.isLoading) return
             if (!isMerge) {
                 this.currentPage = 1
@@ -115,6 +115,7 @@ export default {
                     postId: this.postId,
                     pageSize: this.pageSize,
                     currentPage: this.currentPage,
+                    orderBy: this.orderBy
                 }
             }).then(
                 resolve => {
@@ -132,8 +133,6 @@ export default {
                         }
                         this.total = resolve.data.data.total
                         this.isLoading = false
-                        console.log(this.total)
-                        console.log(this.comments)
                     } else {
                     }
                 }, reason => {

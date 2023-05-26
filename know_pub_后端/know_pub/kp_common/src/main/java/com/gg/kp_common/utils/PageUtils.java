@@ -15,6 +15,7 @@ public class PageUtils<T> {
     public static final String PAGE = "page";
     public static final String TOTAL = "total";
     public static final String ROWS = "rows";
+    public static final String CREATE_TIME = "create_time";
 
 
     //    根据请求参数构造page对象，通过这个page对象分页查询数据
@@ -40,6 +41,7 @@ public class PageUtils<T> {
                 page.addOrder(OrderItem.desc(orderField));
             }
         }
+        page.addOrder(OrderItem.desc(CREATE_TIME));
         params.put(PAGE, page);
         return page;
 

@@ -100,6 +100,10 @@ export default {
     //方法
     methods: {
         follow() {
+            if (!this.$store.state.isLogin) {
+                this.$store.commit('SET_SHOW_LOGIN', true)
+                return
+            }
             http.get('/user/follow', {
                 params: {
                     userId: this.id

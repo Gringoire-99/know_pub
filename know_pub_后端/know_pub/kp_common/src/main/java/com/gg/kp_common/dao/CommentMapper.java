@@ -6,4 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface CommentMapper extends BaseMapper<Comment> {
+    Integer isLiked(String commentId, String userId);
+    Integer like(String commentId, String userId);
+    Integer unlike(String commentId, String userId);
 }

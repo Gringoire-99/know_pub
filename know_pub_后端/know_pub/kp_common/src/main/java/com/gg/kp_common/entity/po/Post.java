@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
@@ -28,7 +29,7 @@ public class Post {
 
     private String userId;
 
-    private Date publishTime;
+    private LocalDateTime createTime;
 
     private Date updateTime;
 

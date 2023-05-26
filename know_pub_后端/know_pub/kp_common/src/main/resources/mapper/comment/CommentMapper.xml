@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace，绑定一个Mapper接口-->
+<mapper namespace="com.gg.kp_common.dao.CommentMapper">
+    <!--select查询语句，绑定接口里的方法-->
+    <select id="isLiked" resultType="integer">
+        SELECT COUNT(*)
+        FROM know_pub.comment_like
+        WHERE comment_id = #{commentId} and user_id = #{userId}
+    </select>
+    <insert id="like" parameterType="string">
+        INSERT INTO know_pub.comment_like (comment_id, user_id)
+        VALUES (#{commentId}, #{userId})
+    </insert>
+    <delete id="unlike" parameterType="string">
+        DELETE FROM know_pub.comment_like
+        WHERE comment_id = #{commentId} AND user_id = #{userId}
+    </delete>
+</mapper>

@@ -127,17 +127,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public Result<?> follow(String userId) {
         String selfId = SecurityUtils.getId();
-        if (selfId.equals(userId)) {
+        if (selfId != null && selfId.equals(userId)) {
             throw new SystemException("不能关注自己");
         }
         Integer followed = this.baseMapper.isFollowed(userId, selfId);
-        Integer change =0;
         if (followed == 1) {
-            change = this.baseMapper.unfollow(userId, selfId);
-        }else {
-            change = this.baseMapper.follow(userId, selfId);
+            return Result.ok(0);
+        } else {
+            return Result.ok(1);
         }
-        return Result.ok(change);
 
     }
 

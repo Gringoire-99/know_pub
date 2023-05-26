@@ -43,7 +43,7 @@ public class UserController {
         return userService.postCard(userId);
     }
     @PreAuthorize("hasRole('USER')")
-    @GetMapping("follow")
+    @GetMapping("/follow")
     public Result<?> follow(@RequestParam String userId){
         return userService.follow(userId);
     }
