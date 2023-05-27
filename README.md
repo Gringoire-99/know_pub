@@ -8,8 +8,8 @@
    5. post
    3. userInfo
    4. question 
-   6. tag <- now
-   7. article
+   6. tag 
+   7. article <- now
    8. etc...
    
    
