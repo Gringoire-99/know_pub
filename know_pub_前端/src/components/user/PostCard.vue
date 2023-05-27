@@ -9,7 +9,7 @@
                     <p class="mb-0 mt-1">{{ userInfo.name }}</p>
                     <p class="desc">
                         {{
-                            userInfo.description.length > 10 ? userInfo.description.substring(0, 10) + "..." : userInfo.description
+                        userInfo.description.length > 10 ? userInfo.description.substring(0, 10) + "..." : userInfo.description
                         }}</p>
 
                 </div>
@@ -162,29 +162,30 @@ export default {
 <style lang="scss" scoped>
 @include zoom(post-card, 0.3s, (0.05, 0.05, 0.05), (0, -10px, 0), $reverse: false);
 .desc {
-    color: #232121;
-    font-size: 12px;
+  color: #232121;
+  font-size: 12px;
 }
 
 .post-card {
-    background: white;
-    width: 400px;
-    padding-left: 20px;
-    padding-right: 20px;
-    padding-bottom: 20px;
-}
+  background: white;
+  width: 400px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 20px;
 
-
-.post-card .avatar {
+  .avatar {
     height: 40px;
     width: 100px;
     overflow: visible;
+
+    img {
+      height: 70px;
+      width: 70px;
+      border-radius: 4px;
+      border: 2px solid #ebebeb;
+    }
+  }
 }
 
-.post-card .avatar img {
-    height: 70px;
-    width: 70px;
-    border-radius: 4px;
-    border: 2px solid #ebebeb;
-}
+
 </style>

@@ -6,27 +6,30 @@
                 <div class="d-flex flex-column">
                     <div class="d-flex flex-fill">
                         <div class="tags">
-                            <el-tag v-for="tag in question.tags" class="pointer mx-1" round size="large">
-                                {{ tag.name }}
+                            <el-tag v-for="tag in tags" class="pointer mx-1" round size="large">
+                                {{ tag }}
                             </el-tag>
                         </div>
                     </div>
-                    <el-skeleton v-show="isLoadingQuestion" :rows="3">
+                    <el-skeleton v-if="isLoadingQuestion" :rows="3">
                     </el-skeleton>
-                    <div>
+                    <div v-else>
                         <div class="title fs-3 fw-bold mt-4">
-                            {{ question.title }}
+                            {{ question.question }}
                         </div>
                         <div class="content">
                             <div v-if="isCollapseFullText" class="short">
                                     <span class="content-short" @click="collapseFullText">
-                                        {{ question.content.substring(0, 100) + '...' }}
+                                        {{ question.content.substring(0, 100) }}
                                     </span>
-                                <span v-show="!isLoadingQuestion" class="full-text-btn pointer text-blue"
-                                      v-on:click="collapseFullText">展开全部</span>
-                                <el-icon class="d-inline pointer text-blue" @click="collapseFullText">
-                                    <arrow-down/>
-                                </el-icon>
+                                <div v-show="!isLoadingQuestion&&question.content.length>100">
+                                    <span class="full-text-btn pointer text-blue"
+                                          v-on:click="collapseFullText">...展开全部</span>
+                                    <el-icon class="d-inline pointer text-blue" @click="collapseFullText">
+                                        <arrow-down/>
+                                    </el-icon>
+                                </div>
+
                             </div>
                             <div v-else class="full">
                                     <span>
@@ -90,7 +93,7 @@
                     </div>
                     <div class="flex-column">
                         <span class="text-gray">被浏览</span>
-                        <span class="fs-5 fw-bold">{{ question.visitCount }}</span>
+                        <span class="fs-5 fw-bold">{{ question.viewCount }}</span>
                     </div>
                 </div>
             </div>
@@ -147,21 +150,13 @@ export default {
         return {
             isLoadingQuestion: true,
             isLoadingAnswer: false,
-            question: {
-                questionId: '',
-                title: '',
-                content: '',
-                likeCount: 0,
-                commentCount: 0,
-                answerCount: 0,
-                tags: {name: '', id: ''},
-
-            },
+            question: {},
             posts: [],
             isCollapseFullText: true,
             pageSize: 10,
             currentPage: 1,
-            showEditor: false
+            showEditor: false,
+            tags: []
 
         }
     },
@@ -169,33 +164,38 @@ export default {
         collapseFullText() {
             this.isCollapseFullText = !this.isCollapseFullText
         },
+        getQuestion() {
+            this.isLoadingQuestion = true
+            http.get('/question/detail', {
+                params: {
+                    questionId: this.$route.params.questionId,
+                    pageSize: this.pageSize,
+                    currentPage: this.currentPage
+
+                }
+            }).then(res => {
+                this.question = res.data.data
+            }, reason => {
+            }).finally(() => {
+                this.isLoadingQuestion = false
+            })
+        }
 
     },
     //挂载时执行
     mounted() {
-        console.log("mounted")
     }
     ,
     //创建时执行
     created() {
-        http.get('/question/detail', {
-            params: {
-                questionId: this.$route.params.questionId,
-                pageSize: this.pageSize,
-                currentPage: this.currentPage
-
-            }
-        }).then(res => {
-            this.question = res.data.data.question
-            this.posts = res.data.data.posts
-            this.isLoadingQuestion = false
-        }, reason => {
-        })
+        this.getQuestion()
     },
     //侦听器
     watch: {
-        // 每当 question 改变时，这个函数就会执行
-        // question(newQuestion, oldQuestion) {}
+        question(newVal, oldVal) {
+            this.tags = String(newVal.tagNames).split('+')
+            return newVal
+        }
     }
     ,
     //计算属性

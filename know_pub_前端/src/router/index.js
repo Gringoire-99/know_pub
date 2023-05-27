@@ -13,6 +13,7 @@ import homeMember from "@/components/home/member/HomeMember.vue";
 import homeHot from "@/components/home/hot/HomeHot.vue";
 import homeDiscover from "@/components/home/discover/HomeDiscover.vue";
 import homeQuestion from "@/components/home/question/HomeQuestion.vue";
+import mainQuestion from "@/components/home/main/MainQuestion.vue";
 
 const routes = [
     {
@@ -29,6 +30,7 @@ const routes = [
                     {name: 'main-followed', path: 'main-followed', component: mainFollowed},
                     {name: 'main-hot-topics', path: 'main-hot-topics', component: mainHotTopices},
                     {name: 'main-videos', path: 'main-videos', component: mainVideos},
+                    {name: 'main-question', path: 'main-question', component: mainQuestion}
                 ]
             },
             {name: 'home-user', path: 'home-user/:userId', component: homeUser},

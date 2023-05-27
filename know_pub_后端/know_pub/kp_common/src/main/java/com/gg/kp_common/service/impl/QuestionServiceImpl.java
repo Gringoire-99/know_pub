@@ -1,18 +1,20 @@
 package com.gg.kp_common.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.gg.kp_common.config.exception.SystemException;
 import com.gg.kp_common.dao.QuestionMapper;
 import com.gg.kp_common.entity.po.Question;
 import com.gg.kp_common.entity.vo.QuestionVo;
 import com.gg.kp_common.service.QuestionService;
+import com.gg.kp_common.utils.PageUtils;
 import com.gg.kp_common.utils.Result;
 import com.gg.kp_common.utils.SecurityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Objects;
+import java.util.*;
 
 @Service
 public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> implements QuestionService {
@@ -34,5 +36,28 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
         result = this.baseMapper.insert(question);
 
         return Result.ok(result);
+    }
+
+    @Override
+    public Result<Map<String, Object>> getQuestions(Map<String, Object> params) {
+        IPage<QuestionVo> questionVoPage = this.baseMapper.getQuestionVoPage(new PageUtils<QuestionVo>().getPage(params));
+        List<QuestionVo> records = questionVoPage.getRecords();
+        setAnonymity(records);
+        long total = questionVoPage.getTotal();
+        long rows = records.size();
+        HashMap<String, Object> result = new HashMap<>();
+        result.put(PageUtils.PAGE, records);
+        result.put(PageUtils.TOTAL, total);
+        result.put(PageUtils.ROWS, rows);
+        return Result.ok(result);
+    }
+
+    public void setAnonymity(Collection<QuestionVo> questionVos) {
+        questionVos.forEach(questionVo -> {
+            if (questionVo.getIsAnonymous() == 1) {
+                questionVo.setUserId(null);
+                questionVo.setName("匿名用户");
+            }
+        });
     }
 }

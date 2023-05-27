@@ -28,4 +28,5 @@ public class Question {
     private int viewCount;
     private String tagNames;
     private int delFlag;
+    private Integer isAnonymous;
 }

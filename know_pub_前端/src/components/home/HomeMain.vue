@@ -46,7 +46,8 @@ export default {
                 'main-recommended': {name: '推荐', path: 'main-recommended'},
                 'main-followed': {name: '关注', path: 'main-followed',},
                 'main-hot-topics': {name: '热榜', path: 'main-hot-topics'},
-                'main-videos': {name: '视频', path: 'main-videos'}
+                'main-videos': {name: '视频', path: 'main-videos'},
+                'main-questions': {name: '等你来答', path: 'main-question'},
             }
         }
     },

@@ -92,7 +92,7 @@
 
                             </div>
                             <div class="submit-btn">
-                                <button class="w-100" @click="login">登录</button>
+                                <button class="w-100" type="button" @click="login">登录</button>
                             </div>
                         </form>
 
@@ -115,7 +115,7 @@
 
                                 </div>
                                 <div class="submit-btn">
-                                    <button class="w-100" @click="register">注册</button>
+                                    <button class="w-100" type="button" @click="register">注册</button>
                                 </div>
                             </form>
                         </form>
@@ -373,6 +373,7 @@ export default {
                         type: "success"
                     })
                     this.$router.push({path: '/login'})
+                    location.reload()
                 } else {
                     ElMessage({
                         message: `登出失败 ：${res.data.msg}`,

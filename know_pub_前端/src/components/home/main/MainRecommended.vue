@@ -56,6 +56,6 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-@include fade(post, 0.2s, (-10px, 0, 0));
+@include fade(post, 0.6s, (-30px, 0, 0));
 
 </style>

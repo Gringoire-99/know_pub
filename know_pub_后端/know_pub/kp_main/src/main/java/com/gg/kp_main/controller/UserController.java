@@ -13,38 +13,44 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     @Autowired
     private UserService userService;
+
     /**
      * user: 必须包含username和password，其中username是email
      */
     @PostMapping("/login")
-    public Result<UserVo> login(@RequestBody User user){
+    public Result<UserVo> login(@RequestBody User user) {
         return userService.login(user);
     }
+
     @DeleteMapping("/logout")
-    public Result<?> logout(){
+    public Result<?> logout() {
         return userService.logout();
     }
+
     @PostMapping("/register")
-    public Result<?> register(@RequestBody RegisterUser user){
+    public Result<?> register(@RequestBody RegisterUser user) {
         return userService.register(user);
     }
+
     @GetMapping("/info-detail")
-    public Result<UserInfoDetailVo> infoDetail(@RequestParam String userId){
+    public Result<UserInfoDetailVo> infoDetail(@RequestParam String userId) {
         return userService.infoDetail(userId);
     }
 
     @GetMapping("/info-short")
-    public Result<UserInfoShortVo> infoShort(@RequestParam String userId){
+    public Result<UserInfoShortVo> infoShort(@RequestParam String userId) {
         return userService.infoShort(userId);
     }
 
     @GetMapping("/post-card")
-    public Result<UserPostCardVo> postCard(@RequestParam String userId){
+    public Result<UserPostCardVo> postCard(@RequestParam String userId) {
         return userService.postCard(userId);
     }
+
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/follow")
-    public Result<?> follow(@RequestParam String userId){
+    public Result<?> follow(@RequestParam String userId) {
         return userService.follow(userId);
     }
+
 }

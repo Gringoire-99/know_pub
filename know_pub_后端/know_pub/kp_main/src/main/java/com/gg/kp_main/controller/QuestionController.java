@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/question")
 public class QuestionController {
@@ -22,5 +24,10 @@ public class QuestionController {
     @PreAuthorize("hasRole('USER')")
     public Result<Integer> postQuestion(@RequestBody Question question){
         return questionService.postQuestion(question);
+    }
+
+    @GetMapping("/questions")
+    public Result<Map<String,Object>> getQuestions(@RequestParam Map<String,Object> params){
+        return questionService.getQuestions(params);
     }
 }

@@ -108,6 +108,10 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         return Result.ok(data);
     }
 
+    /**
+     *TODO 待重构，改为单action的模式
+     */
+
     public void setAction(Collection<PostVo> posts, String userId) {
         if (userId == null) {
             try {

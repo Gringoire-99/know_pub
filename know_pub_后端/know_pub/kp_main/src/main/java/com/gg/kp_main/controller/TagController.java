@@ -1,0 +1,23 @@
+package com.gg.kp_main.controller;
+
+import com.gg.kp_common.service.TagService;
+import com.gg.kp_common.utils.Result;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
+
+@RestController
+@RequestMapping("/tag")
+public class TagController {
+    @Autowired
+    TagService tagService;
+    @GetMapping("/tags")
+    public Result<Map<String, Object>> getTags(@RequestParam Map<String,Object> params) {
+        return tagService.getTags(params);
+    }
+
+}

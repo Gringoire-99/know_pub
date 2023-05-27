@@ -26,7 +26,6 @@ export const http = axios.create({
 });
 export const http_no_token = axios.create({
     baseURL: "/api",
-
 });
 
 

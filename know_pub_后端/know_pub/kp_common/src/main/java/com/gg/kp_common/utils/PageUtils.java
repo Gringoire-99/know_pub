@@ -16,6 +16,7 @@ public class PageUtils<T> {
     public static final String TOTAL = "total";
     public static final String ROWS = "rows";
     public static final String CREATE_TIME = "create_time";
+    public static final String KEYWORD = "keyword";
 
 
     //    根据请求参数构造page对象，通过这个page对象分页查询数据
@@ -24,10 +25,10 @@ public class PageUtils<T> {
         long pageSize = 10;
 
         if (params.get(CURRENT_PAGE) != null) {
-            currentPage = Long.parseLong( params.get(CURRENT_PAGE).toString());
+            currentPage = Long.parseLong(params.get(CURRENT_PAGE).toString());
         }
         if (params.get(PAGE_SIZE) != null) {
-            pageSize = Long.parseLong( params.get(PAGE_SIZE).toString());
+            pageSize = Long.parseLong(params.get(PAGE_SIZE).toString());
         }
 
         Page<T> page = new Page<>(currentPage, pageSize);
@@ -46,4 +47,5 @@ public class PageUtils<T> {
         return page;
 
     }
+
 }

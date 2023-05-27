@@ -27,6 +27,10 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
     @Autowired
     PostService postService;
 
+    /**
+     * 因为时间问题，所以这里的实现有点乱，实际应该使用连表查询，但我懒得写sql
+     * TODO 待重构
+     */
     @Override
     public Result<HashMap<String, Object>> getPostComment(Map<String, Object> params) {
         /**

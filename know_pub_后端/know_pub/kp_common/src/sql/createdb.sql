@@ -9,8 +9,8 @@ CREATE TABLE IF NOT EXISTS follow
 );
 CREATE TABLE IF NOT EXISTS `comment_like`
 (
-    comment_id   char(40) not null comment '被点赞评论id',
-    user_id char(40) not null comment '点赞人id',
+    comment_id char(40) not null comment '被点赞评论id',
+    user_id    char(40) not null comment '点赞人id',
     primary key (comment_id, user_id)
 );
 CREATE TABLE IF NOT EXISTS know_pub.user
@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS post
     like_count    int          default 0 comment '点赞数',
     dislike_count int          default 0 comment '踩数',
     user_id       char(40)     NOT NULL comment '作者id,需要根据id去user表中查找基础信息',
-    create_time  datetime     default now() comment '发布时间',
+    create_time   datetime     default now() comment '发布时间',
     update_time   datetime     default now() comment '更新时间',
     status        int          default 0 comment '状态,0:正常,1:禁用',
     comment_count int          default 0 comment '评论数',
@@ -94,7 +94,7 @@ CREATE TABLE IF NOT EXISTS question
     images           TEXT comment '图片，使用逗号分隔',
     like_count       int          default 0 comment '点赞数',
     user_id          char(40)     NOT NULL comment '作者id,需要根据id去user表中查找基础信息',
-    create_time     datetime     default now() comment '发布时间',
+    create_time      datetime     default now() comment '发布时间',
     update_time      datetime     default now() comment '更新时间',
     status           int          default 0 comment '状态,0:正常,1:禁用',
     comment_count    int          default 0 comment '评论数',
@@ -102,11 +102,13 @@ CREATE TABLE IF NOT EXISTS question
     collection_count int          default 0 comment '收藏数',
     view_count       int          default 0 comment '浏览数',
     tag_names        varchar(50)  default '' comment '标签名，使用逗号分隔',
-    del_flag         int          default 0 comment '删除标志,0:未删除,1:已删除'
+    del_flag         int          default 0 comment '删除标志,0:未删除,1:已删除',
+    is_anonymous     int          default 0 comment '是否匿名，0不匿名，1匿名'
 );
 CREATE TABLE IF NOT EXISTS tag
 (
-    name             char(40) NOT NULL PRIMARY KEY comment '标签名',
+    tag_id           char(40) not null primary key comment 'id',
+    name             char(40) NOT NULL  comment '标签名',
     description      varchar(256) default '' comment '标签描述',
     create_time      datetime     default now() comment '创建时间',
     status           int          default 0 comment '状态,0:正常,1:禁用',
@@ -184,13 +186,14 @@ CREATE TABLE IF NOT EXISTS `sys_user_role`
   DEFAULT CHARSET = utf8mb4;
 
 # 向根据userId查出动作，再通过动作查出相应的事件，action:点赞，收藏，回复
-CREATE TABLE IF NOT EXISTS action(
-    action char(20) not null comment '动作,枚举对象',
-    action_id char(60) primary key not null comment '动作id',
-    user_id char(60) not null comment '用户id',
+CREATE TABLE IF NOT EXISTS action
+(
+    action      char(20)             not null comment '动作,枚举对象',
+    action_id   char(60) primary key not null comment '动作id',
+    user_id     char(60)             not null comment '用户id',
     create_time datetime default now() comment '创建时间',
-    target_id char(60) not null comment '目标id(postId)',
-    content char(50) default '' comment '可选内容'
+    target_id   char(60)             not null comment '目标id(postId)',
+    content     char(50) default '' comment '可选内容'
 )
 
 # INSERT INTO user(id, name, phone, password)

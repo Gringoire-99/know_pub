@@ -186,7 +186,7 @@
         <login/>
     </el-dialog>
 
-    <el-dialog v-model="showPostQueston" :show-close="false" center class="dialog-post-question" width="35%">
+    <el-dialog v-model="showPostQueston" :show-close="false" center class="dialog-post-question">
         <post-question @cancel="showPostQueston=false"></post-question>
     </el-dialog>
 </template>

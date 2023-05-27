@@ -11,10 +11,10 @@
                 <div class="d-flex flex-column align-items-center w-100">
                     <div v-for="user in users" :key="user.id" class="w-100 mb-2 d-flex align-items-center">
                         <popover
-                            placement="bottom"
-                            trigger="hover"
-                            :show-after="500"
-                            :width="430"
+                                :show-after="500"
+                                :width="430"
+                                placement="bottom"
+                                trigger="hover"
                         >
                             <post-card :id="user.id"></post-card>
                             <template #reference>
@@ -22,7 +22,10 @@
                                     <img :src="user.avatar" alt="" class="avatar"/>
                                     <div class="ms-1">
                                         <div>{{ user.name }}</div>
-                                        <div class="reason">「{{ user.reason.substring(0, 5) }}」</div>
+                                        <div class="reason">
+                                            <!--                                            「{{ user.reason.substring(0, 5) }}」-->
+                                            「你可能感兴趣」
+                                        </div>
                                     </div>
                                 </div>
 
@@ -75,11 +78,12 @@ export default {
         http.get('/user/recommended-users', {
             params: {
                 id: this.$store.state.userId,
-                pageSize: this.pageSize
+                pageSize: this.pageSize,
+                currentPage: 1
             }
         }).then(response => {
             if (response.data.code === 200) {
-                this.users = response.data.data.users
+                this.users = response.data.data.page
             }
         }, reason => {
         })

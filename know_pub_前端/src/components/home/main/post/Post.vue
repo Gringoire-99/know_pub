@@ -283,7 +283,7 @@ export default {
     background-color: white;
 
     & > .el-button {
-        @include clickEffect($white, $scale: 0.95, $bg: $blue);
+        @include clickEffect($white, $scale: 0.95, $bg: $deep-blue);
         color: $deep-blue;
         border: none;
         background: $whiteBlue;
@@ -300,7 +300,7 @@ export default {
         }
 
         &.on {
-            background: $blue;
+            background: $deep-blue;
             color: $white;
         }
     }
