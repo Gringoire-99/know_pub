@@ -11,8 +11,10 @@
                             </el-tag>
                         </div>
                     </div>
-                    <el-skeleton v-if="isLoadingQuestion" :rows="3">
-                    </el-skeleton>
+                    <div v-if="isLoadingQuestion">
+                        <el-skeleton :rows="3" :throttle="1000">
+                        </el-skeleton>
+                    </div>
                     <div v-else>
                         <div class="title fs-3 fw-bold mt-4">
                             {{ question.question }}
@@ -103,21 +105,30 @@
         <div class="body">
             <div class="space"></div>
             <div>
-                <div :class="{'show-editor':showEditor}" class="editor mb-3">
-                    <post-editor>
+                <div :class="{'show-editor':showEditor}" class="editor">
+                    <post-editor :questionId="this.$route.params.questionId">
                     </post-editor>
                 </div>
                 <div class="main">
                     <div class="post-header ps-3 border-bottom pb-3 pt-3">
                         <span class="fw-bold">{{ question.commentCount }}个回答</span>
                     </div>
-                    <el-skeleton v-show="isLoadingQuestion||isLoadingAnswer" :rows="5"></el-skeleton>
+                    <div v-show="isLoadingQuestion||isLoadingAnswer">
+                        <el-skeleton :rows="5" :throttle="1000"></el-skeleton>
+                    </div>
+
                     <post v-for="post in posts" :key="post.postId" :is-answer-pattern="true" :post="post">
                     </post>
+                    <div v-show="posts.length===0&&!isLoadingAnswer">
+                        <el-empty description="来写第一条回答吧~"></el-empty>
+                    </div>
                 </div>
             </div>
 
-            <div class="sed"></div>
+            <div class="sed">
+                <recommended-question :question-id="this.$route.params.questionId">
+                </recommended-question>
+            </div>
             <div class="space"></div>
         </div>
     </div>
@@ -126,7 +137,7 @@
 </template>
 
 <script>
-import http from "@/utils/http/http";
+import http, {http_no_token} from "@/utils/http/http";
 import {ArrowDown, ArrowUp, Collection, More, StarFilled} from "@element-plus/icons-vue";
 import Like from "@/components/icons/Like.vue";
 import Write from "@/components/icons/Write.vue";
@@ -136,12 +147,14 @@ import Edit from "@/components/icons/Edit.vue";
 import Message from "@/components/icons/Message.vue";
 import Post from "@/components/home/main/post/Post.vue";
 import PostEditor from "@/components/post-editor/PostEditor.vue";
+import RecommendedQuestion from "@/components/home/question/sed/RecommendedQuestion.vue";
 
 export default {
     //组件名
     name: "home-question",
     //依赖的组件
     components: {
+        RecommendedQuestion,
         PostEditor,
         Post, More, Message, Edit, Pen, AddUser, StarFilled, Collection, Write, Like, ArrowUp, ArrowDown
     },
@@ -166,7 +179,7 @@ export default {
         },
         getQuestion() {
             this.isLoadingQuestion = true
-            http.get('/question/detail', {
+            http_no_token.get('/question/detail', {
                 params: {
                     questionId: this.$route.params.questionId,
                     pageSize: this.pageSize,
@@ -179,6 +192,35 @@ export default {
             }).finally(() => {
                 this.isLoadingQuestion = false
             })
+        },
+        getPosts(isMerge = false) {
+            if (!this.isLoadingAnswer) {
+                this.isLoadingAnswer = true
+                if (!isMerge) {
+                    this.currentPage = 1
+                }
+                http.get('/post/get-posts', {
+                    params: {
+                        pageSize: this.pageSize,
+                        currentPage: this.currentPage,
+                        questionId: this.$route.params.questionId
+                    }
+                }).then(res => {
+                    if (res.data.code === 200) {
+                        if (isMerge) {
+                            this.posts.push(...res.data.data.page)
+                        } else {
+                            this.posts = res.data.data.page
+                        }
+                        this.currentPage++
+                    }
+                }, reason => {
+                }).finally(() => {
+                    this.isLoadingAnswer = false
+                    this.$store.commit('SET_LOAD_DATA', false)
+                })
+
+            }
         }
 
     },
@@ -189,12 +231,20 @@ export default {
     //创建时执行
     created() {
         this.getQuestion()
+        this.getPosts()
     },
     //侦听器
     watch: {
         question(newVal, oldVal) {
             this.tags = String(newVal.tagNames).split('+')
             return newVal
+        },
+        $router: {
+            deep: true,
+            handler(newVal, oldVal) {
+                this.getQuestion()
+                return newVal
+            }
         }
     }
     ,
@@ -207,79 +257,103 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.header {
-    box-shadow: rgba(50, 50, 105, 0.15) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1px 0px;
+.hq-root {
     display: grid;
-    grid-template-columns: 2fr 8fr 1fr;
-    grid-template-rows: 1fr;
-    transition: grid 0.5s;
-    padding-bottom: 20px;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    grid-gap: 10px;
+
+    .header {
+        box-shadow: rgba(50, 50, 105, 0.15) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1px 0px;
+        display: grid;
+        grid-template-columns: 2fr 8fr 1fr;
+        grid-template-rows: 1fr;
+        transition: grid 0.5s;
+        padding-bottom: 20px;
+        min-height: 15em;
+
+        .header-grid {
+            display: grid;
+            grid-template-columns: 4fr 1fr;
+            grid-template-rows: 1fr;
+            transition: grid 0.5s;
+
+            .operations {
+                display: grid;
+                grid-column-gap: 20px;
+                grid-template-columns: auto auto auto auto auto auto auto;
+                grid-template-rows: 1fr;
+
+                & > div {
+                    @include align();
+
+                    & > * {
+                        @include align();
+                    }
+                }
+
+                button {
+                    border-radius: 3px;
+                    border: 1px solid #0794ff;
+                    display: flex;
+                    justify-content: center;
+                    text-wrap: avoid;
+                    text-overflow: ellipsis;
+                    max-height: 50px;
+
+                    * {
+                        align-self: center;
+                    }
+
+                    .el-icon {
+                        margin-right: 5px;
+
+                    }
+                }
+
+                .count {
+                    display: flex;
+                    align-content: center;
+                    justify-content: start;
+                    min-width: 0;
+                    overflow: hidden;
+
+                    span {
+                        display: flex;
+                        align-content: center;
+                        justify-content: center;
+                    }
+
+                }
+            }
+
+        }
+
+
+    }
+
+    .body {
+        display: grid;
+        grid-template-columns: 2fr 6fr 2fr 1fr;
+        grid-template-rows: 1fr;
+        transition: grid 0.5s;
+        grid-gap: 1em;
+
+        .main {
+            box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
+            border-bottom: 1px solid $white-gray;
+        }
+    }
+
+    .content-short {
+        &:hover {
+            cursor: pointer;
+            color: gray;
+        }
+    }
+
 }
 
-.main {
-    box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
-}
-
-.header-grid {
-    display: grid;
-    grid-template-columns: 4fr 1fr;
-    grid-template-rows: 1fr;
-    transition: grid 0.5s;
-}
-
-.count {
-    display: flex;
-    align-content: center;
-    justify-content: start;
-    min-width: 0;
-    overflow: hidden;
-}
-
-.count span {
-    display: flex;
-    align-content: center;
-    justify-content: center;
-}
-
-.content-short:hover {
-    cursor: pointer;
-    color: gray;
-}
-
-.operations button {
-    border-radius: 3px;
-    border: 1px solid #0794ff;
-    display: flex;
-    justify-content: center;
-    text-wrap: avoid;
-    text-overflow: ellipsis;
-    max-height: 50px;
-}
-
-.operations button * {
-    align-self: center;
-}
-
-.operations button .el-icon {
-    margin-right: 5px;
-
-}
-
-.operations {
-    display: grid;
-    grid-column-gap: 20px;
-    grid-template-columns: auto auto auto auto auto auto auto;
-    grid-template-rows: 1fr;
-
-}
-
-.operations div {
-    display: flex;
-}
-
-.operations div * {
-    align-self: center;
-}
 
 @media screen and (max-width: 1000px) {
     .header {
@@ -312,20 +386,6 @@ export default {
         grid-template-columns: 0fr 6fr 0fr 0fr !important;
     }
 
-}
-
-.hq-root {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: auto auto;
-    grid-gap: 10px;
-}
-
-.body {
-    display: grid;
-    grid-template-columns: 2fr 6fr 2fr 1fr;
-    grid-template-rows: 1fr;
-    transition: grid 0.5s;
 }
 
 .editor {

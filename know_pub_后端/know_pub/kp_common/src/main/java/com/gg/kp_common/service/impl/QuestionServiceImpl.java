@@ -1,12 +1,15 @@
 package com.gg.kp_common.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.gg.kp_common.config.exception.SystemException;
 import com.gg.kp_common.dao.QuestionMapper;
 import com.gg.kp_common.entity.po.Question;
 import com.gg.kp_common.entity.vo.QuestionVo;
+import com.gg.kp_common.entity.vo.RecommendedQuestionVo;
 import com.gg.kp_common.service.QuestionService;
+import com.gg.kp_common.utils.BeanCopyUtils;
 import com.gg.kp_common.utils.PageUtils;
 import com.gg.kp_common.utils.Result;
 import com.gg.kp_common.utils.SecurityUtils;
@@ -51,6 +54,22 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
         result.put(PageUtils.ROWS, rows);
         return Result.ok(result);
     }
+
+    @Override
+    public Result<List<RecommendedQuestionVo>> getRecommendedQuestion(String questionId) {
+        Question question = this.baseMapper.selectById(questionId);
+        String tags = question.getTagNames();
+        String[] tagNames = tags.split("\\+");
+        LambdaQueryWrapper<Question> lqw = new LambdaQueryWrapper<>();
+        for (String tagName : tagNames) {
+            lqw.or().like(Question::getTagNames, tagName);
+        }
+        lqw.last("LIMIT 3");
+        List<Question> questions = this.baseMapper.selectList(lqw);
+        List<RecommendedQuestionVo> result = BeanCopyUtils.copyBeanList(questions, RecommendedQuestionVo.class);
+        return Result.ok(result);
+    }
+
 
     public void setAnonymity(Collection<QuestionVo> questionVos) {
         questionVos.forEach(questionVo -> {

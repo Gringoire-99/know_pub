@@ -59,8 +59,8 @@
             </div>
         </div>
         <div class="mt-3 mb-3 fw-lighter">{{ `${post.likeCount}人赞同了该回答` }}</div>
-        <div class="d-flex flex-column">
-            <span :class="{isCovered:isCovered}" class="content">{{ post.content }}</span>
+        <div class="d-flex flex-column flex-grow-1 w-100">
+            <span :class="{isCovered:isCovered}" class="content" v-html="post.content"></span>
             <div v-show="isCovered" class="cover w-100 flex-fill" @click="isCovered=!isCovered">
                 <span class="w-100 d-flex justify-content-center align-self-end flex-wrap">展开阅读全文</span>
                 <el-icon>
@@ -186,7 +186,7 @@ export default {
     flex-wrap: wrap;
     height: 80px;
     position: relative;
-    top: -50px;
+    top: -100px;
     background: linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.82) 50%, rgba(255, 255, 255, 0.3) 100%, rgba(248, 248, 248, 0) 100%);
     z-index: 2;
 }

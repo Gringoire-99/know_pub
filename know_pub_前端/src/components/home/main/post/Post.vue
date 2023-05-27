@@ -19,13 +19,14 @@
                          class="img-fluid col-3 intro-img">
 
                     <div class="text" v-on:click="collapseFullText">
-                        <span class="intro-text">{{
-                                post.content.slice(0, 80)
-                            }}</span>
-                        <span class="full-text-btn">...阅读全文</span>
-                        <el-icon class="d-inline">
-                            <arrow-down/>
-                        </el-icon>
+                        <span ref="contentShort" class="intro-text" v-html="truncatedContent"></span>
+                        <div v-show="post.content.length>30">
+                            <span class="full-text-btn">...阅读全文</span>
+                            <el-icon class="d-inline">
+                                <arrow-down/>
+                            </el-icon>
+                        </div>
+
                     </div>
                 </div>
                 <!--            正文-->
@@ -170,7 +171,8 @@ export default {
             isCollapseComments: true,
             onLike: false,
             onDislike: false,
-            action: ''
+            action: '',
+            content: ''
         }
     }, //绑定父组件的属性
     props: {
@@ -238,15 +240,24 @@ export default {
             this.onLike = true
             this.action += '点赞'
         }
-        // if (this.post.isCollected){
-        //
-        // }
+
     },
     //侦听器
-    watch: {}
-    ,
+    watch: {},
     //计算属性
-    computed: {}
+    computed: {
+        truncatedContent() {
+            const wordLimit = 30;
+            const contentWords = this.post.content.split(' ');
+
+            if (contentWords.length <= wordLimit) {
+                return this.post.content;
+            } else {
+                const truncatedWords = contentWords.slice(0, wordLimit);
+                return truncatedWords.join(' ') + '...';
+            }
+        }
+    }
     ,
 
 }

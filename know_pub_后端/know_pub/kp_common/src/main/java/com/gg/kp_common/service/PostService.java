@@ -18,4 +18,8 @@ public interface PostService extends IService<Post> {
     Result<Integer> onLike(Map<String,Object> params);
 
     Result<HashMap<String, Object>> getDynamic(Map<String, Object> params);
+
+    Result<Integer> addPost(Post post);
+
+    Result<Map<String, Object>> getPosts(Map<String, Object> params);
 }

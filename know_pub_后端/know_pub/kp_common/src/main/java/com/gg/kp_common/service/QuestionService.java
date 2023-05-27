@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.gg.kp_common.entity.po.Question;
 import com.gg.kp_common.entity.vo.QuestionVo;
+import com.gg.kp_common.entity.vo.RecommendedQuestionVo;
 import com.gg.kp_common.utils.Result;
 
 import java.util.List;
@@ -16,4 +17,6 @@ public interface QuestionService extends IService<Question> {
     Result<Integer> postQuestion(Question question);
 
     Result<Map<String, Object>> getQuestions(Map<String, Object> params);
+
+    Result<List<RecommendedQuestionVo>> getRecommendedQuestion(String questionId);
 }
