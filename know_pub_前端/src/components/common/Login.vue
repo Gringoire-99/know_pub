@@ -316,17 +316,17 @@ export default {
         login() {
             if (this.isLoading) return
             // 测试
-            // let validation = ValidationUtils.validate()
-            //     .validateEmpty(this.loginFormByPassword.password, this.loginForm.phone)
-            //     .validateUsername(this.loginFormByPassword.username)
-            //     .validatePassword(this.loginFormByPassword.password)
-            // if (!validation.status) {
-            //     ElMessage({
-            //         message: `登录失败 ：${validation.msg}`,
-            //         type: "error"
-            //     })
-            //     return;
-            // }
+            let validation = ValidationUtils.validate()
+                .validateEmpty(this.loginFormByPassword.password, this.loginForm.phone)
+                .validateUsername(this.loginFormByPassword.username)
+                .validatePassword(this.loginFormByPassword.password)
+            if (!validation.status) {
+                ElMessage({
+                    message: `登录失败 ：${validation.msg}`,
+                    type: "error"
+                })
+                return;
+            }
 
             this.isLoading = true
             http_no_token.post('/user/login', {

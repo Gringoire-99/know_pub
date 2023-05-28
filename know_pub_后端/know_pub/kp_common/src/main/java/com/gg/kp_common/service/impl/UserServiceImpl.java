@@ -17,6 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -140,6 +141,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             result = 1;
         }
         return Result.ok(result);
+
+    }
+
+    @Override
+    public Result<List<UserInfoShortVo>> getRecommendedUser() {
+        LambdaQueryWrapper<User> lqw = new LambdaQueryWrapper<>();
+        lqw.last("limit 12");
+        List<User> users = this.baseMapper.selectList(lqw);
+        List<UserInfoShortVo> userVos = BeanCopyUtils.copyBeanList(users, UserInfoShortVo.class);
+        return Result.ok(userVos);
 
     }
 

@@ -112,11 +112,18 @@ export default {
                 })
                 return
             }
+            if (this.selectedTags.length === 0) {
+                ElMessage({
+                    message: '至少选择一个tag',
+                    type: "error"
+                })
+                return;
+            }
             let question = this.question
             question.isAnonymous = this.question.isAnonymous ? 1 : 0
             let tags = this.selectedTags.join('+')
             question.tagNames = tags
-            http.post('/question/postQuestion', question).then(
+            http.post('/question/post-question', question).then(
                 res => {
                     if (res.data.code === 200) {
                         ElMessage({
@@ -171,6 +178,7 @@ export default {
 
         },
         addTag(tagName) {
+            console.log(tagName)
             if (this.selectedTags.includes(tagName)) return
             if (this.selectedTags.length >= 3) {
                 ElMessage({
@@ -326,7 +334,7 @@ export default {
                         @include clearDefault;
                         min-width: 10em;
                         min-height: 10em;
-                        max-height: 20em;
+                        max-height: 15em;
                         overflow-y: scroll;
 
                         li {

@@ -23,7 +23,7 @@ public class QuestionController {
         return questionService.getDetail(questionId);
     }
 
-    @PostMapping("/postQuestion")
+    @PostMapping("/post-question")
     @PreAuthorize("hasRole('USER')")
     public Result<Integer> postQuestion(@RequestBody Question question) {
         return questionService.postQuestion(question);

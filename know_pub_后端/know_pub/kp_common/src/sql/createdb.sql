@@ -82,8 +82,6 @@ CREATE TABLE IF NOT EXISTS post
     status        int          default 0 comment '状态,0:正常,1:禁用',
     comment_count int          default 0 comment '评论数',
     del_flag      int          default 0 comment '删除标志,0:未删除,1:已删除'
-
-
 );
 CREATE TABLE IF NOT EXISTS question
 (

@@ -7,17 +7,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.util.Map;
 
 @RestController
 @RequestMapping("/tag")
 public class TagController {
+
     @Autowired
     TagService tagService;
     @GetMapping("/tags")
     public Result<Map<String, Object>> getTags(@RequestParam Map<String,Object> params) {
         return tagService.getTags(params);
     }
-
 }

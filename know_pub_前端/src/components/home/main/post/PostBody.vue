@@ -60,7 +60,7 @@
         </div>
         <div class="mt-3 mb-3 fw-lighter">{{ `${post.likeCount}人赞同了该回答` }}</div>
         <div class="d-flex flex-column flex-grow-1 w-100">
-            <span :class="{isCovered:isCovered}" class="content" v-html="post.content"></span>
+            <span :class="{isCovered:isCovered}" class="content" v-html="content"></span>
             <div v-show="isCovered" class="cover w-100 flex-fill" @click="isCovered=!isCovered">
                 <span class="w-100 d-flex justify-content-center align-self-end flex-wrap">展开阅读全文</span>
                 <el-icon>
@@ -91,7 +91,7 @@ export default {
         return {
             isLoadingPostCard: false,
             isCovered: false,
-            userInfo: {}
+            userInfo: {},
         }
     },
     //方法
@@ -127,13 +127,17 @@ export default {
         this.getUserInfo()
     },
     //侦听器
-    watch: {
-        // 每当 question 改变时，这个函数就会执行
-        // question(newQuestion, oldQuestion) {}
-    }
+    watch: {}
     ,
     //计算属性
-    computed: {}
+    computed: {
+        content() {
+            if (this.isCovered) {
+                return this.post.content.substring(0, 20)
+            }
+            return this.post.content
+        }
+    }
     ,
     //绑定父组件的属性
     props: {

@@ -1,5 +1,5 @@
 <template>
-    <div v-infinite-scroll="loadData" class="w-100 h-100" infinite-scroll-delay="1000" infinite-scroll-distance="120">
+    <div v-infinite-scroll="loadData" class="home" infinite-scroll-delay="1000" infinite-scroll-distance="120">
         <keep-alive>
             <home-navbar/>
         </keep-alive>
@@ -54,12 +54,15 @@ export default {
 </script>
 <style lang="scss" scoped>
 @include fade(home, 0.2s, (-10px, 0, 0));
+.home {
+    .main {
 
-.main {
-    padding-top: 70px;
-    overflow-x: hidden;
-    overflow-y: scroll;
+        padding-top: 70px;
+        overflow-x: hidden;
+        overflow-y: scroll;
+    }
 }
+
 
 
 </style>

@@ -103,6 +103,7 @@ export default {
                 span {
                     @include hoverFloat();
                     @include clickable();
+                    color: $white;
                     text-align: center;
                 }
             }

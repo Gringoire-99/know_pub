@@ -19,8 +19,8 @@
                          class="img-fluid col-3 intro-img">
 
                     <div class="text" v-on:click="collapseFullText">
-                        <span ref="contentShort" class="intro-text" v-html="truncatedContent"></span>
-                        <div v-show="post.content.length>30">
+                        <span ref="contentShort" class="intro-text" v-html="content"></span>
+                        <div v-show="post.content.length>50">
                             <span class="full-text-btn">...阅读全文</span>
                             <el-icon class="d-inline">
                                 <arrow-down/>
@@ -172,7 +172,6 @@ export default {
             onLike: false,
             onDislike: false,
             action: '',
-            content: ''
         }
     }, //绑定父组件的属性
     props: {
@@ -246,17 +245,10 @@ export default {
     watch: {},
     //计算属性
     computed: {
-        truncatedContent() {
-            const wordLimit = 30;
-            const contentWords = this.post.content.split(' ');
-
-            if (contentWords.length <= wordLimit) {
-                return this.post.content;
-            } else {
-                const truncatedWords = contentWords.slice(0, wordLimit);
-                return truncatedWords.join(' ') + '...';
-            }
+        content() {
+            return this.post.content.substring(0, 50)
         }
+
     }
     ,
 

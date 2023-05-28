@@ -5,6 +5,8 @@ import com.gg.kp_common.entity.po.User;
 import com.gg.kp_common.entity.vo.*;
 import com.gg.kp_common.utils.Result;
 
+import java.util.List;
+
 public interface UserService extends IService<User> {
     Result<UserVo> login(User user);
 
@@ -19,4 +21,7 @@ public interface UserService extends IService<User> {
     Result<UserPostCardVo> postCard(String userId);
 
     Result<?> follow(String userId);
+
+    Result<List<UserInfoShortVo>> getRecommendedUser();
+
 }

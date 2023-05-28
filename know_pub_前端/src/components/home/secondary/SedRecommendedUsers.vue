@@ -75,15 +75,10 @@ export default {
     },
     //创建时执行
     created() {
-        http.get('/user/recommended-users', {
-            params: {
-                id: this.$store.state.userId,
-                pageSize: this.pageSize,
-                currentPage: 1
-            }
-        }).then(response => {
+        http.get('/user/recommended-user',).then(response => {
             if (response.data.code === 200) {
-                this.users = response.data.data.page
+                this.users = response.data.data
+                console.log(response.data.data)
             }
         }, reason => {
         })

@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController()
 @RequestMapping("/user")
 public class UserController {
@@ -52,5 +54,8 @@ public class UserController {
     public Result<?> follow(@RequestParam String userId) {
         return userService.follow(userId);
     }
-
+   @GetMapping("recommended-user")
+    public Result<List<UserInfoShortVo>> getRecommendedUser(){
+        return userService.getRecommendedUser();
+    }
 }

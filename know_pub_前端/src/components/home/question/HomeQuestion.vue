@@ -5,7 +5,7 @@
             <div class="header-grid">
                 <div class="d-flex flex-column">
                     <div class="d-flex flex-fill">
-                        <div class="tags">
+                        <div v-show="tags.length>0" class="tags">
                             <el-tag v-for="tag in tags" class="pointer mx-1" round size="large">
                                 {{ tag }}
                             </el-tag>
