@@ -116,6 +116,7 @@ public class User implements Serializable {
 
     // 背景图，默认值为 'http://dummyimage.com/2000x1000'
     private String background;
+    private String realName;
 
     private Integer del_flag;
 }

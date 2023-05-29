@@ -3,8 +3,8 @@
         <div class="header w-100">
             <div></div>
             <div class="header-grid">
-                <div class="d-flex flex-column">
-                    <div class="d-flex flex-fill">
+                <div class="header-main">
+                    <div class="d-flex">
                         <div v-show="tags.length>0" class="tags">
                             <el-tag v-for="tag in tags" class="pointer mx-1" round size="large">
                                 {{ tag }}
@@ -15,8 +15,8 @@
                         <el-skeleton :rows="3" :throttle="1000">
                         </el-skeleton>
                     </div>
-                    <div v-else>
-                        <div class="title fs-3 fw-bold mt-4">
+                    <div v-else class="main-content">
+                        <div class="title fs-3 fw-bold ">
                             {{ question.question }}
                         </div>
                         <div class="content">
@@ -278,6 +278,18 @@ export default {
             grid-template-rows: 1fr;
             transition: grid 0.5s;
 
+            .header-main {
+                display: grid;
+                grid-template-columns: 1fr;
+                grid-template-rows: 1fr 2fr 1fr;
+                max-height: 15em;
+
+                .main-content {
+                    padding-left: 1em;
+                    padding-right: 1em;
+                }
+            }
+
             .operations {
                 display: grid;
                 grid-column-gap: 20px;
@@ -381,7 +393,14 @@ export default {
     .operations div span {
         display: none;
     }
+    .header {
+        grid-template-columns: 0fr 8fr 0fr !important;
+        padding: 1em;
 
+        .count {
+            display: none !important;
+        }
+    }
     .body {
         grid-template-columns: 0fr 6fr 0fr 0fr !important;
     }

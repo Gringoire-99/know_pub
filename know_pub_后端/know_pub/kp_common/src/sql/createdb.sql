@@ -38,6 +38,7 @@ CREATE TABLE IF NOT EXISTS know_pub.user
     experience       int          default 0 comment '经验值',
     industry         varchar(20)  default '' comment '行业',
     company          varchar(20)  default '' comment '公司',
+    real_name        char(40)     default '' comment '真名',
     job              varchar(20)  default '' comment '职位',
     school           varchar(20)  default '' comment '学校',
     location         varchar(20)  default '' comment '地区',
@@ -45,6 +46,7 @@ CREATE TABLE IF NOT EXISTS know_pub.user
     resume           LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci comment '简单介绍',
     auth             varchar(20)  default 0 comment '个人认证',
     background       varchar(100) default 'http://dummyimage.com/2000x1000' comment '背景图',
+    createTime       datetime     default now(),
     del_flag         int          default 0 comment '删除标志,0:未删除,1:已删除'
 );
 CREATE TABLE IF NOT EXISTS comment
@@ -106,7 +108,7 @@ CREATE TABLE IF NOT EXISTS question
 CREATE TABLE IF NOT EXISTS tag
 (
     tag_id           char(40) not null primary key comment 'id',
-    name             char(40) NOT NULL  comment '标签名',
+    name             char(40) NOT NULL comment '标签名',
     description      varchar(256) default '' comment '标签描述',
     create_time      datetime     default now() comment '创建时间',
     status           int          default 0 comment '状态,0:正常,1:禁用',

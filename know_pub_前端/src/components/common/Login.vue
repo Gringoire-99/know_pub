@@ -316,18 +316,17 @@ export default {
         login() {
             if (this.isLoading) return
             // 测试
-            let validation = ValidationUtils.validate()
-                .validateEmpty(this.loginFormByPassword.password, this.loginForm.phone)
-                .validateUsername(this.loginFormByPassword.username)
-                .validatePassword(this.loginFormByPassword.password)
-            if (!validation.status) {
-                ElMessage({
-                    message: `登录失败 ：${validation.msg}`,
-                    type: "error"
-                })
-                return;
-            }
-
+            // let validation = ValidationUtils.validate()
+            //     .validateEmpty(this.loginFormByPassword.password, this.loginForm.phone)
+            //     .validateUsername(this.loginFormByPassword.username)
+            //     .validatePassword(this.loginFormByPassword.password)
+            // if (!validation.status) {
+            //     ElMessage({
+            //         message: `登录失败 ：${validation.msg}`,
+            //         type: "error"
+            //     })
+            //     return;
+            // }
             this.isLoading = true
             http_no_token.post('/user/login', {
                 username: this.loginFormByPassword.username,
@@ -339,11 +338,9 @@ export default {
                         type: "success"
                     })
                     this.$cookies.set('token', res.data.data.token)
-                    this.$store.commit('SET_USER', res.data.data.userInfoDetailVo)
-                    this.$store.commit('SET_LOGIN_STATE', true)
                     localStorage.setItem('userId', res.data.data.userInfoDetailVo.id)
-                    this.$store.commit("SET_SHOW_LOGIN", false)
                     this.$router.push({path: '/home-main'})
+                    location.reload()
                 } else {
                     ElMessage({
                         message: `登录失败：${res.data.msg},code:${res.data.code}`,

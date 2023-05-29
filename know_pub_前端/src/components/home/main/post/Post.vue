@@ -20,7 +20,7 @@
 
                     <div class="text" v-on:click="collapseFullText">
                         <span ref="contentShort" class="intro-text" v-html="content"></span>
-                        <div v-show="post.content.length>50">
+                        <div v-show="post.content.length>150">
                             <span class="full-text-btn">...阅读全文</span>
                             <el-icon class="d-inline">
                                 <arrow-down/>
@@ -246,7 +246,7 @@ export default {
     //计算属性
     computed: {
         content() {
-            return this.post.content.substring(0, 50)
+            return this.post.content.length >= 160 ? this.post.content.substring(0, 150) : this.post.content
         }
 
     }

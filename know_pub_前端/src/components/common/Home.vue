@@ -56,7 +56,6 @@ export default {
 @include fade(home, 0.2s, (-10px, 0, 0));
 .home {
     .main {
-
         padding-top: 70px;
         overflow-x: hidden;
         overflow-y: scroll;

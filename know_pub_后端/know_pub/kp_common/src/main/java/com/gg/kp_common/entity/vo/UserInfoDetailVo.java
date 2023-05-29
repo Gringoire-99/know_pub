@@ -13,6 +13,7 @@ public class UserInfoDetailVo {
     private String id;
 
     private String name;
+    private String realName;
 
     private String avatar;
 
