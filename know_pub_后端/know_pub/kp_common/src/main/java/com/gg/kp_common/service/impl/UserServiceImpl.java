@@ -2,13 +2,12 @@ package com.gg.kp_common.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.gg.kp_common.utils.HttpEnum;
-import com.gg.kp_common.utils.Result;
 import com.gg.kp_common.config.exception.SystemException;
 import com.gg.kp_common.dao.UserMapper;
 import com.gg.kp_common.entity.po.User;
 import com.gg.kp_common.entity.po.UserDetail;
 import com.gg.kp_common.entity.vo.*;
+import com.gg.kp_common.feign.OssFeignClient;
 import com.gg.kp_common.service.UserService;
 import com.gg.kp_common.utils.*;
 import org.springframework.beans.BeanUtils;
@@ -33,6 +32,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     private AuthenticationManager authenticationManager;
     @Autowired
     private RedisCache redisCache;
+    @Autowired
+    private OssFeignClient ossFeignClient;
+
+    public Result<Integer> testFeign() {
+      return Result.ok(ossFeignClient.test());
+    }
 
     @Override
     public Result<UserVo> login(User user) {

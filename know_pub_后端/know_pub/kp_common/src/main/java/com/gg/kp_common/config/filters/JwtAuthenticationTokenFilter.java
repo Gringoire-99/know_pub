@@ -1,8 +1,6 @@
 package com.gg.kp_common.config.filters;
 
 import com.alibaba.fastjson.JSON;
-import com.gg.kp_common.utils.HttpEnum;
-import com.gg.kp_common.utils.Result;
 import com.gg.kp_common.entity.po.UserDetail;
 import com.gg.kp_common.utils.*;
 import io.jsonwebtoken.Claims;
@@ -54,13 +52,13 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         if (Objects.isNull(userDetail)) {
             //说明登录过期 提示重新登录
             Result<?> result =
-                    Result.error(HttpEnum.UNAUTHORIZED );
+                    Result.error(HttpEnum.UNAUTHORIZED);
             WebUtils.renderString(response, JSON.toJSONString(result));
             return;
         }
         //存入SecurityContextHolder
         UsernamePasswordAuthenticationToken authenticationToken = new
-                UsernamePasswordAuthenticationToken(userDetail.getUser().getId(),userDetail.getPassword(),userDetail.getAuthorities());
+                UsernamePasswordAuthenticationToken(userDetail.getUser().getId(), userDetail.getPassword(), userDetail.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         filterChain.doFilter(request, response);
     }

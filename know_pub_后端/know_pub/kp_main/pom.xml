@@ -22,11 +22,6 @@
     <dependencies>
         <dependency>
             <groupId>com.gg</groupId>
-            <artifactId>kp_feign</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.gg</groupId>
             <artifactId>kp_common</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>

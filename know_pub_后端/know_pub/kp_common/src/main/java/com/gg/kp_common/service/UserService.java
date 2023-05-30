@@ -25,4 +25,6 @@ public interface UserService extends IService<User> {
     Result<List<UserInfoShortVo>> getRecommendedUser();
 
     Result<Integer> updateUserInfo(UpdateUser user);
+
+    Result<Integer> testFeign();
 }

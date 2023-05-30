@@ -1,6 +1,7 @@
 package com.gg.kp_main;
 
 import com.gg.kp_common.dao.sys.MenuMapper;
+import com.gg.kp_common.feign.OssFeignClient;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,13 +10,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootTest
 class KpMainApplicationTests {
-    @Autowired
-    private MenuMapper menuMapper;
-    @Autowired
-    PasswordEncoder passwordEncoder;
+   @Autowired
+    OssFeignClient ossFeignClient;
 
     @Test
     void test1() {
-        System.out.println(new BCryptPasswordEncoder().encode("1"));
+        ossFeignClient.test();
     }
 }

@@ -2,13 +2,14 @@ package com.gg.kp_main.controller;
 
 import com.gg.kp_common.entity.po.User;
 import com.gg.kp_common.entity.vo.*;
+import com.gg.kp_common.feign.OssFeignClient;
 import com.gg.kp_common.service.UserService;
 import com.gg.kp_common.utils.Result;
-import com.gg.kp_feign.feign.OssServiceClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 @RestController()
@@ -67,11 +68,10 @@ public class UserController {
         return userService.updateUserInfo(user);
     }
 
-    @Autowired
-    OssServiceClient ossServiceClient;
+
     @GetMapping("/test")
     public Result<?> test(){
-        return Result.ok(ossServiceClient.test());
+        return userService.testFeign();
     }
 
 }

@@ -13,6 +13,7 @@ public class ValidateProxy {
     @Pointcut(value = "execution(public * com.gg.kp_common.service.impl.*.*(..))")
     public void pointCut() {
     }
+
     @Before("pointCut()")
     public void before(JoinPoint joinPoint) {
         ValidationUtils.validate().validateEmpty(joinPoint.getArgs());
