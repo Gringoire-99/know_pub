@@ -10,11 +10,12 @@ spring:
             - Path=/main/**
           filters:
             - RewritePath=/main/(?<segment>.*),/$\{segment}
-
+  main:
+    web-application-type: reactive
   jackson:
     date-format: yyyy-MM-dd HH-mm-ss
   application:
-    name: kp_gateway
+    name: kp-gateway
 
 server:
   port: 88

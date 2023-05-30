@@ -1,7 +1,5 @@
 package com.gg.kp_common.utils;
 
-import lombok.Data;
-
 public enum HttpEnum {
     SUCCESS(200, "success"),
     ERROR(500, "error"),

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.gg.kp_common.utils.Result;
 import com.gg.kp_common.config.exception.SystemException;
 import com.gg.kp_common.dao.ActionMapper;
 import com.gg.kp_common.dao.PostMapper;

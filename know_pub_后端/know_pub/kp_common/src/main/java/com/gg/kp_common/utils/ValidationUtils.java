@@ -2,7 +2,6 @@ package com.gg.kp_common.utils;
 
 import com.gg.kp_common.config.exception.SystemException;
 
-import java.util.ArrayList;
 import java.util.Objects;
 
 public class ValidationUtils {

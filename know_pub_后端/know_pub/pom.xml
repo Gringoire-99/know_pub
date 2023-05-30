@@ -31,10 +31,15 @@
         <module>kp_common</module>
         <module>kp_gateway</module>
         <module>kp_other</module>
+        <module>kp_feign</module>
     </modules>
 
     <dependencies>
-        <!--junit-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>

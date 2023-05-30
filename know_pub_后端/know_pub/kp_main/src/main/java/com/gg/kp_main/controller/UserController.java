@@ -4,6 +4,7 @@ import com.gg.kp_common.entity.po.User;
 import com.gg.kp_common.entity.vo.*;
 import com.gg.kp_common.service.UserService;
 import com.gg.kp_common.utils.Result;
+import com.gg.kp_feign.feign.OssServiceClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -65,4 +66,12 @@ public class UserController {
     public Result<Integer> update(@RequestBody UpdateUser user) {
         return userService.updateUserInfo(user);
     }
+
+    @Autowired
+    OssServiceClient ossServiceClient;
+    @GetMapping("/test")
+    public Result<?> test(){
+        return Result.ok(ossServiceClient.test());
+    }
+
 }

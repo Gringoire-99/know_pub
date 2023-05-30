@@ -7,7 +7,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @SpringBootApplication
-@ComponentScan(basePackages = {"com.gg.kp_common","com.gg.kp_main"})
+@ComponentScan(basePackages = {"com.gg.kp_common", "com.gg.kp_main","com.gg.kp_feign"})
 public class KpMainApplication {
 
     public static void main(String[] args) {
