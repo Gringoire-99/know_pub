@@ -54,8 +54,15 @@ public class UserController {
     public Result<?> follow(@RequestParam String userId) {
         return userService.follow(userId);
     }
-   @GetMapping("recommended-user")
-    public Result<List<UserInfoShortVo>> getRecommendedUser(){
+
+    @GetMapping("recommended-user")
+    public Result<List<UserInfoShortVo>> getRecommendedUser() {
         return userService.getRecommendedUser();
+    }
+
+    @PatchMapping("/update")
+    @PreAuthorize("hasRole('USER')")
+    public Result<Integer> update(@RequestBody UpdateUser user) {
+        return userService.updateUserInfo(user);
     }
 }

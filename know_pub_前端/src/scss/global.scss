@@ -17,9 +17,6 @@
     transform: scale($scale);
     border-color: lighten($color, 10%);
   }
-  &:focus {
-    color: $color;
-  }
   &:not(:active) {
     transform: scale(1);
   }

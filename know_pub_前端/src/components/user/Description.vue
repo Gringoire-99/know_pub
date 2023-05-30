@@ -10,17 +10,18 @@
                     <input v-model="info.name" placeholder="请输入昵称">
                 </li>
                 <li><span>头像</span>
-                    <el-avatar :src="userInfo.avatar" shape="square"></el-avatar>
+                    <img :src="userInfo.avatar" class="avatar"/>
                     <div class="uploader">
                         <el-upload
                             ref="uploadRef"
-                            v-model="listFile"
+                            v-model:file-list="listFile"
                             :auto-upload="false"
                             :limit="1"
                             :show-file-list="true"
                             class="avatar-uploader"
                             drag
                             list-type="picture-card"
+                            :before-upload="beforeUpload"
                         >
                             <el-icon class="avatar-uploader-icon">
                                 <Plus/>
@@ -49,6 +50,9 @@
                 <li><span>学校</span><span>{{ userInfo.school }}</span>
                     <input v-model="info.school" placeholder="你的学校">
                 </li>
+                <li><span>位置</span><span>{{ userInfo.location }}</span>
+                    <input v-model="info.location" placeholder="你的位置">
+                </li>
                 <li><span>详细介绍</span><span>{{ userInfo.resume }}</span>
                     <input placeholder="详细描述你自己">
                 </li>
@@ -70,6 +74,8 @@
 </template>
 
 <script>
+import {ElMessage} from "element-plus";
+
 export default {
     data() {
         return {
@@ -83,18 +89,29 @@ export default {
                 industry: '',
                 company: '',
                 school: '',
-                resume: ''
+                resume: '',
+                location: ''
             },
             listFile: []
         }
     },
     methods: {
         submit() {
+            console.log(this.listFile)
+        },
+        beforeUpload(rawFile) {
+            if (rawFile.type !== 'image/jpeg') {
+                ElMessage.error('Avatar picture must be JPG format!')
+                return false
+            } else if (rawFile.size / 1024 / 1024 > 2) {
+                ElMessage.error('Avatar picture size can not exceed 2MB!')
+                return false
+            }
+            return true
         }
     },
     created() {
         this.info.name = this.userInfo.name
-        this.info.avatar = this.userInfo.avatar
         this.info.realName = this.userInfo.realName
         this.info.resume = this.userInfo.resume
         this.info.gender = this.userInfo.gender
@@ -103,6 +120,7 @@ export default {
         this.info.industry = this.userInfo.industry
         this.info.company = this.userInfo.company
         this.info.school = this.userInfo.school
+        this.info.location = this.userInfo.location
 
     },
     mounted() {
@@ -146,12 +164,19 @@ export default {
                 padding: 1em 0em;
                 transition: grid 0.5s;
 
-                span:first-child {
+                *:first-child {
                     font-weight: bold;
                 }
 
-                .el-avatar {
-                    max-width: 15em;
+                *:last-child {
+                    min-width: 0 !important;
+                    overflow: hidden;
+                }
+
+                .avatar {
+                    width: 10em;
+                    object-fit: cover;
+                    border-radius: 5px;
                 }
 
                 input {
@@ -199,9 +224,24 @@ export default {
     }
 }
 
+:deep(.el-upload-list) {
+    flex-wrap: nowrap;
+}
+
 :deep(.el-upload-dragger) {
     height: 100% !important;
     width: 100% !important;
     @include align();
 }
+
+:deep(.el-upload) {
+    max-width: 10em !important;
+    max-height: 10em !important;
+}
+
+:deep(.el-upload-list__item) {
+    max-width: 10em !important;
+    max-height: 10em !important;
+}
+
 </style>

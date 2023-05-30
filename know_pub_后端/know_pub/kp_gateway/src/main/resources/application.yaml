@@ -1,0 +1,20 @@
+spring:
+  cloud:
+    nacos:
+      server-addr: localhost:8848
+    gateway:
+      routes:
+        - id: main_route
+          uri: lb://kp-main
+          predicates:
+            - Path=/main/**
+          filters:
+            - RewritePath=/main/(?<segment>.*),/$\{segment}
+
+  jackson:
+    date-format: yyyy-MM-dd HH-mm-ss
+  application:
+    name: kp_gateway
+
+server:
+  port: 88

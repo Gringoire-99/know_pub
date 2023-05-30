@@ -25,11 +25,11 @@
                                 <div class="d-flex flex-column">
                                     <div class="info-short d-flex flex-column">
                                         <div class="">
-                                            <div v-show="userInfo.gender!==''">
+                                            <div>
                                                 <span>性别：</span>
                                                 <span>{{ userInfo.gender }}</span>
                                             </div>
-                                            <div v-show="userInfo.jobHistory!==''">
+                                            <div>
                                                 <span>工作历史：</span>
                                                 <span>{{ userInfo.jobHistory }}</span>
                                             </div>
@@ -43,8 +43,8 @@
                                         </el-icon>
                                         <span>查看详细信息</span>
                                     </div>
-                                    <el-dialog v-if="!isLoadingUserInfo" v-model="showInfoDialog">
-                                        <description :userInfo="this.userInfo">
+                                    <el-dialog v-model="showInfoDialog">
+                                        <description v-if="!isLoadingUserInfo" :userInfo="this.userInfo">
                                         </description>
                                     </el-dialog>
                                 </div>
@@ -114,6 +114,7 @@ export default {
                 }
             }, err => {
             }).finally(() => {
+                this.isLoadingUserInfo = false
             })
         }
     },

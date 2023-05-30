@@ -1,16 +1,24 @@
 <template>
-    <post-question></post-question>
+    <div class="body">
+        <div><span>0</span>
+            <button>1</button>
+            <button>1</button>
+            <button>1</button>
+        </div>
+        <div><span>0</span>
+            <button>1</button>
+        </div>
+        <div><span>0</span>
+            <button>1</button>
+        </div>
+        <div><span>0</span>
+            <button>1</button>
+        </div>
+        <div><span>0</span>
+            <button>1</button>
+            <button>1</button>
+            <button>1</button>
+        </div>
+    </div>
 </template>
-<script>
-import PostEditor from "@/components/post-editor/PostEditor.vue";
-import PostComment from "@/components/home/main/post/comment/PostComment.vue";
-import PostQuestion from "@/components/home/question/PostQuestion.vue";
-
-export default {
-    components: {PostQuestion, PostComment, PostEditor},
-    data() {
-        return {show: true}
-    },
-}
-</script>
 

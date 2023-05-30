@@ -1,0 +1,19 @@
+spring:
+  cloud:
+    nacos:
+      config:
+        file-extension: yaml
+        refresh-enabled: true
+        enabled: true
+        server-addr: localhost:8848
+        group: DEFAULT_GROUP
+        #添加配置时 Group 的值一定要和 spring.cloud.nacos.config.group 的配置值一致。
+        #group: NACOS-DEMO
+        ## 可以配置多个 Data Id 同时配置时，他的优先级关系是 [n]其中 n 的值越大，优先级越高。
+        extension-configs:
+          - data-id: oss.yaml
+
+      discovery:
+        server-addr: localhost:8848
+  application:
+    name: kp-other

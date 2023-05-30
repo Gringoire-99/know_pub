@@ -16,7 +16,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 import java.util.Objects;
 
@@ -152,6 +157,81 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         List<UserInfoShortVo> userVos = BeanCopyUtils.copyBeanList(users, UserInfoShortVo.class);
         return Result.ok(userVos);
 
+    }
+
+    @Transactional
+    @Override
+    public Result<Integer> updateUserInfo(UpdateUser user) {
+        String userId = SecurityUtils.getId();
+        boolean isUpdateAvatar = false;
+        String avatarDir;
+        User updateUser = new User();
+        BufferedImage image;
+        updateUser.setId(userId);
+        BeanUtils.copyProperties(user, updateUser);
+        if (!"".equals(user.getAvatar()) && user.getAvatar() != null) {
+//            需要上传头像
+//            读取文件
+            String imageUrl = user.getAvatar();
+            image = isValidImage(imageUrl);
+            avatarDir = "/user/" + userId + "/avatar." + getFileFormat(imageUrl);
+            isUpdateAvatar = true;
+        }
+
+        int result = 0;
+        try {
+            result = this.baseMapper.updateById(updateUser);
+            if (isUpdateAvatar) {
+
+            }
+        } catch (Exception e) {
+            throw new SystemException("用户信息更新异常");
+        }
+
+        return Result.ok(result);
+    }
+
+    private BufferedImage isValidImage(String imageUrl) {
+        BufferedImage image;
+        URL url = null;
+        try {
+            url = new URL(imageUrl);
+            image = ImageIO.read(url);
+
+        } catch (IOException e) {
+            throw new SystemException("url无效");
+        }
+
+        // 检查图片是否有效
+        if (image == null) {
+            throw new SystemException("图片无效");
+        }
+
+        // 检查图片格式
+        String format = getFileFormat(imageUrl);
+        if (format == null || !(format.equals("jpg") || format.equals("png"))) {
+            throw new SystemException("格式无效");
+        }
+
+        // 检查图片大小
+        int width = image.getWidth();
+        int height = image.getHeight();
+        int maxDimension = 1000; // 设置最大尺寸阈值
+        if (width > maxDimension || height > maxDimension) {
+            throw new SystemException("图片过大");
+        }
+
+        return image;
+    }
+
+    private String getFileFormat(String imageUrl) {
+        String[] formatNames = ImageIO.getReaderFormatNames();
+        for (String format : formatNames) {
+            if (imageUrl.toLowerCase().endsWith(format)) {
+                return format;
+            }
+        }
+        return null;
     }
 
     private User getUserById(String userId) {

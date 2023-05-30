@@ -13,6 +13,7 @@ import homeHot from "@/components/home/hot/HomeHot.vue";
 import homeDiscover from "@/components/home/discover/HomeDiscover.vue";
 import homeQuestion from "@/components/home/question/HomeQuestion.vue";
 import mainQuestion from "@/components/home/main/MainQuestion.vue";
+import test from "@/components/common/Test.vue";
 
 const routes = [
     {
@@ -47,6 +48,7 @@ const routes = [
     },
     // 登录界面
     {path: '/login', name: 'login-page', component: loginPage},
+    {path: '/test', name: 'test', component: test},
     // 404界面
     {path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound},
 
