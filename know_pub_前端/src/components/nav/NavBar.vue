@@ -38,7 +38,7 @@
                     <span class="link">{{ item.link }}</span>
                 </template>
             </el-autocomplete>
-            <button class="search-btn" type="button" @click="showPostQueston=true">提问</button>
+            <button class="search-btn" type="button" @click="showPostQuestion=true">提问</button>
         </div>
         <div class="icons d-flex align-content-center justify-content-center">
             <div class="search-icon">
@@ -186,8 +186,8 @@
         <login/>
     </el-dialog>
 
-    <el-dialog v-model="showPostQueston" :show-close="false" center class="dialog-post-question">
-        <post-question @cancel="showPostQueston=false"></post-question>
+    <el-dialog v-model="showPostQuestion" :show-close="false" center class="dialog-post-question">
+        <post-question @cancel="showPostQuestion=false"></post-question>
     </el-dialog>
 </template>
 
@@ -235,7 +235,7 @@ export default {
             hideDelay: {},
             progress: 50,
             userInfo: {},
-            showPostQueston: false
+            showPostQuestion: false
 
         }
     },

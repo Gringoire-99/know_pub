@@ -18,6 +18,12 @@ function getCookie(name) {
     return null;
 }
 
+
+function clearLoginInfo() {
+    localStorage.clear()
+    document.cookie = ''
+}
+
 export const http = axios.create({
     baseURL: "/api",
     headers: {
@@ -27,6 +33,17 @@ export const http = axios.create({
 export const http_no_token = axios.create({
     baseURL: "/api",
 });
-
+/**
+ * 响应拦截
+ */
+http.interceptors.response.use(response => {
+    if (response.data && response.data.code === 401) { // 401, token失效
+        clearLoginInfo()
+        router.push({name: 'login-page'})
+    }
+    return response
+}, error => {
+    return Promise.reject(error)
+})
 
 export default http

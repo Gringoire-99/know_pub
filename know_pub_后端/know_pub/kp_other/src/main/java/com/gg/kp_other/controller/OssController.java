@@ -8,8 +8,13 @@ import com.aliyun.oss.model.MatchMode;
 import com.aliyun.oss.model.PolicyConditions;
 import com.gg.kp_common.utils.HttpEnum;
 import com.gg.kp_common.utils.Result;
+import com.gg.kp_common.utils.ValidationUtils;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.io.ByteArrayInputStream;
@@ -31,7 +36,6 @@ public class OssController {
     public String accessId;
     @Value("${spring.cloud.alicloud.oss.endpoint}")
     public String endpoint;
-
 
     @RequestMapping("/policy")
     public Result<?> policy() {
@@ -68,22 +72,25 @@ public class OssController {
             return Result.ok(respMap);
 
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return null;
+            return Result.error();
         }
     }
 
     @PostMapping("/upload-avatar")
-    public Result<?> uploadAvatar(@RequestParam("dir") String dir, @RequestBody String content) {
+    public Result<Integer> uploadAvatar(@RequestBody Map<String, Object> param) {
+        String dir = (String) param.get("dir");
+        String content = (String) param.get("content");
+        ValidationUtils.validate().validateEmpty(dir, content);
         try {
             ossClient.putObject(bucket, dir, new ByteArrayInputStream(content.getBytes()));
         } catch (OSSException | ClientException e) {
-            return Result.error(HttpEnum.ERROR.getCode(), "上传失败");
+            Result<Integer> result = new Result<>();
+            result.setStatus(HttpEnum.ERROR);
+            result.setData(0);
+            return result;
         }
         return Result.ok(1);
     }
-    @GetMapping("/test")
-    public Integer test(){
-        return 99;
-    }
+
+
 }

@@ -64,14 +64,11 @@ public class UserController {
 
     @PatchMapping("/update")
     @PreAuthorize("hasRole('USER')")
-    public Result<Integer> update(@RequestBody UpdateUser user) {
+    public Result<?> update(@RequestBody UpdateUser user) {
         return userService.updateUserInfo(user);
     }
 
 
-    @GetMapping("/test")
-    public Result<?> test(){
-        return userService.testFeign();
-    }
+
 
 }

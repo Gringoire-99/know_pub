@@ -13,7 +13,9 @@
                     <img :src="userInfo.avatar" class="avatar"/>
                     <div class="uploader">
                         <el-upload
+                            :data="aliyun"
                             ref="uploadRef"
+                            action="https://know-pub.oss-cn-fuzhou.aliyuncs.com"
                             v-model:file-list="listFile"
                             :auto-upload="false"
                             :limit="1"
@@ -21,8 +23,11 @@
                             class="avatar-uploader"
                             drag
                             list-type="picture-card"
-                            :before-upload="beforeUpload"
+                            method="post"
+                            :http-request="upload"
+
                         >
+
                             <el-icon class="avatar-uploader-icon">
                                 <Plus/>
                             </el-icon>
@@ -74,7 +79,11 @@
 </template>
 
 <script>
+
+
+import http from "@/utils/http/http";
 import {ElMessage} from "element-plus";
+import axios from "axios";
 
 export default {
     data() {
@@ -92,12 +101,35 @@ export default {
                 resume: '',
                 location: ''
             },
-            listFile: []
+            listFile: [],
+            aliyun: {}, // 存签名信息
         }
     },
     methods: {
         submit() {
-            console.log(this.listFile)
+            this.info.avatar = this.listFile[0].url
+            http.patch('/user/update', this.info).then(res => {
+                if (res.data.code === 200) {
+                    let policy = res.data.data.policy
+                    if (policy) {
+                        this.aliyun.expire = policy.expire
+                        this.aliyun.policy = policy.policy
+                        this.aliyun.signature = policy.signature
+                        this.aliyun.ossaccessKeyId = policy.accessId
+                        this.aliyun.key = policy.dir + "avatar"
+                        this.$refs.uploadRef.submit();
+                    }
+                }
+            }, reason => {
+            })
+        },
+        upload({file}) {
+            this.aliyun.file = file
+            axios.post('https://know-pub.oss-cn-fuzhou.aliyuncs.com', this.aliyun).then(res => {
+                console.log(res)
+            }, reason => {
+                console.log(reason)
+            })
         },
         beforeUpload(rawFile) {
             if (rawFile.type !== 'image/jpeg') {
@@ -108,8 +140,11 @@ export default {
                 return false
             }
             return true
-        }
+        },
+
+
     },
+
     created() {
         this.info.name = this.userInfo.name
         this.info.realName = this.userInfo.realName
@@ -124,7 +159,7 @@ export default {
 
     },
     mounted() {
-        console.log(this.$refs.uploadRef)
+
     },
     props: {
         userInfo: {
