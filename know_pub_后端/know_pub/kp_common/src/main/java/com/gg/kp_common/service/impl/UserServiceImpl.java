@@ -1,6 +1,7 @@
 package com.gg.kp_common.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.gg.kp_common.config.exception.SystemException;
 import com.gg.kp_common.dao.UserMapper;
@@ -192,6 +193,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         } else {
             return Result.ok(result);
         }
+    }
+
+    @Override
+    public Result<Integer> updateAvatar(String dir) {
+        String userId = SecurityUtils.getId();
+        String avatar = "https://know-pub.oss-cn-fuzhou.aliyuncs.com/"+dir+"user"+userId+"/avatar";
+        LambdaUpdateWrapper<User> ulqw = new LambdaUpdateWrapper<>();
+        ulqw.eq(User::getId, userId);
+        ulqw.set(User::getAvatar, avatar);
+        int update = this.baseMapper.update(null, ulqw);
+        return Result.ok(update);
     }
 
 

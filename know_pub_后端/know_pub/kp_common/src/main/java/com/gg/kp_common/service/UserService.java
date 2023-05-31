@@ -26,4 +26,5 @@ public interface UserService extends IService<User> {
 
     Result<?> updateUserInfo(UpdateUser user);
 
+    Result<Integer> updateAvatar(String avatar);
 }

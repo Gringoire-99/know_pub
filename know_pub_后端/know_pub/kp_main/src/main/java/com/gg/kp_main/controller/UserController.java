@@ -10,6 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController()
@@ -66,6 +67,13 @@ public class UserController {
     @PreAuthorize("hasRole('USER')")
     public Result<?> update(@RequestBody UpdateUser user) {
         return userService.updateUserInfo(user);
+    }
+
+    @PreAuthorize("hasRole('USER')")
+    @PatchMapping("/update-avatar")
+    public Result<Integer> updateAvatar(@RequestBody HashMap<String,Object> param){
+        return userService.updateAvatar(param.get("dir").toString());
+
     }
 
 

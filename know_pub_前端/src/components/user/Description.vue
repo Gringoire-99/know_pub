@@ -15,7 +15,6 @@
                         <el-upload
                             :data="aliyun"
                             ref="uploadRef"
-                            action="https://know-pub.oss-cn-fuzhou.aliyuncs.com"
                             v-model:file-list="listFile"
                             :auto-upload="false"
                             :limit="1"
@@ -24,10 +23,10 @@
                             drag
                             list-type="picture-card"
                             method="post"
-                            :http-request="upload"
-
+                            :before-upload="beforeUpload"
+                            :on-success="onSuccess"
+                            action="https://know-pub.oss-cn-fuzhou.aliyuncs.com"
                         >
-
                             <el-icon class="avatar-uploader-icon">
                                 <Plus/>
                             </el-icon>
@@ -85,6 +84,26 @@ import http from "@/utils/http/http";
 import {ElMessage} from "element-plus";
 import axios from "axios";
 
+function fileToBinary(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+
+        reader.onload = function (event) {
+            const binaryData = event.target.result;
+            resolve(binaryData);
+        };
+
+        reader.onerror = function (event) {
+            reject(event.target.error);
+        };
+
+        reader.readAsArrayBuffer(file);
+    });
+}
+
+// 示例文件
+// 将文件转换为二进制数据
+
 export default {
     data() {
         return {
@@ -102,12 +121,19 @@ export default {
                 location: ''
             },
             listFile: [],
-            aliyun: {}, // 存签名信息
+            aliyun: {
+                expire: '',
+                policy: '',
+                signature: '',
+                ossaccessKeyId: '',
+                key: '',
+            }, // 存签名信息
+            dir: ''
         }
     },
     methods: {
         submit() {
-            this.info.avatar = this.listFile[0].url
+            this.info.avatar = this.listFile.length > 0 ? 'update' : null
             http.patch('/user/update', this.info).then(res => {
                 if (res.data.code === 200) {
                     let policy = res.data.data.policy
@@ -116,31 +142,36 @@ export default {
                         this.aliyun.policy = policy.policy
                         this.aliyun.signature = policy.signature
                         this.aliyun.ossaccessKeyId = policy.accessId
-                        this.aliyun.key = policy.dir + "avatar"
+                        this.aliyun.key = policy.dir + `user${res.data.data.userId}/avatar`
+                        this.dir = policy.dir
                         this.$refs.uploadRef.submit();
                     }
                 }
             }, reason => {
             })
-        },
-        upload({file}) {
-            this.aliyun.file = file
-            axios.post('https://know-pub.oss-cn-fuzhou.aliyuncs.com', this.aliyun).then(res => {
-                console.log(res)
-            }, reason => {
-                console.log(reason)
-            })
+
         },
         beforeUpload(rawFile) {
             if (rawFile.type !== 'image/jpeg') {
                 ElMessage.error('Avatar picture must be JPG format!')
                 return false
-            } else if (rawFile.size / 1024 / 1024 > 2) {
+            }
+            if (rawFile.size / 1024 / 1024 > 2) {
                 ElMessage.error('Avatar picture size can not exceed 2MB!')
                 return false
             }
             return true
         },
+        onSuccess(response) {
+            http.patch('/user/update-avatar', {dir: this.dir}).then(res => {
+                if (res.data.code === 200) {
+                    ElMessage.success('上传图像成功');
+                } else {
+                    ElMessage.error('上传图像失败')
+                }
+            }, reason => {
+            })
+        }
 
 
     },
