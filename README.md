@@ -10,7 +10,7 @@
 改成分布式了，要打开nacos,不然启动不了
 
    
-   # TODO:
+   # ✨TODO✨:
    1. login
    5. comment 
    5. post
@@ -24,7 +24,7 @@
    后台管理系统
    1. todo...
    
-# QuickStart
+# 👌QuickStart👌
 
 ### 启动前端
 1. 安装node.js(推荐版本18)
