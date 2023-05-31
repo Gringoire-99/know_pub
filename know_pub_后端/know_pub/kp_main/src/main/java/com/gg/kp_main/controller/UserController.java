@@ -18,12 +18,8 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserService userService;
-
-    /**
-     * user: 必须包含username和password，其中username是email
-     */
     @PostMapping("/login")
-    public Result<UserVo> login(@RequestBody User user) {
+    public Result<UserVo> login(@RequestBody RegisterUser user) {
         return userService.login(user);
     }
 
@@ -63,8 +59,8 @@ public class UserController {
         return userService.getRecommendedUser();
     }
 
-    @PatchMapping("/update")
     @PreAuthorize("hasRole('USER')")
+    @PatchMapping("/update")
     public Result<?> update(@RequestBody UpdateUser user) {
         return userService.updateUserInfo(user);
     }

@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS know_pub.user
     school           varchar(20)  default '' comment '学校',
     location         varchar(20)  default '' comment '地区',
     gender           varchar(10)  default '' comment '性别',
-    resume           LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci comment '简单介绍',
+    resume           LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci default '' comment '简单介绍',
     auth             varchar(20)  default 0 comment '个人认证',
     background       varchar(100) default 'http://dummyimage.com/2000x1000' comment '背景图',
     createTime       datetime     default now(),

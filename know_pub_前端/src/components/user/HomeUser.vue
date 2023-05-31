@@ -31,27 +31,28 @@
                                             </div>
                                             <div>
                                                 <span>工作历史：</span>
-                                                <span>{{ userInfo.jobHistory }}</span>
+                                                <span>{{ userInfo.job }}</span>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="check-detail text-blue pointer"
-                                         @click="showInfoDialog=!showInfoDialog">
+                                         @click='showInfoDialog = true'>
                                         <el-icon>
                                             <arrow-down-bold></arrow-down-bold>
                                         </el-icon>
                                         <span>查看详细信息</span>
                                     </div>
                                     <el-dialog v-model="showInfoDialog">
-                                        <description v-if="!isLoadingUserInfo" :userInfo="this.userInfo">
+                                        <description :userInfo="this.userInfo">
                                         </description>
                                     </el-dialog>
                                 </div>
 
                             </div>
                         </div>
-                        <button class="ms-auto align-self-center me-3 edit">编辑资料</button>
+                        <button class="ms-auto align-self-center me-3 edit" @click="showInfoDialog=true">编辑资料
+                        </button>
 
                     </div>
                 </div>
@@ -86,36 +87,32 @@ export default {
         return {
             showInfoDialog: false,
             userInfo: {},
-            isLoadingUserInfo: true
         }
     },
     //方法
     methods: {
-
         getUserInfo() {
             let id = this.$route.params.userId
             if (id === this.$store.state.userInfo.id) {
                 this.userInfo = this.$store.state.userInfo
-                return
+            } else {
+                http.get('/user/info-detail', {
+                    params: {
+                        userId: id
+                    }
+                }).then(res => {
+                    if (res.data.code === 200) {
+                        this.userInfo = res.data.data
+                    } else {
+                        ElMessage({
+                            message: '获取用户信息失败',
+                            type: 'error'
+                        })
+                    }
+                }, err => {
+                }).finally(() => {
+                })
             }
-            http.get('/user/info-detail', {
-                params: {
-                    userId: id
-                }
-            }).then(res => {
-                if (res.data.code === 200) {
-                    this.userInfo = res.data.data
-                    this.isLoadingUserInfo = false
-                } else {
-                    ElMessage({
-                        message: '获取用户信息失败',
-                        type: 'error'
-                    })
-                }
-            }, err => {
-            }).finally(() => {
-                this.isLoadingUserInfo = false
-            })
         }
     },
     //挂载时执行

@@ -35,7 +35,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
 
     @Override
-    public Result<UserVo> login(User user) {
+    public Result<UserVo> login(RegisterUser user) {
 //      需要被验证的对象
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
 //      使用manager验证对象
@@ -198,11 +198,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public Result<Integer> updateAvatar(String dir) {
         String userId = SecurityUtils.getId();
+//        TODO 使用配置文件
         String avatar = "https://know-pub.oss-cn-fuzhou.aliyuncs.com/"+dir+"user"+userId+"/avatar";
-        LambdaUpdateWrapper<User> ulqw = new LambdaUpdateWrapper<>();
-        ulqw.eq(User::getId, userId);
-        ulqw.set(User::getAvatar, avatar);
-        int update = this.baseMapper.update(null, ulqw);
+        LambdaUpdateWrapper<User> lqwU = new LambdaUpdateWrapper<>();
+        lqwU.eq(User::getId, userId);
+        lqwU.set(User::getAvatar, avatar);
+        int update = this.baseMapper.update(null, lqwU);
         return Result.ok(update);
     }
 

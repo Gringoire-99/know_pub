@@ -145,6 +145,8 @@ export default {
                         this.aliyun.key = policy.dir + `user${res.data.data.userId}/avatar`
                         this.dir = policy.dir
                         this.$refs.uploadRef.submit();
+                    } else {
+                        ElMessage.success('更新成功')
                     }
                 }
             }, reason => {
@@ -165,7 +167,7 @@ export default {
         onSuccess(response) {
             http.patch('/user/update-avatar', {dir: this.dir}).then(res => {
                 if (res.data.code === 200) {
-                    ElMessage.success('上传图像成功');
+                    ElMessage.success('上传图像成功，更新用户信息成功');
                 } else {
                     ElMessage.error('上传图像失败')
                 }

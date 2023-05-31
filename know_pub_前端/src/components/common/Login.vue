@@ -337,7 +337,7 @@ export default {
                         message: `登录成功！`,
                         type: "success"
                     })
-                    this.$cookies.set('token', res.data.data.token)
+                    this.$cookies.set('Authorization', res.data.data.token)
                     localStorage.setItem('userId', res.data.data.userInfoDetailVo.id)
                     this.$router.push({path: '/home-main'})
                     location.reload()
@@ -361,7 +361,7 @@ export default {
             this.isLoading = true
             http.delete('/user/logout').then(res => {
                 if (res.data.code === 200) {
-                    this.$cookies.remove('token')
+                    this.$cookies.remove('Authorization')
                     localStorage.clear()
                     this.$store.commit("SET_LOGIN_STATE", false)
                     this.$store.commit("SET_USER", {})

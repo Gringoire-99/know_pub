@@ -27,19 +27,17 @@ function clearLoginInfo() {
 export const http = axios.create({
     baseURL: "/api",
     headers: {
-        token: getCookie('token')
+        token: getCookie('Authorization')
     }
 });
 export const http_no_token = axios.create({
     baseURL: "/api",
 });
-/**
- * 响应拦截
- */
+
 http.interceptors.response.use(response => {
     if (response.data && response.data.code === 401) { // 401, token失效
         clearLoginInfo()
-        router.push({name: 'login-page'})
+        location.reload()
     }
     return response
 }, error => {

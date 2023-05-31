@@ -1,8 +1,6 @@
 <template>
     <div v-infinite-scroll="loadData" class="home" infinite-scroll-delay="1000" infinite-scroll-distance="120">
-        <keep-alive>
-            <home-navbar/>
-        </keep-alive>
+        <home-navbar/>
         <div class="main d-flex">
             <router-view v-slot="{Component}">
                 <transition mode="out-in" name="home">
@@ -18,7 +16,7 @@ import HomeNavbar from "@/components/nav/NavBar.vue";
 
 export default {
     //组件名
-    name: "",
+    name: "home",
     //依赖的组件
     components: {HomeNavbar},
     //数据
@@ -61,7 +59,6 @@ export default {
         overflow-y: scroll;
     }
 }
-
 
 
 </style>

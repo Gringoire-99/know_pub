@@ -8,7 +8,7 @@ import com.gg.kp_common.utils.Result;
 import java.util.List;
 
 public interface UserService extends IService<User> {
-    Result<UserVo> login(User user);
+    Result<UserVo> login(RegisterUser user);
 
     Result<UserInfoDetailVo> infoDetail(String userId);
 
