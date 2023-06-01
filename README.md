@@ -34,6 +34,6 @@
 ### 启动后端
 1. 安装nacos，以单点模式启动
 2. (可选)访问nacos控制台(默认账号密码:nacos)，在配置管理里添加oss.yaml的配置(参考阿里云的文档)
-3. ide和yaml里配置好数据源
+3. ide和yaml里配置好数据源(know_pub)
 4. 运行kp_common模块下的createsql
 5. 启动
