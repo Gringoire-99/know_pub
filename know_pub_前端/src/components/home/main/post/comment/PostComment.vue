@@ -101,6 +101,7 @@ export default {
                 newComment.name = this.userInfo.name
                 newComment.avatar = this.userInfo.avatar
                 newComment.userId = this.userInfo.id
+                console.log(parent)
                 if (postId) {
                     //     父级是评论：如果是父级是根评论，不显示回复了谁，如果是普通评论显示回复了谁
                     newComment.postId = postId
@@ -116,7 +117,6 @@ export default {
                     newComment.isRootComment = 1
                     newComment.rootCommentId = newComment.id
                 }
-                console.log(newComment)
                 http.post('/comment/post-comment', newComment).then(res => {
                     if (res.data.code === 200) {
                         this.$emit('refresh')

@@ -71,6 +71,7 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
             lqw.or().like(Question::getTagNames, tagName);
         }
         lqw.last("LIMIT 3");
+        lqw.ne(Question::getId, questionId);
         List<Question> questions = this.baseMapper.selectList(lqw);
         List<RecommendedQuestionVo> result = BeanCopyUtils.copyBeanList(questions, RecommendedQuestionVo.class);
         return Result.ok(result);

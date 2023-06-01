@@ -18,5 +18,4 @@ public class PostComment {
     private String replyToUserName;
     private String replyToUserId;
     private int isRootComment;
-    private int childCount;
 }

@@ -194,7 +194,7 @@ CREATE TABLE IF NOT EXISTS action
     create_time datetime default now() comment '创建时间',
     target_id   char(60)             not null comment '目标id(postId)',
     content     char(50) default '' comment '可选内容'
-)
+);
 
 # INSERT INTO user(id, name, phone, password)
 # values ('1', 'admin', '1', '$2a$10$7XD2uoWxm8V33yZATXjOs.F/dWyZmLCUJmxmJCRLdbLHv0xVigM9m'),
@@ -219,4 +219,4 @@ CREATE TABLE IF NOT EXISTS action
 #     ('1', '0'),
 #        ('2', '1'),
 #        ('3', '1');
-
+#

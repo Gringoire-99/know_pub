@@ -16,6 +16,9 @@ const mutations = {
     },
     SET_SHOW_LOGIN(state, showLogin) {
         state.showLogin = showLogin
+    },
+    SET_RELOAD(state, reload) {
+        state.reload = reload
     }
 
 }
@@ -47,11 +50,11 @@ const state = {
         questionCount: 0,
         resume: "",
         school: "",
-        status: 0,
         videoCount: 0
     },
     loadData: false,
-    showLogin: false
+    showLogin: false,
+    reload: false
 }
 export const store = Vuex.createStore({
     state,

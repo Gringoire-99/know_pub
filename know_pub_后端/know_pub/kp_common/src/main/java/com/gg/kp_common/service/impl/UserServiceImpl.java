@@ -166,6 +166,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public Result<List<UserInfoShortVo>> getRecommendedUser() {
         LambdaQueryWrapper<User> lqw = new LambdaQueryWrapper<>();
+        String id = SecurityUtils.getId();
+        lqw.ne(!Objects.isNull(id), User::getId, id);
         lqw.last("limit 12");
         List<User> users = this.baseMapper.selectList(lqw);
         List<UserInfoShortVo> userVos = BeanCopyUtils.copyBeanList(users, UserInfoShortVo.class);

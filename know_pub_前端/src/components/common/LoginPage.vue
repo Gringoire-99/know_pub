@@ -56,6 +56,9 @@ export default {
     ,
 //创建时执行
     created() {
+        if (this.$store.state.reload) {
+            location.reload()
+        }
     }
     ,
 //侦听器

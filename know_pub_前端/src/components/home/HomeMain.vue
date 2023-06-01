@@ -58,6 +58,9 @@ export default {
 
     },
     created() {
+        if (this.$store.state.reload) {
+            location.reload()
+        }
     },
 
 }

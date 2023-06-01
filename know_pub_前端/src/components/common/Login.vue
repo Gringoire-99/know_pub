@@ -339,8 +339,9 @@ export default {
                     })
                     this.$cookies.set('Authorization', res.data.data.token)
                     localStorage.setItem('userId', res.data.data.userInfoDetailVo.id)
+                    this.$store.commit("SET_SHOW_LOGIN", false)
+                    this.$store.commit('SET_RELOAD', true)
                     this.$router.push({path: '/home-main'})
-                    location.reload()
                 } else {
                     ElMessage({
                         message: `登录失败：${res.data.msg},code:${res.data.code}`,
@@ -370,7 +371,7 @@ export default {
                         type: "success"
                     })
                     this.$router.push({path: '/login'})
-                    location.reload()
+                    this.$store.commit("SET_RELOAD", true)
                 } else {
                     ElMessage({
                         message: `登出失败 ：${res.data.msg}`,
@@ -434,7 +435,9 @@ export default {
         let isLogout = this.$route.query['isLogout']
         if (isLogout && this.$store.state.isLogin) {
             this.logout()
+            return
         }
+
     },
     //侦听器
     watch: {}
