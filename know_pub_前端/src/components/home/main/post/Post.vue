@@ -214,11 +214,12 @@ export default {
                 postId: this.post.id
             }).then(res => {
                 if (res.data.code === 200) {
-                    this.post.likeCount += this.onLike ? -1 : 1
-                    this.onLike = !this.onLike
+                    let result = res.data.data === 1
+                    this.post.likeCount += result ? 1 : -1
+                    this.onLike = result
                     ElMessage({
-                        message: this.onLike ? '点赞成功' : '取消点赞成功',
-                        type: this.onLike ? 'success' : 'info'
+                        message: result ? '点赞成功' : '取消点赞成功',
+                        type: result ? 'success' : 'info'
                     })
                 } else {
                     ElMessage({

@@ -4,14 +4,16 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.gg.kp_common.utils.Result;
 import com.gg.kp_common.config.exception.SystemException;
 import com.gg.kp_common.dao.ActionMapper;
 import com.gg.kp_common.dao.PostMapper;
 import com.gg.kp_common.dao.QuestionMapper;
+import com.gg.kp_common.dao.UserMapper;
 import com.gg.kp_common.entity.po.Action;
 import com.gg.kp_common.entity.po.Post;
 import com.gg.kp_common.entity.po.Question;
+import com.gg.kp_common.entity.po.User;
+import com.gg.kp_common.entity.vo.NewPost;
 import com.gg.kp_common.entity.vo.PostVo;
 import com.gg.kp_common.service.PostService;
 import com.gg.kp_common.utils.*;
@@ -28,6 +30,8 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     private ActionMapper actionMapper;
     @Autowired
     private QuestionMapper questionMapper;
+    @Autowired
+    private UserMapper userMapper;
 
     @Override
     public Result<Map<String, Object>> getRecommendedPosts(Map<String, Object> params) {
@@ -39,6 +43,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         HashMap<String, Object> data = new HashMap<>();
         data.put(PageUtils.PAGE, recordsVo);
         data.put(PageUtils.TOTAL, total);
+        data.put(PageUtils.ROWS, recordsVo.size());
         return Result.ok(data);
     }
 
@@ -53,6 +58,9 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     @Override
     public Result<PostVo> getPost(String postId) {
         Post post = getById(postId);
+        if (Objects.isNull(post)) {
+            throw new SystemException("博文不存在");
+        }
         PostVo postVo = new PostVo();
         BeanUtils.copyProperties(post, postVo);
         return Result.ok(postVo);
@@ -64,6 +72,10 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
 //        先查询动作，如果有这个动作，说明是取消
         String postId = params.get("postId").toString();
         String userId = SecurityUtils.getId();
+        Post post = baseMapper.selectById(postId);
+        if (Objects.isNull(post)) {
+            throw new SystemException("博文不存在");
+        }
         ValidationUtils.validate().validateEmpty(postId, userId);
         LambdaQueryWrapper<Action> lqwA = new LambdaQueryWrapper<>();
         lqwA.eq(Action::getTargetId, postId)
@@ -71,6 +83,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         Action a = actionMapper.selectOne(lqwA);
         LambdaUpdateWrapper<Post> luw = new LambdaUpdateWrapper<>();
         luw.eq(Post::getId, postId);
+        Integer result = null;
         if (Objects.isNull(a)) {
 //            创建新动作，like++
             luw.setSql("like_count = like_count + 1");
@@ -80,18 +93,26 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
             action.setUserId(userId);
             action.setTargetId(postId);
             actionMapper.insert(action);
+            result = 1;
         } else {
 //            删除动作，like--
             actionMapper.delete(lqwA);
             luw.setSql("like_count = like_count - 1");
+            result = 0;
         }
-        return Result.ok(baseMapper.update(null, luw));
+        baseMapper.update(null, luw);
+        return Result.ok(result);
     }
 
     @Override
     public Result<HashMap<String, Object>> getDynamic(Map<String, Object> params) {
-        Object userId = params.get("userId");
+        String userId = params.get("userId").toString();
         ValidationUtils.validate().validateEmpty(userId);
+        User user = userMapper.selectById(userId);
+        if (Objects.isNull(user)) {
+            throw new SystemException("用户不存在");
+        }
+
         LambdaQueryWrapper<Post> lqw = new LambdaQueryWrapper<>();
 //        先从查出这个用户所有action,在根据action查出对应的post
         LambdaQueryWrapper<Action> lqwA = new LambdaQueryWrapper<>();
@@ -116,7 +137,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
 
     @Transactional
     @Override
-    public Result<Integer> addPost(Post post) {
+    public Result<Integer> addPost(NewPost post) {
 //        从SecurityUtils中获取userId
         String userId = SecurityUtils.getId();
 //        查询具体的question
@@ -126,16 +147,19 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         if (Objects.isNull(question)) {
             throw new SystemException("问题不存在");
         }
-        post.setQuestion(question.getQuestion());
-        post.setUserId(userId);
-        post.setId(UUID.randomUUID().toString());
-        int insert = this.baseMapper.insert(post);
+        Post newPost = new Post();
+        BeanUtils.copyProperties(post, newPost);
+
+        newPost.setQuestion(question.getQuestion());
+        newPost.setUserId(userId);
+        newPost.setId(UUID.randomUUID().toString());
+        int insert = this.baseMapper.insert(newPost);
         if (insert == 0) {
             throw new SystemException("发布失败");
         } else {
             //发布成功后，将问题的回答数+1
             LambdaUpdateWrapper<Question> luw = new LambdaUpdateWrapper<>();
-            luw.eq(Question::getId, post.getQuestionId()).setSql("answer_count = answer_count + 1");
+            luw.eq(Question::getId, newPost.getQuestionId()).setSql("answer_count = answer_count + 1");
             questionMapper.update(null, luw);
         }
         return Result.ok(insert);
@@ -144,6 +168,11 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     @Override
     public Result<Map<String, Object>> getPosts(Map<String, Object> params) {
         String questionId = (String) params.get("questionId");
+        Question question = questionMapper.selectById(questionId);
+        if (Objects.isNull(question)){
+            throw new SystemException("问题不存在");
+        }
+
         LambdaQueryWrapper<Post> lqw = new LambdaQueryWrapper<>();
         lqw.eq(Post::getQuestionId, questionId);
         IPage<Post> postIPage = this.baseMapper.selectPage(new PageUtils<Post>().getPage(params), lqw);

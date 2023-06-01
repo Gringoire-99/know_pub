@@ -3,6 +3,7 @@ package com.gg.kp_common.utils;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.gg.kp_common.config.exception.SystemException;
 
 import java.util.Map;
 
@@ -29,6 +30,9 @@ public class PageUtils<T> {
         }
         if (params.get(PAGE_SIZE) != null) {
             pageSize = Long.parseLong(params.get(PAGE_SIZE).toString());
+            if (pageSize > 1000) {
+                throw new SystemException("pageSize不能大于1000");
+            }
         }
 
         Page<T> page = new Page<>(currentPage, pageSize);

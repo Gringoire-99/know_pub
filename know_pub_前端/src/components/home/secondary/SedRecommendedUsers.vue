@@ -75,7 +75,11 @@ export default {
     },
     //创建时执行
     created() {
-        http.get('/user/recommended-user',).then(response => {
+        http.get('/user/recommended-user', {
+            params: {
+                userId: this.$store.state.userInfo.userId
+            }
+        }).then(response => {
             if (response.data.code === 200) {
                 this.users = response.data.data
                 console.log(response.data.data)

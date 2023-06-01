@@ -27,7 +27,7 @@ function clearLoginInfo() {
 export const http = axios.create({
     baseURL: "/api",
     headers: {
-        token: getCookie('Authorization')
+        Authorization: getCookie('Authorization')
     }
 });
 export const http_no_token = axios.create({

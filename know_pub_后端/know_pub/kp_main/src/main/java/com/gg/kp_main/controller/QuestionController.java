@@ -1,6 +1,7 @@
 package com.gg.kp_main.controller;
 
 import com.gg.kp_common.entity.po.Question;
+import com.gg.kp_common.entity.vo.PostQuestionVo;
 import com.gg.kp_common.entity.vo.QuestionVo;
 import com.gg.kp_common.entity.vo.RecommendedQuestionVo;
 import com.gg.kp_common.service.QuestionService;
@@ -25,7 +26,7 @@ public class QuestionController {
 
     @PostMapping("/post-question")
     @PreAuthorize("hasRole('USER')")
-    public Result<Integer> postQuestion(@RequestBody Question question) {
+    public Result<Integer> postQuestion(@RequestBody PostQuestionVo question) {
         return questionService.postQuestion(question);
     }
 

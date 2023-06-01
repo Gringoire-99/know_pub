@@ -1,6 +1,7 @@
 package com.gg.kp_main.controller;
 
 import com.gg.kp_common.entity.po.Post;
+import com.gg.kp_common.entity.vo.NewPost;
 import com.gg.kp_common.entity.vo.PostVo;
 import com.gg.kp_common.service.PostService;
 import com.gg.kp_common.utils.Result;
@@ -26,7 +27,7 @@ public class PostController {
         return postService.getRecommendedPosts(params);
     }
 
-    @GetMapping("/getPost")
+    @GetMapping("/get-post")
     public Result<PostVo> getPost(@RequestParam String postId) {
         return postService.getPost(postId);
     }
@@ -44,7 +45,7 @@ public class PostController {
 
     @PreAuthorize("hasRole('USER')")
     @PostMapping("/add-post")
-    public Result<Integer> addPost(@RequestBody Post post) {
+    public Result<Integer> addPost(@RequestBody NewPost post) {
         return postService.addPost(post);
     }
 

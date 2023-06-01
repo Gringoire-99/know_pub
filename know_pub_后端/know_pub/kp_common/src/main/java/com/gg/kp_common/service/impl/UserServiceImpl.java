@@ -11,6 +11,7 @@ import com.gg.kp_common.entity.vo.*;
 import com.gg.kp_common.feign.OssFeignClient;
 import com.gg.kp_common.service.UserService;
 import com.gg.kp_common.utils.*;
+import io.jsonwebtoken.Claims;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -49,10 +50,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 //      将token保存到redis,并生成视图对象返回
         String id = userDetail.getUser().getId();
         String jwt = JwtUtil.createJWT(id);
+        Claims claims = null;
+        try {
+            claims = JwtUtil.parseJWT(jwt);
+        } catch (Exception e) {
+            throw new SystemException("token解析失败");
+        }
         redisCache.setCacheObject("userId:" + id, userDetail);
         UserInfoDetailVo userInfoDetailVo = new UserInfoDetailVo();
         BeanUtils.copyProperties(userDetail.getUser(), userInfoDetailVo);
-        UserVo userVo = new UserVo(jwt, userInfoDetailVo);
+        UserVo userVo = new UserVo(jwt, userInfoDetailVo, claims.getExpiration());
         return Result.ok(userVo);
     }
 
@@ -138,6 +145,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if (selfId != null && selfId.equals(userId)) {
             throw new SystemException("不能关注自己");
         }
+        LambdaQueryWrapper<User> lqw = new LambdaQueryWrapper<>();
+        lqw.eq(User::getId, userId);
+        if (this.baseMapper.selectCount(lqw) == 0) {
+            throw new SystemException("用户不存在");
+        }
         Integer followed = this.baseMapper.isFollowed(userId, selfId);
         int result;
         if (followed == 1) {
@@ -183,6 +195,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             this.baseMapper.updateById(updateUser);
 
         } catch (Exception e) {
+            e.printStackTrace();
             throw new SystemException("用户信息更新异常");
         }
         HashMap<String, Object> result = new HashMap<>();
@@ -199,7 +212,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public Result<Integer> updateAvatar(String dir) {
         String userId = SecurityUtils.getId();
 //        TODO 使用配置文件
-        String avatar = "https://know-pub.oss-cn-fuzhou.aliyuncs.com/"+dir+"user"+userId+"/avatar";
+        String avatar = "https://know-pub.oss-cn-fuzhou.aliyuncs.com/" + dir + "user" + userId + "/avatar";
         LambdaUpdateWrapper<User> lqwU = new LambdaUpdateWrapper<>();
         lqwU.eq(User::getId, userId);
         lqwU.set(User::getAvatar, avatar);

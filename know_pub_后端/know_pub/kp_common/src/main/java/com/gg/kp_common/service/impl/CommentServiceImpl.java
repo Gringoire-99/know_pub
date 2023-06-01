@@ -4,32 +4,32 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.gg.kp_common.config.exception.SystemException;
 import com.gg.kp_common.dao.CommentMapper;
+import com.gg.kp_common.dao.PostMapper;
 import com.gg.kp_common.entity.po.Comment;
+import com.gg.kp_common.entity.po.Post;
 import com.gg.kp_common.entity.vo.CommentVo;
+import com.gg.kp_common.entity.vo.PostComment;
 import com.gg.kp_common.service.CommentService;
 import com.gg.kp_common.service.PostService;
-import com.gg.kp_common.utils.PageUtils;
-import com.gg.kp_common.utils.Result;
-import com.gg.kp_common.utils.SecurityUtils;
-import com.gg.kp_common.utils.ValidationUtils;
+import com.gg.kp_common.utils.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
+import java.util.*;
 @Service
 public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> implements CommentService {
     @Autowired
     PostService postService;
+    @Autowired
+    PostMapper postMapper;
 
     /**
      * 因为时间问题，所以这里的实现有点乱，实际应该使用连表查询，但我懒得写sql
-     * TODO 待重构
+     * TODO 待重构 将所有冗余字段改为连表查询
      */
     @Override
     public Result<HashMap<String, Object>> getPostComment(Map<String, Object> params) {
@@ -38,6 +38,11 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
          */
         String postId = (String) params.get("postId");
         ValidationUtils.validate().validateEmpty(postId);
+        Post post = postMapper.selectById(postId);
+        if (Objects.isNull(post)){
+            throw new SystemException("博文不存在");
+        }
+
         IPage<Comment> page = new PageUtils<Comment>().getPage(params);
         LambdaQueryWrapper<Comment> lqwN = new LambdaQueryWrapper<>();
         lqwN.eq(Comment::getPostId, postId);
@@ -61,9 +66,10 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
             comments.addAll(this.baseMapper.selectList(lqwC));
             lqwC.clear();
         }
+        List<CommentVo> commentVos = BeanCopyUtils.copyBeanList(comments, CommentVo.class);
 
         HashMap<String, Object> data = new HashMap<>();
-        data.put(PageUtils.PAGE, comments);
+        data.put(PageUtils.PAGE, commentVos);
         data.put(PageUtils.TOTAL, total);
         data.put(PageUtils.ROWS, comments.size());
         data.put("rootCommentTotal", rootCommentTotal);
@@ -72,7 +78,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 
     @Transactional
     @Override
-    public Result<Integer> postComment(CommentVo comment) {
+    public Result<Integer> postComment(PostComment comment) {
 //      TODO 对comment合法性进行校验
 
         String id = SecurityUtils.getId();
@@ -98,12 +104,18 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 //        根据commentId 查出所有子id
         String commentId = (String) params.get("commentId");
         ValidationUtils.validate().validateEmpty(commentId);
+        Comment comment = baseMapper.selectById(commentId);
+        if (Objects.isNull(comment)){
+            throw new SystemException("评论不存在");
+        }
+
         IPage<Comment> page = new PageUtils<Comment>().getPage(params);
         LambdaQueryWrapper<Comment> lqw = new LambdaQueryWrapper<>();
         lqw.eq(Comment::getRootCommentId, commentId).eq(Comment::getIsRootComment, 0);
         IPage<Comment> commentIPage = this.baseMapper.selectPage(page, lqw);
+        List<CommentVo> commentVos = BeanCopyUtils.copyBeanList(commentIPage.getRecords(), CommentVo.class);
         HashMap<String, Object> data = new HashMap<>();
-        data.put(PageUtils.PAGE, commentIPage.getRecords());
+        data.put(PageUtils.PAGE, commentVos);
         data.put(PageUtils.TOTAL, commentIPage.getTotal());
         data.put(PageUtils.ROWS, commentIPage.getRecords().size());
         return Result.ok(data);

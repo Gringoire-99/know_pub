@@ -143,7 +143,7 @@ export default {
 
         },
         getPost() {
-            http_no_token.get('/post/getPost', {
+            http_no_token.get('/post/get-post', {
                 params: {
                     postId: this.postId
                 }

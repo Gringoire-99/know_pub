@@ -1,6 +1,7 @@
 package com.gg.kp_main.controller;
 
 import com.gg.kp_common.entity.vo.CommentVo;
+import com.gg.kp_common.entity.vo.PostComment;
 import com.gg.kp_common.service.CommentService;
 import com.gg.kp_common.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class CommentController {
     }
     @PreAuthorize("hasRole('USER')")
     @PostMapping("/post-comment")
-    public Result<Integer> postComment(@RequestBody CommentVo comment){
+    public Result<Integer> postComment(@RequestBody PostComment comment){
         return commentService.postComment(comment);
     }
 

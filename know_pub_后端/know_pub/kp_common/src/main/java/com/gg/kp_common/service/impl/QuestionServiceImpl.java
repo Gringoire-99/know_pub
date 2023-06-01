@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.gg.kp_common.config.exception.SystemException;
 import com.gg.kp_common.dao.QuestionMapper;
 import com.gg.kp_common.entity.po.Question;
+import com.gg.kp_common.entity.vo.PostQuestionVo;
 import com.gg.kp_common.entity.vo.QuestionVo;
 import com.gg.kp_common.entity.vo.RecommendedQuestionVo;
 import com.gg.kp_common.service.QuestionService;
@@ -32,11 +33,13 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
 
     @Transactional
     @Override
-    public Result<Integer> postQuestion(Question question) {
+    public Result<Integer> postQuestion(PostQuestionVo question) {
         int result;
+        Question newQuestion = new Question();
+        BeanUtils.copyProperties(question, newQuestion);
         String userId = SecurityUtils.getId();
-        question.setUserId(userId);
-        result = this.baseMapper.insert(question);
+        newQuestion.setUserId(userId);
+        result = this.baseMapper.insert(newQuestion);
 
         return Result.ok(result);
     }
@@ -58,6 +61,9 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
     @Override
     public Result<List<RecommendedQuestionVo>> getRecommendedQuestion(String questionId) {
         Question question = this.baseMapper.selectById(questionId);
+        if (Objects.isNull(question)){
+            throw new SystemException("问题不存在");
+        }
         String tags = question.getTagNames();
         String[] tagNames = tags.split("\\+");
         LambdaQueryWrapper<Question> lqw = new LambdaQueryWrapper<>();
