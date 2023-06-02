@@ -3,12 +3,7 @@
 **API接口文档👇**  
 **https://apifox.com/apidoc/shared-d052ea40-29dd-4b9b-893b-a33564238163**
 
-
-现在支持图片上传啦~  在nacos的config里配置oss.yaml为自己的阿里云RAM就可以用了♥
-![image](https://github.com/Gringoire-99/know_pub/blob/main/know_pub_%E5%89%8D%E7%AB%AF/src/assets/aow.jpg)
-
-改成分布式了，要打开nacos,不然启动不了
-
+!important:暂时停止更新，6.11左右恢复  
    
    # ✨TODO✨:
    1. login
