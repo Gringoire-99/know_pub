@@ -117,6 +117,7 @@ export default {
                     newComment.isRootComment = 1
                     newComment.rootCommentId = newComment.id
                 }
+                console.log(newComment)
                 http.post('/comment/post-comment', newComment).then(res => {
                     if (res.data.code === 200) {
                         this.$emit('refresh')

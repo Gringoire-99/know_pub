@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PostComment {
+    private String id;
     private String content;
     private String name;
     private String avatar;

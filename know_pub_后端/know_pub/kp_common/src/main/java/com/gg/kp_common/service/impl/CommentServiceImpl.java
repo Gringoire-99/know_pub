@@ -104,6 +104,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 //        根据commentId 查出所有子id
         String commentId = (String) params.get("commentId");
         ValidationUtils.validate().validateEmpty(commentId);
+
         Comment comment = baseMapper.selectById(commentId);
         if (Objects.isNull(comment)){
             throw new SystemException("评论不存在");
@@ -112,6 +113,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         IPage<Comment> page = new PageUtils<Comment>().getPage(params);
         LambdaQueryWrapper<Comment> lqw = new LambdaQueryWrapper<>();
         lqw.eq(Comment::getRootCommentId, commentId).eq(Comment::getIsRootComment, 0);
+
         IPage<Comment> commentIPage = this.baseMapper.selectPage(page, lqw);
         List<CommentVo> commentVos = BeanCopyUtils.copyBeanList(commentIPage.getRecords(), CommentVo.class);
         HashMap<String, Object> data = new HashMap<>();
