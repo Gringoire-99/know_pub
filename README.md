@@ -1,4 +1,4 @@
-# KnowPub (一个类似知乎的知识分享论坛)（vue+springboot）
+# KnowPub (下一次会更好)
 
 **API接口文档👇**  
 **https://apifox.com/apidoc/shared-d052ea40-29dd-4b9b-893b-a33564238163**
