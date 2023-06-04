@@ -1,4 +1,4 @@
-# KnowPub (下一次会更好)
+# KnowPub
 
 **API接口文档👇**  
 **https://apifox.com/apidoc/shared-d052ea40-29dd-4b9b-893b-a33564238163**
