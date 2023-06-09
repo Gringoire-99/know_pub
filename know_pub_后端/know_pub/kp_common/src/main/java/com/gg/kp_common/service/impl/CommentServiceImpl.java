@@ -33,8 +33,8 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
      */
     @Override
     public Result<HashMap<String, Object>> getPostComment(Map<String, Object> params) {
-        /**
-         * 查出所有根评论
+        /*
+          查出所有根评论
          */
         String postId = (String) params.get("postId");
         ValidationUtils.validate().validateEmpty(postId);
@@ -51,7 +51,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 
         LambdaQueryWrapper<Comment> lqw = new LambdaQueryWrapper<>();
         lqw.eq(Comment::getPostId, postId).
-                eq(Comment::getIsRootComment, true);
+                eq(Comment::getIsRootComment, 1);
         IPage<Comment> commentIPage = this.baseMapper.selectPage(page, lqw);
         ArrayList<Comment> comments = new ArrayList<>(commentIPage.getRecords());
         long rootCommentTotal = commentIPage.getTotal();

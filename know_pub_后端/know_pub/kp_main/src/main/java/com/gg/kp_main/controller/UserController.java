@@ -13,7 +13,7 @@ import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 
-@RestController()
+@RestController
 @RequestMapping("/user")
 public class UserController {
     @Autowired
@@ -24,6 +24,7 @@ public class UserController {
     }
 
     @DeleteMapping("/logout")
+    @PreAuthorize("hasRole('USER')")
     public Result<?> logout() {
         return userService.logout();
     }

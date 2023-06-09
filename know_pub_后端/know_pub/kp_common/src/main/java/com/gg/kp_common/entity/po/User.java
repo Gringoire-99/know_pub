@@ -118,5 +118,5 @@ public class User implements Serializable {
     private String background;
     private String realName;
 
-    private Integer del_flag;
+    private Integer delFlag;
 }

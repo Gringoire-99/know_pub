@@ -46,7 +46,6 @@ CREATE TABLE IF NOT EXISTS know_pub.user
     resume           LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci default '' comment '简单介绍',
     auth             varchar(40)  default 0 comment '个人认证',
     background       varchar(100) default 'http://dummyimage.com/2000x1000' comment '背景图',
-    createTime       datetime     default now(),
     del_flag         int          default 0 comment '删除标志,0:未删除,1:已删除'
 );
 CREATE TABLE IF NOT EXISTS comment
