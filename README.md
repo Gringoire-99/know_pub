@@ -3,7 +3,6 @@
 **API接口文档👇**  
 **https://apifox.com/apidoc/shared-d052ea40-29dd-4b9b-893b-a33564238163**
 
-!important:暂时停止更新，6.11左右恢复  
    
    # ✨TODO✨:
    1. login
@@ -31,4 +30,5 @@
 2. (可选)访问nacos控制台(默认账号密码:nacos)，在配置管理里添加oss.yaml的配置(参考阿里云的文档)，如果此项没有配置，kp_other,和图片上传功能不可使用
 3. ide和yaml里配置好数据源(know_pub)
 4. 运行kp_common模块下的createsql
-5. 启动
+5. 打开redis服务
+6. 启动
