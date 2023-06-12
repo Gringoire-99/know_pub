@@ -1,6 +1,6 @@
 package com.gg.kp_common.config.filters;
 
-import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gg.kp_common.entity.po.UserDetail;
 import com.gg.kp_common.utils.*;
 import io.jsonwebtoken.Claims;
@@ -23,6 +23,8 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     @Autowired
     private RedisCache redisCache;
 
+    @Autowired
+    private ObjectMapper objectMapper;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
@@ -42,7 +44,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             //token超时 token非法
             //响应告诉前端需要重新登录
             Result<?> result = Result.error(HttpEnum.UNAUTHORIZED);
-            WebUtils.renderString(response, JSON.toJSONString(result));
+            WebUtils.renderString(response, objectMapper.writeValueAsString(result));
             return;
         }
         String userId = claims.getSubject();
@@ -53,7 +55,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             //说明登录过期 提示重新登录
             Result<?> result =
                     Result.error(HttpEnum.UNAUTHORIZED);
-            WebUtils.renderString(response, JSON.toJSONString(result));
+            WebUtils.renderString(response, objectMapper.writeValueAsString(result));
             return;
         }
         //存入SecurityContextHolder

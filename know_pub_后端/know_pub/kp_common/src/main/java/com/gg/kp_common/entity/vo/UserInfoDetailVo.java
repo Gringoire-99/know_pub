@@ -1,12 +1,11 @@
 package com.gg.kp_common.entity.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -20,7 +19,6 @@ public class UserInfoDetailVo {
     private String avatar;
 
     private String description;
-
     private LocalDateTime createTime;
 
 

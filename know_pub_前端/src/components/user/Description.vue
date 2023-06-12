@@ -84,25 +84,7 @@ import http from "@/utils/http/http";
 import {ElMessage} from "element-plus";
 import axios from "axios";
 
-function fileToBinary(file) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
 
-        reader.onload = function (event) {
-            const binaryData = event.target.result;
-            resolve(binaryData);
-        };
-
-        reader.onerror = function (event) {
-            reject(event.target.error);
-        };
-
-        reader.readAsArrayBuffer(file);
-    });
-}
-
-// 示例文件
-// 将文件转换为二进制数据
 
 export default {
     data() {

@@ -1,9 +1,10 @@
 package com.gg.kp_common.config.exception;
 
-import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gg.kp_common.utils.HttpEnum;
 import com.gg.kp_common.utils.Result;
 import com.gg.kp_common.utils.WebUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.AuthenticationException;
@@ -17,6 +18,8 @@ import java.io.IOException;
 
 @Component
 public class AuthenticationEntryPointImpl implements AuthenticationEntryPoint {
+    @Autowired
+    ObjectMapper objectMapper;
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
                          AuthenticationException authException) throws IOException, ServletException {
@@ -31,6 +34,6 @@ public class AuthenticationEntryPointImpl implements AuthenticationEntryPoint {
         }
         //响应给前端
 
-        WebUtils.renderString(response, JSON.toJSONString(result));
+        WebUtils.renderString(response, objectMapper.writeValueAsString(result));
     }
 }

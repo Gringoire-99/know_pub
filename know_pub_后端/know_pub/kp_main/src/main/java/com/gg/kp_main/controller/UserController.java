@@ -5,6 +5,7 @@ import com.gg.kp_common.entity.vo.*;
 import com.gg.kp_common.feign.OssFeignClient;
 import com.gg.kp_common.service.UserService;
 import com.gg.kp_common.utils.Result;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -51,7 +52,7 @@ public class UserController {
 
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/follow")
-    public Result<?> follow(@RequestParam String userId) {
+    public Result<Integer> follow(@RequestParam String userId) {
         return userService.follow(userId);
     }
 

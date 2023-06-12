@@ -66,7 +66,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public Result<UserInfoDetailVo> infoDetail(String userId) {
         User user = getUserById(userId);
-
         UserInfoDetailVo userInfoDetailVo = new UserInfoDetailVo();
         BeanUtils.copyProperties(user, userInfoDetailVo);
         return Result.ok(userInfoDetailVo);
@@ -152,12 +151,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
         Integer followed = this.baseMapper.isFollowed(userId, selfId);
         int result;
-        if (followed == 1) {
+        if (followed == EntityConstant.FOLLOWED) {
             this.baseMapper.unfollow(userId, selfId);
-            result = 0;
+            result = EntityConstant.UN_FOLLOWED;
         } else {
             this.baseMapper.follow(userId, selfId);
-            result = 1;
+            result = EntityConstant.FOLLOWED;
         }
         return Result.ok(result);
 
@@ -186,7 +185,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         updateUser.setId(userId);
         BeanUtils.copyProperties(user, updateUser);
         Result<?> policy = null;
-        if (!"".equals(user.getAvatar()) && user.getAvatar() != null) {
+        if (!"" .equals(user.getAvatar()) && user.getAvatar() != null) {
             policy = ossFeignClient.policy();
 
             if (policy.getCode() != 200) {

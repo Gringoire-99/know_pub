@@ -20,7 +20,7 @@ public interface UserService extends IService<User> {
 
     Result<UserPostCardVo> postCard(String userId);
 
-    Result<?> follow(String userId);
+    Result<Integer> follow(String userId);
 
     Result<List<UserInfoShortVo>> getRecommendedUser();
 

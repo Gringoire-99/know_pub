@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+
 @Service
 public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> implements CommentService {
     @Autowired
@@ -39,7 +40,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         String postId = (String) params.get("postId");
         ValidationUtils.validate().validateEmpty(postId);
         Post post = postMapper.selectById(postId);
-        if (Objects.isNull(post)){
+        if (Objects.isNull(post)) {
             throw new SystemException("博文不存在");
         }
 
@@ -51,7 +52,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 
         LambdaQueryWrapper<Comment> lqw = new LambdaQueryWrapper<>();
         lqw.eq(Comment::getPostId, postId).
-                eq(Comment::getIsRootComment, 1);
+                eq(Comment::getIsRootComment, EntityConstant.IS_ROOT_COMMENT);
         IPage<Comment> commentIPage = this.baseMapper.selectPage(page, lqw);
         ArrayList<Comment> comments = new ArrayList<>(commentIPage.getRecords());
         long rootCommentTotal = commentIPage.getTotal();
@@ -61,7 +62,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         LambdaQueryWrapper<Comment> lqwC = new LambdaQueryWrapper<>();
         lqwC.orderByDesc(Comment::getLikeCount).orderByDesc(Comment::getCreateTime);
         for (Comment record : commentIPage.getRecords()) {
-            lqwC.eq(Comment::getRootCommentId, record.getId()).eq(Comment::getIsRootComment, 0);
+            lqwC.eq(Comment::getRootCommentId, record.getId()).eq(Comment::getIsRootComment, EntityConstant.NOT_ROOT_COMMENT);
             lqwC.last("limit 4");
             comments.addAll(this.baseMapper.selectList(lqwC));
             lqwC.clear();
@@ -90,7 +91,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         if (r == 0) throw new RuntimeException("评论失败-回复不存在");
         LambdaUpdateWrapper<Comment> lqwU = new LambdaUpdateWrapper<Comment>();
 //        更新rootComment的childCount
-        if (comment.getIsRootComment() == 0) {
+        if (comment.getIsRootComment() == EntityConstant.NOT_ROOT_COMMENT) {
             lqwU.eq(Comment::getId, comment.getRootCommentId())
                     .setSql("child_count = child_count + 1");
             baseMapper.update(null, lqwU);
@@ -106,13 +107,13 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         ValidationUtils.validate().validateEmpty(commentId);
 
         Comment comment = baseMapper.selectById(commentId);
-        if (Objects.isNull(comment)){
+        if (Objects.isNull(comment)) {
             throw new SystemException("评论不存在");
         }
 
         IPage<Comment> page = new PageUtils<Comment>().getPage(params);
         LambdaQueryWrapper<Comment> lqw = new LambdaQueryWrapper<>();
-        lqw.eq(Comment::getRootCommentId, commentId).eq(Comment::getIsRootComment, 0);
+        lqw.eq(Comment::getRootCommentId, commentId).eq(Comment::getIsRootComment, EntityConstant.NOT_ROOT_COMMENT);
 
         IPage<Comment> commentIPage = this.baseMapper.selectPage(page, lqw);
         List<CommentVo> commentVos = BeanCopyUtils.copyBeanList(commentIPage.getRecords(), CommentVo.class);
@@ -135,16 +136,16 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         String userId = SecurityUtils.getId();
 
         Integer result = baseMapper.isLiked(commentId, userId);
-        if (result == 0) {
+        if (result == EntityConstant.UN_FOLLOWED) {
             comment.setLikeCount(comment.getLikeCount() + 1);
             baseMapper.like(commentId, userId);
             baseMapper.update(comment, lqwC);
-            return Result.ok(1);
-        } else if (result == 1) {
+            return Result.ok(EntityConstant.FOLLOWED);
+        } else if (result == EntityConstant.FOLLOWED) {
             comment.setLikeCount(comment.getLikeCount() - 1);
             baseMapper.unlike(commentId, userId);
             baseMapper.update(comment, lqwC);
-            return Result.ok(0);
+            return Result.ok(EntityConstant.UN_FOLLOWED);
         } else {
             throw new RuntimeException("未知错误");
         }
