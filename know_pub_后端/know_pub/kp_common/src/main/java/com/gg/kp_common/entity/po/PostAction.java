@@ -1,5 +1,6 @@
 package com.gg.kp_common.entity.po;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,16 +10,15 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Action {
-    private String action;
+public class PostAction {
+    @TableId
     private String actionId;
+    private int liked;
+    private int collected;
+    private int disliked;
+    private int replied;
     private String userId;
     private LocalDateTime createTime;
     private String targetId;
-    private String content;
-    public static String LIKE = "点赞";
-    public static String DISLIKE = "踩";
-    public static String COLLECTION = "收藏";
-    public static String REPLY = "回复";
-
+    private LocalDateTime updateTime;
 }

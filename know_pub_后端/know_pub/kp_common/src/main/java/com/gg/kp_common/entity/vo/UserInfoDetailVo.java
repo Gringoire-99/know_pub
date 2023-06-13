@@ -19,6 +19,7 @@ public class UserInfoDetailVo {
     private String avatar;
 
     private String description;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
 
 

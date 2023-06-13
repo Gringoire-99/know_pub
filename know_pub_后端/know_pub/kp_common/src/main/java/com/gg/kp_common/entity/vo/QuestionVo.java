@@ -1,5 +1,6 @@
 package com.gg.kp_common.entity.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,7 @@ public class QuestionVo {
     private String userId;
     private String name;
     private String avatar;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
     private int commentCount;
     private int answerCount;

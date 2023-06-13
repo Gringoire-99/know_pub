@@ -1,8 +1,6 @@
 package com.gg.kp_common.entity.po;
 
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,7 +8,6 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -22,7 +19,6 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    @TableId(value = "id", type = IdType.AUTO)
     // 用户id
     private String id;
     /**

@@ -1,9 +1,9 @@
 package com.gg.kp_common.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.gg.kp_common.entity.po.Action;
+import com.gg.kp_common.entity.po.PostAction;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
-public interface ActionMapper extends BaseMapper<Action> {
+public interface PostActionMapper extends BaseMapper<PostAction> {
 }

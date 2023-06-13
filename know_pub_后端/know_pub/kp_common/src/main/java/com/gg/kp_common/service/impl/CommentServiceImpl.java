@@ -33,11 +33,10 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
      * TODO 待重构 将所有冗余字段改为连表查询
      */
     @Override
-    public Result<HashMap<String, Object>> getPostComment(Map<String, Object> params) {
+    public Result<HashMap<String, Object>> getPostComment(PageParams params, String postId) {
         /*
           查出所有根评论
          */
-        String postId = (String) params.get("postId");
         ValidationUtils.validate().validateEmpty(postId);
         Post post = postMapper.selectById(postId);
         if (Objects.isNull(post)) {
@@ -101,9 +100,8 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
     }
 
     @Override
-    public Result<HashMap<String, Object>> getChildComment(Map<String, Object> params) {
+    public Result<HashMap<String, Object>> getChildComment(PageParams params, String commentId) {
 //        根据commentId 查出所有子id
-        String commentId = (String) params.get("commentId");
         ValidationUtils.validate().validateEmpty(commentId);
 
         Comment comment = baseMapper.selectById(commentId);
@@ -136,16 +134,16 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         String userId = SecurityUtils.getId();
 
         Integer result = baseMapper.isLiked(commentId, userId);
-        if (result == EntityConstant.UN_FOLLOWED) {
+        if (result == EntityConstant.ACTION_OFF) {
             comment.setLikeCount(comment.getLikeCount() + 1);
             baseMapper.like(commentId, userId);
             baseMapper.update(comment, lqwC);
-            return Result.ok(EntityConstant.FOLLOWED);
-        } else if (result == EntityConstant.FOLLOWED) {
+            return Result.ok(EntityConstant.ACTION_ON);
+        } else if (result == EntityConstant.ACTION_ON) {
             comment.setLikeCount(comment.getLikeCount() - 1);
             baseMapper.unlike(commentId, userId);
             baseMapper.update(comment, lqwC);
-            return Result.ok(EntityConstant.UN_FOLLOWED);
+            return Result.ok(EntityConstant.ACTION_OFF);
         } else {
             throw new RuntimeException("未知错误");
         }

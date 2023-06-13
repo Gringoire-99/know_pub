@@ -10,10 +10,7 @@ import com.gg.kp_common.entity.vo.PostQuestionVo;
 import com.gg.kp_common.entity.vo.QuestionVo;
 import com.gg.kp_common.entity.vo.RecommendedQuestionVo;
 import com.gg.kp_common.service.QuestionService;
-import com.gg.kp_common.utils.BeanCopyUtils;
-import com.gg.kp_common.utils.PageUtils;
-import com.gg.kp_common.utils.Result;
-import com.gg.kp_common.utils.SecurityUtils;
+import com.gg.kp_common.utils.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,7 +42,7 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
     }
 
     @Override
-    public Result<Map<String, Object>> getQuestions(Map<String, Object> params) {
+    public Result<Map<String, Object>> getQuestions(PageParams params) {
         IPage<QuestionVo> questionVoPage = this.baseMapper.getQuestionVoPage(new PageUtils<QuestionVo>().getPage(params));
         List<QuestionVo> records = questionVoPage.getRecords();
         setAnonymity(records);
@@ -61,7 +58,7 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
     @Override
     public Result<List<RecommendedQuestionVo>> getRecommendedQuestion(String questionId) {
         Question question = this.baseMapper.selectById(questionId);
-        if (Objects.isNull(question)){
+        if (Objects.isNull(question)) {
             throw new SystemException("问题不存在");
         }
         String tags = question.getTagNames();

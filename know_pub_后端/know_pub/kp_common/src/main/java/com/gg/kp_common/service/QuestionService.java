@@ -5,6 +5,7 @@ import com.gg.kp_common.entity.po.Question;
 import com.gg.kp_common.entity.vo.PostQuestionVo;
 import com.gg.kp_common.entity.vo.QuestionVo;
 import com.gg.kp_common.entity.vo.RecommendedQuestionVo;
+import com.gg.kp_common.utils.PageParams;
 import com.gg.kp_common.utils.Result;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public interface QuestionService extends IService<Question> {
 
     Result<Integer> postQuestion(PostQuestionVo question);
 
-    Result<Map<String, Object>> getQuestions(Map<String, Object> params);
+    Result<Map<String, Object>> getQuestions(PageParams params);
 
     Result<List<RecommendedQuestionVo>> getRecommendedQuestion(String questionId);
 }

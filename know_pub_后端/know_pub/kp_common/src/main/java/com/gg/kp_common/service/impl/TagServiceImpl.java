@@ -8,6 +8,7 @@ import com.gg.kp_common.entity.po.Tag;
 import com.gg.kp_common.entity.vo.TagVo;
 import com.gg.kp_common.service.TagService;
 import com.gg.kp_common.utils.BeanCopyUtils;
+import com.gg.kp_common.utils.PageParams;
 import com.gg.kp_common.utils.PageUtils;
 import com.gg.kp_common.utils.Result;
 import org.springframework.stereotype.Service;
@@ -19,9 +20,8 @@ import java.util.Map;
 @Service
 public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements TagService {
     @Override
-    public Result<Map<String, Object>> getTags(Map<String, Object> params) {
-        String keyword = (String) params.get(PageUtils.KEYWORD);
-
+    public Result<Map<String, Object>> getTags(PageParams params) {
+        String keyword = params.getKeyword();
         LambdaQueryWrapper<Tag> lqw = new LambdaQueryWrapper<>();
 
         lqw.like(keyword != null, Tag::getName, keyword);

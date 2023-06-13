@@ -1,11 +1,12 @@
 package com.gg.kp_main.controller;
 
-import com.gg.kp_common.entity.po.Question;
 import com.gg.kp_common.entity.vo.PostQuestionVo;
 import com.gg.kp_common.entity.vo.QuestionVo;
 import com.gg.kp_common.entity.vo.RecommendedQuestionVo;
 import com.gg.kp_common.service.QuestionService;
+import com.gg.kp_common.utils.PageParams;
 import com.gg.kp_common.utils.Result;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -31,10 +32,16 @@ public class QuestionController {
     }
 
     @GetMapping("/questions")
-    public Result<Map<String, Object>> getQuestions(@RequestParam Map<String, Object> params) {
+    public Result<Map<String, Object>> getQuestions(@ApiParam PageParams params) {
         return questionService.getQuestions(params);
     }
 
+
+    /**
+     * 根据某个问题，获取推荐问题（具有相同tag）
+     * @param questionId 问题id
+     * @return 推荐问题
+     */
     @GetMapping("/recommended-question")
     public Result<List<RecommendedQuestionVo>> getRecommendedQuestion(@RequestParam String questionId) {
         return questionService.getRecommendedQuestion(questionId);

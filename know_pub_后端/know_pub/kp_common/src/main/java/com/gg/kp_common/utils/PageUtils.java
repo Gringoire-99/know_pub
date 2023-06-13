@@ -5,8 +5,6 @@ import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gg.kp_common.config.exception.SystemException;
 
-import java.util.Map;
-
 public class PageUtils<T> {
     public static final String CURRENT_PAGE = "currentPage";
     public static final String PAGE_SIZE = "pageSize";
@@ -21,15 +19,15 @@ public class PageUtils<T> {
 
 
     //    根据请求参数构造page对象，通过这个page对象分页查询数据
-    public IPage<T> getPage(Map<String, Object> params) {
+    public IPage<T> getPage(PageParams params) {
         long currentPage = 1;
         long pageSize = 10;
 
-        if (params.get(CURRENT_PAGE) != null) {
-            currentPage = Long.parseLong(params.get(CURRENT_PAGE).toString());
+        if (params.getCurrentPage() != null) {
+            currentPage = params.getCurrentPage();
         }
-        if (params.get(PAGE_SIZE) != null) {
-            pageSize = Long.parseLong(params.get(PAGE_SIZE).toString());
+        if (params.getPageSize() != null) {
+            pageSize = params.getPageSize();
             if (pageSize > 1000) {
                 throw new SystemException("pageSize不能大于1000");
             }
@@ -37,17 +35,15 @@ public class PageUtils<T> {
 
         Page<T> page = new Page<>(currentPage, pageSize);
 
-        if (params.get(ORDER_By) != null) {
-            String orderField = (String) params.get(ORDER_By);
-            String order = (String) params.get(ORDER);
+        if (params.getOrderBy() != null) {
+            String orderField = params.getOrderBy();
+            String order = params.getOrder();
             if (ASC.equals(order)) {
                 page.addOrder(OrderItem.asc(orderField));
             } else {
                 page.addOrder(OrderItem.desc(orderField));
             }
         }
-        page.addOrder(OrderItem.desc(CREATE_TIME));
-        params.put(PAGE, page);
         return page;
 
     }

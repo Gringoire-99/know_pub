@@ -27,8 +27,8 @@ public class PostVo {
     private String userId;
 
     private Integer commentCount = 0;
-    private boolean liked = false;
-    private boolean collected = false;
-    private boolean disliked = false;
-    private boolean replied = false;
+    private int liked = 0;
+    private int collected = 0;
+    private int disliked = 0;
+    private int replied = 0;
 }

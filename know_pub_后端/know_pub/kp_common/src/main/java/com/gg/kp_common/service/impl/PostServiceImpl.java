@@ -5,16 +5,17 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.gg.kp_common.config.exception.SystemException;
-import com.gg.kp_common.dao.ActionMapper;
+import com.gg.kp_common.dao.PostActionMapper;
 import com.gg.kp_common.dao.PostMapper;
 import com.gg.kp_common.dao.QuestionMapper;
 import com.gg.kp_common.dao.UserMapper;
-import com.gg.kp_common.entity.po.Action;
 import com.gg.kp_common.entity.po.Post;
+import com.gg.kp_common.entity.po.PostAction;
 import com.gg.kp_common.entity.po.Question;
 import com.gg.kp_common.entity.po.User;
 import com.gg.kp_common.entity.vo.NewPost;
 import com.gg.kp_common.entity.vo.PostVo;
+import com.gg.kp_common.service.PostActionService;
 import com.gg.kp_common.service.PostService;
 import com.gg.kp_common.utils.*;
 import org.springframework.beans.BeanUtils;
@@ -27,26 +28,54 @@ import java.util.*;
 @Service
 public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements PostService {
     @Autowired
-    private ActionMapper actionMapper;
+    private PostActionMapper postActionMapper;
+    @Autowired
+    PostActionService postActionService;
     @Autowired
     private QuestionMapper questionMapper;
     @Autowired
     private UserMapper userMapper;
 
+    /**
+     * 根据userId获取推荐博文,如果userId不为空，进行连表查询设置博文的状态（点赞，点踩，收藏，回复）
+     * 如果userId为空，只查询博文
+     *
+     * @param params 分页参数
+     * @return 推荐博文
+     */
     @Override
-    public Result<Map<String, Object>> getRecommendedPosts(Map<String, Object> params) {
-        IPage<Post> postIPage = this.baseMapper.selectPage(new PageUtils<Post>().getPage(params), null);
-        List<Post> records = postIPage.getRecords();
-        List<PostVo> recordsVo = BeanCopyUtils.copyBeanList(records, PostVo.class);
-        Long total = postIPage.getTotal();
-        setAction(recordsVo, null);
+    public Result<Map<String, Object>> getRecommendedPosts(PageParams params) {
+        String userId = SecurityUtils.getId();
+        List<PostVo> record;
+        long total;
+        long rows;
+        if (!Objects.isNull(userId)) {
+            IPage<PostVo> p = new PageUtils<PostVo>().getPage(params);
+            IPage<PostVo> recommendedPosts = this.baseMapper.getRecommendedPosts(p, userId);
+            record = recommendedPosts.getRecords();
+            total = recommendedPosts.getTotal();
+            rows = record.size();
+        } else {
+            IPage<Post> p = new PageUtils<Post>().getPage(params);
+            IPage<Post> postIPage = this.baseMapper.selectPage(p, null);
+            List<Post> posts = postIPage.getRecords();
+            record = BeanCopyUtils.copyBeanList(posts, PostVo.class);
+            total = postIPage.getTotal();
+            rows = postIPage.getSize();
+        }
         HashMap<String, Object> data = new HashMap<>();
-        data.put(PageUtils.PAGE, recordsVo);
+        data.put(PageUtils.PAGE, record);
         data.put(PageUtils.TOTAL, total);
-        data.put(PageUtils.ROWS, recordsVo.size());
+        data.put(PageUtils.ROWS, rows);
         return Result.ok(data);
     }
 
+    /**
+     * 当博文被回复时，更新博文的回复数
+     *
+     * @param postId 博文id
+     * @return 更新结果
+     */
     @Transactional
     @Override
     public Integer onComment(String postId) {
@@ -55,6 +84,12 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         return baseMapper.update(null, luw);
     }
 
+    /**
+     * 获取某个博文的详细信息
+     *
+     * @param postId 博文id
+     * @return 博文详细信息
+     */
     @Override
     public Result<PostVo> getPost(String postId) {
         Post post = getById(postId);
@@ -66,47 +101,63 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         return Result.ok(postVo);
     }
 
+    /**
+     * 博文被点赞时，更新博文的点赞数
+     * 如果已经点赞，取消点赞
+     *
+     * @param postId 博文id
+     * @return 更新结果(1点赞 ， 0取消点赞)
+     */
+
     @Transactional
     @Override
-    public Result<Integer> onLike(Map<String, Object> params) {
-//        先查询动作，如果有这个动作，说明是取消
-        String postId = params.get("postId").toString();
+    public Result<Integer> onLike(String postId) {
         String userId = SecurityUtils.getId();
         Post post = baseMapper.selectById(postId);
+        int result;
+
+//       判断博文是否存在
         if (Objects.isNull(post)) {
             throw new SystemException("博文不存在");
         }
         ValidationUtils.validate().validateEmpty(postId, userId);
-        LambdaQueryWrapper<Action> lqwA = new LambdaQueryWrapper<>();
-        lqwA.eq(Action::getTargetId, postId)
-                .eq(Action::getUserId, userId);
-        Action a = actionMapper.selectOne(lqwA);
-        LambdaUpdateWrapper<Post> luw = new LambdaUpdateWrapper<>();
-        luw.eq(Post::getId, postId);
-        Integer result = null;
-        if (Objects.isNull(a)) {
-//            创建新动作，like++
-            luw.setSql("like_count = like_count + 1");
-            Action action = new Action();
-            action.setActionId(UUID.randomUUID().toString());
-            action.setAction(Action.LIKE);
-            action.setUserId(userId);
-            action.setTargetId(postId);
-            actionMapper.insert(action);
-            result = 1;
+
+        LambdaQueryWrapper<PostAction> lqwA = new LambdaQueryWrapper<>();
+        lqwA.eq(PostAction::getTargetId, postId)
+                .eq(PostAction::getUserId, userId);
+        PostAction postAction = postActionMapper.selectOne(lqwA);
+
+//      判断该用户是否已存在对该博文的动作
+        if (Objects.isNull(postAction)) {
+            PostAction newAction = new PostAction();
+            newAction.setLiked(EntityConstant.ACTION_ON);
+            newAction.setUserId(userId);
+            newAction.setTargetId(postId);
+            postActionMapper.insert(newAction);
+            result = EntityConstant.ACTION_ON;
         } else {
-//            删除动作，like--
-            actionMapper.delete(lqwA);
-            luw.setSql("like_count = like_count - 1");
-            result = 0;
+//            点赞动作的开关
+            result = postAction.getLiked() == EntityConstant.ACTION_ON ? EntityConstant.ACTION_OFF : EntityConstant.ACTION_ON;
+            postAction.setLiked(result);
+
+//            点赞和点踩是互斥操作
+            if (postAction.getLiked() == EntityConstant.ACTION_ON) {
+                postAction.setDisliked(EntityConstant.ACTION_OFF);
+            }
+
         }
-        baseMapper.update(null, luw);
         return Result.ok(result);
     }
 
+    /**
+     * 根据userId获取博文动态(查看个人主页时触发)
+     *
+     * @param params 分页参数
+     * @param userId 用户id
+     * @return 博文动态
+     */
     @Override
-    public Result<HashMap<String, Object>> getDynamic(Map<String, Object> params) {
-        String userId = params.get("userId").toString();
+    public Result<HashMap<String, Object>> getDynamic(PageParams params, String userId) {
         ValidationUtils.validate().validateEmpty(userId);
         User user = userMapper.selectById(userId);
         if (Objects.isNull(user)) {
@@ -114,27 +165,21 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         }
 
         LambdaQueryWrapper<Post> lqw = new LambdaQueryWrapper<>();
-//        先从查出这个用户所有action,在根据action查出对应的post
-        LambdaQueryWrapper<Action> lqwA = new LambdaQueryWrapper<>();
-//        一个post只查出一个action
-        lqwA.groupBy(Action::getTargetId)
-                .eq(Action::getUserId, userId);
+        IPage<PostVo> page = this.baseMapper.getDynamic(lqw, userId);
 
-        IPage<Action> actionIPage = actionMapper.selectPage(new PageUtils<Action>().getPage(params), lqwA);
-        List<Action> actions = actionIPage.getRecords();
-//        将actions的postId提取为列表
-        List<String> postIds = new ArrayList<>();
-        actions.forEach(action -> postIds.add(action.getTargetId()));
-        List<Post> posts = baseMapper.selectBatchIds(postIds);
-        List<PostVo> postVos = BeanCopyUtils.copyBeanList(posts, PostVo.class);
-        setAction(postVos, userId.toString());
         HashMap<String, Object> data = new HashMap<>();
-        data.put(PageUtils.PAGE, postVos);
-        data.put(PageUtils.TOTAL, actionIPage.getTotal());
-        data.put(PageUtils.ROWS, actionIPage.getSize());
+        data.put(PageUtils.PAGE, page.getRecords());
+        data.put(PageUtils.TOTAL, page.getTotal());
+        data.put(PageUtils.ROWS, page.getRecords().size());
         return Result.ok(data);
     }
 
+    /**
+     * 发布博文
+     *
+     * @param post 博文
+     * @return 发布结果
+     */
     @Transactional
     @Override
     public Result<Integer> addPost(NewPost post) {
@@ -165,60 +210,33 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         return Result.ok(insert);
     }
 
+    /*
+        在问题详情页里查询问题的答案
+     */
     @Override
-    public Result<Map<String, Object>> getPosts(Map<String, Object> params) {
-        String questionId = (String) params.get("questionId");
+    public Result<Map<String, Object>> getPosts(PageParams params, String questionId) {
         Question question = questionMapper.selectById(questionId);
-        if (Objects.isNull(question)){
+        if (Objects.isNull(question)) {
             throw new SystemException("问题不存在");
         }
-
-        LambdaQueryWrapper<Post> lqw = new LambdaQueryWrapper<>();
-        lqw.eq(Post::getQuestionId, questionId);
-        IPage<Post> postIPage = this.baseMapper.selectPage(new PageUtils<Post>().getPage(params), lqw);
-        List<Post> records = postIPage.getRecords();
-        List<PostVo> recordsVo = BeanCopyUtils.copyBeanList(records, PostVo.class);
-        setAction(recordsVo, null);
-        Long total = postIPage.getTotal();
-        HashMap<String, Object> result = new HashMap<>();
-        result.put(PageUtils.PAGE, recordsVo);
-        result.put(PageUtils.TOTAL, total);
-        result.put(PageUtils.ROWS, postIPage.getSize());
-        return Result.ok(result);
-    }
-
-    /**
-     * TODO 待重构，改为单action的模式
-     */
-
-    public void setAction(Collection<PostVo> posts, String userId) {
-        if (userId == null) {
-            try {
-                userId = SecurityUtils.getId();
-            } catch (Exception e) {
-                return;
-            }
+        String userId = SecurityUtils.getId();
+        if (Objects.isNull(userId)) {
+            LambdaQueryWrapper<Post> lqw = new LambdaQueryWrapper<>();
+            lqw.eq(Post::getQuestionId, questionId);
+            IPage<Post> postIPage = this.baseMapper.selectPage(new PageUtils<Post>().getPage(params), lqw);
+            List<Post> records = postIPage.getRecords();
+            List<PostVo> recordsVo = BeanCopyUtils.copyBeanList(records, PostVo.class);
+            Long total = postIPage.getTotal();
+            HashMap<String, Object> result = new HashMap<>();
+            result.put(PageUtils.PAGE, recordsVo);
+            result.put(PageUtils.TOTAL, total);
+            result.put(PageUtils.ROWS, postIPage.getSize());
+            return Result.ok(result);
+        } else {
+            return null;
         }
-        LambdaQueryWrapper<Action> lqwA = new LambdaQueryWrapper<>();
-//        查询出本用户userId和posts里所有postId的action
-//        TODO 待优化
-        String finalUserId = userId;
-        posts.forEach(post -> {
-//            查出post的所有动作
-            lqwA.eq(Action::getUserId, finalUserId)
-                    .eq(Action::getTargetId, post.getId());
-            List<Action> actions = actionMapper.selectList(lqwA);
-//            根据修改post的状态
-            actions.forEach(action -> {
-                String name = action.getAction();
-                if (name.equals(Action.LIKE)) {
-                    post.setLiked(true);
-                } else if (name.equals(Action.COLLECTION)) {
-                    post.setCollected(true);
-                }
-            });
-            lqwA.clear();
-        });
+
     }
+
 
 }
