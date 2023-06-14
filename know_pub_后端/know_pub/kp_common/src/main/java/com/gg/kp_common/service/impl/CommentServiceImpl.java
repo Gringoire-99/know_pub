@@ -29,8 +29,11 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
     PostMapper postMapper;
 
     /**
-     * 因为时间问题，所以这里的实现有点乱，实际应该使用连表查询，但我懒得写sql
-     * TODO 待重构 将所有冗余字段改为连表查询
+     * 根据postId获取博文的评论
+     *
+     * @param params 分页参数
+     * @param postId 博文id
+     * @return 博文的评论
      */
     @Override
     public Result<HashMap<String, Object>> getPostComment(PageParams params, String postId) {

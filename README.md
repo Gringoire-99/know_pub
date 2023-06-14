@@ -7,10 +7,10 @@
    
    # ✨TODO✨:
    1. login
-   5. comment 
-   5. post
-   3. userInfo
-   4. question 
+   2. comment 
+   3. post
+   4. userInfo
+   5. question 
    6. tag 
    7. upload
    8. article  <- now

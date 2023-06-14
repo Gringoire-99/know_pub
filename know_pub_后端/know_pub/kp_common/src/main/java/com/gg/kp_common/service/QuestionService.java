@@ -19,4 +19,5 @@ public interface QuestionService extends IService<Question> {
     Result<Map<String, Object>> getQuestions(PageParams params);
 
     Result<List<RecommendedQuestionVo>> getRecommendedQuestion(String questionId);
+
 }

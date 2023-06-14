@@ -151,12 +151,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
         Integer followed = this.baseMapper.isFollowed(userId, selfId);
         int result;
-        if (followed == EntityConstant.FOLLOWED) {
+        if (followed == EntityConstant.ACTION_ON) {
             this.baseMapper.unfollow(userId, selfId);
-            result = EntityConstant.UN_FOLLOWED;
+            result = EntityConstant.ACTION_OFF;
         } else {
             this.baseMapper.follow(userId, selfId);
-            result = EntityConstant.FOLLOWED;
+            result = EntityConstant.ACTION_ON;
         }
         return Result.ok(result);
 

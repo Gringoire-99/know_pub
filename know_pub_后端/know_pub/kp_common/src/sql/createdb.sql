@@ -121,7 +121,6 @@ CREATE TABLE IF NOT EXISTS tag
 
 CREATE TABLE IF NOT EXISTS post_action
 (
-    action_id   char(60) primary key not null comment '动作id',
     liked       int      default 0 comment '0未点赞，1点赞',
     collected   int      default 0 comment '0未收藏，1收藏',
     disliked    int      default 0 comment '0未点踩，1点踩',
@@ -130,7 +129,7 @@ CREATE TABLE IF NOT EXISTS post_action
     create_time datetime default now() comment '创建时间',
     target_id   char(60)             not null comment '目标id(postId)',
     update_time datetime default now() comment '更新时间',
-    unique (user_id, target_id)
+    primary key (user_id, target_id)
 );
 /*Table structure for table `sys_menu` */
 

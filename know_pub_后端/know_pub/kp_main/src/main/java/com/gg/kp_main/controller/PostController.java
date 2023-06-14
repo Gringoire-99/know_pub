@@ -1,5 +1,6 @@
 package com.gg.kp_main.controller;
 
+import com.gg.kp_common.entity.model.Page;
 import com.gg.kp_common.entity.vo.NewPost;
 import com.gg.kp_common.entity.vo.PostVo;
 import com.gg.kp_common.service.PostService;
@@ -10,9 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @RestController
 @RequestMapping("/post")
 public class PostController {
@@ -20,7 +18,7 @@ public class PostController {
     public PostService postService;
 
     @GetMapping("/recommended-posts")
-    public Result<Map<String, Object>> recommendedPost(@ApiParam PageParams params) {
+    public Result<Page<PostVo>> recommendedPost(@ApiParam PageParams params) {
         return postService.getRecommendedPosts(params);
     }
 
@@ -36,8 +34,8 @@ public class PostController {
     }
 
     @GetMapping("/dynamic")
-    public Result<HashMap<String, Object>> getDynamic(@ApiParam PageParams params,
-                                                      @RequestParam String userId) {
+    public Result<Page<PostVo>> getDynamic(@ApiParam PageParams params,
+                                           @RequestParam String userId) {
         return postService.getDynamic(params, userId);
     }
 
@@ -48,8 +46,8 @@ public class PostController {
     }
 
     @GetMapping("/get-posts")
-    public Result<Map<String, Object>> getAnswer(@ApiParam PageParams params,
-                                                 @RequestParam String questionId) {
+    public Result<Page<PostVo>> getAnswer(@ApiParam PageParams params,
+                                          @RequestParam String questionId) {
         return postService.getPosts(params, questionId);
     }
 

@@ -28,6 +28,7 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
         return Result.ok(questionVo);
     }
 
+
     @Transactional
     @Override
     public Result<Integer> postQuestion(PostQuestionVo question) {

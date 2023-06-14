@@ -1,6 +1,5 @@
 package com.gg.kp_common.dao;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.gg.kp_common.entity.po.Post;
@@ -12,5 +11,7 @@ import org.apache.ibatis.annotations.Param;
 public interface PostMapper extends BaseMapper<Post> {
     IPage<PostVo> getRecommendedPosts(@Param("page") IPage<PostVo> page, @Param("userId") String userId);
 
-    IPage<PostVo> getDynamic(LambdaQueryWrapper<Post> lqw, String userId);
+    IPage<PostVo> getDynamic(IPage<PostVo> page, String userId);
+
+    IPage<PostVo> getPosts(IPage<Post> page, String questionId, String userId);
 }

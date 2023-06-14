@@ -9,6 +9,7 @@ import com.gg.kp_common.dao.PostActionMapper;
 import com.gg.kp_common.dao.PostMapper;
 import com.gg.kp_common.dao.QuestionMapper;
 import com.gg.kp_common.dao.UserMapper;
+import com.gg.kp_common.entity.model.Page;
 import com.gg.kp_common.entity.po.Post;
 import com.gg.kp_common.entity.po.PostAction;
 import com.gg.kp_common.entity.po.Question;
@@ -23,7 +24,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 @Service
 public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements PostService {
@@ -44,7 +47,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
      * @return 推荐博文
      */
     @Override
-    public Result<Map<String, Object>> getRecommendedPosts(PageParams params) {
+    public Result<Page<PostVo>> getRecommendedPosts(PageParams params) {
         String userId = SecurityUtils.getId();
         List<PostVo> record;
         long total;
@@ -56,18 +59,17 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
             total = recommendedPosts.getTotal();
             rows = record.size();
         } else {
+            LambdaQueryWrapper<Post> lqw = new LambdaQueryWrapper<>();
+            lqw.eq(Post::getStatus, EntityConstant.PUBLISHED);
             IPage<Post> p = new PageUtils<Post>().getPage(params);
-            IPage<Post> postIPage = this.baseMapper.selectPage(p, null);
+            IPage<Post> postIPage = this.baseMapper.selectPage(p, lqw);
             List<Post> posts = postIPage.getRecords();
             record = BeanCopyUtils.copyBeanList(posts, PostVo.class);
             total = postIPage.getTotal();
             rows = postIPage.getSize();
         }
-        HashMap<String, Object> data = new HashMap<>();
-        data.put(PageUtils.PAGE, record);
-        data.put(PageUtils.TOTAL, total);
-        data.put(PageUtils.ROWS, rows);
-        return Result.ok(data);
+        Page<PostVo> page = new Page<>(total, rows, record);
+        return Result.ok(page);
     }
 
     /**
@@ -81,6 +83,11 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     public Integer onComment(String postId) {
         LambdaUpdateWrapper<Post> luw = new LambdaUpdateWrapper<>();
         luw.eq(Post::getId, postId).setSql("comment_count = comment_count + 1");
+        PostAction action = new PostAction();
+        action.setUserId(SecurityUtils.getId());
+        action.setTargetId(postId);
+        action.setReplied(EntityConstant.ACTION_ON);
+        this.postActionService.saveOrUpdate(action);
         return baseMapper.update(null, luw);
     }
 
@@ -144,7 +151,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
             if (postAction.getLiked() == EntityConstant.ACTION_ON) {
                 postAction.setDisliked(EntityConstant.ACTION_OFF);
             }
-
+            postActionMapper.update(postAction, lqwA);
         }
         return Result.ok(result);
     }
@@ -157,21 +164,17 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
      * @return 博文动态
      */
     @Override
-    public Result<HashMap<String, Object>> getDynamic(PageParams params, String userId) {
+    public Result<Page<PostVo>> getDynamic(PageParams params, String userId) {
         ValidationUtils.validate().validateEmpty(userId);
         User user = userMapper.selectById(userId);
         if (Objects.isNull(user)) {
             throw new SystemException("用户不存在");
         }
 
-        LambdaQueryWrapper<Post> lqw = new LambdaQueryWrapper<>();
-        IPage<PostVo> page = this.baseMapper.getDynamic(lqw, userId);
-
-        HashMap<String, Object> data = new HashMap<>();
-        data.put(PageUtils.PAGE, page.getRecords());
-        data.put(PageUtils.TOTAL, page.getTotal());
-        data.put(PageUtils.ROWS, page.getRecords().size());
-        return Result.ok(data);
+        IPage<PostVo> page1 = new PageUtils<PostVo>().getPage(params);
+        IPage<PostVo> page2 = this.baseMapper.getDynamic(page1, userId);
+        Page<PostVo> page = new Page<>(page2.getTotal(), page2.getSize(), page2.getRecords());
+        return Result.ok(page);
     }
 
     /**
@@ -210,32 +213,40 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         return Result.ok(insert);
     }
 
-    /*
-        在问题详情页里查询问题的答案
+    /**
+     * 获取某个问题下的所有博文
+     *
+     * @param params     分页参数
+     * @param questionId 问题id
+     * @return 博文列表
      */
     @Override
-    public Result<Map<String, Object>> getPosts(PageParams params, String questionId) {
+    public Result<Page<PostVo>> getPosts(PageParams params, String questionId) {
         Question question = questionMapper.selectById(questionId);
         if (Objects.isNull(question)) {
             throw new SystemException("问题不存在");
         }
         String userId = SecurityUtils.getId();
+        List<PostVo> records;
+        long total;
+        long rows;
+        IPage<Post> page = new PageUtils<Post>().getPage(params);
         if (Objects.isNull(userId)) {
             LambdaQueryWrapper<Post> lqw = new LambdaQueryWrapper<>();
             lqw.eq(Post::getQuestionId, questionId);
-            IPage<Post> postIPage = this.baseMapper.selectPage(new PageUtils<Post>().getPage(params), lqw);
-            List<Post> records = postIPage.getRecords();
-            List<PostVo> recordsVo = BeanCopyUtils.copyBeanList(records, PostVo.class);
-            Long total = postIPage.getTotal();
-            HashMap<String, Object> result = new HashMap<>();
-            result.put(PageUtils.PAGE, recordsVo);
-            result.put(PageUtils.TOTAL, total);
-            result.put(PageUtils.ROWS, postIPage.getSize());
-            return Result.ok(result);
+            IPage<Post> postIPage = this.baseMapper.selectPage(page, lqw);
+            List<Post> posts = postIPage.getRecords();
+            records = BeanCopyUtils.copyBeanList(posts, PostVo.class);
+            total = postIPage.getTotal();
+            rows = records.size();
         } else {
-            return null;
+            IPage<PostVo> iPage = this.baseMapper.getPosts(page, questionId, userId);
+            records = iPage.getRecords();
+            total = iPage.getTotal();
+            rows = records.size();
         }
-
+        Page<PostVo> pageData = new Page<>(total, rows, records);
+        return Result.ok(pageData);
     }
 
 
