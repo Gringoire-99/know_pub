@@ -8,14 +8,77 @@
     <select id="isLiked" resultType="integer">
         SELECT COUNT(*)
         FROM know_pub.comment_like
-        WHERE comment_id = #{commentId} and user_id = #{userId}
+        WHERE comment_id = #{commentId}
+          and user_id = #{userId}
+    </select>
+    <select id="commentPage" resultType="com.gg.kp_common.entity.vo.RootCommentVo">
+        SELECT c.id,
+               c.content,
+               u.name,
+               u.avatar,
+               c.like_count,
+               c.create_time,
+               c.post_id,
+               c.user_id,
+               c.root_comment_id,
+               c.reply_to_user_id,
+               c.reply_to_user_name,
+               c.child_count,
+               c.reply_to_comment_id
+        FROM know_pub.comment c
+                 LEFT JOIN know_pub.user u on c.user_id = u.id
+        WHERE c.post_id = #{postId}
+          and c.is_root_comment = 1
+    </select>
+    <select id="getCommentChildren" resultType="com.gg.kp_common.entity.vo.CommentVo">
+        SELECT c.id,
+               c.content,
+               u.name,
+               u.avatar,
+               c.like_count,
+               c.create_time,
+               c.post_id,
+               c.user_id,
+               c.root_comment_id,
+               c.reply_to_user_id,
+               c.reply_to_user_name,
+               c.child_count,
+               c.reply_to_comment_id
+        FROM know_pub.comment c
+                 LEFT JOIN know_pub.user u on c.user_id = u.id
+        WHERE c.root_comment_id = #{rootCommentId}
+          AND c.is_root_comment = 0
+        ORDER BY c.like_count DESC, c.create_time DESC
+        LIMIT 4
+
+    </select>
+    <select id="getChildrenComment" resultType="com.gg.kp_common.entity.vo.CommentVo">
+        SELECT c.id,
+               c.content,
+               u.name,
+               u.avatar,
+               c.like_count,
+               c.create_time,
+               c.post_id,
+               c.user_id,
+               c.root_comment_id,
+               c.reply_to_user_id,
+               c.reply_to_user_name,
+               c.child_count,
+               c.reply_to_comment_id
+        FROM know_pub.comment c
+                 LEFT JOIN know_pub.user u on c.user_id = u.id
+        WHERE c.root_comment_id = #{rootCommentId}
+          AND c.is_root_comment = 0
     </select>
     <insert id="like" parameterType="string">
         INSERT INTO know_pub.comment_like (comment_id, user_id)
         VALUES (#{commentId}, #{userId})
     </insert>
     <delete id="unlike" parameterType="string">
-        DELETE FROM know_pub.comment_like
-        WHERE comment_id = #{commentId} AND user_id = #{userId}
+        DELETE
+        FROM know_pub.comment_like
+        WHERE comment_id = #{commentId}
+          AND user_id = #{userId}
     </delete>
 </mapper>

@@ -1,5 +1,6 @@
 package com.gg.kp_common.entity.vo;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,14 +10,20 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PostComment {
+    @Schema(required = true)
     private String id;
+    @Schema(required = true)
     private String content;
-    private String name;
-    private String avatar;
+    @Schema(required = true)
     private String postId;
-    private String userId;
+    @Schema(required = true)
     private String rootCommentId;
+
+    //    只有是根评论的评论才有这些属性
     private String replyToUserName;
     private String replyToUserId;
+    private String replyToCommentId;
+
+    @Schema(required = true)
     private int isRootComment;
 }

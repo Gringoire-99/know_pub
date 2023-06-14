@@ -1,16 +1,17 @@
 package com.gg.kp_common.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.gg.kp_common.config.exception.SystemException;
 import com.gg.kp_common.dao.CommentMapper;
 import com.gg.kp_common.dao.PostMapper;
+import com.gg.kp_common.entity.model.Page;
 import com.gg.kp_common.entity.po.Comment;
 import com.gg.kp_common.entity.po.Post;
 import com.gg.kp_common.entity.vo.CommentVo;
 import com.gg.kp_common.entity.vo.PostComment;
+import com.gg.kp_common.entity.vo.RootCommentVo;
 import com.gg.kp_common.service.CommentService;
 import com.gg.kp_common.service.PostService;
 import com.gg.kp_common.utils.*;
@@ -19,7 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
 
 @Service
 public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> implements CommentService {
@@ -36,7 +38,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
      * @return 博文的评论
      */
     @Override
-    public Result<HashMap<String, Object>> getPostComment(PageParams params, String postId) {
+    public Result<Page<RootCommentVo>> getPostComment(PageParams params, String postId) {
         /*
           查出所有根评论
          */
@@ -45,65 +47,80 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         if (Objects.isNull(post)) {
             throw new SystemException("博文不存在");
         }
+        long total;
+        long rows;
+        List<RootCommentVo> pageData;
 
         IPage<Comment> page = new PageUtils<Comment>().getPage(params);
-        LambdaQueryWrapper<Comment> lqwN = new LambdaQueryWrapper<>();
-        lqwN.eq(Comment::getPostId, postId);
-        Long total = baseMapper.selectCount(lqwN);
-
-
-        LambdaQueryWrapper<Comment> lqw = new LambdaQueryWrapper<>();
-        lqw.eq(Comment::getPostId, postId).
-                eq(Comment::getIsRootComment, EntityConstant.IS_ROOT_COMMENT);
-        IPage<Comment> commentIPage = this.baseMapper.selectPage(page, lqw);
-        ArrayList<Comment> comments = new ArrayList<>(commentIPage.getRecords());
-        long rootCommentTotal = commentIPage.getTotal();
+        IPage<RootCommentVo> commentIPage = this.baseMapper.commentPage(page, postId);
+        total = commentIPage.getTotal();
+        rows = commentIPage.getSize();
+        pageData = commentIPage.getRecords();
         /*
-          最多查出4个子评论
+          查出根评论的子评论，最多查出4个子评论
          */
-        LambdaQueryWrapper<Comment> lqwC = new LambdaQueryWrapper<>();
-        lqwC.orderByDesc(Comment::getLikeCount).orderByDesc(Comment::getCreateTime);
-        for (Comment record : commentIPage.getRecords()) {
-            lqwC.eq(Comment::getRootCommentId, record.getId()).eq(Comment::getIsRootComment, EntityConstant.NOT_ROOT_COMMENT);
-            lqwC.last("limit 4");
-            comments.addAll(this.baseMapper.selectList(lqwC));
-            lqwC.clear();
+        for (RootCommentVo rootCommentVo : pageData) {
+            List<CommentVo> comments = this.baseMapper.getCommentChildren(rootCommentVo.getId());
+            rootCommentVo.setChildComments(comments);
         }
-        List<CommentVo> commentVos = BeanCopyUtils.copyBeanList(comments, CommentVo.class);
 
-        HashMap<String, Object> data = new HashMap<>();
-        data.put(PageUtils.PAGE, commentVos);
-        data.put(PageUtils.TOTAL, total);
-        data.put(PageUtils.ROWS, comments.size());
-        data.put("rootCommentTotal", rootCommentTotal);
-        return Result.ok(data);
+        Page<RootCommentVo> rootCommentVoPage = new Page<>(total, rows, pageData);
+        return Result.ok(rootCommentVoPage);
     }
 
+    /**
+     * 发布评论
+     *
+     * @param comment 被发布评论
+     * @return 更新结果
+     */
     @Transactional
     @Override
     public Result<Integer> postComment(PostComment comment) {
-//      TODO 对comment合法性进行校验
-
-        String id = SecurityUtils.getId();
-        Comment c = new Comment();
-        c.setUserId(id);
-        BeanUtils.copyProperties(comment, c);
-//        根据postId 更新 post的评论计数，如果r为0说明这个post不存在
-        Integer r = postService.onComment(comment.getPostId());
-        if (r == 0) throw new RuntimeException("评论失败-回复不存在");
-        LambdaUpdateWrapper<Comment> lqwU = new LambdaUpdateWrapper<Comment>();
-//        更新rootComment的childCount
-        if (comment.getIsRootComment() == EntityConstant.NOT_ROOT_COMMENT) {
-            lqwU.eq(Comment::getId, comment.getRootCommentId())
-                    .setSql("child_count = child_count + 1");
-            baseMapper.update(null, lqwU);
+//      对comment合法性进行校验
+        String postId = comment.getPostId();
+        Post post = postMapper.selectById(postId);
+        if (Objects.isNull(post)) {
+            throw new SystemException("博文不存在");
         }
-        Integer result = this.baseMapper.insert(c);
-        return Result.ok(result);
+
+        Comment rootComment;
+        if (comment.getIsRootComment() == EntityConstant.NOT_ROOT_COMMENT) {
+            rootComment = this.baseMapper.selectById(comment.getRootCommentId());
+
+            if (Objects.isNull(rootComment)) {
+                throw new SystemException("回复的评论不存在");
+            }
+            if (!Objects.isNull(comment.getReplyToCommentId())) {
+                Comment replyToComment = this.baseMapper.selectById(comment.getReplyToCommentId());
+                if (Objects.isNull(replyToComment)) {
+                    throw new SystemException("回复的评论不存在");
+                }
+            }
+            rootComment.setChildCount(rootComment.getChildCount() + 1);
+            baseMapper.update(rootComment, null);
+
+        }
+
+
+        Comment c = new Comment();
+        BeanUtils.copyProperties(comment, c);
+        String id = SecurityUtils.getId();
+        c.setUserId(id);
+        postService.onComment(post.getId());
+        boolean result = this.save(c);
+        return Result.ok(result ? 1 : 0);
     }
 
+    /**
+     * 根据commentId获取子评论
+     *
+     * @param params    分页参数
+     * @param commentId 评论id
+     * @return 子评论
+     */
     @Override
-    public Result<HashMap<String, Object>> getChildComment(PageParams params, String commentId) {
+    public Result<Page<CommentVo>> getChildComment(PageParams params, String commentId) {
 //        根据commentId 查出所有子id
         ValidationUtils.validate().validateEmpty(commentId);
 
@@ -113,23 +130,21 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         }
 
         IPage<Comment> page = new PageUtils<Comment>().getPage(params);
-        LambdaQueryWrapper<Comment> lqw = new LambdaQueryWrapper<>();
-        lqw.eq(Comment::getRootCommentId, commentId).eq(Comment::getIsRootComment, EntityConstant.NOT_ROOT_COMMENT);
-
-        IPage<Comment> commentIPage = this.baseMapper.selectPage(page, lqw);
-        List<CommentVo> commentVos = BeanCopyUtils.copyBeanList(commentIPage.getRecords(), CommentVo.class);
-        HashMap<String, Object> data = new HashMap<>();
-        data.put(PageUtils.PAGE, commentVos);
-        data.put(PageUtils.TOTAL, commentIPage.getTotal());
-        data.put(PageUtils.ROWS, commentIPage.getRecords().size());
-        return Result.ok(data);
+        IPage<CommentVo> pageData = this.baseMapper.getChildrenComment(page, commentId);
+        Page<CommentVo> commentVoPage = new Page<CommentVo>(pageData.getTotal(), pageData.getSize(), pageData.getRecords());
+        return Result.ok(commentVoPage);
 
     }
 
+    /**
+     * 点赞评论
+     *
+     * @param commentId 评论id
+     * @return 点赞结果
+     */
     @Transactional
     @Override
-    public Result<Integer> likeComment(Map<String, Object> params) {
-        String commentId = (String) params.get("commentId");
+    public Result<Integer> onLike(String commentId) {
         LambdaQueryWrapper<Comment> lqwC = new LambdaQueryWrapper<>();
         lqwC.eq(Comment::getId, commentId);
         Comment comment = this.baseMapper.selectOne(lqwC);

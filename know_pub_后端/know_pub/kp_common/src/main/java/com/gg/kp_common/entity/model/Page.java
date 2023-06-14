@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Data
@@ -13,4 +14,12 @@ public class Page<T> {
     Long total;
     Long rows;
     List<T> page;
+    HashMap<String, Object> extra = new HashMap<>();
+
+    public Page(Long total, Long rows, List<T> page) {
+        this.total = total;
+        this.rows = rows;
+        this.page = page;
+    }
+
 }

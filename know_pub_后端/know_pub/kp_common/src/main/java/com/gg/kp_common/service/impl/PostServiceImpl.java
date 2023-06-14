@@ -81,14 +81,23 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     @Transactional
     @Override
     public Integer onComment(String postId) {
+        String userId = SecurityUtils.getId();
         LambdaUpdateWrapper<Post> luw = new LambdaUpdateWrapper<>();
         luw.eq(Post::getId, postId).setSql("comment_count = comment_count + 1");
-        PostAction action = new PostAction();
-        action.setUserId(SecurityUtils.getId());
-        action.setTargetId(postId);
-        action.setReplied(EntityConstant.ACTION_ON);
-        this.postActionService.saveOrUpdate(action);
-        return baseMapper.update(null, luw);
+        int result = baseMapper.update(null, luw);
+
+        LambdaQueryWrapper<PostAction> pALqw = new LambdaQueryWrapper<>();
+        pALqw.eq(PostAction::getTargetId, postId).eq(PostAction::getUserId, userId);
+        PostAction postAction = this.postActionMapper.selectOne(pALqw);
+        if (Objects.isNull(postAction)) {
+            postAction = new PostAction();
+        }
+        postAction.setUserId(userId);
+        postAction.setTargetId(postId);
+        postAction.setReplied(EntityConstant.ACTION_ON);
+
+        this.postActionService.saveOrUpdate(postAction);
+        return result;
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.gg.kp_common.entity.po;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,6 +11,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PostAction {
+    @TableId
+    private String id;
     private int liked;
     private int collected;
     private int disliked;

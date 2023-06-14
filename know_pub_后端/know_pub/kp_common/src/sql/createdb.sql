@@ -50,21 +50,20 @@ CREATE TABLE IF NOT EXISTS know_pub.user
 );
 CREATE TABLE IF NOT EXISTS comment
 (
-    id                 char(40)                                                  NOT NULL primary key comment '评论id',
-    content            LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci not null comment '评论内容',
-    name               char(40)                                                  NOT NULL comment '评论人的姓名',
-    avatar             varchar(100) default 'http://dummyimage.com/100x100' comment '评论人的头像',
-    create_time        datetime     default now() comment '评论时间',
-    like_count         int          default 0 comment '点赞数',
-    status             int          default 0 comment '状态,0:正常,1:禁用',
-    post_id            char(40)                                                  NOT NULL comment '评论的文章id',
-    user_id            char(40)                                                  NOT NULL comment '这条评论发布者的id',
-    root_comment_id    char(40)                                                  NOT NULL comment '根评论的id,如果自己是根评论，此条为自己的id',
-    reply_to_user_name char(40)     default '' comment '被回复者的名字',
-    reply_to_user_id   char(40)     default '' comment '被回复者的id',
-    is_root_comment    int          default 1 comment '是否是根评论,1:是,0:不是',
-    child_count        int          default 0 comment '子评论数,当数量小于等于4时查出所有子评论,大于4时不查',
-    del_flag           int          default 0 comment '删除标志,0:未删除,1:已删除'
+    id                  char(40)                                                  NOT NULL primary key comment '评论id',
+    content             LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci not null comment '评论内容',
+    create_time         datetime default now() comment '评论时间',
+    like_count          int      default 0 comment '点赞数',
+    status              int      default 0 comment '状态,0:正常,1:禁用',
+    post_id             char(40)                                                  NOT NULL comment '评论的文章id',
+    user_id             char(40)                                                  NOT NULL comment '这条评论发布者的id',
+    root_comment_id     char(40)                                                  NOT NULL comment '根评论的id,如果自己是根评论，此条为自己的id',
+    reply_to_user_name  char(40) default '' comment '被回复者的名字',
+    reply_to_user_id    char(40) default '' comment '被回复者的id',
+    reply_to_comment_id char(40) default '' comment '被回复的评论id',
+    is_root_comment     int      default 1 comment '是否是根评论,1:是,0:不是',
+    child_count         int      default 0 comment '子评论数,当数量小于等于4时查出所有子评论,大于4时不查',
+    del_flag            int      default 0 comment '删除标志,0:未删除,1:已删除'
 
 );
 CREATE TABLE IF NOT EXISTS post
@@ -121,15 +120,15 @@ CREATE TABLE IF NOT EXISTS tag
 
 CREATE TABLE IF NOT EXISTS post_action
 (
+    id          char(60) not null primary key comment 'id',
     liked       int      default 0 comment '0未点赞，1点赞',
     collected   int      default 0 comment '0未收藏，1收藏',
     disliked    int      default 0 comment '0未点踩，1点踩',
     replied     int      default 0 comment '0未评论，1评论',
-    user_id     char(60)             not null comment '用户id',
+    user_id     char(60) not null comment '用户id',
     create_time datetime default now() comment '创建时间',
-    target_id   char(60)             not null comment '目标id(postId)',
-    update_time datetime default now() comment '更新时间',
-    primary key (user_id, target_id)
+    target_id   char(60) not null comment '目标id(postId)',
+    update_time datetime default now() comment '更新时间'
 );
 /*Table structure for table `sys_menu` */
 
