@@ -1,5 +1,6 @@
 package com.gg.kp_main.controller;
 
+import com.gg.kp_common.entity.model.Page;
 import com.gg.kp_common.entity.vo.PostQuestionVo;
 import com.gg.kp_common.entity.vo.QuestionVo;
 import com.gg.kp_common.entity.vo.RecommendedQuestionVo;
@@ -32,7 +33,7 @@ public class QuestionController {
     }
 
     @GetMapping("/questions")
-    public Result<Map<String, Object>> getQuestions(@ApiParam PageParams params) {
+    public Result<Page<QuestionVo>> getQuestions(@ApiParam PageParams params) {
         return questionService.getQuestions(params);
     }
 

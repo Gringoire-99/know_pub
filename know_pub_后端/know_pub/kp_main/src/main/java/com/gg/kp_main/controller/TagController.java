@@ -1,5 +1,7 @@
 package com.gg.kp_main.controller;
 
+import com.gg.kp_common.entity.model.Page;
+import com.gg.kp_common.entity.vo.TagVo;
 import com.gg.kp_common.service.TagService;
 import com.gg.kp_common.utils.PageParams;
 import com.gg.kp_common.utils.Result;
@@ -18,7 +20,7 @@ public class TagController {
     @Autowired
     TagService tagService;
     @GetMapping("/tags")
-    public Result<Map<String, Object>> getTags(@ApiParam PageParams params) {
+    public Result<Page<TagVo>> getTags(@ApiParam PageParams params) {
         return tagService.getTags(params);
     }
 }

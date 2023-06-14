@@ -23,6 +23,28 @@
         JOIN
         know_pub.user u ON q.user_id = u.id
     </select>
+    <select id="getQuestionDetail" resultType="com.gg.kp_common.entity.vo.QuestionVo">
+        SELECT q.id,
+        q.question,
+        q.content,
+        q.cover,
+        q.images,
+        q.like_count,
+        q.user_id,
+        u.name,
+        u.avatar,
+        q.create_time,
+        q.comment_count,
+        q.answer_count,
+        q.collection_count,
+        q.view_count,
+        q.tag_names,
+        q.is_anonymous
+        FROM know_pub.question q
+        JOIN
+        know_pub.user u ON q.user_id = u.id
+        WHERE q.id = #{questionId}
+    </select>
 
 </mapper>
 

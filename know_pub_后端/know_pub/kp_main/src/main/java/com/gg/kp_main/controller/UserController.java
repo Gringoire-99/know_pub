@@ -1,17 +1,12 @@
 package com.gg.kp_main.controller;
 
-import com.gg.kp_common.entity.po.User;
 import com.gg.kp_common.entity.vo.*;
-import com.gg.kp_common.feign.OssFeignClient;
 import com.gg.kp_common.service.UserService;
 import com.gg.kp_common.utils.Result;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
-import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -19,6 +14,7 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserService userService;
+
     @PostMapping("/login")
     public Result<UserVo> login(@RequestBody RegisterUser user) {
         return userService.login(user);
@@ -69,12 +65,10 @@ public class UserController {
 
     @PreAuthorize("hasRole('USER')")
     @PatchMapping("/update-avatar")
-    public Result<Integer> updateAvatar(@RequestBody HashMap<String,Object> param){
-        return userService.updateAvatar(param.get("dir").toString());
+    public Result<Integer> updateAvatar(@RequestBody String dir) {
+        return userService.updateAvatar(dir);
 
     }
-
-
 
 
 }

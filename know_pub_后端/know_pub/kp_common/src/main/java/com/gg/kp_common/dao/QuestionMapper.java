@@ -11,4 +11,5 @@ import org.apache.ibatis.annotations.Mapper;
 public interface QuestionMapper extends BaseMapper<Question> {
     IPage<QuestionVo> getQuestionVoPage(IPage<?> page);
 
+    QuestionVo getQuestionDetail(String questionId);
 }

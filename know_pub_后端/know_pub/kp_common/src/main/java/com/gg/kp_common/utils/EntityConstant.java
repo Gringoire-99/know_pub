@@ -10,5 +10,9 @@ public class EntityConstant {
     public static final int ACTION_ON = 1;
     public static final int ACTION_OFF = 0;
 
+    public static final int IS_ANONYMOUS = 1;
+    public static final int NOT_ANONYMOUS = 0;
+    public static final int IS_DELETED = 1;
+    public static final int NOT_DELETED = 0;
 
 }
