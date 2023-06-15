@@ -3,7 +3,6 @@
 **API接口文档👇**  
 **https://apifox.com/apidoc/shared-d052ea40-29dd-4b9b-893b-a33564238163**
 
-重构中...
    
    # ✨TODO✨:
    1. login
@@ -18,7 +17,8 @@
    10. collection
    
    后台管理系统
-   1. todo...
+   1. 增删改查
+   2. 动态路由
    
 # 👌QuickStart👌
 
