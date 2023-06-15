@@ -65,9 +65,8 @@ public class UserController {
 
     @PreAuthorize("hasRole('USER')")
     @PatchMapping("/update-avatar")
-    public Result<Integer> updateAvatar(@RequestBody String dir) {
+    public Result<Integer> updateAvatar(@RequestParam String dir) {
         return userService.updateAvatar(dir);
-
     }
 
 

@@ -98,7 +98,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
                 }
             }
             rootComment.setChildCount(rootComment.getChildCount() + 1);
-            baseMapper.update(rootComment, null);
+            baseMapper.updateById(rootComment);
 
         }
 

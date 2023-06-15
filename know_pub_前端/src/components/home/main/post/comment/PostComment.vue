@@ -54,6 +54,7 @@ import Emoji from "@/components/icons/emoji.vue";
 import http from "@/utils/http/http";
 import {ElMessage} from "element-plus";
 import Mock from "mockjs";
+
 export default {
 
     //组件名
@@ -110,6 +111,7 @@ export default {
                     if (parent.isRootComment !== 1) {
                         newComment.replyToUserName = parent.name
                         newComment.replyToUserId = parent.userId
+                        newComment.repluToCommentId = parent.id
                     }
                 } else {
                     //     父级是post,说明这是根评论，不需要显示回复了谁

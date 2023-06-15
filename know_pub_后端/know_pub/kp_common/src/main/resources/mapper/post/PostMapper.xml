@@ -31,17 +31,17 @@
                post.question_id,
                post.content,
                post.cover,
-               post.images,
-               post.like_count,
-               post.dislike_count,
-               post.user_id,
-               post.comment_count,
-               action.liked     AS liked,
-               action.collected AS collected,
-               action.disliked  AS disliked,
-               action.replied   AS replied
+        post.images,
+        post.like_count,
+        post.dislike_count,
+        post.user_id,
+        post.comment_count,
+        action.liked AS liked,
+        action.collected AS collected,
+        action.disliked AS disliked,
+        action.replied AS replied
         FROM know_pub.post post
-                 LEFT JOIN post_action action ON post.id = action.target_id AND action.user_id = #{userId}
+        RIGHT JOIN post_action action ON post.id = action.target_id AND action.user_id = #{userId}
         WHERE post.status = 0
         ORDER BY action.create_time DESC
     </select>

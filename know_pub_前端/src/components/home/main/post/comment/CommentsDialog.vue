@@ -22,8 +22,8 @@
                 infinite-scroll-distance="50"
             >
                 <transition-group name="root-comments">
-                    <root-comment v-for="rootComment in rootComments" :key="rootComment.rootComment.id"
-                                  :comments="rootComment" @refresh="getComments(false)">
+                    <root-comment v-for="rootComment in comments" :key="rootComment.id"
+                                  :root-comment="rootComment" @refresh="getComments(false)">
                     </root-comment>
                 </transition-group>
 
@@ -67,7 +67,6 @@ export default {
             orderBy: "like_count",
             comments: [],
             total: 0,
-            rootComments: {},
             post: {}
 
         }
@@ -76,33 +75,6 @@ export default {
     methods: {
         changeOrderBy(orderBy) {
             this.orderBy = orderBy
-        },
-        filterRootComments(comments) {
-            // 筛选出根评论
-            let rootComments = new Map()
-            comments.forEach(comment => {
-                if (comment.isRootComment === 1) {
-                    if (!rootComments.has(comment.id)) {
-                        rootComments.set(comment.id, {
-                            rootComment: comment,
-                            childComments: []
-                        })
-                    }
-                } else {
-                    if (rootComments.has(comment.rootCommentId)) {
-                        rootComments.get(comment.rootCommentId).childComments.push(comment)
-                    } else {
-                        rootComments.set(comment.rootCommentId, {
-                            rootComment: null,
-                            childComments: [comment]
-                        })
-                    }
-                }
-
-            })
-            // 将map转换为数组
-            return Array.from(rootComments.values())
-
         },
         getComments(isMerge = true) {
             if (this.isLoading) return
@@ -168,25 +140,11 @@ export default {
     },
     //侦听器
     watch: {
-        comments: {
-            deep: true,
-            handler(newVal, oldVal) {
-                this.rootComments = this.filterRootComments(newVal)
-                return newVal
-            }
-        },
         orderBy(newValue, oldValue) {
             this.getComments(false)
             return newValue
         },
-        rootComments: {
-            deep: true,
-            handler(newVal, oldVal) {
-                return newVal
-            }
-        }
-    }
-    ,
+    },
     //计算属性
     computed: {}
     ,

@@ -2,39 +2,71 @@
     <div class="detail-root">
         <el-tabs v-model="currentTab" v-on:tab-click="getData">
             <el-tab-pane label="动态" lazy name="dynamic">
-                <div class="header"><span>我的动态</span></div>
-                <transition-group name="content">
-                    <div v-for="post in dynamics" :key="post.id">
-                        <post :is-show-action="true" :post="post"></post>
+                <div class="pane dynamic">
+                    <div class="header"><span>我的动态</span></div>
+                    <transition-group name="content">
+                        <div v-for="post in dynamics" :key="post.id">
+                            <post :is-show-action="true" :post="post"></post>
+                        </div>
+                    </transition-group>
+                    <div v-show="dynamics.length===0">
+                        <el-empty description="什么也没有~"></el-empty>
                     </div>
-                </transition-group>
+                </div>
             </el-tab-pane>
             <el-tab-pane label="问题" lazy name="question">
-                问题
+                <div v-show="questions.length===0">
+                    <el-empty description="什么也没有~"></el-empty>
+                </div>
             </el-tab-pane>
             <el-tab-pane label="文章" lazy name="article">
-                文章
+                <div v-show="articles.length===0">
+                    <el-empty description="什么也没有~"></el-empty>
+                </div>
             </el-tab-pane>
             <el-tab-pane label="收藏" lazy name="collection">
-                收藏
+                <div class="pane collection">
+                    <div class="header">
+                        <span>我的收藏</span>
+                        <div class="header-add" @click="showAddCollection=true">
+                            <el-icon>
+                                <Plus></Plus>
+                            </el-icon>
+                            <span>新建收藏夹</span>
+                        </div>
+                    </div>
+                    <div v-show="collections.length===0">
+                        <el-empty description="什么也没有~"></el-empty>
+                    </div>
+                </div>
             </el-tab-pane>
             <el-tab-pane label="关注" lazy name="follow">
-                关注
+                <div v-show="follows.length===0">
+                    <el-empty description="什么也没有~"></el-empty>
+                </div>
             </el-tab-pane>
-            <el-skeleton v-show="isLoading" :rows="10"></el-skeleton>
         </el-tabs>
+        <el-dialog v-model="showAddCollection" width="35%">
+            <add-collection @close="showAddCollection=false"></add-collection>
+        </el-dialog>
     </div>
 </template>
 
 <script>
 import http from "@/utils/http/http";
 import Post from "@/components/home/main/post/Post.vue";
+import {CloseBold} from "@element-plus/icons-vue";
+import Plus from "@/components/icons/Plus.vue";
+import AddCollection from "@/components/user/collection/AddCollection.vue";
 
 export default {
     //组件名
     name: "user-detail",
     //依赖的组件
     components: {
+        AddCollection,
+        Plus,
+        CloseBold,
         Post,
     },
     //数据
@@ -49,7 +81,8 @@ export default {
             currentPage: 1,
             currentTab: 'dynamic',
             total: 0,
-            isLoading: false
+            isLoading: false,
+            showAddCollection: false
         }
     },
     //方法
@@ -76,7 +109,6 @@ export default {
             }
         },
         getDynamics(isMerge = false) {
-            console.log('getDynamics');
             if (this.isLoading) {
                 return
             }
@@ -142,7 +174,7 @@ export default {
         getFollows() {
             http.get('/user/followers', {
                 params: {
-                    userId: this.$store.state.userId,
+                    userId: this.userId,
                     currentPage: this.currentPage,
                     pageSize: this.pageSize
                 }
@@ -190,10 +222,49 @@ export default {
     padding: 5px 15px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 
-    .header {
-        margin-left: 15px;
-        margin-top: 10px;
-        font-weight: bold;
+    .pane {
+        display: flex;
+        flex-direction: column;
+
+        .header {
+            padding: 0.5em 1em;
+        }
+
+        &.dynamic {
+            .header {
+                font-weight: bold;
+            }
+        }
+
+        &.collection {
+            .header {
+                display: flex;
+                align-items: center;
+
+                & > span {
+                    position: relative;
+
+                    &::after {
+                        content: '';
+                        background-color: $deep-blue;
+                        position: absolute;
+                        left: 0;
+                        right: 0;
+                        bottom: -0.5em;
+                        height: 3px;
+                        border-radius: 5px;
+                    }
+                }
+
+                &-add {
+                    @include align();
+                    @include clickEffect();
+                    margin-left: auto;
+                    gap: 0.5em;
+                    color: $deep-blue;
+                }
+            }
+        }
     }
 }
 

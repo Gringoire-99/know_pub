@@ -143,7 +143,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
                 .eq(PostAction::getUserId, userId);
         PostAction postAction = postActionMapper.selectOne(lqwA);
 
-//      判断该用户是否已存在对该博文的动作
+//      判断该用户是否已存在对该博文的动作know_pub
         if (Objects.isNull(postAction)) {
             PostAction newAction = new PostAction();
             newAction.setLiked(EntityConstant.ACTION_ON);
@@ -151,17 +151,22 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
             newAction.setTargetId(postId);
             postActionMapper.insert(newAction);
             result = EntityConstant.ACTION_ON;
+            post.setLikeCount(post.getLikeCount() + 1);
         } else {
 //            点赞动作的开关
             result = postAction.getLiked() == EntityConstant.ACTION_ON ? EntityConstant.ACTION_OFF : EntityConstant.ACTION_ON;
             postAction.setLiked(result);
-
+            post.setLikeCount(post.getLikeCount() + (result == EntityConstant.ACTION_ON ? 1 : -1));
 //            点赞和点踩是互斥操作
-            if (postAction.getLiked() == EntityConstant.ACTION_ON) {
+            if (postAction.getDisliked() == EntityConstant.ACTION_ON) {
                 postAction.setDisliked(EntityConstant.ACTION_OFF);
+                post.setDislikeCount(post.getDislikeCount() - 1);
             }
             postActionMapper.update(postAction, lqwA);
+
         }
+        baseMapper.updateById(post);
+
         return Result.ok(result);
     }
 

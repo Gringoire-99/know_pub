@@ -130,6 +130,21 @@ CREATE TABLE IF NOT EXISTS post_action
     target_id   char(60) not null comment '目标id(postId)',
     update_time datetime default now() comment '更新时间'
 );
+
+CREATE TABLE IF NOT EXISTS collection
+(
+    id            char(60)    not null primary key comment 'id',
+    user_id       char(60)    not null comment '用户id',
+    title         varchar(20) not null comment '标题',
+    description   varchar(256) default '' comment '描述',
+    collect_count int          default 0 comment '收藏数',
+    follow_count  int          default 0 comment '关注数',
+    create_time   datetime     default now() comment '创建时间',
+    update_time   datetime     default now() comment '更新时间',
+    status        int          default 0 comment '状态,0:正常,1:禁用',
+    del_flag      int          default 0 comment '删除标志,0:未删除,1:已删除',
+    is_private    int          default 0 comment '是否私有,0:公开,1:私有'
+);
 /*Table structure for table `sys_menu` */
 
 

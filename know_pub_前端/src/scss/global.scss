@@ -239,3 +239,16 @@
   padding-bottom: 1em;
   border-bottom: 1px solid $white-gray;
 }
+
+%input-base {
+  @include clearDefault();
+  border: 1px solid #ebebeb;
+  border-radius: 2px;
+  overflow-y: hidden;
+  padding: 0.7em;
+  transition: border 0.3s;
+
+  &:focus, &:active {
+    border: 1px solid $gray;
+  }
+}

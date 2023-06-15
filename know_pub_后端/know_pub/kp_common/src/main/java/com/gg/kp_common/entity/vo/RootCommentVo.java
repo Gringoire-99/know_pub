@@ -25,6 +25,7 @@ public class RootCommentVo {
     private String replyToUserName;
     private String replyToUserId;
     private String replyToCommentId;
+    private int isRootComment;
     private int childCount;
     private List<CommentVo> childComments;
 }

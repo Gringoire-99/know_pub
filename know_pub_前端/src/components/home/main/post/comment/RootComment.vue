@@ -1,8 +1,8 @@
 <template>
     <div class="body w-100">
-        <comment :comment="comments.rootComment" @refresh="$emit('refresh')"></comment>
+        <comment :comment="rootComment" @refresh="$emit('refresh')"></comment>
 
-        <div v-if="comments.childComments.length>0"
+        <div v-if="rootComment.childComments.length>0"
              class="child_comments w-100">
             <transition-group name="comments">
                 <div v-for="(comment,index) in tempChildComments" :key="index">
@@ -13,17 +13,17 @@
             <div class="showMore  mb-4">
                 <!--            -2>4 有大于4个折叠元素（>4） -2>0有折叠元素(4-1)-->
                 <el-button
-                    v-show="comments.rootComment.childCount>TEMP_DISPLAY_NUMBER"
+                    v-show="rootComment.childCount>TEMP_DISPLAY_NUMBER"
                     v-on:click="unfold">
                     {{
-                        (comments.rootComment.childCount > NUMBER_ON_HIDE)
-                            ? `查看全部${comments.rootComment.childCount}条评论` : `展开其他${comments.rootComment.childCount - TEMP_DISPLAY_NUMBER}条评论`
+                        (rootComment.childCount > NUMBER_ON_HIDE)
+                            ? `查看全部${rootComment.childCount}条评论` : `展开其他${rootComment.childCount - TEMP_DISPLAY_NUMBER}条评论`
                     }}
                 </el-button>
             </div>
             <div v-if="isLoadingRCD">
                 <el-dialog v-model="dialogVisible" :align-center="true" :draggable="true" width="75%">
-                    <root-comment-dialog :root-comment="comments.rootComment"></root-comment-dialog>
+                    <root-comment-dialog :root-comment="rootComment"></root-comment-dialog>
                 </el-dialog>
 
             </div>
@@ -61,7 +61,7 @@ export default {
             this.isOpenPostComment = !this.isOpenPostComment
         },
         unfold() {
-            if (this.comments.rootComment.childCount > this.NUMBER_ON_HIDE) {
+            if (this.rootComment.childCount > this.NUMBER_ON_HIDE) {
                 this.isLoadingRCD = true
                 this.dialogVisible = true
             } else {
@@ -77,7 +77,7 @@ export default {
     },
     //侦听器
     watch: {
-        comments: {
+        rootComment: {
             deep: true,
             handler(newVal, oldVal) {
                 return newVal
@@ -88,15 +88,13 @@ export default {
     //计算属性
     computed: {
         tempChildComments() {
-            return this.comments.childComments.slice(0, this.TEMP_DISPLAY_NUMBER)
+            return this.rootComment.childComments.slice(0, this.TEMP_DISPLAY_NUMBER)
         }
     }
     ,
     //绑定父组件的属性
     props: {
-        comments: {
-            rootComment: {},
-            childComments: [],
+        rootComment: {
             type: Object,
             require: true,
         }

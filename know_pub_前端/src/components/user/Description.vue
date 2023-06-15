@@ -147,7 +147,9 @@ export default {
             return true
         },
         onSuccess(response) {
-            http.patch('/user/update-avatar', {dir: this.dir}).then(res => {
+            http.patch('/user/update-avatar', {}, {
+                dir: this.dir
+            }).then(res => {
                 if (res.data.code === 200) {
                     ElMessage.success('上传图像成功，更新用户信息成功');
                 } else {

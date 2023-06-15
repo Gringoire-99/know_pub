@@ -14,21 +14,22 @@
     <select id="commentPage" resultType="com.gg.kp_common.entity.vo.RootCommentVo">
         SELECT c.id,
                c.content,
-               u.name,
-               u.avatar,
-               c.like_count,
-               c.create_time,
-               c.post_id,
-               c.user_id,
-               c.root_comment_id,
-               c.reply_to_user_id,
-               c.reply_to_user_name,
-               c.child_count,
-               c.reply_to_comment_id
+        u.name,
+        u.avatar,
+        c.like_count,
+        c.create_time,
+        c.post_id,
+        c.user_id,
+        c.root_comment_id,
+        c.reply_to_user_id,
+        c.reply_to_user_name,
+        c.child_count,
+        c.reply_to_comment_id,
+        c.is_root_comment
         FROM know_pub.comment c
-                 LEFT JOIN know_pub.user u on c.user_id = u.id
+        LEFT JOIN know_pub.user u on c.user_id = u.id
         WHERE c.post_id = #{postId}
-          and c.is_root_comment = 1
+        and c.is_root_comment = 1
     </select>
     <select id="getCommentChildren" resultType="com.gg.kp_common.entity.vo.CommentVo">
         SELECT c.id,

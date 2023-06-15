@@ -2,7 +2,7 @@
     <div class="root card">
         <div class="card-body">
             <div v-if="isShowAction" class="fw-xsm text-gray d-flex">
-                <span>{{ action }}了该回答</span>
+                <span>{{ action.join(',') }}了该回答</span>
                 <span class="ms-auto">{{ action.time }}</span>
             </div>
 
@@ -52,7 +52,7 @@
                     </el-icon>
                 </el-button>
                 <div class="etc d-flex align-items-center w-100">
-                    <el-button class="comments-btn" v-on:click="collapseComments">
+                    <el-button :class="{onReplied:onReplied}" class="comments-btn" v-on:click="collapseComments">
                         <div class="d-flex justify-content-center align-items-center">
                             <el-icon>
                                 <ChatDotRound/>
@@ -62,7 +62,6 @@
                                     isCollapseComments ? post.commentCount > 0 ? `${post.commentCount}条评论` : "添加评论" : '收起评论'
                                 }}
                             </span>
-
                         </div>
                     </el-button>
                     <el-button class="share-btn">
@@ -137,7 +136,6 @@ import {
     Share,
     StarFilled
 } from "@element-plus/icons-vue";
-import Mock from "mockjs";
 
 import Comments from "@/components/home/main/post/comment/Comments.vue";
 import PostComment from "@/components/home/main/post/comment/PostComment.vue";
@@ -171,7 +169,9 @@ export default {
             isCollapseComments: true,
             onLike: false,
             onDislike: false,
-            action: '',
+            onReplied: false,
+            onCollected: false,
+            action: [],
         }
     }, //绑定父组件的属性
     props: {
@@ -210,8 +210,10 @@ export default {
                 return
             }
             console.log(this.post.id)
-            http.post('/post/like', {
-                postId: this.post.id
+            http.post('/post/like', {}, {
+                params: {
+                    postId: this.post.id
+                }
             }).then(res => {
                 if (res.data.code === 200) {
                     let result = res.data.data === 1
@@ -238,8 +240,21 @@ export default {
     created() {
         if (this.post.liked) {
             this.onLike = true
-            this.action += '点赞'
+            this.action.push('点赞')
         }
+        if (this.post.dislike) {
+            this.onLike = true
+            this.action.push('点踩')
+        }
+        if (this.post.collected) {
+            this.onCollected = true
+            this.action.push('收藏')
+        }
+        if (this.post.replied) {
+            this.onReplied = true
+            this.action.push('回复')
+        }
+
 
     },
     //侦听器
@@ -315,15 +330,20 @@ export default {
             background: white;
             font-size: 16px;
             margin-left: 5px;
-        }
 
-        .el-button {
             .el-icon {
                 font-size: 20px;
                 margin-bottom: 2px;
                 margin-right: 3px;
+
+
+            }
+
+            &.onReplied {
+                color: $deep-blue;
             }
         }
+
     }
 }
 
