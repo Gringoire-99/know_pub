@@ -27,13 +27,18 @@
             <el-tab-pane label="收藏" lazy name="collection">
                 <div class="pane collection">
                     <div class="header">
-                        <span>我的收藏</span>
+                        <span class="selected">我的收藏</span>
+                        <span>我关注的收藏</span>
                         <div class="header-add" @click="showAddCollection=true">
                             <el-icon>
                                 <Plus></Plus>
                             </el-icon>
                             <span>新建收藏夹</span>
                         </div>
+                    </div>
+                    <div class="body">
+                        <user-collection v-for="collection in collections" :key="collection.id"
+                                         :collection="collection" @refreshCollections="getData"></user-collection>
                     </div>
                     <div v-show="collections.length===0">
                         <el-empty description="什么也没有~"></el-empty>
@@ -47,7 +52,7 @@
             </el-tab-pane>
         </el-tabs>
         <el-dialog v-model="showAddCollection" width="35%">
-            <add-collection @close="showAddCollection=false"></add-collection>
+            <add-collection @close="showAddCollection=false" @refreshCollections="getData"></add-collection>
         </el-dialog>
     </div>
 </template>
@@ -55,15 +60,17 @@
 <script>
 import http from "@/utils/http/http";
 import Post from "@/components/home/main/post/Post.vue";
-import {CloseBold} from "@element-plus/icons-vue";
+import {CloseBold, Collection} from "@element-plus/icons-vue";
 import Plus from "@/components/icons/Plus.vue";
 import AddCollection from "@/components/user/collection/AddCollection.vue";
+import UserCollection from "@/components/user/collection/UserCollection.vue";
 
 export default {
     //组件名
     name: "user-detail",
     //依赖的组件
     components: {
+        UserCollection,
         AddCollection,
         Plus,
         CloseBold,
@@ -87,24 +94,23 @@ export default {
     },
     //方法
     methods: {
-        getData(pane, isMerge, paneName) {
-            console.log('getData', pane)
-            let name = pane ? pane.paneName : paneName
+        getData(pane, pe, isMerge) {
+            let name = pane ? pane.paneName : this.currentTab
             switch (name) {
                 case 'dynamic':
                     this.getDynamics(isMerge);
                     break;
                 case 'question':
-                    this.getQuestions();
+                    this.getQuestions(isMerge);
                     break;
                 case 'article':
-                    this.getArticles();
+                    this.getArticles(isMerge);
                     break;
                 case 'collection':
-                    this.getCollections();
+                    this.getCollections(isMerge);
                     break;
                 case 'follow':
-                    this.getFollows();
+                    this.getFollows(isMerge);
                     break;
             }
         },
@@ -126,13 +132,11 @@ export default {
             }).then(res => {
                 if (isMerge) {
                     this.dynamics.push(...res.data.data.page);
-                    this.currentPage++
                 } else {
                     this.dynamics = res.data.data.page;
-                    this.currentPage = 2
                 }
+                this.currentPage++
                 this.total = res.data.data.total
-                console.log(this.dynamics)
             }).finally(() => {
                 this.isLoading = false
                 this.$store.commit('SET_LOAD_DATA', false)
@@ -160,15 +164,31 @@ export default {
                 this.articles = res.data.data;
             })
         },
-        getCollections() {
-            http.get('/user/collections', {
+        getCollections(isMerge) {
+            if (this.isLoading) {
+                return
+            }
+            this.isLoading = true
+            if (!isMerge) {
+                this.currentPage = 1
+            }
+            http.get('/collection/get-collections', {
                 params: {
                     userId: this.userId,
                     currentPage: this.currentPage,
                     pageSize: this.pageSize
                 }
             }).then(res => {
-                this.collections = res.data.data;
+                if (isMerge) {
+                    this.collections.push(...res.data.data.page)
+                } else {
+                    this.collections = res.data.data.page;
+                }
+                this.currentPage++
+                this.total = res.data.data.total
+            }).finally(() => {
+                this.isLoading = false
+                this.$store.commit('SET_LOAD_DATA', false)
             })
         },
         getFollows() {
@@ -188,14 +208,14 @@ export default {
     },
     //创建时执行
     created() {
-        this.getData(null, false, this.currentTab)
+        this.getData({paneName: this.currentTab})
     },
     //侦听器
     watch: {
         $store: {
             handler() {
                 if (this.$store.state.loadData) {
-                    this.getData(null, true, this.currentTab)
+                    this.getData({paneName: this.currentTab}, null, true)
                 }
             },
             deep: true
@@ -225,10 +245,7 @@ export default {
     .pane {
         display: flex;
         flex-direction: column;
-
-        .header {
-            padding: 0.5em 1em;
-        }
+        padding: 0.5em 1em;
 
         &.dynamic {
             .header {
@@ -237,14 +254,18 @@ export default {
         }
 
         &.collection {
+            flex-direction: column;
+            gap: 2em;
+
             .header {
                 display: flex;
                 align-items: center;
+                gap: 1em;
 
                 & > span {
                     position: relative;
 
-                    &::after {
+                    &.selected::after {
                         content: '';
                         background-color: $deep-blue;
                         position: absolute;
@@ -263,6 +284,12 @@ export default {
                     gap: 0.5em;
                     color: $deep-blue;
                 }
+            }
+
+            .body {
+                display: flex;
+                flex-direction: column;
+                gap: 1em;
             }
         }
     }

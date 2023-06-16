@@ -100,6 +100,18 @@ public class CollectionServiceImpl extends ServiceImpl<CollectionMapper, Collect
         lqw.eq(CollectionItem::getId, collectionItemId);
         lqw.eq(CollectionItem::getUserId, userId);
         int result = collectionItemMapper.delete(lqw);
+        if (result == 1) {
+            Action action = new Action();
+            action.setTargetId(collectionItemId);
+            action.setUserId(userId);
+            action.setCollected(EntityConstant.ACTION_OFF);
+            LambdaQueryWrapper<Action> lqw1 = new LambdaQueryWrapper<>();
+            lqw1.eq(Action::getUserId, userId);
+            lqw1.eq(Action::getTargetId, collectionItemId);
+            actionService.saveOrUpdate(action, lqw1);
+        } else {
+            throw new SystemException("删除失败");
+        }
         return Result.ok(result);
     }
 
@@ -110,6 +122,19 @@ public class CollectionServiceImpl extends ServiceImpl<CollectionMapper, Collect
         lqw.eq(Collection::getId, collectionId);
         lqw.eq(Collection::getUserId, userId);
         int result = this.baseMapper.delete(lqw);
+        return Result.ok(result);
+    }
+
+    @Override
+    public Result<Integer> updateCollection(NewCollection newCollection, String collectionId) {
+        String userId = SecurityUtils.getId();
+        LambdaQueryWrapper<Collection> lqw = new LambdaQueryWrapper<>();
+        lqw.eq(Collection::getId, collectionId);
+        lqw.eq(Collection::getUserId, userId);
+        Collection collection = new Collection();
+        BeanUtils.copyProperties(newCollection, collection);
+        collection.setId(collectionId);
+        int result = this.baseMapper.updateById(collection);
         return Result.ok(result);
     }
 

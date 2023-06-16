@@ -22,4 +22,6 @@ public interface CollectionService extends IService<Collection> {
     Result<Integer> deleteCollectionItem(String collectionItemId);
 
     Result<Integer> deleteCollection(String collectionId);
+
+    Result<Integer> updateCollection(NewCollection newCollection,String collectionId);
 }

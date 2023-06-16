@@ -13,7 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-@RestController("/collection")
+@RestController
+@RequestMapping("/collection")
 public class CollectionController {
     @Autowired
     private CollectionService collectionService;
@@ -50,5 +51,11 @@ public class CollectionController {
     @PreAuthorize("hasRole('USER')")
     public Result<Integer> deleteCollection(@RequestParam String collectionId) {
         return collectionService.deleteCollection(collectionId);
+    }
+
+    @PatchMapping("/update-collection")
+    @PreAuthorize("hasRole('USER')")
+    public Result<Integer> updateCollection(@RequestBody NewCollection newCollection,@RequestParam String collectionId) {
+        return collectionService.updateCollection(newCollection,collectionId);
     }
 }

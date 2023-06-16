@@ -1,7 +1,7 @@
 <template>
     <div class="add-collection-root">
         <div class="header">
-            <h4>创建新收藏夹</h4>
+            <h4>{{ mode === 'update' ? '更新收藏夹' : '创建新收藏夹' }}</h4>
         </div>
         <div class="body">
             <input v-model="form.title" placeholder="收藏标题"/>
@@ -15,7 +15,7 @@
         </div>
         <div class="footer">
             <el-button @click="$emit('close')">取消</el-button>
-            <el-button :disabled="form.title.length===0" type="primary">确认</el-button>
+            <el-button :disabled="form.title.length===0" type="primary" @click="submit">确认</el-button>
         </div>
     </div>
 </template>
@@ -39,24 +39,64 @@ export default {
             }
         }
     },
+    props: {
+        mode: {
+            type: String
+        },
+        old: {
+            type: Object
+        }
+    }, created() {
+        if (this.old) {
+            this.form.title = this.old.title
+            this.form.description = this.old.description
+            this.form.isPrivate = this.old.isPrivate
+        }
+    },
     //方法
     methods: {
         submit() {
-            http.post('/collection/add-collection', this.form)
-                .then(res => {
+            if (this.mode === 'update') {
+                http.patch('/collection/update-collection', this.form, {
+                    params: {
+                        collectionId: this.old.id
+                    }
+                }).then(res => {
                     if (res.data.code === 200) {
                         ElMessage.success({
-                            message: '创建成功'
+                            message: '更新成功'
                         })
                         this.$emit('close')
+                        this.$emit('refreshCollections')
+
                     } else {
                         ElMessage.error({
-                            message: '创建失败'
+                            message: '更新失败'
                         })
                     }
 
                 }, reason => {
                 })
+            } else {
+                http.post('/collection/add-collection', this.form)
+                    .then(res => {
+                        if (res.data.code === 200) {
+                            ElMessage.success({
+                                message: '创建成功'
+                            })
+                            this.$emit('close')
+                            this.$emit('refreshCollections')
+
+                        } else {
+                            ElMessage.error({
+                                message: '创建失败'
+                            })
+                        }
+
+                    }, reason => {
+                    })
+            }
+
         }
     },
 
