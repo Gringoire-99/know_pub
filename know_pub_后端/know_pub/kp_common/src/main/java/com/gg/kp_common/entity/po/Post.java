@@ -1,5 +1,6 @@
 package com.gg.kp_common.entity.po;
 
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -36,7 +37,7 @@ public class Post {
     private Integer status = 0;
 
     private Integer commentCount = 0;
-
+    @TableLogic(value = "0", delval = "1")
     private Integer delFlag = 0;
 
 }

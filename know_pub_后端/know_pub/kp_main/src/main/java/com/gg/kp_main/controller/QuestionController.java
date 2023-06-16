@@ -1,9 +1,9 @@
 package com.gg.kp_main.controller;
 
 import com.gg.kp_common.entity.model.Page;
-import com.gg.kp_common.entity.vo.PostQuestionVo;
 import com.gg.kp_common.entity.vo.QuestionVo;
 import com.gg.kp_common.entity.vo.RecommendedQuestionVo;
+import com.gg.kp_common.entity.vo.save.PostQuestion;
 import com.gg.kp_common.service.QuestionService;
 import com.gg.kp_common.utils.PageParams;
 import com.gg.kp_common.utils.Result;
@@ -13,7 +13,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/question")
@@ -28,7 +27,7 @@ public class QuestionController {
 
     @PostMapping("/post-question")
     @PreAuthorize("hasRole('USER')")
-    public Result<Integer> postQuestion(@RequestBody PostQuestionVo question) {
+    public Result<Integer> postQuestion(@RequestBody PostQuestion question) {
         return questionService.postQuestion(question);
     }
 

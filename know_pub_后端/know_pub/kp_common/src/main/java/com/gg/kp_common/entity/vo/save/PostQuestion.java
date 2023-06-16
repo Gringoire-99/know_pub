@@ -1,4 +1,4 @@
-package com.gg.kp_common.entity.vo;
+package com.gg.kp_common.entity.vo.save;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostQuestionVo {
+public class PostQuestion {
     @Schema(required = true)
     private String question;
     @Schema(required = true)

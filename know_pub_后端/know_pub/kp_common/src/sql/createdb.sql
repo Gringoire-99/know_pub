@@ -118,7 +118,7 @@ CREATE TABLE IF NOT EXISTS tag
 
 );
 
-CREATE TABLE IF NOT EXISTS post_action
+CREATE TABLE IF NOT EXISTS action
 (
     id          char(60) not null primary key comment 'id',
     liked       int      default 0 comment '0未点赞，1点赞',
@@ -128,7 +128,8 @@ CREATE TABLE IF NOT EXISTS post_action
     user_id     char(60) not null comment '用户id',
     create_time datetime default now() comment '创建时间',
     target_id   char(60) not null comment '目标id(postId)',
-    update_time datetime default now() comment '更新时间'
+    update_time datetime default now() comment '更新时间',
+    del_flag    int      default 0 comment '删除标志,0:未删除,1:已删除'
 );
 
 CREATE TABLE IF NOT EXISTS collection
@@ -144,6 +145,18 @@ CREATE TABLE IF NOT EXISTS collection
     status        int          default 0 comment '状态,0:正常,1:禁用',
     del_flag      int          default 0 comment '删除标志,0:未删除,1:已删除',
     is_private    int          default 0 comment '是否私有,0:公开,1:私有'
+);
+CREATE TABLE if not exists collection_item
+(
+    id            char(60) not null primary key comment 'id',
+    collection_id char(60) not null comment '收藏夹id',
+    target_id     char(60) not null comment '目标id',
+    type          char(10) not null comment '枚举类型-回答 问题 文章 话题 收藏夹',
+    user_id       char(60) not null comment '用户id',
+    create_time   datetime default now() comment '创建时间',
+    update_time   datetime default now() comment '更新时间',
+    del_flag      int      default 0 comment '删除标志,0:未删除,1:已删除',
+    status        int      default 0 comment '状态,0:正常,1:禁用'
 );
 /*Table structure for table `sys_menu` */
 

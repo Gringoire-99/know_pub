@@ -2,8 +2,8 @@ package com.gg.kp_main.controller;
 
 import com.gg.kp_common.entity.model.Page;
 import com.gg.kp_common.entity.vo.CommentVo;
-import com.gg.kp_common.entity.vo.PostComment;
 import com.gg.kp_common.entity.vo.RootCommentVo;
+import com.gg.kp_common.entity.vo.save.PostComment;
 import com.gg.kp_common.service.CommentService;
 import com.gg.kp_common.utils.PageParams;
 import com.gg.kp_common.utils.Result;

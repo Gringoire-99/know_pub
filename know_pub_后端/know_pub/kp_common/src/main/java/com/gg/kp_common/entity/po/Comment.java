@@ -1,6 +1,7 @@
 package com.gg.kp_common.entity.po;
 
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,5 +26,6 @@ public class Comment {
     private String replyToCommentId;
     private int isRootComment;
     private int childCount;
+    @TableLogic(value = "0", delval = "1")
     private int delFlag;
 }

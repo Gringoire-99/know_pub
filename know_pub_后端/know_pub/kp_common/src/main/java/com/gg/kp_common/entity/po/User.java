@@ -1,6 +1,7 @@
 package com.gg.kp_common.entity.po;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -113,6 +114,6 @@ public class User implements Serializable {
     // 背景图，默认值为 'http://dummyimage.com/2000x1000'
     private String background;
     private String realName;
-
+    @TableLogic(value = "0", delval = "1")
     private Integer delFlag;
 }

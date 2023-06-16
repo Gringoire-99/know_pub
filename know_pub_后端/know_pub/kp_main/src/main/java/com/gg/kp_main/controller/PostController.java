@@ -1,8 +1,8 @@
 package com.gg.kp_main.controller;
 
 import com.gg.kp_common.entity.model.Page;
-import com.gg.kp_common.entity.vo.NewPost;
 import com.gg.kp_common.entity.vo.PostVo;
+import com.gg.kp_common.entity.vo.save.NewPost;
 import com.gg.kp_common.service.PostService;
 import com.gg.kp_common.utils.PageParams;
 import com.gg.kp_common.utils.Result;

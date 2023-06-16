@@ -1,6 +1,7 @@
 package com.gg.kp_common.entity.po;
 
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -38,5 +39,6 @@ public class Tag {
     private int collectionCount;
 
     // 删除标志,0:未删除,1:已删除，默认值为 0
+    @TableLogic(value = "0", delval = "1")
     private int delFlag;
 }

@@ -4,8 +4,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.gg.kp_common.entity.model.Page;
 import com.gg.kp_common.entity.po.Comment;
 import com.gg.kp_common.entity.vo.CommentVo;
-import com.gg.kp_common.entity.vo.PostComment;
 import com.gg.kp_common.entity.vo.RootCommentVo;
+import com.gg.kp_common.entity.vo.save.PostComment;
 import com.gg.kp_common.utils.PageParams;
 import com.gg.kp_common.utils.Result;
 

@@ -3,8 +3,8 @@ package com.gg.kp_common.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.gg.kp_common.entity.model.Page;
 import com.gg.kp_common.entity.po.Post;
-import com.gg.kp_common.entity.vo.NewPost;
 import com.gg.kp_common.entity.vo.PostVo;
+import com.gg.kp_common.entity.vo.save.NewPost;
 import com.gg.kp_common.utils.PageParams;
 import com.gg.kp_common.utils.Result;
 

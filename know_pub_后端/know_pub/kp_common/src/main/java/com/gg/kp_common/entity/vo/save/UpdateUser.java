@@ -1,10 +1,8 @@
-package com.gg.kp_common.entity.vo;
+package com.gg.kp_common.entity.vo.save;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.Date;
 
 @Data
 @AllArgsConstructor

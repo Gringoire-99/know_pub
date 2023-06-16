@@ -7,9 +7,9 @@ import com.gg.kp_common.config.exception.SystemException;
 import com.gg.kp_common.dao.QuestionMapper;
 import com.gg.kp_common.entity.model.Page;
 import com.gg.kp_common.entity.po.Question;
-import com.gg.kp_common.entity.vo.PostQuestionVo;
 import com.gg.kp_common.entity.vo.QuestionVo;
 import com.gg.kp_common.entity.vo.RecommendedQuestionVo;
+import com.gg.kp_common.entity.vo.save.PostQuestion;
 import com.gg.kp_common.service.QuestionService;
 import com.gg.kp_common.utils.*;
 import org.springframework.beans.BeanUtils;
@@ -33,7 +33,7 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
 
     @Transactional
     @Override
-    public Result<Integer> postQuestion(PostQuestionVo question) {
+    public Result<Integer> postQuestion(PostQuestion question) {
         int result;
         Question newQuestion = new Question();
         BeanUtils.copyProperties(question, newQuestion);

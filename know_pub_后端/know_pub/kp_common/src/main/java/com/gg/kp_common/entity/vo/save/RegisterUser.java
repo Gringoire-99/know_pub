@@ -1,4 +1,4 @@
-package com.gg.kp_common.entity.vo;
+package com.gg.kp_common.entity.vo.save;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

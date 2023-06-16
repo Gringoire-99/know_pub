@@ -5,18 +5,18 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.gg.kp_common.config.exception.SystemException;
-import com.gg.kp_common.dao.PostActionMapper;
+import com.gg.kp_common.dao.ActionMapper;
 import com.gg.kp_common.dao.PostMapper;
 import com.gg.kp_common.dao.QuestionMapper;
 import com.gg.kp_common.dao.UserMapper;
 import com.gg.kp_common.entity.model.Page;
+import com.gg.kp_common.entity.po.Action;
 import com.gg.kp_common.entity.po.Post;
-import com.gg.kp_common.entity.po.PostAction;
 import com.gg.kp_common.entity.po.Question;
 import com.gg.kp_common.entity.po.User;
-import com.gg.kp_common.entity.vo.NewPost;
 import com.gg.kp_common.entity.vo.PostVo;
-import com.gg.kp_common.service.PostActionService;
+import com.gg.kp_common.entity.vo.save.NewPost;
+import com.gg.kp_common.service.ActionService;
 import com.gg.kp_common.service.PostService;
 import com.gg.kp_common.utils.*;
 import org.springframework.beans.BeanUtils;
@@ -31,9 +31,9 @@ import java.util.UUID;
 @Service
 public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements PostService {
     @Autowired
-    private PostActionMapper postActionMapper;
+    ActionService actionService;
     @Autowired
-    PostActionService postActionService;
+    private ActionMapper actionMapper;
     @Autowired
     private QuestionMapper questionMapper;
     @Autowired
@@ -86,17 +86,17 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         luw.eq(Post::getId, postId).setSql("comment_count = comment_count + 1");
         int result = baseMapper.update(null, luw);
 
-        LambdaQueryWrapper<PostAction> pALqw = new LambdaQueryWrapper<>();
-        pALqw.eq(PostAction::getTargetId, postId).eq(PostAction::getUserId, userId);
-        PostAction postAction = this.postActionMapper.selectOne(pALqw);
-        if (Objects.isNull(postAction)) {
-            postAction = new PostAction();
+        LambdaQueryWrapper<Action> pALqw = new LambdaQueryWrapper<>();
+        pALqw.eq(Action::getTargetId, postId).eq(Action::getUserId, userId);
+        Action action = this.actionMapper.selectOne(pALqw);
+        if (Objects.isNull(action)) {
+            action = new Action();
         }
-        postAction.setUserId(userId);
-        postAction.setTargetId(postId);
-        postAction.setReplied(EntityConstant.ACTION_ON);
+        action.setUserId(userId);
+        action.setTargetId(postId);
+        action.setReplied(EntityConstant.ACTION_ON);
 
-        this.postActionService.saveOrUpdate(postAction);
+        this.actionService.saveOrUpdate(action);
         return result;
     }
 
@@ -138,31 +138,31 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         }
         ValidationUtils.validate().validateEmpty(postId, userId);
 
-        LambdaQueryWrapper<PostAction> lqwA = new LambdaQueryWrapper<>();
-        lqwA.eq(PostAction::getTargetId, postId)
-                .eq(PostAction::getUserId, userId);
-        PostAction postAction = postActionMapper.selectOne(lqwA);
+        LambdaQueryWrapper<Action> lqwA = new LambdaQueryWrapper<>();
+        lqwA.eq(Action::getTargetId, postId)
+                .eq(Action::getUserId, userId);
+        Action action = actionMapper.selectOne(lqwA);
 
 //      判断该用户是否已存在对该博文的动作know_pub
-        if (Objects.isNull(postAction)) {
-            PostAction newAction = new PostAction();
+        if (Objects.isNull(action)) {
+            Action newAction = new Action();
             newAction.setLiked(EntityConstant.ACTION_ON);
             newAction.setUserId(userId);
             newAction.setTargetId(postId);
-            postActionMapper.insert(newAction);
+            actionMapper.insert(newAction);
             result = EntityConstant.ACTION_ON;
             post.setLikeCount(post.getLikeCount() + 1);
         } else {
 //            点赞动作的开关
-            result = postAction.getLiked() == EntityConstant.ACTION_ON ? EntityConstant.ACTION_OFF : EntityConstant.ACTION_ON;
-            postAction.setLiked(result);
+            result = action.getLiked() == EntityConstant.ACTION_ON ? EntityConstant.ACTION_OFF : EntityConstant.ACTION_ON;
+            action.setLiked(result);
             post.setLikeCount(post.getLikeCount() + (result == EntityConstant.ACTION_ON ? 1 : -1));
 //            点赞和点踩是互斥操作
-            if (postAction.getDisliked() == EntityConstant.ACTION_ON) {
-                postAction.setDisliked(EntityConstant.ACTION_OFF);
+            if (action.getDisliked() == EntityConstant.ACTION_ON) {
+                action.setDisliked(EntityConstant.ACTION_OFF);
                 post.setDislikeCount(post.getDislikeCount() - 1);
             }
-            postActionMapper.update(postAction, lqwA);
+            actionMapper.update(action, lqwA);
 
         }
         baseMapper.updateById(post);
