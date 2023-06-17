@@ -27,7 +27,6 @@ export default {
     methods: {
         loadData() {
             this.$store.commit('SET_LOAD_DATA', true)
-            console.log(this.$store.state.loadData)
         }
 
     },

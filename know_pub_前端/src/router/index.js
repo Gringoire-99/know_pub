@@ -15,6 +15,7 @@ import homeQuestion from "@/components/home/question/HomeQuestion.vue";
 import mainQuestion from "@/components/home/main/MainQuestion.vue";
 import test from "@/components/common/Test.vue";
 import homeCollection from "@/components/user/collection/HomeCollection.vue";
+import homeWrite from "@/components/user/article/HomeWrite.vue";
 
 const routes = [
     {
@@ -41,6 +42,7 @@ const routes = [
             // 用户界面-展示用户信息，查询用户动态
             {name: 'home-user', path: 'home-user/:userId', component: homeUser},
             {name: 'home-collection', path: 'home-collection/:userId/:collectionId', component: homeCollection},
+            {name: 'home-write', path: 'home-write', component: homeWrite},
             // 问题界面-展示发布问题的详细信息
             {name: 'home-question', path: 'home-question/:questionId', component: homeQuestion},
             {name: 'home-member', path: 'home-member', component: homeMember},

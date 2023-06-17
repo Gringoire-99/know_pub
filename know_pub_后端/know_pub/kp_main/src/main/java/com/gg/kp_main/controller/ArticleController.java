@@ -1,0 +1,32 @@
+package com.gg.kp_main.controller;
+
+import com.gg.kp_common.entity.model.Page;
+import com.gg.kp_common.entity.vo.ArticleVo;
+import com.gg.kp_common.service.ArticleService;
+import com.gg.kp_common.utils.PageParams;
+import com.gg.kp_common.utils.Result;
+import io.swagger.annotations.ApiParam;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+
+@RequestMapping("/article")
+@RestController
+public class ArticleController {
+    @Autowired
+    private ArticleService articleService;
+    @GetMapping("/article-list")
+    public Result<Page<ArticleVo>> articleList(@ApiParam PageParams pageParams, @RequestParam String userId) {
+        return articleService.getArticleList(pageParams, userId);
+    }
+    @PatchMapping("/upload-image")
+    @PreAuthorize("hasRole('USER')")
+    public Result<Integer> uploadImage(@RequestBody MultipartFile formData, @ApiParam String articleId) {
+        String path = "D:\\upload\\";
+        System.out.println(formData);
+        return null;
+    }
+}

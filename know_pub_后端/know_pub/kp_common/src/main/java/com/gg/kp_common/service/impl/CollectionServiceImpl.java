@@ -79,7 +79,7 @@ public class CollectionServiceImpl extends ServiceImpl<CollectionMapper, Collect
         CollectionItem oldOne = collectionItemMapper.selectOne(lqwItem);
         int result;
         if (Objects.nonNull(oldOne)) {
-            this.baseMapper.deleteById(oldOne.getId());
+            collectionItemMapper.deleteById(oldOne.getId());
             LambdaQueryWrapper<Action> lqw = new LambdaQueryWrapper<>();
             lqw.eq(Action::getUserId, userId);
             lqw.eq(Action::getTargetId, oldOne.getTargetId());

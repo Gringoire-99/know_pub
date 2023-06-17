@@ -32,17 +32,18 @@
                post.content,
                post.cover,
                post.images,
-               post.like_count,
-               post.dislike_count,
-               post.user_id,
-               post.comment_count,
-               action.liked     AS liked,
-               action.collected AS collected,
-               action.disliked  AS disliked,
-               action.replied   AS replied
+        post.like_count,
+        post.dislike_count,
+        post.user_id,
+        post.comment_count,
+        action.liked AS liked,
+        action.collected AS collected,
+        action.disliked AS disliked,
+        action.replied AS replied
         FROM know_pub.post post
-                 RIGHT JOIN action action ON post.id = action.target_id AND action.user_id = #{userId}
-        WHERE post.status = 0
+        RIGHT JOIN action action ON post.id = action.target_id AND action.user_id = #{userId}
+        WHERE post.status = 0 and (action.liked = 1 or action.collected = 1 or action.disliked = 1 or action.replied =
+        1)
         ORDER BY action.create_time DESC
     </select>
     <select id="getPosts" resultType="com.gg.kp_common.entity.vo.PostVo">

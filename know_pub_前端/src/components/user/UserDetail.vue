@@ -20,9 +20,20 @@
                 </div>
             </el-tab-pane>
             <el-tab-pane label="文章" lazy name="article">
-                <div v-show="articles.length===0">
-                    <el-empty description="什么也没有~"></el-empty>
+                <div class="pane article">
+                    <div class="header">
+                        <div @click="$router.push({path:'/home-write'})">
+                            <el-icon>
+                                <plus></plus>
+                            </el-icon>
+                            <span>发布文章</span>
+                        </div>
+                    </div>
+                    <div v-show="articles.length===0">
+                        <el-empty description="什么也没有~"></el-empty>
+                    </div>
                 </div>
+
             </el-tab-pane>
             <el-tab-pane label="收藏" lazy name="collection">
                 <div class="pane collection">
@@ -250,6 +261,20 @@ export default {
         &.dynamic {
             .header {
                 font-weight: bold;
+            }
+        }
+
+        &.article {
+            .header {
+                display: flex;
+
+                & > div {
+                    margin-left: auto;
+                    @include align();
+                    @include clickable();
+                    gap: 0.5em;
+
+                }
             }
         }
 

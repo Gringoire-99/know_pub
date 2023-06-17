@@ -159,7 +159,24 @@ CREATE TABLE if not exists collection_item
     status        int      default 0 comment '状态,0:正常,1:禁用'
 );
 /*Table structure for table `sys_menu` */
-
+CREATE TABLE IF NOT EXISTS article
+(
+    id            char(60)                                                  not null primary key comment 'id',
+    title         varchar(20)                                               not null comment '标题',
+    content       LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci not null comment '内容(富文本)',
+    cover         varchar(100) default '' comment '封面',
+    images        TEXT comment '图片，使用+分隔',
+    like_count    int          default 0 comment '点赞数',
+    user_id       char(60)                                                  not null comment '用户id',
+    tags          varchar(50)  default '' comment '标签名，使用+分隔',
+    create_time   datetime     default now() comment '创建时间',
+    update_time   datetime     default now() comment '更新时间',
+    status        int          default 0 comment '状态,0:正常,1:禁用',
+    is_publish    int          default 0 comment '状态,0:已发布,1:未发布',
+    comment_count int          default 0 comment '评论数',
+    view_count    int          default 0 comment '浏览数',
+    del_flag      int          default 0 comment '删除标志,0:未删除,1:已删除'
+);
 
 CREATE TABLE IF NOT EXISTS `sys_menu`
 (

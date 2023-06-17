@@ -111,8 +111,10 @@ export default {
                 this.$store.commit("SET_SHOW_LOGIN", true)
                 return
             }
-            http.post('/comment/like', {
-                commentId: this.comment.id
+            http.post('/comment/like', {}, {
+                params: {
+                    commentId: this.comment.id
+                }
             }).then(res => {
                 if (res.data.code === 200) {
                     // 1 点赞 0 取消
