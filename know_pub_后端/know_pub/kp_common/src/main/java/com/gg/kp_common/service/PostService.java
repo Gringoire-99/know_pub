@@ -8,6 +8,8 @@ import com.gg.kp_common.entity.vo.save.NewPost;
 import com.gg.kp_common.utils.PageParams;
 import com.gg.kp_common.utils.Result;
 
+import java.util.List;
+
 public interface PostService extends IService<Post> {
     Result<Page<PostVo>> getRecommendedPosts(PageParams params);
 
@@ -22,4 +24,6 @@ public interface PostService extends IService<Post> {
     Result<Integer> addPost(NewPost post);
 
     Result<Page<PostVo>> getPosts(PageParams params, String questionId);
+
+    Result<List<PostVo>> getPostsByIds(String[] postIds);
 }

@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class CollectionServiceImpl extends ServiceImpl<CollectionMapper, Collection> implements CollectionService {
@@ -64,29 +65,61 @@ public class CollectionServiceImpl extends ServiceImpl<CollectionMapper, Collect
         }
 
         String userId = SecurityUtils.getId();
-        CollectionItem collectionItem1 = new CollectionItem();
-        BeanUtils.copyProperties(collectionItem, collectionItem1);
-        collectionItem1.setUserId(userId);
-        int result = collectionItemMapper.insert(collectionItem1);
-        if (result == 1) {
-            Action action = new Action();
-            action.setTargetId(collectionItem1.getId());
-            action.setUserId(userId);
-            action.setCollected(EntityConstant.ACTION_ON);
+        LambdaQueryWrapper<Collection> lqwC = new LambdaQueryWrapper<>();
+        lqwC.eq(Collection::getUserId, userId);
+        lqwC.eq(Collection::getId, collectionItem.getCollectionId());
+        Collection collection = this.baseMapper.selectOne(lqwC);
+        if (collection == null) {
+            throw new SystemException("收藏夹不存在");
+        }
+        LambdaQueryWrapper<CollectionItem> lqwItem = new LambdaQueryWrapper<>();
+        lqwItem.eq(CollectionItem::getUserId, userId)
+                .eq(CollectionItem::getCollectionId, collectionItem.getCollectionId())
+                .eq(CollectionItem::getTargetId, collectionItem.getTargetId());
+        CollectionItem oldOne = collectionItemMapper.selectOne(lqwItem);
+        int result;
+        if (Objects.nonNull(oldOne)) {
+            this.baseMapper.deleteById(oldOne.getId());
+            LambdaQueryWrapper<Action> lqw = new LambdaQueryWrapper<>();
+            lqw.eq(Action::getUserId, userId);
+            lqw.eq(Action::getTargetId, oldOne.getTargetId());
+            Action one = actionService.getOne(lqw);
+            one.setCollected(EntityConstant.ACTION_OFF);
+            actionService.updateById(one);
+            result = 0;
+        } else {
+            CollectionItem collectionItem1 = new CollectionItem();
+            BeanUtils.copyProperties(collectionItem, collectionItem1);
+            collectionItem1.setUserId(userId);
+            result = collectionItemMapper.insert(collectionItem1);
             LambdaQueryWrapper<Action> lqw = new LambdaQueryWrapper<>();
             lqw.eq(Action::getUserId, userId);
             lqw.eq(Action::getTargetId, collectionItem1.getTargetId());
-            actionService.saveOrUpdate(action, lqw);
-        } else {
-            throw new SystemException("收藏失败");
+            Action one = actionService.getOne(lqw);
+            if (Objects.isNull(one)) {
+                one = new Action();
+                one.setUserId(userId);
+                one.setTargetId(collectionItem1.getTargetId());
+                one.setCollected(EntityConstant.ACTION_ON);
+                actionService.save(one);
+            } else {
+                one.setCollected(EntityConstant.ACTION_ON);
+                actionService.updateById(one);
+            }
+            one.setCollected(EntityConstant.ACTION_ON);
+            collection.setCollectCount(collection.getCollectCount() + 1);
+            this.baseMapper.updateById(collection);
         }
+
+
         return Result.ok(result);
     }
 
     @Override
-    public Result<Page<CollectionItemVo>> getCollectionItems(String collectionId, PageParams pageParams) {
+    public Result<Page<CollectionItemVo>> getCollectionItems(String collectionId, String type, PageParams pageParams) {
         LambdaQueryWrapper<CollectionItem> lqw = new LambdaQueryWrapper<>();
         lqw.eq(CollectionItem::getCollectionId, collectionId);
+        lqw.eq(CollectionItem::getType, type);
         IPage<CollectionItem> page = collectionItemMapper.selectPage(new PageUtils<CollectionItem>().getPage(pageParams), lqw);
         List<CollectionItemVo> data = BeanCopyUtils.copyBeanList(page.getRecords(), CollectionItemVo.class);
         Page<CollectionItemVo> pageData = new Page<CollectionItemVo>(page.getTotal(), page.getSize(), data);
@@ -136,6 +169,12 @@ public class CollectionServiceImpl extends ServiceImpl<CollectionMapper, Collect
         collection.setId(collectionId);
         int result = this.baseMapper.updateById(collection);
         return Result.ok(result);
+    }
+
+    @Override
+    public Result<CollectionVo> getCollectionById(String collectionId) {
+        Collection collection = this.baseMapper.selectById(collectionId);
+        return Result.ok(BeanCopyUtils.copyBean(collection, CollectionVo.class));
     }
 
 }

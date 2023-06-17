@@ -52,19 +52,42 @@
                post.content,
                post.cover,
                post.images,
-               post.like_count,
-               post.dislike_count,
-               post.user_id,
-               post.comment_count,
-               COALESCE(action.liked, 0)     AS liked,
-               COALESCE(action.collected, 0) AS collected,
-               COALESCE(action.disliked, 0)  AS disliked,
-               COALESCE(action.replied, 0)   AS replied
+        post.like_count,
+        post.dislike_count,
+        post.user_id,
+        post.comment_count,
+        COALESCE(action.liked, 0) AS liked,
+        COALESCE(action.collected, 0) AS collected,
+        COALESCE(action.disliked, 0) AS disliked,
+        COALESCE(action.replied, 0) AS replied
         FROM know_pub.post post
-                 LEFT JOIN action action ON post.id = action.target_id AND action.user_id = #{userId}
-        WHERE post.user_id = #{userId}
-          and post.question_id = #{questionId}
-          and post.status = 0
+        LEFT JOIN action action ON post.id = action.target_id AND action.user_id = #{userId}
+        WHERE post.question_id = #{questionId}
+        and post.status = 0
+        ORDER BY post.create_time DESC
+    </select>
+    <select id="getPostsByIds" resultType="com.gg.kp_common.entity.vo.PostVo">
+        SELECT post.id,
+        post.question,
+        post.question_id,
+        post.content,
+        post.cover,
+        post.images,
+        post.like_count,
+        post.dislike_count,
+        post.user_id,
+        post.comment_count,
+        COALESCE(action.liked, 0) AS liked,
+        COALESCE(action.collected, 0) AS collected,
+        COALESCE(action.disliked, 0) AS disliked,
+        COALESCE(action.replied, 0) AS replied
+        FROM know_pub.post post
+        LEFT JOIN action action ON post.id = action.target_id AND action.user_id = #{userId}
+        WHERE post.status = 0
+        and post.id in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
         ORDER BY post.create_time DESC
     </select>
 </mapper>

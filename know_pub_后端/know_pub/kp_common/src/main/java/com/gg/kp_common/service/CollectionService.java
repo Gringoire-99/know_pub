@@ -17,11 +17,13 @@ public interface CollectionService extends IService<Collection> {
 
     Result<Integer> addCollectionItem(NewCollectionItem collectionItem);
 
-    Result<Page<CollectionItemVo>> getCollectionItems(String collectionId, PageParams pageParams);
+    Result<Page<CollectionItemVo>> getCollectionItems(String collectionId, String type,PageParams pageParams);
 
     Result<Integer> deleteCollectionItem(String collectionItemId);
 
     Result<Integer> deleteCollection(String collectionId);
 
     Result<Integer> updateCollection(NewCollection newCollection,String collectionId);
+
+    Result<CollectionVo> getCollectionById(String collectionId);
 }

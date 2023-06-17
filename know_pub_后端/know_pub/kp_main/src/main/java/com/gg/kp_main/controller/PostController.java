@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/post")
 public class PostController {
@@ -50,5 +52,8 @@ public class PostController {
                                           @RequestParam String questionId) {
         return postService.getPosts(params, questionId);
     }
-
+    @GetMapping("/get-posts-by-ids")
+    public Result<List<PostVo>> getPostsByIds(@RequestParam String[] postIds) {
+        return postService.getPostsByIds(postIds);
+    }
 }

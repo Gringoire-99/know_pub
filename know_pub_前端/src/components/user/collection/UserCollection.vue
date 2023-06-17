@@ -1,5 +1,5 @@
 <template>
-    <div class="collection-root">
+    <div :class="{vertical:vertical,small:size==='s'}" class="collection-root">
         <div class="header" @click="toCollectionDetail">
             <span>{{ collection.title }}</span>
             <el-icon v-show="collection.isPrivate===1">
@@ -13,7 +13,7 @@
                 <span>{{ collection.collectCount }} 条内容</span>
                 <span>{{ collection.followCount }} 人关注</span>
             </div>
-            <div class="footer-operations">
+            <div v-if="this.collection.userId===this.$store.state.userInfo.id" class="footer-operations">
                 <div class="operation">
                     <el-icon>
                         <chat-dot-round></chat-dot-round>
@@ -86,7 +86,7 @@ export default {
             })
         },
         toCollectionDetail() {
-            this.$router.push({path: `/home-collection/${this.collection.id}`})
+            this.$router.push({path: `/home-collection/${this.collection.userId}/${this.collection.id}`})
 
         }
     },
@@ -110,6 +110,12 @@ export default {
         collection: {
             type: Object,
             require: true
+        },
+        vertical: {
+            default: false
+        },
+        size: {
+            default: 'm'
         }
     }
 }
@@ -122,6 +128,23 @@ export default {
     gap: 1em;
     border-bottom: 1px solid $lightGray;
     padding-bottom: 1em;
+
+    &.vertical {
+        border-bottom: none;
+        padding-bottom: 0;
+
+        .footer {
+            flex-direction: column;
+
+            .footer-operations {
+                justify-content: start;
+            }
+        }
+    }
+
+    &.small {
+        font-size: $fs-small;
+    }
 
     & > * {
         display: flex;

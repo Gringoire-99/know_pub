@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -261,6 +262,23 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         }
         Page<PostVo> pageData = new Page<>(total, rows, records);
         return Result.ok(pageData);
+    }
+
+    @Override
+    public Result<List<PostVo>> getPostsByIds(String[] postIds) {
+        if (postIds.length > 500) {
+            throw new SystemException("一次最多只能查询500条数据");
+        }
+        String userId = SecurityUtils.getId();
+        List<Post> posts;
+        List<PostVo> postVos;
+        if (Objects.isNull(userId)) {
+            posts = this.baseMapper.selectBatchIds(Arrays.asList(postIds));
+            postVos = BeanCopyUtils.copyBeanList(posts, PostVo.class);
+        } else {
+            postVos = this.baseMapper.getPostsByIds(Arrays.asList(postIds), userId);
+        }
+        return Result.ok(postVos);
     }
 
 

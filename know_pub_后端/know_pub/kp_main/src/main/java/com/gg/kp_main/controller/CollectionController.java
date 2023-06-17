@@ -19,6 +19,11 @@ public class CollectionController {
     @Autowired
     private CollectionService collectionService;
 
+    @GetMapping("/get-collection-by-id")
+    public Result<CollectionVo> getCollectionById(@ApiParam(required = true) String collectionId) {
+        return collectionService.getCollectionById(collectionId);
+    }
+
     @PostMapping("/add-collection")
     @PreAuthorize("hasRole('USER')")
     public Result<Integer> addCollection(@RequestBody NewCollection newCollection) {
@@ -37,8 +42,8 @@ public class CollectionController {
     }
 
     @GetMapping("/get-collection-items")
-    public Result<Page<CollectionItemVo>> getCollectionItems(@ApiParam(required = true) String collectionId, @ApiParam PageParams pageParams) {
-        return collectionService.getCollectionItems(collectionId, pageParams);
+    public Result<Page<CollectionItemVo>> getCollectionItems(@ApiParam(required = true) String collectionId, @ApiParam(required = true) String type, @ApiParam PageParams pageParams) {
+        return collectionService.getCollectionItems(collectionId,type, pageParams);
     }
 
     @DeleteMapping("/delete-collection-item")
@@ -55,7 +60,7 @@ public class CollectionController {
 
     @PatchMapping("/update-collection")
     @PreAuthorize("hasRole('USER')")
-    public Result<Integer> updateCollection(@RequestBody NewCollection newCollection,@RequestParam String collectionId) {
-        return collectionService.updateCollection(newCollection,collectionId);
+    public Result<Integer> updateCollection(@RequestBody NewCollection newCollection, @RequestParam String collectionId) {
+        return collectionService.updateCollection(newCollection, collectionId);
     }
 }

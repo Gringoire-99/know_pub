@@ -1,5 +1,5 @@
 <template>
-    <div class="root card">
+    <div class="post-root card">
         <div class="card-body">
             <div v-if="isShowAction" class="fw-xsm text-gray d-flex">
                 <span>{{ action.join(',') }}了该回答</span>
@@ -73,13 +73,13 @@
                             <span>分享</span>
                         </div>
                     </el-button>
-                    <el-button class="collection-btn">
-                        <div class="d-flex justify-content-center align-items-center">
-
+                    <el-button class="collection-btn" @click="showCollection=true">
+                        <div :class="{'on-collected':onCollected}"
+                             class="d-flex justify-content-center align-items-center">
                             <el-icon>
                                 <star-filled></star-filled>
                             </el-icon>
-                            <span>收藏</span>
+                            <span>{{ onReplied ? '取消收藏' : '收藏' }}</span>
                         </div>
                     </el-button>
                     <el-popover placement="bottom" popper-class="popover" trigger="click">
@@ -117,9 +117,17 @@
                     <comments ref="comment" :post-id="post.id"></comments>
                 </div>
             </transition>
-
-
         </div>
+        <el-dialog
+            v-model="showCollection"
+            width="35%"
+        >
+            <add-collection-item
+                :target-id="post.id"
+                type="post"
+                @close="showCollection=false"
+            ></add-collection-item>
+        </el-dialog>
     </div>
 
 </template>
@@ -142,6 +150,7 @@ import PostComment from "@/components/home/main/post/comment/PostComment.vue";
 import PostBody from "@/components/home/main/post/PostBody.vue";
 import http from "@/utils/http/http";
 import {ElMessage} from "element-plus";
+import AddCollectionItem from "@/components/user/collection/AddCollectionItem.vue";
 
 /**
  * post：某个主题的一个回答，
@@ -155,6 +164,7 @@ export default {
     name: "post",
     //依赖的组件
     components: {
+        AddCollectionItem,
         MoreFilled,
         PostBody,
         ArrowUp,
@@ -172,6 +182,8 @@ export default {
             onReplied: false,
             onCollected: false,
             action: [],
+            showCollection: false,
+            showRemoveCollectionItem: false
         }
     }, //绑定父组件的属性
     props: {
@@ -330,6 +342,7 @@ export default {
             background: white;
             font-size: 16px;
             margin-left: 5px;
+            @include align();
 
             .el-icon {
                 font-size: 20px;
@@ -341,6 +354,10 @@ export default {
 
             &.onReplied {
                 color: $deep-blue;
+            }
+
+            .on-collected {
+                color: $yellow;
             }
         }
 
@@ -417,14 +434,13 @@ export default {
         padding-right: 5px;
         padding-left: 5px;
     }
-
-    .root, .card-body, .card-footer {
+    .post-root, .card-body, .card-footer {
         padding: 0 !important;
     }
 
 }
 
-.root {
+.post-root {
     overflow: hidden;
     border: none;
     border-bottom: 1px solid #ebebeb;
