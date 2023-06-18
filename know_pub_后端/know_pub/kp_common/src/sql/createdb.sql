@@ -164,7 +164,7 @@ CREATE TABLE IF NOT EXISTS article
     id            char(60)                                                  not null primary key comment 'id',
     title         varchar(20)                                               not null comment '标题',
     content       LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci not null comment '内容(富文本)',
-    cover         varchar(100) default '' comment '封面',
+    cover         varchar(500) default '' comment '封面',
     images        TEXT comment '图片，使用+分隔',
     like_count    int          default 0 comment '点赞数',
     user_id       char(60)                                                  not null comment '用户id',

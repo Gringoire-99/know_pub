@@ -7,10 +7,7 @@ import com.gg.kp_common.config.exception.SystemException;
 import com.gg.kp_common.dao.UserMapper;
 import com.gg.kp_common.entity.po.User;
 import com.gg.kp_common.entity.po.UserDetail;
-import com.gg.kp_common.entity.vo.UserInfoDetailVo;
-import com.gg.kp_common.entity.vo.UserInfoShortVo;
-import com.gg.kp_common.entity.vo.UserPostCardVo;
-import com.gg.kp_common.entity.vo.UserVo;
+import com.gg.kp_common.entity.vo.*;
 import com.gg.kp_common.entity.vo.save.RegisterUser;
 import com.gg.kp_common.entity.vo.save.UpdateUser;
 import com.gg.kp_common.feign.OssFeignClient;
@@ -26,7 +23,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -181,7 +177,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Transactional
     @Override
-    public Result<?> updateUserInfo(UpdateUser user) {
+    public Result<Policy> updateUserInfo(UpdateUser user) {
         String userId = SecurityUtils.getId();
 
 //        TODO validate UpdateUser
@@ -189,11 +185,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         User updateUser = new User();
         updateUser.setId(userId);
         BeanUtils.copyProperties(user, updateUser);
-        Result<?> policy = null;
-        if (!"" .equals(user.getAvatar()) && user.getAvatar() != null) {
+        Result<OssPolicy> policy = null;
+        OssPolicy ossPolicy = null;
+        if (!"".equals(user.getAvatar()) && user.getAvatar() != null) {
             policy = ossFeignClient.policy();
+            ossPolicy = policy.getData();
 
-            if (policy.getCode() != 200) {
+            if (policy.getCode() != 200 && ossPolicy == null) {
                 throw new SystemException("获取上传凭证失败");
             }
         }
@@ -204,14 +202,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             e.printStackTrace();
             throw new SystemException("用户信息更新异常");
         }
-        HashMap<String, Object> result = new HashMap<>();
-        result.put("userId", userId);
-        if (policy != null) {
-            result.put("policy", policy.getData());
-            return Result.ok(result);
-        } else {
-            return Result.ok(result);
-        }
+        Policy policy1 = new Policy();
+        policy1.setOssPolicy(ossPolicy);
+        policy1.getExtraData().put("userId", userId);
+        return Result.ok(policy1);
     }
 
     @Override

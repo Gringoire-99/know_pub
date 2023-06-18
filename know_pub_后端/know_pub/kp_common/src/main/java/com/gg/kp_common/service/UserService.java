@@ -2,10 +2,7 @@ package com.gg.kp_common.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.gg.kp_common.entity.po.User;
-import com.gg.kp_common.entity.vo.UserInfoDetailVo;
-import com.gg.kp_common.entity.vo.UserInfoShortVo;
-import com.gg.kp_common.entity.vo.UserPostCardVo;
-import com.gg.kp_common.entity.vo.UserVo;
+import com.gg.kp_common.entity.vo.*;
 import com.gg.kp_common.entity.vo.save.RegisterUser;
 import com.gg.kp_common.entity.vo.save.UpdateUser;
 import com.gg.kp_common.utils.Result;
@@ -29,7 +26,7 @@ public interface UserService extends IService<User> {
 
     Result<List<UserInfoShortVo>> getRecommendedUser();
 
-    Result<?> updateUserInfo(UpdateUser user);
+    Result<Policy> updateUserInfo(UpdateUser user);
 
     Result<Integer> updateAvatar(String avatar);
 }

@@ -5,12 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
-public class NewArticle {
-
-
+public class UpdateArticle {
+    @Schema(description = "id", required = true)
+    private String id;
     @Schema(description = "标题", required = true)
     private String title;
 
@@ -22,5 +22,4 @@ public class NewArticle {
 
     @Schema(description = "封面")
     private String cover;
-
 }

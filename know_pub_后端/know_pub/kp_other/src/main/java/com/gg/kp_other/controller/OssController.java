@@ -6,11 +6,11 @@ import com.aliyun.oss.OSSException;
 import com.aliyun.oss.common.utils.BinaryUtil;
 import com.aliyun.oss.model.MatchMode;
 import com.aliyun.oss.model.PolicyConditions;
+import com.gg.kp_common.entity.vo.OssPolicy;
 import com.gg.kp_common.utils.HttpEnum;
 import com.gg.kp_common.utils.Result;
 import com.gg.kp_common.utils.ValidationUtils;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +21,6 @@ import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 @RequestMapping("/oss")
@@ -38,7 +37,7 @@ public class OssController {
     public String endpoint;
 
     @RequestMapping("/policy")
-    public Result<?> policy() {
+    public Result<OssPolicy> policy() {
 
         // 填写Bucket名称，例如examplebucket。
         // 填写Host地址，格式为https://bucketname.endpoint。
@@ -50,7 +49,7 @@ public class OssController {
 
         // 创建ossClient实例。
         try {
-            long expireTime = 6;
+            long expireTime = 60*60;
             long expireEndTime = System.currentTimeMillis() + expireTime * 1000;
             Date expiration = new Date(expireEndTime);
             PolicyConditions policyConds = new PolicyConditions();
@@ -62,17 +61,21 @@ public class OssController {
             String encodedPolicy = BinaryUtil.toBase64String(binaryData);
             String postSignature = ossClient.calculatePostSignature(postPolicy);
 
-            Map<String, String> respMap = new LinkedHashMap<String, String>();
-            respMap.put("accessId", accessId);
-            respMap.put("policy", encodedPolicy);
-            respMap.put("signature", postSignature);
-            respMap.put("dir", dir);
-            respMap.put("host", host);
-            respMap.put("expire", String.valueOf(expireEndTime / 1000));
-            return Result.ok(respMap);
+
+            OssPolicy ossPolicy = new OssPolicy();
+            ossPolicy.setOssaccessKeyId(accessId);
+            ossPolicy.setPolicy(encodedPolicy);
+            ossPolicy.setSignature(postSignature);
+            ossPolicy.setDir(dir);
+            ossPolicy.setHost(host);
+            ossPolicy.setExpire(String.valueOf(expireEndTime / 1000));
+            return Result.ok(ossPolicy);
 
         } catch (Exception e) {
-            return Result.error();
+            Result<OssPolicy> error = new Result<>();
+            error.setStatus(HttpEnum.ERROR);
+            error.setData(null);
+            return error;
         }
     }
 

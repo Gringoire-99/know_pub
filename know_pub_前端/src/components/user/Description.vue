@@ -118,14 +118,15 @@ export default {
             this.info.avatar = this.listFile.length > 0 ? 'update' : null
             http.patch('/user/update', this.info).then(res => {
                 if (res.data.code === 200) {
-                    let policy = res.data.data.policy
+                    let policy = res.data.data.ossPolicy
                     if (policy) {
                         this.aliyun.expire = policy.expire
                         this.aliyun.policy = policy.policy
                         this.aliyun.signature = policy.signature
-                        this.aliyun.ossaccessKeyId = policy.accessId
-                        this.aliyun.key = policy.dir + `user${res.data.data.userId}/avatar`
+                        this.aliyun.ossaccessKeyId = policy.ossaccessKeyId
+                        this.aliyun.key = policy.dir + `user${res.data.data.extraData.userId}/avatar`
                         this.dir = policy.dir
+                        console.log(this.listFile)
                         this.$refs.uploadRef.submit();
                     } else {
                         ElMessage.success('更新成功')

@@ -42,7 +42,7 @@ const routes = [
             // 用户界面-展示用户信息，查询用户动态
             {name: 'home-user', path: 'home-user/:userId', component: homeUser},
             {name: 'home-collection', path: 'home-collection/:userId/:collectionId', component: homeCollection},
-            {name: 'home-write', path: 'home-write', component: homeWrite},
+            {name: 'home-write', path: 'home-write/:articleId', component: homeWrite},
             // 问题界面-展示发布问题的详细信息
             {name: 'home-question', path: 'home-question/:questionId', component: homeQuestion},
             {name: 'home-member', path: 'home-member', component: homeMember},

@@ -1,5 +1,6 @@
 package com.gg.kp_common.feign;
 
+import com.gg.kp_common.entity.vo.OssPolicy;
 import com.gg.kp_common.utils.Result;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
@@ -14,5 +15,5 @@ public interface OssFeignClient {
     @PostMapping("/upload-avatar")
     Result<Integer> uploadAvatar(@RequestBody Map<String,Object> param);
     @RequestMapping("/oss/policy")
-    Result<?> policy();
+    Result<OssPolicy> policy();
 }

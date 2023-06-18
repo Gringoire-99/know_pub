@@ -1,9 +1,6 @@
 package com.gg.kp_main.controller;
 
-import com.gg.kp_common.entity.vo.UserInfoDetailVo;
-import com.gg.kp_common.entity.vo.UserInfoShortVo;
-import com.gg.kp_common.entity.vo.UserPostCardVo;
-import com.gg.kp_common.entity.vo.UserVo;
+import com.gg.kp_common.entity.vo.*;
 import com.gg.kp_common.entity.vo.save.RegisterUser;
 import com.gg.kp_common.entity.vo.save.UpdateUser;
 import com.gg.kp_common.service.UserService;
@@ -64,7 +61,7 @@ public class UserController {
 
     @PreAuthorize("hasRole('USER')")
     @PatchMapping("/update")
-    public Result<?> update(@RequestBody UpdateUser user) {
+    public Result<Policy> update(@RequestBody UpdateUser user) {
         return userService.updateUserInfo(user);
     }
 
