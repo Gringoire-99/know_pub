@@ -414,7 +414,6 @@ a {
   color: #45c2b5;
   text-decoration: none;
 }
-
 a:focus, a:hover {
   color: #17B3A3;
   text-decoration: underline;
@@ -471,30 +470,24 @@ img {
 .site-sidebar--fold .el-menu.site-sidebar__menu {
   width: 64px;
 }
-
 .site-sidebar--fold .site-navbar__body,
 .site-sidebar--fold .site-content__wrapper {
   margin-left: 64px;
 }
-
 .site-sidebar--fold .site-navbar__brand-lg {
   display: none;
 }
-
 .site-sidebar--fold .site-navbar__brand-mini {
   display: inline-block;
 }
-
 .site-sidebar--fold .site-sidebar,
 .site-sidebar--fold .site-sidebar__inner {
   overflow: initial;
 }
-
 .site-sidebar--fold .site-sidebar__menu-icon {
   margin-right: 0;
   font-size: 20px;
 }
-
 .site-sidebar--fold .site-content--tabs > .el-tabs > .el-tabs__header {
   left: 64px;
 }
@@ -523,38 +516,31 @@ img {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
   background-color: #17B3A3;
 }
-
 .site-navbar--inverse .site-navbar__body {
   background-color: transparent;
 }
-
 .site-navbar--inverse .el-menu > .el-menu-item,
 .site-navbar--inverse .el-menu > .el-submenu > .el-submenu__title {
   color: #fff;
 }
-
 .site-navbar--inverse .el-menu > .el-menu-item:focus, .site-navbar--inverse .el-menu > .el-menu-item:hover,
 .site-navbar--inverse .el-menu > .el-submenu > .el-submenu__title:focus,
 .site-navbar--inverse .el-menu > .el-submenu > .el-submenu__title:hover {
   color: #fff;
   background-color: #14988b;
 }
-
 .site-navbar--inverse .el-menu > .el-menu-item.is-active,
 .site-navbar--inverse .el-menu > .el-submenu.is-active > .el-submenu__title {
   border-bottom-color: #dcf4f1;
 }
-
 .site-navbar--inverse .el-menu .el-menu-item i,
 .site-navbar--inverse .el-menu .el-submenu__title i,
 .site-navbar--inverse .el-menu .el-dropdown {
   color: #fff;
 }
-
 .site-navbar--inverse .el-menu--popup-bottom-start {
   background-color: #17B3A3;
 }
-
 .site-navbar__header {
   position: relative;
   float: left;
@@ -562,7 +548,6 @@ img {
   height: 50px;
   overflow: hidden;
 }
-
 .site-navbar__brand {
   display: table-cell;
   vertical-align: middle;
@@ -576,34 +561,27 @@ img {
   white-space: nowrap;
   color: #fff;
 }
-
 .site-navbar__brand-lg, .site-navbar__brand-mini {
   margin: 0 5px;
   color: #fff;
 }
-
 .site-navbar__brand-lg:focus, .site-navbar__brand-lg:hover, .site-navbar__brand-mini:focus, .site-navbar__brand-mini:hover {
   color: #fff;
   text-decoration: none;
 }
-
 .site-navbar__brand-mini {
   display: none;
 }
-
 .site-navbar__switch {
   font-size: 18px;
   border-bottom: none !important;
 }
-
 .site-navbar__avatar {
   border-bottom: none !important;
 }
-
 .site-navbar__avatar * {
   vertical-align: inherit;
 }
-
 .site-navbar__avatar .el-dropdown-link > img {
   width: 36px;
   height: auto;
@@ -611,44 +589,36 @@ img {
   border-radius: 100%;
   vertical-align: middle;
 }
-
 .site-navbar__body {
   position: relative;
   margin-left: 230px;
   padding-right: 15px;
   background-color: #fff;
 }
-
 .site-navbar__menu {
   float: left;
   background-color: transparent;
   border-bottom: 0;
 }
-
 .site-navbar__menu--right {
   float: right;
 }
-
 .site-navbar__menu a:focus,
 .site-navbar__menu a:hover {
   text-decoration: none;
 }
-
 .site-navbar__menu .el-menu-item,
 .site-navbar__menu .el-submenu > .el-submenu__title {
   height: 50px;
   line-height: 50px;
 }
-
 .site-navbar__menu .el-submenu > .el-menu {
   top: 55px;
 }
-
 .site-navbar__menu .el-badge {
   display: inline;
   z-index: 2;
 }
-
 .site-navbar__menu .el-badge__content {
   line-height: 16px;
 }
@@ -664,17 +634,14 @@ img {
   width: 230px;
   overflow: hidden;
 }
-
 .site-sidebar--dark, .site-sidebar--dark-popper {
   background-color: #263238;
 }
-
 .site-sidebar--dark .site-sidebar__menu.el-menu,
 .site-sidebar--dark > .el-menu--popup, .site-sidebar--dark-popper .site-sidebar__menu.el-menu,
 .site-sidebar--dark-popper > .el-menu--popup {
   background-color: #263238;
 }
-
 .site-sidebar--dark .site-sidebar__menu.el-menu .el-menu-item,
 .site-sidebar--dark .site-sidebar__menu.el-menu .el-submenu > .el-submenu__title,
 .site-sidebar--dark > .el-menu--popup .el-menu-item,
@@ -684,7 +651,6 @@ img {
 .site-sidebar--dark-popper > .el-menu--popup .el-submenu > .el-submenu__title {
   color: #8a979e;
 }
-
 .site-sidebar--dark .site-sidebar__menu.el-menu .el-menu-item:focus, .site-sidebar--dark .site-sidebar__menu.el-menu .el-menu-item:hover,
 .site-sidebar--dark .site-sidebar__menu.el-menu .el-submenu > .el-submenu__title:focus,
 .site-sidebar--dark .site-sidebar__menu.el-menu .el-submenu > .el-submenu__title:hover,
@@ -701,7 +667,6 @@ img {
   color: #c5cbcf;
   background-color: #2b373d;
 }
-
 .site-sidebar--dark .site-sidebar__menu.el-menu .el-menu,
 .site-sidebar--dark .site-sidebar__menu.el-menu .el-submenu.is-opened,
 .site-sidebar--dark > .el-menu--popup .el-menu,
@@ -711,7 +676,6 @@ img {
 .site-sidebar--dark-popper > .el-menu--popup .el-submenu.is-opened {
   background-color: #202b30;
 }
-
 .site-sidebar--dark .site-sidebar__menu.el-menu .el-menu-item.is-active,
 .site-sidebar--dark .site-sidebar__menu.el-menu .el-submenu.is-active > .el-submenu__title,
 .site-sidebar--dark > .el-menu--popup .el-menu-item.is-active,
@@ -721,7 +685,6 @@ img {
 .site-sidebar--dark-popper > .el-menu--popup .el-submenu.is-active > .el-submenu__title {
   color: #e8eaec;
 }
-
 .site-sidebar__inner {
   position: relative;
   z-index: 1;
@@ -730,12 +693,10 @@ img {
   padding-bottom: 15px;
   overflow-y: scroll;
 }
-
 .site-sidebar__menu.el-menu {
   width: 230px;
   border-right: 0;
 }
-
 .site-sidebar__menu-icon {
   width: 24px;
   margin-right: 5px;
@@ -750,7 +711,6 @@ img {
   position: relative;
   padding: 15px;
 }
-
 .site-content__wrapper {
   position: relative;
   padding-top: 50px;
@@ -758,11 +718,9 @@ img {
   min-height: 100%;
   background: #f1f4f5;
 }
-
 .site-content--tabs {
   padding: 55px 0 0;
 }
-
 .site-content > .el-tabs > .el-tabs__header {
   position: fixed;
   top: 50px;
@@ -773,19 +731,15 @@ img {
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.12), 0 0 6px 0 rgba(0, 0, 0, 0.04);
   background-color: #fff;
 }
-
 .site-content > .el-tabs > .el-tabs__header > .el-tabs__nav-wrap {
   margin-bottom: 0;
 }
-
 .site-content > .el-tabs > .el-tabs__header > .el-tabs__nav-wrap:after {
   display: none;
 }
-
 .site-content > .el-tabs > .el-tabs__content {
   padding: 0 15px 15px;
 }
-
 .site-content > .el-tabs > .el-tabs__content > .site-tabs__tools {
   position: fixed;
   top: 50px;
@@ -798,7 +752,6 @@ img {
   background-color: #f1f4f5;
   cursor: pointer;
 }
-
 .site-content > .el-tabs > .el-tabs__content > .site-tabs__tools .el-icon--right {
   margin-left: 0;
 }
