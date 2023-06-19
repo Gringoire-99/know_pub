@@ -37,7 +37,6 @@ export const http_no_token = axios.create({
 http.interceptors.response.use(response => {
     if (response.data && response.data.code === 401) { // 401, token失效
         clearLoginInfo()
-        location.reload()
     }
     return response
 }, error => {

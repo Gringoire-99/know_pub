@@ -49,7 +49,7 @@ public class FollowController {
     /**
      * 保存
      */
-    @RequestMapping("/save")
+    @PostMapping("/save")
     public R save(@RequestBody FollowEntity follow) {
             followService.save(follow);
 
@@ -59,7 +59,7 @@ public class FollowController {
     /**
      * 修改
      */
-    @RequestMapping("/update")
+    @PostMapping("/update")
     public R update(@RequestBody FollowEntity follow) {
             followService.updateById(follow);
 
@@ -69,7 +69,7 @@ public class FollowController {
     /**
      * 删除
      */
-    @RequestMapping("/delete")
+    @PostMapping("/delete")
     public R delete(@RequestBody String[] followIds) {
             followService.removeByIds(Arrays.asList(followIds));
 

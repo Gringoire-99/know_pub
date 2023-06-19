@@ -49,7 +49,7 @@ public class TagController {
     /**
      * 保存
      */
-    @RequestMapping("/save")
+    @PostMapping("/save")
     public R save(@RequestBody TagEntity tag) {
             tagService.save(tag);
 
@@ -59,7 +59,7 @@ public class TagController {
     /**
      * 修改
      */
-    @RequestMapping("/update")
+    @PostMapping("/update")
     public R update(@RequestBody TagEntity tag) {
             tagService.updateById(tag);
 
@@ -69,7 +69,7 @@ public class TagController {
     /**
      * 删除
      */
-    @RequestMapping("/delete")
+    @PostMapping("/delete")
     public R delete(@RequestBody String[] tagIds) {
             tagService.removeByIds(Arrays.asList(tagIds));
 

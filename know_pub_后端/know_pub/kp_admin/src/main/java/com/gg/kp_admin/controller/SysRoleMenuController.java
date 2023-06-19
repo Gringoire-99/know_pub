@@ -49,7 +49,7 @@ public class SysRoleMenuController {
     /**
      * 保存
      */
-    @RequestMapping("/save")
+    @PostMapping("/save")
     public R save(@RequestBody SysRoleMenuEntity sysRoleMenu) {
             sysRoleMenuService.save(sysRoleMenu);
 
@@ -59,7 +59,7 @@ public class SysRoleMenuController {
     /**
      * 修改
      */
-    @RequestMapping("/update")
+    @PostMapping("/update")
     public R update(@RequestBody SysRoleMenuEntity sysRoleMenu) {
             sysRoleMenuService.updateById(sysRoleMenu);
 
@@ -69,7 +69,7 @@ public class SysRoleMenuController {
     /**
      * 删除
      */
-    @RequestMapping("/delete")
+    @PostMapping("/delete")
     public R delete(@RequestBody String[] roleIds) {
             sysRoleMenuService.removeByIds(Arrays.asList(roleIds));
 

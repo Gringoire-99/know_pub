@@ -49,7 +49,7 @@ public class CollectionItemController {
     /**
      * 保存
      */
-    @RequestMapping("/save")
+    @PostMapping("/save")
     public R save(@RequestBody CollectionItemEntity collectionItem) {
             collectionItemService.save(collectionItem);
 
@@ -59,7 +59,7 @@ public class CollectionItemController {
     /**
      * 修改
      */
-    @RequestMapping("/update")
+    @PostMapping("/update")
     public R update(@RequestBody CollectionItemEntity collectionItem) {
             collectionItemService.updateById(collectionItem);
 
@@ -69,7 +69,7 @@ public class CollectionItemController {
     /**
      * 删除
      */
-    @RequestMapping("/delete")
+    @PostMapping("/delete")
     public R delete(@RequestBody String[] ids) {
             collectionItemService.removeByIds(Arrays.asList(ids));
 

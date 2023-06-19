@@ -49,7 +49,7 @@ public class PostController {
     /**
      * 保存
      */
-    @RequestMapping("/save")
+    @PostMapping("/save")
     public R save(@RequestBody PostEntity post) {
             postService.save(post);
 
@@ -59,7 +59,7 @@ public class PostController {
     /**
      * 修改
      */
-    @RequestMapping("/update")
+    @PostMapping("/update")
     public R update(@RequestBody PostEntity post) {
             postService.updateById(post);
 
@@ -69,7 +69,7 @@ public class PostController {
     /**
      * 删除
      */
-    @RequestMapping("/delete")
+    @PostMapping("/delete")
     public R delete(@RequestBody String[] ids) {
             postService.removeByIds(Arrays.asList(ids));
 

@@ -49,7 +49,7 @@ public class CommentLikeController {
     /**
      * 保存
      */
-    @RequestMapping("/save")
+    @PostMapping("/save")
     public R save(@RequestBody CommentLikeEntity commentLike) {
             commentLikeService.save(commentLike);
 
@@ -59,7 +59,7 @@ public class CommentLikeController {
     /**
      * 修改
      */
-    @RequestMapping("/update")
+    @PostMapping("/update")
     public R update(@RequestBody CommentLikeEntity commentLike) {
             commentLikeService.updateById(commentLike);
 
@@ -69,7 +69,7 @@ public class CommentLikeController {
     /**
      * 删除
      */
-    @RequestMapping("/delete")
+    @PostMapping("/delete")
     public R delete(@RequestBody String[] commentIds) {
             commentLikeService.removeByIds(Arrays.asList(commentIds));
 

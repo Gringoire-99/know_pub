@@ -49,7 +49,7 @@ public class SysRoleController {
     /**
      * 保存
      */
-    @RequestMapping("/save")
+    @PostMapping("/save")
     public R save(@RequestBody SysRoleEntity sysRole) {
             sysRoleService.save(sysRole);
 
@@ -59,7 +59,7 @@ public class SysRoleController {
     /**
      * 修改
      */
-    @RequestMapping("/update")
+    @PostMapping("/update")
     public R update(@RequestBody SysRoleEntity sysRole) {
             sysRoleService.updateById(sysRole);
 
@@ -69,7 +69,7 @@ public class SysRoleController {
     /**
      * 删除
      */
-    @RequestMapping("/delete")
+    @PostMapping("/delete")
     public R delete(@RequestBody String[] ids) {
             sysRoleService.removeByIds(Arrays.asList(ids));
 

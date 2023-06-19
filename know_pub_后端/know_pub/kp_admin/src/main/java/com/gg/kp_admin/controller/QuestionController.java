@@ -49,7 +49,7 @@ public class QuestionController {
     /**
      * 保存
      */
-    @RequestMapping("/save")
+    @PostMapping("/save")
     public R save(@RequestBody QuestionEntity question) {
             questionService.save(question);
 
@@ -59,7 +59,7 @@ public class QuestionController {
     /**
      * 修改
      */
-    @RequestMapping("/update")
+    @PostMapping("/update")
     public R update(@RequestBody QuestionEntity question) {
             questionService.updateById(question);
 
@@ -69,7 +69,7 @@ public class QuestionController {
     /**
      * 删除
      */
-    @RequestMapping("/delete")
+    @PostMapping("/delete")
     public R delete(@RequestBody String[] ids) {
             questionService.removeByIds(Arrays.asList(ids));
 

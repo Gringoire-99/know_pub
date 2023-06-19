@@ -49,7 +49,7 @@ public class CommentController {
     /**
      * 保存
      */
-    @RequestMapping("/save")
+    @PostMapping("/save")
     public R save(@RequestBody CommentEntity comment) {
             commentService.save(comment);
 
@@ -59,7 +59,7 @@ public class CommentController {
     /**
      * 修改
      */
-    @RequestMapping("/update")
+    @PostMapping("/update")
     public R update(@RequestBody CommentEntity comment) {
             commentService.updateById(comment);
 
@@ -69,7 +69,7 @@ public class CommentController {
     /**
      * 删除
      */
-    @RequestMapping("/delete")
+    @PostMapping("/delete")
     public R delete(@RequestBody String[] ids) {
             commentService.removeByIds(Arrays.asList(ids));
 

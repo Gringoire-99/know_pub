@@ -49,7 +49,7 @@ public class ArticleController {
     /**
      * 保存
      */
-    @RequestMapping("/save")
+    @PostMapping("/save")
     public R save(@RequestBody ArticleEntity article) {
             articleService.save(article);
 
@@ -59,7 +59,7 @@ public class ArticleController {
     /**
      * 修改
      */
-    @RequestMapping("/update")
+    @PostMapping("/update")
     public R update(@RequestBody ArticleEntity article) {
             articleService.updateById(article);
 
@@ -69,7 +69,7 @@ public class ArticleController {
     /**
      * 删除
      */
-    @RequestMapping("/delete")
+    @PostMapping("/delete")
     public R delete(@RequestBody String[] ids) {
             articleService.removeByIds(Arrays.asList(ids));
 

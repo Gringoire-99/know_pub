@@ -49,7 +49,7 @@ public class SysUserRoleController {
     /**
      * 保存
      */
-    @RequestMapping("/save")
+    @PostMapping("/save")
     public R save(@RequestBody SysUserRoleEntity sysUserRole) {
             sysUserRoleService.save(sysUserRole);
 
@@ -59,7 +59,7 @@ public class SysUserRoleController {
     /**
      * 修改
      */
-    @RequestMapping("/update")
+    @PostMapping("/update")
     public R update(@RequestBody SysUserRoleEntity sysUserRole) {
             sysUserRoleService.updateById(sysUserRole);
 
@@ -69,7 +69,7 @@ public class SysUserRoleController {
     /**
      * 删除
      */
-    @RequestMapping("/delete")
+    @PostMapping("/delete")
     public R delete(@RequestBody String[] userIds) {
             sysUserRoleService.removeByIds(Arrays.asList(userIds));
 

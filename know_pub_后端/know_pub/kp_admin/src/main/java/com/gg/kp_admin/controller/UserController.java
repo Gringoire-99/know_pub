@@ -49,7 +49,7 @@ public class UserController {
     /**
      * 保存
      */
-    @RequestMapping("/save")
+   @PostMapping("/save")
     public R save(@RequestBody UserEntity user) {
             userService.save(user);
 
@@ -59,7 +59,7 @@ public class UserController {
     /**
      * 修改
      */
-    @RequestMapping("/update")
+   @PostMapping("/update")
     public R update(@RequestBody UserEntity user) {
             userService.updateById(user);
 
@@ -69,7 +69,7 @@ public class UserController {
     /**
      * 删除
      */
-    @RequestMapping("/delete")
+   @PostMapping("/delete")
     public R delete(@RequestBody String[] ids) {
             userService.removeByIds(Arrays.asList(ids));
 

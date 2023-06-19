@@ -111,7 +111,7 @@
                 </div>
                 <div class="main">
                     <div class="post-header ps-3 border-bottom pb-3 pt-3">
-                        <span class="fw-bold">{{ question.commentCount }}个回答</span>
+                        <span class="fw-bold">{{ question.answerCount }}个回答</span>
                     </div>
                     <div v-show="isLoadingQuestion||isLoadingAnswer">
                         <el-skeleton :rows="5" :throttle="1000"></el-skeleton>

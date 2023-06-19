@@ -54,7 +54,7 @@ public class UserController {
         return userService.follow(userId);
     }
 
-    @GetMapping("recommended-user")
+    @GetMapping("/recommended-user")
     public Result<List<UserInfoShortVo>> getRecommendedUser() {
         return userService.getRecommendedUser();
     }

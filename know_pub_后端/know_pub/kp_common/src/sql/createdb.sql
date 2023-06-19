@@ -1,6 +1,8 @@
 # 不使用外键
 CREATE DATABASE if not exists know_pub CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE know_pub;
+
+desc follow;
 CREATE TABLE IF NOT EXISTS follow
 (
     follow_id   char(40) not null comment '被关注人id',
