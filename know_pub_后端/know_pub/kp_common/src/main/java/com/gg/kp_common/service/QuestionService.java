@@ -20,4 +20,5 @@ public interface QuestionService extends IService<Question> {
 
     Result<List<RecommendedQuestionVo>> getRecommendedQuestion(String questionId);
 
+    Result<?> updateViewCount(String questionId);
 }

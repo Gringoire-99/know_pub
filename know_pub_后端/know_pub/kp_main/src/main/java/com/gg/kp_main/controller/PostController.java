@@ -6,6 +6,7 @@ import com.gg.kp_common.entity.vo.save.NewPost;
 import com.gg.kp_common.service.PostService;
 import com.gg.kp_common.utils.PageParams;
 import com.gg.kp_common.utils.Result;
+import com.gg.kp_common.utils.log.SystemLog;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -35,6 +36,7 @@ public class PostController {
         return postService.onLike(postId);
     }
 
+    @SystemLog(businessName = "获取博文动态")
     @GetMapping("/dynamic")
     public Result<Page<PostVo>> getDynamic(@ApiParam PageParams params,
                                            @RequestParam String userId) {
@@ -52,6 +54,7 @@ public class PostController {
                                           @RequestParam String questionId) {
         return postService.getPosts(params, questionId);
     }
+
     @GetMapping("/get-posts-by-ids")
     public Result<List<PostVo>> getPostsByIds(@RequestParam String[] postIds) {
         return postService.getPostsByIds(postIds);

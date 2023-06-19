@@ -31,6 +31,7 @@
         <module>kp_common</module>
         <module>kp_gateway</module>
         <module>kp_other</module>
+        <module>kp_admin</module>
     </modules>
 
     <dependencies>

@@ -10,6 +10,19 @@ spring:
             - Path=/main/**
           filters:
             - RewritePath=/main/(?<segment>.*),/$\{segment}
+        - id: admin_route
+          uri: lb://kp-admin
+          predicates:
+            - Path=/admin/kp_admin/**
+          filters:
+            - RewritePath=/admin/kp_admin/(?<segment>.*),/kp_admin/$\{segment}
+        - id: admin_framework_route
+          uri: lb://kp-admin-framework
+          predicates:
+            - Path=/admin/**
+          filters:
+            - RewritePath=/admin/(?<segment>.*),/kp-admin-framework/$\{segment}
+
   main:
     web-application-type: reactive
   jackson:

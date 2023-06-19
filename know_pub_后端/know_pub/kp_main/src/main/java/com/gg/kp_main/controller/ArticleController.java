@@ -40,4 +40,9 @@ public class ArticleController {
     public Result<Integer> publishArticle(@RequestBody UpdateArticle article) {
         return articleService.publishArticle(article);
     }
+
+    @GetMapping("/get-article")
+    public Result<ArticleVo> getArticle(@RequestParam String articleId) {
+        return articleService.getArticle(articleId);
+    }
 }

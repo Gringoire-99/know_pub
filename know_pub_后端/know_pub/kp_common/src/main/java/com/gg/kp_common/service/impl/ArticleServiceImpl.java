@@ -3,13 +3,13 @@ package com.gg.kp_common.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.gg.kp_common.config.exception.SystemException;
 import com.gg.kp_common.dao.ArticleMapper;
 import com.gg.kp_common.entity.model.Page;
 import com.gg.kp_common.entity.po.Article;
 import com.gg.kp_common.entity.vo.ArticleVo;
 import com.gg.kp_common.entity.vo.OssPolicy;
 import com.gg.kp_common.entity.vo.Policy;
-import com.gg.kp_common.entity.vo.save.NewArticle;
 import com.gg.kp_common.entity.vo.save.UpdateArticle;
 import com.gg.kp_common.feign.OssFeignClient;
 import com.gg.kp_common.service.ArticleService;
@@ -77,7 +77,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         Article temp = BeanCopyUtils.copyBean(article, Article.class);
         temp.setIsPublish(EntityConstant.NOT_PUBLISHED);
         boolean b = this.updateById(temp);
-        return Result.ok(b?1:0);
+        return Result.ok(b ? 1 : 0);
     }
 
     @Override
@@ -88,7 +88,20 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         Article published = new Article();
         BeanUtils.copyProperties(article, published);
         published.setIsPublish(EntityConstant.PUBLISHED);
-        boolean save = this.saveOrUpdate(published,lqw);
-        return Result.ok(save?1:0);
+        boolean save = this.saveOrUpdate(published, lqw);
+        return Result.ok(save ? 1 : 0);
+    }
+
+    @Override
+    public Result<ArticleVo> getArticle(String articleId) {
+        LambdaQueryWrapper<Article> lqw = new LambdaQueryWrapper<>();
+        lqw.eq(Article::getId, articleId);
+        Article article = this.getOne(lqw);
+        if (Objects.isNull(article)) {
+            throw new SystemException("文章不存在");
+        }
+        ArticleVo articleVo = BeanCopyUtils.copyBean(article, ArticleVo.class);
+
+        return Result.ok(articleVo);
     }
 }

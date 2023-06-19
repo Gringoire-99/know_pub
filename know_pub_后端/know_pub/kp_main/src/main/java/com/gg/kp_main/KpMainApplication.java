@@ -4,6 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import springfox.documentation.oas.annotations.EnableOpenApi;
 
@@ -12,6 +13,7 @@ import springfox.documentation.oas.annotations.EnableOpenApi;
 @SpringBootApplication
 @ComponentScan(basePackages = {"com.gg.kp_common", "com.gg.kp_main"})
 @EnableOpenApi
+@EnableScheduling
 public class KpMainApplication {
 
     public static void main(String[] args) {

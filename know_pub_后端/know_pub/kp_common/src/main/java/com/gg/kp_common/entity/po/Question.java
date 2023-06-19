@@ -31,4 +31,8 @@ public class Question {
     @TableLogic(value = "0", delval = "1")
     private int delFlag;
     private Integer isAnonymous;
+    public Question(String id,int viewCount){
+        this.id = id;
+        this.viewCount = viewCount;
+    }
 }

@@ -13,6 +13,7 @@ import com.gg.kp_common.entity.vo.save.PostQuestion;
 import com.gg.kp_common.service.QuestionService;
 import com.gg.kp_common.utils.*;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,11 +23,16 @@ import java.util.Objects;
 
 @Service
 public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> implements QuestionService {
+    @Autowired
+    RedisCache redisCache;
+
     @Override
     public Result<QuestionVo> getDetail(String questionId) {
         QuestionVo question = this.baseMapper.getQuestionDetail(questionId);
         if (Objects.isNull(question)) throw new SystemException("问题不存在");
         setAnonymity(Collections.singletonList(question));
+        Integer questionViewCount = redisCache.getCacheMapValue("questionViewCount", question.getId());
+        question.setViewCount(questionViewCount);
         return Result.ok(question);
     }
 
@@ -75,6 +81,12 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
         List<Question> questions = this.baseMapper.selectList(lqw);
         List<RecommendedQuestionVo> result = BeanCopyUtils.copyBeanList(questions, RecommendedQuestionVo.class);
         return Result.ok(result);
+    }
+
+    @Override
+    public Result<?> updateViewCount(String questionId) {
+        redisCache.addCacheMapValue("questionViewCount",questionId,1);
+        return Result.ok();
     }
 
 

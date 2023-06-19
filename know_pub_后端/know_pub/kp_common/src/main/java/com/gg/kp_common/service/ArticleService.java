@@ -19,4 +19,6 @@ public interface ArticleService extends IService<Article> {
     Result<Integer> saveScript(UpdateArticle article);
 
     Result<Integer> publishArticle(UpdateArticle article);
+
+    Result<ArticleVo> getArticle(String articleId);
 }

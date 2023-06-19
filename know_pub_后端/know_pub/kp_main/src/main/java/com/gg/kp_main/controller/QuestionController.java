@@ -45,6 +45,9 @@ public class QuestionController {
     @GetMapping("/recommended-question")
     public Result<List<RecommendedQuestionVo>> getRecommendedQuestion(@RequestParam String questionId) {
         return questionService.getRecommendedQuestion(questionId);
-
+    }
+    @PatchMapping("/update-view-count")
+    public Result<?> updateViewCount(@RequestParam String questionId){
+        return questionService.updateViewCount(questionId);
     }
 }

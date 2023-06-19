@@ -1,0 +1,18 @@
+.editor {
+    display: grid;
+    transition: grid 0.3s, opacity 0.3s;
+    opacity: 0;
+    grid-template-rows: 0fr;
+}
+
+.editor > * {
+    min-height: 0;
+    overflow: hidden;
+}
+
+.editor.show-editor {
+    opacity: 1 !important;
+    grid-template-rows: 1fr !important;
+}
+
+/*# sourceMappingURL=test.css.map */
