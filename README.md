@@ -3,23 +3,6 @@
 **API接口文档👇**  
 **https://apifox.com/apidoc/shared-d052ea40-29dd-4b9b-893b-a33564238163**
 
-   
-   # ✨TODO✨:
-
-1. login
-2. comment
-3. post
-4. userInfo
-5. question
-6. tag
-7. upload
-8. article
-9. collection
-
-后台管理系统 <- now
-   1. 增删改查
-   2. 动态路由
-   
 # 👌QuickStart👌
 
 ### 启动前端
