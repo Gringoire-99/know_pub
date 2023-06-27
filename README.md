@@ -1,6 +1,6 @@
 # KnowPub
 **停止更新**
-**bug有点多，不打算修了，后面打算用ts和nuxt重新写一个** 👇 
+**bug有点多，不打算修了，后面打算用ts和nuxt重新写一个** 👇   
 https://github.com/Gringoire-99/v3test.git
 
 **API接口文档👇**  
